@@ -1,0 +1,27 @@
+{% extends 'base_auth.html' %}
+    {% block namepage %}
+        EIS tizimiga kirish
+    {% endblock namepage %}
+
+{% block content %}
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="username"><i class="icons icon-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Логин" aria-label="Логин" aria-describedby="username">
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="password"><i class="icons icon-password"></i></span>
+                                    </div>
+                                    <input type="password" class="form-control" placeholder="Пароль" aria-label="Пароль" aria-describedby="password">
+                                </div>
+                                <div class="btn-group">
+                                    <a href="https://id.egov.uz/" class="btn btn-primary">Kirish/OneID orqali kirish</a>
+                                </div>
+                            </form>
+                            <div class="form-urls">
+                                <a class="active" href="registration.html">Registratsya</a>
+                                <a class="active" href="registration.html">Parolni unutdingizmi?</a>
+                            </div>
+                                {% endblock content %}

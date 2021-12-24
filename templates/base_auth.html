@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EIS ga Kirish</title>
+    <link rel="stylesheet" href="{% static 'fonts/ProximaNova/stylesheet.css'%}">
+    <link rel="stylesheet" href="{% static 'fonts/Quarion/stylesheet.css'%}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css'%}">
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/site.css'%}">
+    <link rel="stylesheet" href="{% static 'css/media.css'%}">
+
+    <script src=" {% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'bootstrap/js/popper.min.js'%}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <a href="#">
+                    <img src="{% static 'img/eis_logo.png'%}" alt="">
+                    <span>EIS tizimi</span>
+                </a>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href=" {% url 'register' %} " class="active">Dasturga kirish</a>
+                    </li>
+                    <li>
+                        <a href="about.html">Kirish bo`yicha yo`riqnoma</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <div class="sidebar-lang">
+                <a class="active" href="#">Uz</a>
+                
+            </div>
+            <div class="sidebar-copy">
+                <span>© 2021. Barcha huquqlar himoyalangan</span>
+            </div>
+        </div>
+        <div class="main">
+            <div class="login-page">
+                <div class="login">
+                    <div class="login-form">
+                        <div class="form">
+                            <h2 class="title"> {% block namepage %}
+                                EIS tizimiga kirish
+                                {% endblock namepage %} </h2>
+                            <form action="">
+                                {% block content %}
+                                
+                                {% endblock content %}
+                        </div>
+                    </div>  
+                    <div class="login-banner">
+                        <div class="login-logo">
+                            <img src="{% static 'img/eis_logo.png'%}" alt="">
+                        </div>
+                        <div class="login-copy">
+                            <span>Energetik resurslar bo`yicha yagona informatsion tizim</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>

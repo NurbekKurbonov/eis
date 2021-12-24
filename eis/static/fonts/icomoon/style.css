@@ -1,0 +1,108 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?md5sm5');
+  src:  url('fonts/icomoon.eot?md5sm5#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?md5sm5') format('truetype'),
+    url('fonts/icomoon.woff?md5sm5') format('woff'),
+    url('fonts/icomoon.svg?md5sm5#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add:before {
+  content: "\e900";
+}
+.icon-alarm:before {
+  content: "\e901";
+}
+.icon-alert:before {
+  content: "\e902";
+}
+.icon-angle-down:before {
+  content: "\e903";
+}
+.icon-angle-left:before {
+  content: "\e904";
+}
+.icon-angle-right:before {
+  content: "\e905";
+}
+.icon-arow-left:before {
+  content: "\e906";
+}
+.icon-arow-right:before {
+  content: "\e907";
+}
+.icon-arrow:before {
+  content: "\e908";
+}
+.icon-calendar:before {
+  content: "\e909";
+}
+.icon-clip:before {
+  content: "\e90a";
+}
+.icon-clock:before {
+  content: "\e90b";
+}
+.icon-delet:before {
+  content: "\e90c";
+}
+.icon-doc:before {
+  content: "\e90d";
+}
+.icon-edit:before {
+  content: "\e90e";
+}
+.icon-email:before {
+  content: "\e90f";
+}
+.icon-envelope:before {
+  content: "\e910";
+}
+.icon-files-and-folders:before {
+  content: "\e911";
+}
+.icon-Icon-search:before {
+  content: "\e912";
+}
+.icon-password:before {
+  content: "\e913";
+}
+.icon-placeholder:before {
+  content: "\e914";
+}
+.icon-plus:before {
+  content: "\e915";
+}
+.icon-send:before {
+  content: "\e916";
+}
+.icon-telephone:before {
+  content: "\e917";
+}
+.icon-tick:before {
+  content: "\e918";
+}
+.icon-undo:before {
+  content: "\e919";
+}
+.icon-user:before {
+  content: "\e91a";
+}

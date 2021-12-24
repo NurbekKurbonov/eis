@@ -1,0 +1,52 @@
+{% extends 'base_ges.html' %}
+
+{% block namepage %}
+    Bino va inshootlari ma'lumotlarini kiritish
+{% endblock namepage %}
+
+{% block content %}
+<div class="row">    
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                {% include 'partials/_messages.html'%} {% csrf_token %}
+                <h5 class="card-title mb-0">
+                   bino inshootlar qayta ishlash jarayonlari ketyapti...</h5>
+            </div>
+            
+            <div class="card-body">
+                <div class="text-md-right mb-3">
+                    <a href="ges_addbuild" class="btn btn-pill btn-success" > <i data-feather="plus-square"></i> </a>                       
+                </div>
+                <table class="table table-striped table-hover">
+                    {% if buildings.count %}
+                    <thead>
+                        <tr>
+                            <th style="width:25%;">Bino nomi</th>
+                            <th style="width:25%;">Bino turi</th>
+                            <th style="width:25%">Oxirgi audit sanasi</th>
+                            <th style="width:25%">Umumiy maydoni</th>
+                            <th>Harakat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b_obj in buildings %}
+                            <tr>
+                                <td>{{b_obj.bino_nomi}}</td>
+                                <td>{{b_obj.bino_turi}}</td>
+                                <td >{{b_obj.oxirgi_audit}}</td>
+                                <td>{{b_obj.umumiy_maydoni}}</td>
+                                <td class="table-action">
+                                    <a href="#"><i class="align-middle" data-feather="edit-2"></i></a>
+                                    <a href="#"><i class="align-middle" data-feather="trash"></i></a>
+                                </td>
+                            </tr>  
+                        {% endfor %}                      
+                    </tbody>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
