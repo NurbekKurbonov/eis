@@ -1,1 +1,1 @@
-web: gunicorn eis.wsgi
+web: gunicorn --chdir eis eis.wsgi
