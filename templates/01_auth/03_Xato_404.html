@@ -1,0 +1,15 @@
+{% extends '01_base_auth.html' %}
+{% load static %}
+
+{% block title %}404-voy{% endblock title %}
+
+{% block asosiy_qism %}
+<div class="text-center">
+	<h1 class="display-1 font-weight-bold">404</h1>
+	<p class="h1">Sahifa topilmadi</p>
+	<p class="h2 font-weight-normal mt-3 mb-4">Bunday sahifa yo'qku bizda</p>
+	<a href="{% url 'loginP' %}" class="btn btn-primary btn-lg">Qaytish</a>
+</div>
+{% endblock asosiy_qism %}
+
+	

@@ -1,0 +1,54 @@
+{% extends '01_base_auth.html' %}
+{% load static %}
+
+{% block title %}Registratsya{% endblock title %}
+
+{% block asosiy_qism %}
+<div class="text-center mt-4">
+	<h1 class="h2">Ro'yxatdan o'tish</h1>
+	<p class="lead">
+		Quyidagi ma'lumotlarni to'ldiring
+	</p>
+</div>
+
+<div class="card">
+	<div class="card-body">
+		<div class="m-sm-4">
+			<form>
+				<div class="mb-3">
+					<label class="form-label">Ismingiz</label>
+					<input class="form-control form-control-lg" 
+					type="text" 
+					name="name" 
+					placeholder="Ismingizni kiriting" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">INN</label>
+					<input class="form-control form-control-lg" 
+					type="number" 
+					name="company" 
+					placeholder="INN ni kiriting" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Email</label>
+					<input class="form-control form-control-lg" 
+					type="email" 
+					name="email" 
+					placeholder="Emailingizni kiriting" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Parol</label>
+					<input class="form-control form-control-lg" 
+					type="password" 
+					name="password" placeholder="Parolingizni kiriting" />
+				</div>
+				<div class="text-center mt-3">
+					<a href="index.html" class="btn btn-lg btn-primary">Ro'yxatdan o'tish</a>
+					<!-- <button type="submit" class="btn btn-lg btn-primary">Ro'yxatdan o'tish</button> -->
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock asosiy_qism %}
