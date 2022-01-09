@@ -1,0 +1,77 @@
+{% extends '00_kirish/00_base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block sidenav %}
+    {% for nav in page_list %}
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{nav.permalink}}">
+            <i class="align-middle" data-feather="{{nav.icon}}"></i> 
+            <span class="align-middle">{{nav.title}}</span>
+        </a>
+    </li>
+    {% endfor %}
+{% endblock sidenav %}
+
+{% block content %}
+        <div class="mb-3">
+            <h1 class="h3 d-inline align-middle">Murojaat</h1>            
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Murojaat yo'llash</h5>
+                        <h5 class="card-subtitle text-muted">Murojaat yo'llash uchun quyidagi formani to'ldiring.</h5>
+                    </div>
+                    <div class="card-body">
+                        <form actions="" method="post" class="row g-3 needs-validation" novalidate>
+                            {% csrf_token %}
+                            {{form.as_table}}
+                            <div class="col-md-6">
+                                <label for="validationCustom01" class="form-label">Ismingiz</label>
+                                <input type="text" 
+                                class="form-control" 
+                                id="validationCustom01" 
+                                placeholder="Masalan: Oybek" 
+                                required>
+                                <div class="valid-feedback">
+                                    yaxshi!
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom02" class="form-label">Pochtangiz</label>
+                                <input type="text" 
+                                class="form-control" 
+                                id="validationCustom02" 
+                                value="" 
+                                placeholder = "nm@tdtu.ru"
+                                data-inputmask="'alias': 'email'"
+                                required>
+                                <div class="valid-feedback">
+                                    yaxshi!
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="validationCustom03" class="form-label">Murojaat matni</label>
+                                <textarea rows="2" class="form-control" id="inputBio"
+																placeholder="Murojaat matnini kiriting"></textarea>
+                                <div class="invalid-feedback">
+                                    yaxshi!
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 text-md-end">
+                                <button class="btn btn-primary" type="submit">Yuborish</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+{% endblock content %}

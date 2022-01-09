@@ -16,6 +16,7 @@
 	<title> EIS | {% block title %}{% endblock title %}</title>
 
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
 	<!-- Choose your prefered color scheme -->
 	<link href="{% static 'css/light.css'%}" rel="stylesheet">
@@ -30,8 +31,7 @@
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="index.html">
 					<span class="sidebar-brand-text align-middle">
-						EIS sistemasi
-						<sup><small class="badge bg-primary text-uppercase">yangi</small></sup>
+						Ikkinchi darajali admin						
 					</span>
 					<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
 						stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
@@ -40,19 +40,21 @@
 						<path d="M20 16L12 20L4 16"></path>
 					</svg>
 				</a>
+				<!-- Sahifalar bo'limi-->
+				{% block sidebar-nav %}
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
-						Sahifalar
-					</li>					
-					{% block sidenav %}
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="pages-profile.html">
-							<i class="align-middle" data-feather="user"></i> 
-                            <span class="align-middle">Profil</span>
+						Aktiv sahifalar
+					</li>		
+					
+					<li class="sidebar-item {% block bar %}{% endblock bar %}">
+						<a class="sidebar-link" href="#" >
+							<i class="align-middle" data-feather="{% block icon %}{% endblock icon %}"></i> 
+                            <span class="align-middle">Kirish bo'limi</span>
 						</a>
-					</li>
-					{% endblock sidenav %}
+					</li>					
 				</ul>
+				{% endblock sidebar-nav %}
                 <!--
 				<div class="sidebar-cta">
 					<div class="sidebar-cta-content">
@@ -145,14 +147,14 @@
 						</li>
 
 						<li class="nav-item dropdown">
-							<a href="{% url 'loginP' %}" class="nav-icon pe-md-0 dropdown-toggle"><i class="fas fa-door-closed"></i> login </a>													
+							<a href="{% url 'loginP' %}" class="nav-icon pe-md-0 dropdown-toggle"><i class="fas fa-door-open"></i> Chiqish </a>													
 						</li>
 					</ul>
 				</div>
 			</nav>
 
 			<main class="content">
-				<div class="container-fluid p-0">
+				<div class="container-fluid p-0">					
 				{% block content %}
 					
 					{% endblock content %}
@@ -190,6 +192,7 @@
 	</div>
 
 	<script src="{% static 'js/app.js'%}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
 </body>
 

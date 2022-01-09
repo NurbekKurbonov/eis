@@ -1,0 +1,59 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bar %}active{% endblock bar %}
+<!--ICON-->
+{% block icon %}user{% endblock icon %}
+
+{% block content %}
+<a href="{% url 'addkir' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi sahifa</a>
+{% csrf_token %} {% include 'partials/_messages.html'%}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Projects</h1><a class="badge bg-primary ms-2" href="https://adminkit.io/pricing/"
+        target="_blank">Pro Component <i class="fas fa-fw fa-external-link-alt"></i></a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+        <div class="card">
+
+            <div class="card-header px-4 pt-4">
+                <div class="card-actions float-end">
+                    <div class="dropdown position-relative">
+                        <a href="#" data-bs-toggle="dropdown" data-bs-display="static">
+                            <i class="align-middle" data-feather="more-horizontal"></i>
+                        </a>
+                    </div>
+                </div>
+                <h5 class="card-title mb-0">{{title}}</h5>
+                <div class="badge bg-success my-2">Qo'shilgan vaqti: {{upload_date}}</div>                
+            </div>
+            <div class="card-body px-4 pt-2">
+                <p>Sahifa</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item px-4 pb-4">
+                    <div class="text-center">
+                    <button class="btn btn-primary my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
+										aria-controls="offcanvasLeft">O'zgartirish</button>
+                    </div>
+                    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+                        <div class="offcanvas-header">
+                            <h5 id="offcanvasTopLabel">Sahifaga o'zgartirish kiritish</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div>
+                                Hozir to'ldiramiz
+                            </div>
+                        </div>
+                    </div>
+                </li>                
+            </ul>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}

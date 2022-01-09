@@ -1,0 +1,68 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi sahifa qo'shish{{update_date}}</h1>
+    <a href="{% url 'kirishP' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'addkir' %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Sarlovha</label>
+                        <input type="text"
+                                class="form-control" 
+                                autofocus required="true"
+                                name="title"
+                                placeholder="Sarlavhasini kiriting"
+                                value = {{sahifa.title}}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"> Link</label>
+                        <input type="text"
+                                class="form-control" 
+                                autofocus required="true"
+                                name="permalink"
+                                placeholder="/link"
+                                value = {{sahifa.permalink}}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kontent</label>
+                        <textarea class="form-control" 
+                                placeholder="Kontentni html kodlar bilan kiritish mumkin" 
+                                rows="2"
+                                autofocus required="true"
+                                name="bodytext"
+                                value={{sahifa.bodytext}}></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Icon</label>
+                        <div class="input-group mb-3">                            
+                        <input type="text"
+                                class="form-control" 
+                                placeholder="User"
+                                autofocus required="true"
+                                name="icon"
+                                value = {{sahifa.icon}}>
+                            <a href="{% url 'icons' %}" class="btn btn-secondary" type="button">iconlar ro'yxati</a>
+                        </div>                        
+                    </div>
+
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

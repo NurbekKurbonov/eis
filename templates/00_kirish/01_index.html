@@ -1,0 +1,20 @@
+{% extends '00_kirish/00_base.html' %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block sidenav %}
+    {% for nav in page_list %}
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{nav.permalink}}">
+            <i class="align-middle" data-feather="{{nav.icon}}"></i> 
+            <span class="align-middle">{{nav.title}}</span>
+        </a>
+    </li>
+    {% endfor %}
+{% endblock sidenav %}
+
+{% block content %}
+    {% autoescape off %}   
+        {{content}}
+    {% endautoescape %}
+{% endblock content %}

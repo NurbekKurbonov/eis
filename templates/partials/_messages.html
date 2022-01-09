@@ -1,0 +1,43 @@
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="mb-3">            
+        <input type="hidden" id="notyf-message" name="notyf-message" type="text" class="form-control" placeholder="Enter a message" value="{{message}}">        
+        <input type="hidden" id="notyf-type" name="notyf-type" value="{{ message.tags }}"/>
+        <input type="hidden" id="notyf-duration" value="5000" name="notyf-duration"/>
+        <input type="hidden" class="form-check-input" type="checkbox" id="notyf-ripple" checked>
+        <input type="hidden" id="notyf-dismissible" checked>    
+    </div>
+
+    {% endfor %}
+</ul>
+{% endif %}
+
+        
+<script>
+    // Notyf
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentMessageIndex = -1;
+
+        setTimeout(function() {
+            var message = document.querySelector("#notyf-message").value || getMessage();
+            var type = document.querySelector("#notyf-type").value;
+            var duration = document.querySelector("#notyf-duration").value;
+            var ripple = document.querySelector("#notyf-ripple").checked;
+            var dismissible = document.querySelector("#notyf-dismissible").checked;
+            var positionX ="right";
+            var positionY = "top";
+            window.notyf.open({
+                type,
+                message,
+                duration,
+                ripple,
+                dismissible,
+                position: {
+                    x: positionX,
+                    y: positionY
+                }
+            });
+        });
+    });
+</script>	
