@@ -100,3 +100,16 @@ def davlat(request):
         }
     
     return render(request, '02_s_ad/02_0_davlat.html', context)
+
+def adddavlat(request):
+    
+    if request.method == 'GET':
+        return render(request, '02_s_ad/02_1_adddavlat.html')
+            
+    if request.method == 'POST':        
+        davlat_kodi = request.POST['davlat_kodi']
+        davlat_nomi = request.POST['davlat_nomi']        
+        
+        davlatlar.objects.create(owner=request.user, davlat_kodi=davlat_kodi, davlat_nomi=davlat_nomi )        
+        messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        return redirect('davlat')

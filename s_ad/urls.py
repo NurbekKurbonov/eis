@@ -9,6 +9,7 @@ urlpatterns = [
     path('delkir/<int:id>', views.delkir, name='delkir'),
     
     path('davlat', views.davlat, name='davlat'),
+    path('adddavlat', views.adddavlat, name='adddavlat'),
     
     path('icons', views.icons, name='icons'),
 ]

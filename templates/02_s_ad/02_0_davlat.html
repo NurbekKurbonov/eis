@@ -6,7 +6,7 @@
 {% block barh1 %}active{% endblock barh1 %}
 
 {% block content %}
-<a href="{% url 'addkir' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi davlat</a>
+<a href="{% url 'adddavlat' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi davlat</a>
 {% csrf_token %} {% include 'partials/_messages.html'%}
 
 <div class="mb-3">
@@ -30,7 +30,7 @@
                     <tbody>
                         {% for v in dav %}
                         <tr>
-                            <td>#</td>
+                            <td> {{forloop.counter}}</td>
                             <td>{{v.davlat_kodi}}</td>
                             <td>{{v.davlat_nomi}}</td>
                             <td class="table-action text-center">
@@ -43,7 +43,7 @@
                         <tr>
                             <th>t/r</th>
                             <th>kodi</th>
-                            <th>Nomi</th>                            
+                            <th>Nomi</th>                           
                             
                         </tr>
                     </tfoot>
