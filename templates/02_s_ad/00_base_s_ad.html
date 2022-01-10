@@ -12,16 +12,14 @@
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="shortcut icon" href="{% static 'img/icons/icon-48x48.png' %}" />
-
+	
 	<title> EIS | {% block title %}{% endblock title %}</title>
 
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-
-	<!-- Choose your prefered color scheme -->
+		
 	<link href="{% static 'css/light.css'%}" rel="stylesheet">
-	<!-- <link href="css/dark.css" rel="stylesheet"> -->
-	<!--<script src="{% static 'js/settings.js'%}"></script>-->
+	
 </head>
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
@@ -29,7 +27,7 @@
 		<!-- sidenav boshlandi-->
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="index.html">
+				<a class="sidebar-brand" href="{% url 'kirishP' %}">
 					<span class="sidebar-brand-text align-middle">
 						Ikkinchi darajali admin						
 					</span>
@@ -48,11 +46,21 @@
 					</li>		
 					
 					<li class="sidebar-item {% block bar %}{% endblock bar %}">
-						<a class="sidebar-link" href="#" >
-							<i class="align-middle" data-feather="{% block icon %}{% endblock icon %}"></i> 
-                            <span class="align-middle">Kirish bo'limi</span>
+						<a class="sidebar-link" href="{% url 'kirishP' %}" >
+							<i class="align-middle" data-feather="log-in"></i> 
+                            <span class="align-middle">Kirish bo'limi sahifalari</span>
 						</a>
-					</li>					
+					</li>
+					<li class="sidebar-header">
+						Hududlar bo'yicha
+					</li>		
+					
+					<li class="sidebar-item {% block barh1 %}{% endblock barh1 %}">
+						<a class="sidebar-link" href="{% url 'davlat' %}" >
+							<i class="align-middle" data-feather="navigation"></i> 
+                            <span class="align-middle">Davlatlar</span>
+						</a>
+					</li>						
 				</ul>
 				{% endblock sidebar-nav %}
                 <!--
@@ -193,7 +201,55 @@
 
 	<script src="{% static 'js/app.js'%}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+	<script src="{% static 'js/datatables.js'%}"></script>
 
+	<script>
+		// DataTables with Column Search by Text Inputs
+		document.addEventListener("DOMContentLoaded", function() {
+			// Setup - add a text input to each footer cell
+			$("#datatables-column-search-text-inputs tfoot th").each(function() {
+				var title = $(this).text();
+				$(this).html("<input type=\"text\" class=\"form-control\" placeholder=\"Izlash " + title + "\" />");
+			});
+			// DataTables
+			var table = $("#datatables-column-search-text-inputs").DataTable();
+			// Apply the search
+			table.columns().every(function() {
+				var that = this;
+				$("input", this.footer()).on("keyup change clear", function() {
+					if (that.search() !== this.value) {
+						that
+							.search(this.value)
+							.draw();
+					}
+				});
+			});
+		});
+		// DataTables with Column Search by Select Inputs
+		document.addEventListener("DOMContentLoaded", function() {
+			$("#datatables-column-search-select-inputs").DataTable({
+				initComplete: function() {
+					this.api().columns().every(function() {
+						var column = this;
+						var select = $("<select class=\"form-control\"><option value=\"\"></option></select>")
+							.appendTo($(column.footer()).empty())
+							.on("change", function() {
+								var val = $.fn.dataTable.util.escapeRegex(
+									$(this).val()
+								);
+								column
+									.search(val ? "^" + val + "$" : "", true, false)
+									.draw();
+							});
+						column.data().unique().sort().each(function(d, j) {
+							select.append("<option value=\"" + d + "\">" + d + "</option>")
+						});
+					});
+				}
+			});
+		});
+	</script>
+	
 </body>
 
 </html>

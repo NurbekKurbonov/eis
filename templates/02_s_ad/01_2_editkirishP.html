@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="mb-3">
-    <h1 class="h3 d-inline align-middle">Yangi sahifa qo'shish{{update_date}}</h1>
+    <h1 class="h3 d-inline align-middle">Sahifani o'zgartirish{{update_date}}</h1>
     <a href="{% url 'kirishP' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
 </div>
 
@@ -13,7 +13,7 @@
     <div class="col-12 col-xl-12">
         <div class="card">            
             <div class="card-body">
-                <form action="{% url 'addkir' %}" method="post">
+                <form action="{% url 'editkir' sah.id %}" method="post">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Sarlovha</label>
@@ -22,7 +22,7 @@
                                 autofocus required="true"
                                 name="title"
                                 placeholder="Sarlavhasini kiriting"
-                                value = {{sahifa.title}}>
+                                value = {{values.title}}>
                     </div>
                     <div class="mb-3">
                         <label class="form-label"> Link</label>
@@ -31,7 +31,7 @@
                                 autofocus required="true"
                                 name="permalink"
                                 placeholder="/link"
-                                value = {{sahifa.permalink}}>
+                                value = {{values.permalink}}>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kontent</label>
@@ -40,7 +40,7 @@
                                 rows="2"
                                 autofocus required="true"
                                 name="bodytext"
-                                value={{sahifa.bodytext}}></textarea>
+                                value={{values.bodytext}}>{{values.bodytext}}</textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Icon</label>
@@ -50,11 +50,13 @@
                                 placeholder="User"
                                 autofocus required="true"
                                 name="icon"
-                                value = {{sahifa.icon}}>
+                                value = {{values.icon}}>
                             <a href="{% url 'icons' %}" class="btn btn-secondary" type="button">iconlar ro'yxati</a>
                         </div>                        
                     </div>
-                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                    <a href="{% url 'delkir' values.id %}" class="btn btn-danger " id="notyf-show">O'chirish</a>
+
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Saqlash</button>
                 </form>
             </div>
         </div>

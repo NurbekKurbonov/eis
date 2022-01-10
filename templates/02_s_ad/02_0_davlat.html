@@ -1,0 +1,58 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+{% load static %}
+
+{% block title %} {{title}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block barh1 %}active{% endblock barh1 %}
+
+{% block content %}
+<a href="{% url 'addkir' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi davlat</a>
+{% csrf_token %} {% include 'partials/_messages.html'%}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Davlatlar</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                {% if dav.count %}                
+                <table id="datatables-column-search-text-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="5%">t/r</th>
+                            <th>Kodi</th>
+                            <th>Nomi</th>
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in dav %}
+                        <tr>
+                            <td>#</td>
+                            <td>{{v.davlat_kodi}}</td>
+                            <td>{{v.davlat_nomi}}</td>
+                            <td class="table-action text-center">
+                                <a href="#"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>                                
+                            </td>                           
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>t/r</th>
+                            <th>kodi</th>
+                            <th>Nomi</th>                            
+                            
+                        </tr>
+                    </tfoot>
+                </table>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
