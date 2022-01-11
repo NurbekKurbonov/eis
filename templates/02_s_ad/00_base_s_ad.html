@@ -96,7 +96,19 @@
                             <span class="align-middle">THSHT</span>
 						</a>
 					</li>
-				</ul>
+
+					<li class="sidebar-header">
+						Resurslar bo'yicha ma'lumotlar
+					</li>		
+					
+					<li class="sidebar-item {% block barR1 %}{% endblock barR1 %}">
+						<a class="sidebar-link" href="{% url 'iftums' %}" >
+							<i class="align-middle" data-feather="thermometer"></i> 
+                            <span class="align-middle">Birliklar</span>
+						</a>
+					</li>
+				</ul>				
+
 				{% endblock sidebar-nav %}
                 <!--
 				<div class="sidebar-cta">
