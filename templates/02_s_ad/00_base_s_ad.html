@@ -52,7 +52,7 @@
 						</a>
 					</li>
 					<li class="sidebar-header">
-						Hududlar bo'yicha
+						Hududlar bo'yicha ma'lumotlar
 					</li>		
 					
 					<li class="sidebar-item {% block barh1 %}{% endblock barh1 %}">
@@ -60,7 +60,42 @@
 							<i class="align-middle" data-feather="navigation"></i> 
                             <span class="align-middle">Davlatlar</span>
 						</a>
-					</li>						
+					</li>			
+					<li class="sidebar-item {% block barh2 %}{% endblock barh2 %}">
+						<a class="sidebar-link" href="{% url 'viloyat' %}" >
+							<i class="align-middle" data-feather="navigation"></i> 
+                            <span class="align-middle">Viloyatlar</span>
+						</a>
+					</li>	
+					<li class="sidebar-item {% block barh3 %}{% endblock barh3 %}">
+						<a class="sidebar-link" href="{% url 'tuman' %}" >
+							<i class="align-middle" data-feather="navigation"></i> 
+                            <span class="align-middle">Tumanlar</span>
+						</a>
+					</li>
+					
+					<li class="sidebar-header">
+						Kodlar bo'yicha ma'lumotlar
+					</li>		
+					
+					<li class="sidebar-item {% block bark1 %}{% endblock bark1 %}">
+						<a class="sidebar-link" href="{% url 'iftums' %}" >
+							<i class="align-middle" data-feather="codepen"></i> 
+                            <span class="align-middle">IFTUM</span>
+						</a>
+					</li>
+					<li class="sidebar-item {% block bark2 %}{% endblock bark2 %}">
+						<a class="sidebar-link" href="{% url 'dbibt' %}" >
+							<i class="align-middle" data-feather="codepen"></i> 
+                            <span class="align-middle">DBIBT</span>
+						</a>
+					</li>
+					<li class="sidebar-item {% block bark3 %}{% endblock bark3 %}">
+						<a class="sidebar-link" href="{% url 'thst' %}" >
+							<i class="align-middle" data-feather="codepen"></i> 
+                            <span class="align-middle">THSHT</span>
+						</a>
+					</li>
 				</ul>
 				{% endblock sidebar-nav %}
                 <!--
@@ -248,8 +283,8 @@
 				}
 			});
 		});
+
 	</script>
-	
 </body>
 
 </html>

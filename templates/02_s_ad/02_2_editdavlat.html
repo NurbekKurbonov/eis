@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="mb-3">
-    <h1 class="h3 d-inline align-middle">Yangi davlat qo'shish{{update_date}}</h1>
+    <h1 class="h3 d-inline align-middle">Yangi values qo'shish{{update_date}}</h1>
     <a href="{% url 'davlat' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
 </div>
 
@@ -13,7 +13,7 @@
     <div class="col-12 col-xl-12">
         <div class="card">            
             <div class="card-body">
-                <form action="{% url 'adddavlat' %}" method="post">
+                <form action="{% url 'editdavlat' davlat.id %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="mb-3 col-6">
@@ -27,15 +27,16 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label"> Davlat nomi</label>
-                            <input type="text"
+                            <textarea rows="1"  type="text"
                                     class="form-control" 
                                     autofocus required="true"
                                     name="davlat_nomi"
                                     placeholder="Masalan: O'zbekiston"
-                                    value = {{values.davlat_nomi}}>
+                                    value = {{values.davlat_nomi}}>{{values.davlat_nomi}}</textarea>
                         </div>    
                     </div>                
-                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Saqlash</button>   
+                    <a href="{% url 'deldavlat' values.id %}" class="btn btn-danger " id="notyf-show">O'chirish</a>
                 </form>
             </div>
         </div>

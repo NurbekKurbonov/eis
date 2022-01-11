@@ -3,48 +3,50 @@
 
 {% block title %} {{titleown}} {% endblock title %}
 <!--BAR ACTIVE-->
-{% block barh1 %}active{% endblock barh1 %}
+{% block barh2 %}active{% endblock barh2 %}
 
 {% block content %}
-<a href="{% url 'adddavlat' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi davlat</a>
+<a href="{% url 'addviloyat' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi viloyat</a>
 {% csrf_token %} {% include 'partials/_messages.html'%}
 
 <div class="mb-3">
-    <h1 class="h3 d-inline align-middle">Davlatlar</h1>
+    <h1 class="h3 d-inline align-middle">Viloyat</h1>
 </div>
 
 <div class="row">
     <div class="col-12">
         <div class="card">            
             <div class="card-body">
-                {% if dav.count %}                
+                {% if vil.count %}                
                 <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
                     <thead>
                         <tr>
                             <th width="5%">t/r</th>
                             <th>Kodi</th>
-                            <th>Nomi</th>
+                            <th>Viloyat nomi</th>
+                            <th>Joylashgan davlat</th>
                             <th width="2%">harakat</th>                            
                         </tr>
                     </thead>
                     <tbody>
-                        {% for v in dav %}
+                        {% for v in vil %}
                         <tr>
                             <td> {{forloop.counter}}</td>
-                            <td>{{v.davlat_kodi}}</td>
-                            <td>{{v.davlat_nomi}}</td>
+                            <td>{{v.viloyat_kodi}}</td>
+                            <td>{{v.viloyat_nomi}}</td>
+                            <td>{{v.viloyat_davlati}}</td>
                             <td class="table-action text-center">
-                                <a href="{% url 'editdavlat' v.id %}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>                                
+                                <a href="{% url 'editviloyat' v.id %}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>                                
                             </td>                           
                         </tr>
                         {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>t/r</th>
-                            <th>kodi</th>
-                            <th>Nomi</th>                           
-                            
+                            <th width="5%">t/r</th>
+                            <th>Kodi</th>
+                            <th>Viloyat nomi</th>
+                            <th>Joylashgan davlat</th>
                         </tr>
                     </tfoot>
                 </table>

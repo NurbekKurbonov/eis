@@ -1,0 +1,62 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi tuman qo'shish</h1>
+    <a href="{% url 'viloyat' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'addviloyat' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="mb-3 col-4">
+                            <label class="form-label">Viloyat joylashgan davlat</label>
+                            
+                            <div class="input-group mb-3">
+                                <select class="form-select flex-grow-1"                                
+                                name="viloyat_davlati">                                    
+                                    {% for v in davlat %}
+                                    <option name="viloyat_davlati" value = {{v.davlat_nomi}}>{{v.davlat_nomi}}</option> 
+                                    {% endfor %}
+                                </select>                                
+                            </div>
+
+                            
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label class="form-label"> Viloyat kodi</label>
+                            <input type="number"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="viloyat_kodi"
+                                    placeholder="Masalan: 1"
+                                    value = {{values.viloyat_kodi}}>
+                        </div> 
+                        <div class="mb-3 col-4">
+                            <label class="form-label"> Viloyat nomi</label>
+                            <input type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="viloyat_nomi"
+                                    placeholder="Masalan: Toshkent"
+                                    value = {{values.viloyat_nomi}}>
+                        </div> 
+                    </div>                
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

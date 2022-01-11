@@ -1,0 +1,76 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi tuman qo'shish</h1>
+    <a href="{% url 'tuman' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'edittuman' tuman.id %}" id="edittuman" method="post">
+                    {% csrf_token %}
+                    <div class="row">                        
+                        <div class="mb-3 col-3">
+                            <label class="form-label">Tuman joylashgan davlat</label>
+                            
+                            <div class="input-group mb-3">
+                                <select class="form-select flex-grow-1"                                
+                                name="tuman_davlati">                                   
+                                <option selected name="viloyat_davlati" value={{values.tuman_davlati}}>{{values.tuman_davlati}}</option>    
+                                {% for v in vil %}
+                                    <option value = {{v.viloyat_davlati}}>{{v.viloyat_davlati}}</option> 
+                                    {% endfor %}
+                                </select>                                
+                            </div>
+                        </div>
+                        <div class="mb-3 col-3">
+                            <label class="form-label">Tuman joylashgan viloyat</label>
+                            
+                            <div class="input-group mb-3">
+                                <select class="form-select flex-grow-1"                                
+                                id="id_viloyat"
+                                name="tuman_viloyati">
+                                <option selected name="tuman_viloyati" value={{values.tuman_viloyati}}>{{values.tuman_davlati}}</option>                            
+                                    {% for v in vil %}
+                                    <option value = {{v.viloyat_nomi}}>{{v.viloyat_nomi}}</option> 
+                                    {% endfor %}
+                                </select>                                
+                            </div>
+                        </div>
+                        <div class="mb-3 col-2">
+                            <label class="form-label"> Tuman kodi</label>
+                            <input type="number"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tuman_kodi"
+                                    placeholder="Masalan: 1"
+                                    value = {{values.tuman_kodi}}>
+                        </div> 
+                        <div class="mb-3 col-4">
+                            <label class="form-label"> Tuman nomi</label>
+                            <textarea rows="1" type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tuman_nomi"
+                                    placeholder="Masalan: Toshkent"
+                                    value = {{values.tuman_nomi}}>{{values.tuman_nomi}}</textarea>
+                        </div> 
+                    </div>                
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                    <a href="{% url 'deltuman' values.id %}" class="btn btn-danger" id="notyf-show">O'chirish</a>
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

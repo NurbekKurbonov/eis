@@ -1,0 +1,92 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi IFTUM kodini qo`shish</h1>
+    <a href="{% url 'iftums' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'addiftums' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">                        
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">Bo'lim</label>
+                            <select
+                                class="form-control"
+                                autofocus required="true"
+                                name="bolim"
+                                value = {{values.bolim}}>
+                                {% for v in bolimlist %}
+                                <option>{{v}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">Bob</label>
+                            <input type="number"
+                                class="form-control"
+                                autofocus required="True"
+                                placeholder=""
+                                name="bob"
+                                value = {{values.bob}}>
+                        </div>
+                        
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">Guruh</label>
+                            <input type="number" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder=" "                              
+                                name="guruh"
+                                value = {{values.guruh}}>
+                        </div>                        
+
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">Sinf</label>
+                            <input type="number" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder=" "                              
+                                name="sinf"
+                                value = {{values.sinf}}>
+                        </div>
+
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">Tartibi</label>
+                            <input type="number" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder=" "                              
+                                name="tartib"
+                                value = {{values.tartib}}>
+                        </div>
+                        
+                        <div class="mb-3 col-md-9">
+                            <label class="form-label" for="">Nomi</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = " "                              
+                                name = "nomi"
+                                value = {{values.nomi}}>
+                        </div>
+                    </div>                
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}
