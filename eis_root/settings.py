@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'kirish','s_ad',
+    'kirish','s_ad', 'foydalanuvchi',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

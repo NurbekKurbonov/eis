@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 #Hududlarb bo'yicha ma'lumotlar**************************
 
 class davlatlar(models.Model):
-    davlat_kodi = models.IntegerField('Davlat kodi')
-    davlat_nomi = models.TextField('Davlat nomi')
+    davlat_kodi = models.IntegerField('Davlat kodi', unique=True)
+    davlat_nomi = models.TextField('Davlat nomi', unique=True)
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
@@ -18,7 +18,7 @@ class davlatlar(models.Model):
         
 class viloyatlar(models.Model):
     viloyat_davlati = models.CharField('Viloyat davlati', max_length=50)
-    viloyat_kodi = models.IntegerField('Viloyat kodi')
+    viloyat_kodi = models.FloatField('Tuman kodi')
     viloyat_nomi = models.CharField('Viloyat nomi', max_length=100)
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)

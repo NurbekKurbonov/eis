@@ -21,14 +21,15 @@
                             
                             <div class="input-group mb-3">
                                 <select class="form-select flex-grow-1"                                
-                                name="tuman_davlati">                                   
-                                <option selected name="viloyat_davlati" value={{values.tuman_davlati}}>{{values.tuman_davlati}}</option>    
+                                name="viloyat_davlati">                                   
+                                <option selected name="viloyat_davlati">{{values.tuman_davlati}}</option>    
                                 {% for v in vil %}
                                     <option value = {{v.viloyat_davlati}}>{{v.viloyat_davlati}}</option> 
                                     {% endfor %}
                                 </select>                                
                             </div>
                         </div>
+
                         <div class="mb-3 col-3">
                             <label class="form-label">Tuman joylashgan viloyat</label>
                             
@@ -36,7 +37,7 @@
                                 <select class="form-select flex-grow-1"                                
                                 id="id_viloyat"
                                 name="tuman_viloyati">
-                                <option selected name="tuman_viloyati" value={{values.tuman_viloyati}}>{{values.tuman_davlati}}</option>                            
+                                <option selected name="tuman_viloyati" value={{values.tuman_viloyati}}>{{values.tuman_viloyati}}</option>                            
                                     {% for v in vil %}
                                     <option value = {{v.viloyat_nomi}}>{{v.viloyat_nomi}}</option> 
                                     {% endfor %}

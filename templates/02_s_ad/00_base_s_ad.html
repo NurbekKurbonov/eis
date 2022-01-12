@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 		
 	<link href="{% static 'css/light.css'%}" rel="stylesheet">
-	
+	<script src="{% static 'js/settings.js'%}"></script>
 </head>
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
@@ -33,13 +33,27 @@
 					</span>
 					<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
 						stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
-						<path d="M12 4L20 8.00004L12 12L4 8.00004L12 4Z"></path>
-						<path d="M20 12L12 16L4 12"></path>
-						<path d="M20 16L12 20L4 16"></path>
+						<defs>
+							<radialGradient id="RadialGrad"
+									  fx="50%" fy="50%" r="65%"
+									  spreadMethod="pad">
+									 <stop offset="50%"   stop-color="#E7D68C" stop-opacity="1"/>
+									 <stop offset="50%" stop-color="#FFFEED" stop-opacity="1" />
+								   </radialGradient>
+						   
+						   </defs>						   
+						   <g transform="rotate(-10 16 16)">
+						   <circle cx="12" cy="12" r="6" stroke="none"  fill="url(#RadialGrad)" />
+						   
+							<circle cx="12" cy="12" r="6" stroke="none" fill="black" >
+							
+							<animate id="youngMoon" attributeName="cx" values="12;-12;" begin="1s;oldMoon.end+1s" dur="10s" fill="freeze" />
+						    <animate id="oldMoon" attributeName="cx" values="30;10;" begin="youngMoon.end+1s" dur="10s"  fill="freeze" />
+						   </circle> 
+						   </g>
 					</svg>
 				</a>
-				<!-- Sahifalar bo'limi-->
-				{% block sidebar-nav %}
+				<!-- Sahifalar bo'limi-->				
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
 						Aktiv sahifalar
@@ -113,22 +127,41 @@
                             <span class="align-middle">Resurslar</span>
 						</a>
 					</li>
-				</ul>				
 
-				{% endblock sidebar-nav %}
-                <!--
+					<li class="sidebar-header">
+						Foydalanuvchilar bo'yicha ma'lumotlar
+					</li>
+					<li class="sidebar-item active">
+						<a data-bs-target="#faqirlar" data-bs-toggle="collapse" class="sidebar-link">
+							<i class="align-middle" data-feather="crosshair"></i> <span class="align-middle">III foydalanuvchilar</span>
+						</a>
+						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block bar3f1 %}{% endblock bar3f1 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Sozlamalar</a></li>							
+						</ul>
+						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block bar3f2 %}{% endblock bar3f2 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Kiritish</a></li>							
+						</ul>
+						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block bar3f3 %}{% endblock bar3f3 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Ma`lumotlarni taqdim etish</a></li>							
+						</ul>
+						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block bar3f4 %}{% endblock bar3f4 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Natija</a></li>							
+						</ul>
+					</li>
+					
+				</ul>
+               
 				<div class="sidebar-cta">
 					<div class="sidebar-cta-content">
-						<strong class="d-inline-block mb-2">NurbekKurbonov</strong>
+						<strong class="d-inline-block mb-2">Qo`shimcha funksyalar qo'shish</strong>
 						<div class="mb-3 text-sm">
 							Barcha huquqlar himoyalangan
 						</div>
-
 						<div class="d-grid">
-							<a href="#" class="btn btn-outline-primary" target="_blank">Download</a>
+							<a href="https://t.me/pro_fmi" class="btn btn-outline-primary" target="_blank">O`tish</a>
 						</div>
 					</div>
-				</div>-->
+				</div>
 			</div>
 		</nav>
 		<!--navbar shu yerda tugadi-->

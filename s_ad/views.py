@@ -280,8 +280,8 @@ def edittuman(request, id):
         
         tuman.owner=request.user
         tuman.tuman_davlati=tuman_davlati
-        tuman.tuman_viloyati = tuman_viloyati, 
-        tuman.tuman_kodi = tuman_kodi, 
+        tuman.tuman_viloyati = tuman_viloyati
+        tuman.tuman_kodi = tuman_kodi 
         tuman.tuman_nomi = tuman_nomi
         
         
