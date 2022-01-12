@@ -1,0 +1,60 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi THSHT kodini qo`shish</h1>
+    <a href="{% url 'birlik' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'editbirlik' b.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">                                                 
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label" for="">Birlik</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder=" "                              
+                                name="birlik"
+                                value = {{values.birlik}}>
+                        </div>                        
+
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label" for="">Birlik asosi</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder=" "                              
+                                name="asos"
+                                value = {{values.asos}}>
+                        </div>
+                        
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label" for="">Birlik va uning asosi orasidagi farq</label>
+                            <input type="number" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = " "                              
+                                name = "farq"
+                                value = {{values.farq}}>
+                        </div>
+                    </div>                
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Saqlash</button>                    
+                    <a href="{% url 'delbirlik' values.id %}" class="btn btn-danger" id="notyf-show">O'chirish</a>
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

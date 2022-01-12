@@ -46,4 +46,16 @@ urlpatterns = [
     path('addthst', views.addthst, name='addthst'),
     path('editthst/<int:id>', views.editthst, name='editthst'),
     path('delthst/<int:id>', views.delthst, name='delthst'), 
+    
+    #*******Birliklar*********************************************
+    path('birlik', views.birlik, name='birlik'),
+    path('addbirlik', views.addbirlik, name='addbirlik'),
+    path('editbirlik/<int:id>', views.editbirlik, name='editbirlik'),
+    path('delbirlik/<int:id>', views.delbirlik, name='delbirlik'), 
+    
+    #*******Resurs*********************************************
+    path('resurs', views.resurs, name='resurs'),
+    path('addresurs', views.addresurs, name='addresurs'),
+    path('editresurs/<int:id>', views.editresurs, name='editresurs'),
+    path('delresurs/<int:id>', views.delresurs, name='delresurs'), 
 ]

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST
+from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar
+
 
 
 class davAdmin(admin.ModelAdmin):
@@ -43,3 +44,17 @@ class THSTAdmin(admin.ModelAdmin):
     search_files = ('bolim','tur', 'nomi')    
     
 admin.site.register(THST, THSTAdmin)
+
+class birlikAdmin(admin.ModelAdmin):
+    list_display = ('birlik', 'asos', 'farq')
+    ordering = ('birlik', 'asos', 'farq')
+    search_files = ('birlik', 'asos', 'farq')   
+    
+admin.site.register(birliklar, birlikAdmin)
+
+class resursAdmin(admin.ModelAdmin):
+    list_display = ('nomi', 'birlik')
+    ordering = ('nomi', 'birlik')
+    search_files = ('nomi', 'birlik')  
+    
+admin.site.register(resurslar, resursAdmin)

@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
-from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST
+from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar
 
 
 def icons(request):
@@ -497,3 +497,128 @@ def delthst(request, id):
     yoqol.delete()
     messages.success(request, 'THSHT kodi muvofaqqiyatli o`chirildi')
     return redirect('thst')
+
+#Birliklar ******************************************************************
+
+def birlik(request):
+    values = birliklar.objects.all()
+    context = {
+        'values': values,
+        'titleown': 'Birliklar kiritish'
+    }
+    return render(request, '02_s_ad/08_0_birlik.html', context)
+
+def addbirlik(request):    
+    
+    context = { 
+        'values': request.POST,
+        
+        'titleown':'Birlik qo`shish'               
+    }
+    
+    if request.method == 'GET':
+        return render(request, '02_s_ad/08_1_addbirlik.html', context)
+            
+    if request.method == 'POST':  
+        birlik = request.POST['birlik']
+        asos = request.POST['asos']
+        farq = request.POST['farq'] 
+
+        birliklar.objects.create(owner=request.user, birlik=birlik, asos=asos, farq=farq)
+        messages.success(request, 'Yangi birlik muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        return redirect('birlik')
+
+def editbirlik(request, id):
+    b = birliklar.objects.get(pk=id)
+    context = {          
+        'b': b,        
+        'values': b
+    }    
+    
+    if request.method == 'GET':  
+        return render(request, '02_s_ad/08_2_editbirlik.html', context)
+    
+    if request.method == 'POST':  
+        birlik = request.POST['birlik']
+        asos = request.POST['asos']
+        farq = request.POST['farq'] 
+        
+        b.birlik =birlik 
+        b.asos =asos 
+        b.farq =farq
+        
+        b.owner=request.user
+        
+        b.save()
+        messages.success(request, 'Birlik muvofaqqiyatli yangilandi!')
+        
+        return redirect('birlik')
+
+def delbirlik(request, id):
+    yoqol = birliklar.objects.get(pk=id)
+    yoqol.delete()
+    messages.success(request, 'Birlik muvofaqqiyatli o`chirildi')
+    return redirect('birlik')
+
+#Resurs ******************************************************************
+def resurs(request):
+    values = resurslar.objects.all()
+    context = {
+        'values': values,
+        'titleown': 'Resurslar'
+    }
+    return render(request, '02_s_ad/09_0_resurs.html', context)
+
+def addresurs(request):
+    birlik=birliklar.objects.all()
+    context = {             
+        'birlik':birlik,
+        'values': request.POST,
+        
+        'titleown': 'Resurs qo`shish'
+    }
+    if request.method == 'GET':
+        return render(request, '02_s_ad/09_1_addresurs 2.html', context)
+            
+    if request.method == 'POST':           
+        
+        nomi = request.POST['nomi']
+        birlik = request.POST['birlik'] 
+
+        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birlik)
+        messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        return redirect('resurs')
+
+def editresurs(request, id):     
+    r = resurslar.objects.get(pk=id)
+    birlik=birliklar.objects.all()
+    
+    context = {          
+        'birlik': birlik,
+        'r': r,        
+        'values': r,
+        'titleown': 'Resursni yangilash'
+    } 
+    
+    if request.method == 'GET':  
+        return render(request, '02_s_ad/09_2_editresurs.html', context)
+    
+    if request.method == 'POST':  
+        nomi = request.POST['nomi']
+        birlik = request.POST['nomi'] 
+        
+        r.nomi =nomi 
+        r.birlik =birlik 
+        
+        r.owner=request.user
+        
+        r.save()
+        messages.success(request, 'Kattalik muvofaqqiyatli yangilandi!')
+        
+        return redirect('kattalik')
+    
+def delresurs(request, id):
+    yoqol = resurslar.objects.get(pk=id)
+    yoqol.delete()
+    messages.success(request, 'Resurs muvofaqqiyatli o`chirildi')
+    return redirect('resurs')
