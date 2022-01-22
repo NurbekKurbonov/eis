@@ -1,0 +1,48 @@
+<script>
+						$(".answer").hide();
+						$(".answer1").hide();
+
+						$(".coupon_question").click(function() {
+							if($(this).is(":checked")) {
+								$(".answer").show();				
+								var g = document.getElementById("check1").disabled = true;
+							} else {
+								$(".answer").hide();
+								var g = document.getElementById("check1").disabled = false;
+							}			
+						});		
+						$(".coupon_question1").click(function() {
+							if($(this).is(":checked")) {
+								var g = document.getElementById("check").disabled = true;
+								$(".answer1").show();
+							} else {								
+								var g = document.getElementById("check").disabled = false;
+								$(".answer1").hide();
+							}			
+						});
+				
+						$('#irm').change(function() {
+							if($(this).val() > 0 ) {
+								$(".answer1").show();
+								var g = document.getElementById("check").disabled = true;				
+							}
+							else{
+								$(".answer1").hide();
+								var g = document.getElementById("check").disabled = false;
+							}
+							
+						});
+						$('#iqe').change(function() {
+							if($(this).val() > 0 ) {
+								$(".answer1").show();
+								var g = document.getElementById("check").disabled = true;				
+							}
+							else{
+								$(".answer1").hide();
+								var g = document.getElementById("check").disabled = false;
+							}
+							
+						});
+				
+								
+					</script>

@@ -6,18 +6,19 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="EIS sistemasi &amp; Energetik resurslarni ishlab chiqarishdan iste'mol qilishgacha bo'lgan hisoblarni amalga oshiradi">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
 	<meta name="author" content="NurbekKurbonov">
 	<meta name="keywords" content="NurbekKurbonov, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="shortcut icon" href="{% static 'img/icons/icon-48x48.png' %}" />
-	
+	<link rel="shortcut icon" href="{% static 'img/icons/icon-48x48.png' %}"/>
+
+	<link rel="canonical" href="https://demo.NurbekKurbonov.io/pages-settings.html" />
+
 	<title> EIS | {% block title %}{% endblock title %}</title>
 
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-		
+	
 	<link href="{% static 'css/light.css'%}" rel="stylesheet">
 	<script src="{% static 'js/settings.js'%}"></script>
 </head>
@@ -130,30 +131,23 @@
 
 					<li class="sidebar-header">
 						Foydalanuvchilar bo'yicha ma'lumotlar
-					</li>
-					<li class="sidebar-item active">
-						<a data-bs-target="#faqirlar" data-bs-toggle="collapse" class="sidebar-link">
+					</li>					
+
+					<li class="sidebar-item {% block bar2 %}{% endblock bar2 %}">
+						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="crosshair"></i> <span class="align-middle">III foydalanuvchilar</span>
 						</a>
-						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block bar3f1 %}{% endblock bar3f1 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Sozlamalar</a></li>							
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show %}{% endblock show %}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block bar3f1 %}{% endblock bar3f1 %}"><a class="sidebar-link" href="{% url 'usersozlama' %}">Sozlamalar</a></li>							
 						</ul>
-						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block bar3f2 %}{% endblock bar3f2 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Kiritish</a></li>							
-						</ul>
-						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block bar3f3 %}{% endblock bar3f3 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Ma`lumotlarni taqdim etish</a></li>							
-						</ul>
-						<ul id="faqirlar" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block bar3f4 %}{% endblock bar3f4 %}"><a class="sidebar-link" href="forms-basic-inputs.html">Natija</a></li>							
-						</ul>
+
 					</li>
 					
 				</ul>
                
 				<div class="sidebar-cta">
 					<div class="sidebar-cta-content">
-						<strong class="d-inline-block mb-2">Qo`shimcha funksyalar qo'shish</strong>
+						<strong class="d-inline-block mb-2">Qo`shimcha funksiyalar qo'shish</strong>
 						<div class="mb-3 text-sm">
 							Barcha huquqlar himoyalangan
 						</div>
@@ -163,6 +157,7 @@
 					</div>
 				</div>
 			</div>
+		
 		</nav>
 		<!--navbar shu yerda tugadi-->
 
@@ -285,32 +280,14 @@
 		</div>
 	</div>
 
+
 	<script src="{% static 'js/app.js'%}"></script>
+	
 	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 	<script src="{% static 'js/datatables.js'%}"></script>
 
 	<script>
-		// DataTables with Column Search by Text Inputs
-		document.addEventListener("DOMContentLoaded", function() {
-			// Setup - add a text input to each footer cell
-			$("#datatables-column-search-text-inputs tfoot th").each(function() {
-				var title = $(this).text();
-				$(this).html("<input type=\"text\" class=\"form-control\" placeholder=\"Izlash " + title + "\" />");
-			});
-			// DataTables
-			var table = $("#datatables-column-search-text-inputs").DataTable();
-			// Apply the search
-			table.columns().every(function() {
-				var that = this;
-				$("input", this.footer()).on("keyup change clear", function() {
-					if (that.search() !== this.value) {
-						that
-							.search(this.value)
-							.draw();
-					}
-				});
-			});
-		});
+		
 		// DataTables with Column Search by Select Inputs
 		document.addEventListener("DOMContentLoaded", function() {
 			$("#datatables-column-search-select-inputs").DataTable({
@@ -336,6 +313,8 @@
 		});
 
 	</script>
+
+	
 </body>
 
 </html>

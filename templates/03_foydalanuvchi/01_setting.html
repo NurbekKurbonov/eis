@@ -1,0 +1,104 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+<button class="btn btn-secondary" type="button">Go!</button>
+{% block title %}{{titleown}}{% endblock title %}
+{% block bar1 %}active{% endblock bar1 %}
+
+{% block content %}
+<h1 class="h3 mb-3">Sozlamalar</h1>
+<div class="row">
+<div class="col-md-3 col-xl-2">
+
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title mb-0">Sozlamalar menyusi</h5>
+		</div>
+		<!--Settinng's navbar-->	
+		<div class="list-group list-group-flush" role="tablist">			
+			{% include '03_foydalanuvchi/_setmentu.html' %}								
+		</div>
+	</div>
+</div>	
+
+<div class="col-12 col-lg-10">
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title">{{titleown}}</h5>			
+			<!-- <h6 class="card-subtitle text-muted"><a href="#">Foydalanish tartibi </a></h6> -->
+			<button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Yangi resurs</a></button>
+		</div>
+		<div class="card-body text-center">
+				<table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>t/r</th> 
+                            <th>Energiya resursi turi</th>                            
+                            <th>O'lchov birligi</th> 
+                            
+                            <th width="2%"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in ich %}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td>{{v.nom}}</td>     
+                        <td>{{v.birlik}}</td>  
+                        <td class="table-action text-center">
+                            <a href="#"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a> 
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>Resurs nomi</th>                            
+                        <th>Resurs o`lchanadigan birlik</th> 
+                    </tr>
+                    </tfoot>
+                    </table>
+					<a href="{% url 'mich'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+					
+				
+			<!-- *****************************offcanvas boshlandi*******************************************************************-->
+			<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+				aria-labelledby="offcanvasWithBothOptionsLabel" >
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel" style="color: blue">{{titleown}}ni kiritish</h5>
+					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<form action="{% url 'add' %}" method="post">
+						{% csrf_token %}
+						<div class="row">
+							
+							<div class="mb-3 col-md-12">
+								<label class="form-label" for="">Resurs nomi</label>
+								<select class="form-select flex-grow-1"                                
+								name="nom">                                    
+									{% for v in resurs %}
+									<option name="nom" value ="{{v.nomi}}">{{v.nomi}} // {{v.birlik}}</option> 									
+									{% endfor %}
+								</select>																				
+							</div>
+							<div class="mb-3 col-md-12">		
+								{{sotform.as_table}}
+							</div>
+							<input type="number" name="sahifanomi" value="{{pageid}}" hidden/>
+						</div>
+						<button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+					
+{% endblock scripts %}

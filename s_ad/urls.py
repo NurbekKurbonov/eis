@@ -58,4 +58,8 @@ urlpatterns = [
     path('addresurs', views.addresurs, name='addresurs'),
     path('editresurs/<int:id>', views.editresurs, name='editresurs'),
     path('delresurs/<int:id>', views.delresurs, name='delresurs'), 
+    
+    #******Foydalanuvchi sozlama****************************
+    path('usersozlama', views.usersozlama, name='usersozlama'),
+    
 ]

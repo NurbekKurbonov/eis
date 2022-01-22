@@ -1,0 +1,132 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Hisobot nomi</h5>
+                <h6 class="card-subtitle text-muted">Sanasi</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart w-100">
+                    <div id="apexcharts-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                <h4 style="color:blue"><B>___________</B></h4>
+                <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Resurs qo'shish</a></button>
+                <table class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th class="d-none d-md-table-cell">Resurs nomi</th>
+                            <th class="d-none d-md-table-cell"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his_res%}
+                        <tr>
+                            <td> {{forloop.counter}}</td>
+                            <td class="d-none d-md-table-cell">{{v.resurs}}</td>
+
+                            <td class="d-none d-md-table-cell"><a href={% url 'delhis' v.id %}><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                   
+                </table>
+           
+            </div>
+        </div>
+    </div>
+    
+    
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // Line chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "line",
+                zoom: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: [5, 7, 5],
+                curve: "straight",
+                dashArray: [0, 8, 5]
+            },
+            series: [                                
+                {% for v in h_baza %}
+                {
+                    name: "{{v.title}}",
+                    data: ['{{v.qiymat_pul}}', 3]
+                },{% endfor %}
+                
+            ],
+            markers: {
+                size: 0,
+                style: "hollow", // full, hollow, inverted
+            },
+            xaxis: {
+                categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"],
+            },
+            tooltip: {
+                y: [{
+                    title: {
+                        formatter: function(val) {
+                            return val + " (mins)"
+                        }
+                    }
+                }, {
+                    title: {
+                        formatter: function(val) {
+                            return val + " per session"
+                        }
+                    }
+                }, {
+                    title: {
+                        formatter: function(val) {
+                            return val;
+                        }
+                    }
+                }]
+            },
+            grid: {
+                borderColor: "#f1f1f1",
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-line"),
+            options
+        );
+        chart.render();
+    });
+</script>
+
+{% endblock scripts %}

@@ -8,13 +8,13 @@
     <h1 class="h3 d-inline align-middle">Yangi sahifa qo'shish{{update_date}}</h1>
     <a href="{% url 'kirishP' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
 </div>
-
+<form action="{% url 'addkir' %}" method="post">
+                    {% csrf_token %}
 <div class="row">
     <div class="col-12 col-xl-12">
         <div class="card">            
             <div class="card-body">
-                <form action="{% url 'addkir' %}" method="post">
-                    {% csrf_token %}
+                
                     <div class="mb-3">
                         <label class="form-label">Sarlovha</label>
                         <input type="text"
@@ -55,13 +55,11 @@
                         </div>                        
                     </div>
                     <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
-                </form>
+                
             </div>
         </div>
     </div>  
-    
-
-    
 </div>
+</form>
 
 {% endblock content %}

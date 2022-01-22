@@ -1,0 +1,122 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+<button class="btn btn-secondary" type="button">Go!</button>
+{% block title %}{{titleown}}{% endblock title %}
+{% block bar1 %}active{% endblock bar1 %}
+
+{% block content %}
+<h1 class="h3 mb-3">Sozlamalar</h1>
+<div class="row">
+<div class="col-md-3 col-xl-2">
+
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title mb-0">Sozlamalar menyusi</h5>
+		</div>
+		<!--Settinng's navbar-->	
+		<div class="list-group list-group-flush" role="tablist">			
+			{% include '03_foydalanuvchi/_setmentu.html' %}								
+		</div>
+	</div>
+</div>	
+
+<div class="col-12 col-lg-10">
+	<div class="card">
+		<div class="card-header">
+
+			<h5 class="card-title mb-0">Korxona haqida ma'lumotlar</h5>
+		</div>
+		<div class="card-body">
+			<form action="{% url 'asosiyset' hammasi.id%}" method="post">
+				{% csrf_token %}
+				
+				<div class="row">
+					<div class="col-md-7">
+						<div class="mb-3">
+							<label class="form-label" for="inputUsername">Korxonaning to'liq nomi</label>
+							<input type="text" name="nomi" class="form-control" id="inputUsername" placeholder="Korxona nomi" value="{{hammasi.nomi}}">
+						</div>
+						<div class="mb-3">
+							<label class="form-label" for="inputUsername">Korxona haqida qisqacha</label>
+							<textarea rows="2" name="about" class="form-control" id="inputBio"
+								placeholder="Korxona haqida qisqacha tavsilot yozing" value="{{hammasi.about}}">{{hammasi.about}}</textarea>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="text-center">
+							<img alt="EMBLEMA" src="{{hammasi.emblem.url}}" class="rounded-circle img-responsive mt-2"
+								width="128" height="128" />
+							<div class="mt-2">
+								<label for="id_emblem" class="btn btn-primary"> <i class="fas fa-upload">Emblemani yuklash</i></label>
+								<input type="file" id="id_emblem" name="emblem" accept="image/*" hidden>
+							</div>
+							<small>128px x 128px .jpg formatdagi emblemani yuklang</small>
+						</div>
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary">O'zgarishlarni saqlash</button>
+			</form>
+			
+		</div>
+	</div>
+<!--
+	<div class="card">
+		<div class="card-header">
+
+			<h5 class="card-title mb-0">Private info</h5>
+		</div>
+		<div class="card-body">
+			<form>
+				<div class="row">
+					<div class="mb-3 col-md-6">
+						<label class="form-label" for="inputFirstName">First name</label>
+						<input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+					</div>
+					<div class="mb-3 col-md-6">
+						<label class="form-label" for="inputLastName">Last name</label>
+						<input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+					</div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="inputEmail4">Email</label>
+					<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="inputAddress">Address</label>
+					<input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="inputAddress2">Address 2</label>
+					<input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+				</div>
+				<div class="row">
+					<div class="mb-3 col-md-6">
+						<label class="form-label" for="inputCity">City</label>
+						<input type="text" class="form-control" id="inputCity">
+					</div>
+					<div class="mb-3 col-md-4">
+						<label class="form-label" for="inputState">State</label>
+						<select id="inputState" class="form-control">
+							<option selected>Choose...</option>
+							<option>...</option>
+						</select>
+					</div>
+					<div class="mb-3 col-md-2">
+						<label class="form-label" for="inputZip">Zip</label>
+						<input type="text" class="form-control" id="inputZip">
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Save changes</button>
+			</form>
+
+		</div>
+	</div>
+	-->
+</div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

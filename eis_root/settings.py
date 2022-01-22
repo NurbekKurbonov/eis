@@ -30,7 +30,20 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
+MONTH = [
+    (1,'Yanvar'),
+    (2,'Fevral'),
+    (3,'Mart'),
+    (4,'Aprel'),
+    (5,'May'),
+    (6,'Iyun'),
+    (7,'Iyul'),
+    (8,'Avgust'),
+    (9,'Sentyabr'),
+    (10,'Oktyabr'),
+    (11,'Noyabr'),
+    (12,'Dekabr'),
+]
 INSTALLED_APPS = [
     'kirish','s_ad', 'foydalanuvchi',
     'django.contrib.admin',
@@ -39,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -126,7 +140,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'eis_root/media')
 
 MEDIA_URL = '/media/'
 

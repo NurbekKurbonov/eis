@@ -104,13 +104,14 @@ class birliklar(models.Model):
         verbose_name_plural = '07_Birliklar'
 
 class resurslar(models.Model):
-    nomi = models.CharField('Resurs nomi', max_length=50)
+    nomi = models.TextField('Resurs nomi')
     birlik = models.CharField('Resurs birligi', max_length=20)    
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.nomi
+        return f"{self.nomi} : {self.birlik}"
     
     class Meta:
         verbose_name_plural = '08_Resurslar'
+

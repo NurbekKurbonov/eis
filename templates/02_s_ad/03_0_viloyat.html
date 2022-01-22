@@ -39,7 +39,7 @@
                                 <a href="{% url 'editviloyat' v.id %}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>                                
                             </td>                           
                         </tr>
-                        {% endfor %}
+                        {% endfor %}                        
                     </tbody>
                     <tfoot>
                         <tr>
@@ -47,9 +47,10 @@
                             <th>Kodi</th>
                             <th>Viloyat nomi</th>
                             <th>Joylashgan davlat</th>
-                        </tr>
-                    </tfoot>
+                        </tr>                        
+                    </tfoot>                    
                 </table>
+                <a href="{% url 'viloyat'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
                 {% endif %}
                 
             </div>

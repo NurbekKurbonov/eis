@@ -9,7 +9,6 @@ from django.core.paginator import Paginator
 
 from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar
 
-
 def icons(request):
     return render(request, 'partials/01_icons.html')
 #kirish qismini to'ldirish *********************************
@@ -587,7 +586,7 @@ def addresurs(request):
 
         resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birlik)
         messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
-        return redirect('resurs')
+        return redirect('resurs') 
 
 def editresurs(request, id):     
     r = resurslar.objects.get(pk=id)
@@ -622,3 +621,9 @@ def delresurs(request, id):
     yoqol.delete()
     messages.success(request, 'Resurs muvofaqqiyatli o`chirildi')
     return redirect('resurs')
+
+#************______Foydalanuvchilar bo'yicha ma'lumotlar________________*********
+
+def usersozlama(request):
+    
+    return render(request, '02_s_ad/10_1_sozlamalar.html')

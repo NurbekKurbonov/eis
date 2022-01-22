@@ -1,0 +1,89 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block show1 %}show{% endblock show1 %}
+{% block active1 %}active{% endblock active1 %}
+{% block bar3 %}active{% endblock bar3 %}
+
+{% block content %}
+{% if not values.count %}
+<a href="{% url 'ist'%}" class="btn btn-primary float-end mt-n1" id="notyf-show" style="width:50%"> Iltimos ma'lumotlarni qo'shing!</a>
+{%endif%}
+{% if values.count %}
+<a href="{% url 'addhisobot' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Hisobot tayyorlash</a>
+{%endif%}
+
+{% csrf_token %} 
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+{% if values.count %}              
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>Hisobot nomi</th>                            
+                            <th>Sana</th> 
+                            <th>Yil</th> 
+                                                        
+                            <th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                            <th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-download"></i></th> 
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td>{{v.nomi}}</td>     
+                        <td>{{v.vaqt|date:"d-m-Y"}}</td>  
+                        <td>{{v.vaqt|date:"Y"}}</td>  
+                        <td class="table-action text-center">
+                            <a href="http://eis-last.herokuapp.com/ges/ges_result_periodical" class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
+                        </td> 
+                        <td class="table-action text-center">
+                            <a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-excel"></i></a> 
+                            <a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-pdf"></i></a> 
+                            <a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-word"></i></a> 
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>T/r</th>                            
+                            <th>Hisobot nomi</th>                            
+                            <th>Sana</th> 
+                            <th>Yil</th> 
+                    </tr>
+                    </tfoot>
+                    </table>
+               
+                <a href="{% url 'davr'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+{%endif%}
+
+{% if not values.count %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert-message">
+        <strong>Assalomu aleykum hurmatli foydallanuvchi!</strong> 
+        Hurmatli foydalanuvchi ushbu sahifa ishlashi uchun dastavval siz ishlab chiqaradigan/iste'mol qiladigan/sotadigan
+energiya resurs/nahsulot laringizni biriktirishingiz lozim!
+    </div>
+</div>
+{%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

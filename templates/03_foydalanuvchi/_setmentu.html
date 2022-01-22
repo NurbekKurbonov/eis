@@ -1,0 +1,18 @@
+
+<a class="list-group-item list-group-item-action {{active0}}" href="{% url 'asosiyset' hammasi.id %}">
+    Asosiy
+</a>
+
+{% if mich is 1 %}
+<a class="list-group-item list-group-item-action {{active1}}" href="{% url 'mich' %}">
+    Ishlab chiqarish
+</a>
+{% endif %}
+<a class="list-group-item list-group-item-action {{active2}}" href="{% url 'ist' %}" >
+    Iste'mol qilish
+</a>
+{% if uzat is 1 %}	
+<a class="list-group-item list-group-item-action {{active3}}" href="{% url 'sot' %}" >
+    Uzatish/sotish
+</a>
+{% endif %}
