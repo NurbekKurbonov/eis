@@ -32,20 +32,39 @@
                 <table class="table table-striped " style="width:100%">
                     <thead>
                         <tr>
-                            <th>T/r</th>                            
-                            <th class="d-none d-md-table-cell">Resurs nomi</th>
-                            <th class="d-none d-md-table-cell"></th>
+                            <th>T/r</th>
+                            <th>sana</th>
+                            {% for v in obj %}                          
+                            <th class="d-none d-md-table-cell">{{v}}</th>
+                            {% endfor %}                              
+
                         </tr>
                         </thead>
                         <tbody>
-                    {% for v in his_res%}
-                        <tr>
-                            <td> {{forloop.counter}}</td>
-                            <td class="d-none d-md-table-cell">{{v.resurs}}</td>
 
-                            <td class="d-none d-md-table-cell"><a href={% url 'delhis' v.id %}><i class="align-middle me-1" data-feather="trash-2"></i></td>
-                        </tr>
-                    {% endfor %}
+                            <td class="d-none d-md-table-cell">                            
+                                {% for v in hisobotlar%}                        
+                                    <tr>{{forloop.counter}}</tr>
+                                {% endfor %}
+                            </td>
+
+                            {% for key, value in obj.items%} 
+                            <td class="d-none d-md-table-cell">                                
+                                {% for v in value %}                    
+                                    <tr>{{v}}</tr>
+                                {% endfor %}
+                            </td>
+                            {% endfor %}
+
+                        
+                        <tfoot>
+                            <tr>
+                                <th>T/r</th>
+                                {% for v in obj %}                          
+                                <th class="d-none d-md-table-cell">{{v}}</th>
+                                {% endfor %} 
+                            </tr>
+                        </tfoot>
                     </tbody>
                    
                 </table>
@@ -92,20 +111,20 @@
                 size: 0,
                 style: "hollow", // full, hollow, inverted
             },
-            xaxis: {
-                categories: [{% for v in resurs %}"{{v.nom}}",{% endfor %}],
+            yaxis: {
+                categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
             },
             tooltip: {
                 y: [{
                     title: {
                         formatter: function(val) {
-                            return val + " (mins)"
+                            return val + " "
                         }
                     }
                 }, {
                     title: {
                         formatter: function(val) {
-                            return val + " per session"
+                            return val + " "
                         }
                     }
                 }, {

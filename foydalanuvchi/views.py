@@ -468,9 +468,9 @@ def delhis(request, id):
     return redirect('addhisobot')
 
 ##########################################################################
-def result_his(request):   
+def result_his(request,id):   
      
-    his=hisobot_full.objects.get(pk=18)
+    his=hisobot_full.objects.get(pk=id)
     
     hisobotlar=his.hisobotlar.all()
     
@@ -499,11 +499,13 @@ def result_his(request):
                
     
     
-        
+    titleown=his.nomi +' // '+his.oraliq_min+' dan '+his.oraliq_max+' gacha'
+            
     context={
         'his':his,
         'res':res,
         'hisobotlar':hisobotlar ,
-        'obj':obj
+        'obj':obj,
+        'titleown':titleown
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)

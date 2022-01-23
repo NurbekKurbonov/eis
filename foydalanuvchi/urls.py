@@ -21,6 +21,7 @@ urlpatterns = [
     path('addichresforhis', views.addichresforhis, name='addichresforhis'),
     
     path('delhis/<int:id>', views.delhis, name='delhis'),
-    path('result_his', views.result_his, name='result_his'),
+    
+    path('result_his/<int:id>', views.result_his, name='result_his'),
     #path('checkdavr/<int:id>', views.checkdavr, name='checkdavr'),
 ]

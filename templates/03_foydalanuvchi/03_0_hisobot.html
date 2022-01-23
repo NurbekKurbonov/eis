@@ -47,7 +47,7 @@
                         <td>{{v.vaqt|date:"d-m-Y"}}</td>  
                         <td>{{v.vaqt|date:"Y"}}</td>  
                         <td class="table-action text-center">
-                            <a href="http://eis-last.herokuapp.com/ges/ges_result_periodical" class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
+                            <a href="{% url 'result_his' v.id %}" class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
                         </td> 
                         <td class="table-action text-center">
                             <a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-excel"></i></a> 
