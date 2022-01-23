@@ -144,6 +144,7 @@ class hisobot_full(models.Model):
     
     oraliq_min=models.CharField("Maksimal oraliq", max_length=50)
     oraliq_max=models.CharField("Minimal oraliq", max_length=50)
+    resurs=models.TextField("Resurslar",)
     
     vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
     
@@ -159,30 +160,3 @@ class hisobot_full(models.Model):
     def get_absolute_url(self):
         return reverse("hisobot_full_detail", kwargs={"pk": self.pk})
     
-class newclass(models.Model):
-    name=models.CharField(max_length=50)
-    class under_class(models.Model):
-        name=models.CharField(max_length=50)
-        
-    
-        class Meta:
-            verbose_name = ("under_class")
-            verbose_name_plural = ("under_classs")
-    
-        def __str__(self):
-            return self.name
-    
-        def get_absolute_url(self):
-            return reverse("under_class_detail", kwargs={"pk": self.pk})
-    
-
-    class Meta:
-        verbose_name = ("newclass")
-        verbose_name_plural = ("newclasss")
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("newclass_detail", kwargs={"pk": self.pk})
-

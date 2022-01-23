@@ -42,7 +42,6 @@ def home(request):
         "full_ist":full_ist,
         'full_ich':full_ich
     }
-    messages.success(request, 'Korxona ma`lumotlari muvofaqqiyatli yangilandi! Rahmat! Charchamang! :)')
     return render(request, '03_foydalanuvchi/00_0_home.html', context)
 
 #____***_____ASosiy_settings_____***_____________________
@@ -386,7 +385,7 @@ def addhisobot(request):
             messages.error(request, 'Iltimos oraliqni kiriting?! ')           
             return redirect('addhisobot')
         
-        oraliq=oraliq.split("<<>>")
+        oraliq=oraliq.split(" <<>> ")
             
         oraliq_min=oraliq[0]
         if len(oraliq)==1:
@@ -399,14 +398,21 @@ def addhisobot(request):
         yil = vaqt.strftime("%Y")
         
         nomi=sana+' hisoboti'
+        
         if hisobot_full.objects.filter(nomi = nomi).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu bugungi hisobot allaqachon tayyorlangan. Kunida bitta hisobot tayyorlash mumkin!")
             return redirect('hisobot') 
+        
+        resurs=[]
+        for v in his_res:
+            resurs.append(v.resurs)
+        
         hisobot_full.objects.create(
            owner=request.user,
            nomi=nomi,
            oraliq_min=oraliq_min,
            oraliq_max=oraliq_max,
+           resurs=resurs,
            vaqt=vaqt            
         )
         messages.success(request, 'Hisobot muvofaqqiyatli tayyorlandi! ')
@@ -440,11 +446,13 @@ def delhis(request, id):
     return redirect('addhisobot')
 
 ##########################################################################
-def result_his(request):
-    h_resurs=his_ich.objects.filter(owner=request.user)
-    h_date=hisobot_full.objects.filter(owner=request.user)
+def result_his(request):    
+    h_filter=hisobot_full.objects.get(pk=4)
     
-    h_baza=hisobot_ich.objects.filter(owner=request.user)
+    oraliq_min=h_filter.oraliq_min
+    oraliq_max=h_filter.oraliq_max
+    
+    h_baza=hisobot_ich.objects.filter(owner=request.user, vaqt__range=[oraliq_min,oraliq_max])
     
     context={
         'h_baza':h_baza,        

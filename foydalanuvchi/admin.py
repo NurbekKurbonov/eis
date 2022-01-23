@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ichres, istres, sotres,  hisobot_ich, hisobot_ist, hisobot_uzat, hisobot_item, allfaqir, his_ich,hisobot_full, newclass
+from .models import ichres, istres, sotres,  hisobot_ich, hisobot_ist, hisobot_uzat, hisobot_item, allfaqir, his_ich,hisobot_full
 
 class ichAdmin(admin.ModelAdmin):    
     search_files = ('nom')
@@ -27,5 +27,3 @@ admin.site.register(his_ich)
 admin.site.register(hisobot_full)
 
 admin.site.register(allfaqir)
-
-admin.site.register(newclass)
