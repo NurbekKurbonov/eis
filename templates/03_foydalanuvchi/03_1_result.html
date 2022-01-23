@@ -82,10 +82,9 @@
                 dashArray: [0, 8, 5]
             },
             series: [                                
-                {% for v in h_baza %}
-                {
-                    name: "{{v.title}}",
-                    data: ['{{v.qiymat_pul}}', 3]
+                {% for v in resurs %}
+                {   name: "{{v.title}}",
+                    data: [{% for r in h_baza %}'{{r.qiymat|nom=v}}',{% endfor %}]
                 },{% endfor %}
                 
             ],

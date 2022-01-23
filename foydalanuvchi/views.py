@@ -452,9 +452,21 @@ def result_his(request):
     oraliq_min=h_filter.oraliq_min
     oraliq_max=h_filter.oraliq_max
     
+    his=hisobot_item.objects.filter(owner=request.user, vaqt__range=[oraliq_min,oraliq_max])
+    
     h_baza=hisobot_ich.objects.filter(owner=request.user, vaqt__range=[oraliq_min,oraliq_max])
     
+    resurs=h_filter.resurs.replace("[", "").replace("]", "").replace("'","").split(",")
+    
+    
+    for v in range(his):
+        for r in h_baza:
+                pass
+    #resurs=h_filter
     context={
-        'h_baza':h_baza,        
+        'his':his,
+        'resurs':resurs,
+        'h_baza':h_baza,
+        
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)
