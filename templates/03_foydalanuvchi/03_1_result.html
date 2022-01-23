@@ -82,10 +82,10 @@
                 dashArray: [0, 8, 5]
             },
             series: [                                
-                {% for v in resurs %}
-                {   name: "{{v.title}}",
-                    data: [{% for r in h_baza %}'{{r.qiymat|nom=v}}',{% endfor %}]
-                },{% endfor %}
+                {% for key, value in obj.items %}
+                {   name: "{{key}}",
+                    data: {{value}}
+                },{% endfor %}               
                 
             ],
             markers: {
@@ -93,7 +93,7 @@
                 style: "hollow", // full, hollow, inverted
             },
             xaxis: {
-                categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"],
+                categories: [{% for v in resurs %}"{{v.nom}}",{% endfor %}],
             },
             tooltip: {
                 y: [{

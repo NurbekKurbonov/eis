@@ -48,8 +48,7 @@ class istres(models.Model):
         
 class sotres(models.Model):
     nom = models.TextField('Resurs nomi', max_length=100, unique=True)
-    birlik = models.CharField('Resurs birligi', max_length=100)    
-    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)   
+    birlik = models.CharField('Resurs birligi', max_length=100)
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
@@ -59,18 +58,6 @@ class sotres(models.Model):
     class Meta:
         verbose_name_plural = '01_2_Uzatiladigan resurslar'
 #hisobotlar********************************************************
-class hisobot_item(models.Model):
-    title = models.CharField("Hisobot nomi", max_length=100)
-    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
-    
-    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    def __str__(self):
-        return f"{self.title} // {self.vaqt}"
-    
-    class Meta:
-        verbose_name = ("hisobot_shakli")
-        verbose_name_plural = ("02_0_Hisobot shakllari")
-    
 class hisobot_ich(models.Model):
     
     title = models.CharField("Hisobot nomi", max_length=100)
@@ -83,7 +70,7 @@ class hisobot_ich(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)    
     
     def __str__(self):
-        return f"{self.title} // {self.vaqt}"
+        return f"{self.title} // {self.nom}"
     
     class Meta:
         verbose_name_plural = ("02_1_Ishlab chiqarish hisoboti")
@@ -100,7 +87,7 @@ class hisobot_ist(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)    
     
     def __str__(self):
-        return f"{self.title} // {self.vaqt}"
+        return f"{self.title} // {self.nom}"
     
     class Meta:
         verbose_name_plural = ("02_2_Iste`mol hisoboti")
@@ -117,11 +104,28 @@ class hisobot_uzat(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)    
     
     def __str__(self):
-        return f"{self.title} // {self.vaqt}"
+        return f"{self.title} // {self.nom}"
     
     class Meta:
         verbose_name_plural = ("02_3_Uzatilgan resurs hisoboti")
 
+class hisobot_item(models.Model):
+    title = models.CharField("Hisobot nomi", max_length=100)
+    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
+    
+    ich=models.ManyToManyField(hisobot_ich, verbose_name=("Ishlab chiqarish"))
+    ist=models.ManyToManyField(hisobot_ist, verbose_name=("Iste'mol"))
+    uzat=models.ManyToManyField(hisobot_uzat, verbose_name=("Uzatish/Sotish"))
+    
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.title} // {self.vaqt}"
+    
+    class Meta:
+        verbose_name = ("hisobot_shakli")
+        verbose_name_plural = ("02_0_Hisobot shakllari")
+        
+#filtrlash
 class his_ich(models.Model):
     nomi=models.CharField("Hisobot nomi", max_length=50)
     
@@ -131,7 +135,7 @@ class his_ich(models.Model):
 
     class Meta:
         verbose_name = ("Davriy hisobot")
-        verbose_name_plural = ("04_0_Davriy hisobotlar")
+        verbose_name_plural = ("04_0_Ishlab chiqarish filteri")
 
     def __str__(self):
         return f"{self.nomi}: {self.resurs}"
@@ -144,7 +148,7 @@ class hisobot_full(models.Model):
     
     oraliq_min=models.CharField("Maksimal oraliq", max_length=50)
     oraliq_max=models.CharField("Minimal oraliq", max_length=50)
-    resurs=models.TextField("Resurslar",)
+    hisobotlar=models.ManyToManyField(hisobot_item, verbose_name=("Hisobotlar"))
     
     vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
     
@@ -159,4 +163,5 @@ class hisobot_full(models.Model):
 
     def get_absolute_url(self):
         return reverse("hisobot_full_detail", kwargs={"pk": self.pk})
+
     

@@ -313,6 +313,17 @@ def adddavr(request):
                                     title=title,
                                     vaqt=vaqt,
                                     )   
+        
+        for h in hisobot_item.objects.filter(owner=request.user, title=title):
+            h_id=h.id
+        his=hisobot_item.objects.get(pk=h_id)
+            
+        for i in hisobot_ich.objects.filter(owner=request.user, title=title):
+            his.ich.add(i.id) 
+        for i in hisobot_ist.objects.filter(owner=request.user, title=title):
+            his.ist.add(i.id)    
+        for i in hisobot_uzat.objects.filter(owner=request.user, title=title):
+            his.uzat.add(i.id) 
             
         messages.success(request, 'Hisobot muvofaqqiyatli yuborildi! Rahmat! Charchamang! :)')
         return redirect('davr')
@@ -393,6 +404,12 @@ def addhisobot(request):
         else:
             oraliq_max=oraliq[1]
         
+        his=hisobot_ich.objects.filter(owner=request.user)
+        
+        if not hisobot_ich.objects.filter(owner=request.user, vaqt__range=[str(oraliq_min), str(oraliq_max)]):
+            messages.error(request, "Ushbu oraliqda ma'lumotlar mavjud emas, boshqa oraliq tanlang!")
+            return redirect('addhisobot') 
+        
         vaqt=timezone.now()
         sana = vaqt.strftime("%d-%m-%Y")
         yil = vaqt.strftime("%Y")
@@ -403,18 +420,23 @@ def addhisobot(request):
             messages.error(request, "Hurmatli foydalanuvchi ushbu bugungi hisobot allaqachon tayyorlangan. Kunida bitta hisobot tayyorlash mumkin!")
             return redirect('hisobot') 
         
-        resurs=[]
-        for v in his_res:
-            resurs.append(v.resurs)
+        #for v in his_res:
+        #    hisobot_full.resurs.add(v.id)
         
         hisobot_full.objects.create(
            owner=request.user,
            nomi=nomi,
            oraliq_min=oraliq_min,
-           oraliq_max=oraliq_max,
-           resurs=resurs,
+           oraliq_max=oraliq_max,           
            vaqt=vaqt            
         )
+        for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
+            h_id=h.id
+        his=hisobot_full.objects.get(pk=h_id)
+                        
+        for i in hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):
+            his.hisobotlar.add(i.id)
+        
         messages.success(request, 'Hisobot muvofaqqiyatli tayyorlandi! ')
         return redirect('hisobot')
         
@@ -446,27 +468,42 @@ def delhis(request, id):
     return redirect('addhisobot')
 
 ##########################################################################
-def result_his(request):    
-    h_filter=hisobot_full.objects.get(pk=4)
+def result_his(request):   
+     
+    his=hisobot_full.objects.get(pk=18)
     
-    oraliq_min=h_filter.oraliq_min
-    oraliq_max=h_filter.oraliq_max
+    hisobotlar=his.hisobotlar.all()
     
-    his=hisobot_item.objects.filter(owner=request.user, vaqt__range=[oraliq_min,oraliq_max])
+    res=[]
+    for v in hisobotlar:        
+        resurs=v.ich.all()
+        for i in resurs:
+            res.append(i.nom)
+    res=set(res)       
     
-    h_baza=hisobot_ich.objects.filter(owner=request.user, vaqt__range=[oraliq_min,oraliq_max])
+    obj = {}    
+    for i in res:
+        obj[i]=[]
+        for v in hisobotlar:        
+            lst=[]
+            resurs=v.ich.all()
+            for k in resurs:
+                lst.append(k.nom)            
+            if i in lst:   
+                for j in resurs:                            
+                    if i in j.nom:
+                        if i==j.nom:
+                                obj[i].append(j.qiymat)
+            else:
+                obj[i].append(0)
+               
     
-    resurs=h_filter.resurs.replace("[", "").replace("]", "").replace("'","").split(",")
     
-    
-    for v in range(his):
-        for r in h_baza:
-                pass
-    #resurs=h_filter
+        
     context={
         'his':his,
-        'resurs':resurs,
-        'h_baza':h_baza,
-        
+        'res':res,
+        'hisobotlar':hisobotlar ,
+        'obj':obj
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)
