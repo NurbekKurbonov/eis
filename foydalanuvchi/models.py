@@ -159,7 +159,7 @@ class hisobot_full(models.Model):
     def get_absolute_url(self):
         return reverse("hisobot_full_detail", kwargs={"pk": self.pk})
     
-class newclass(models.Model, under_class):
+class newclass(models.Model):
     name=models.CharField(max_length=50)
     class under_class(models.Model):
         name=models.CharField(max_length=50)
