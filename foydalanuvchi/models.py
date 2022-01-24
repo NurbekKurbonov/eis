@@ -113,9 +113,9 @@ class hisobot_item(models.Model):
     title = models.CharField("Hisobot nomi", max_length=100)
     vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
     
-    ich=models.ManyToManyField(hisobot_ich, verbose_name=("Ishlab chiqarish"))
-    ist=models.ManyToManyField(hisobot_ist, verbose_name=("Iste'mol"))
-    uzat=models.ManyToManyField(hisobot_uzat, verbose_name=("Uzatish/Sotish"))
+    ich=models.ManyToManyField(hisobot_ich, verbose_name=("Ishlab chiqarish"), blank=True)
+    ist=models.ManyToManyField(hisobot_ist, verbose_name=("Iste'mol"), blank=True)
+    uzat=models.ManyToManyField(hisobot_uzat, verbose_name=("Uzatish/Sotish"), blank=True)
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     def __str__(self):
@@ -150,21 +150,7 @@ class hisobot_full(models.Model):
     oraliq_max=models.CharField("Minimal oraliq", max_length=50)
     hisobotlar=models.ManyToManyField(hisobot_item, verbose_name=("Hisobotlar"))
     
-    #Grafiklar:
-    Chchart=models.BooleanField("CH diagramma")
-    Vchart=models.BooleanField("V diagramma")
-    Gchart=models.BooleanField("G diagramma")
-    Mchart=models.BooleanField("M diagramma")
-    Uchart=models.BooleanField("U diagramma")
-    Achart=models.BooleanField("A diagramma")
-    
-    # qo'shimcha birliklar        
-    som=models.BooleanField("so'm")
-    dol=models.BooleanField("dollar")
-    tshy=models.BooleanField("tshy")
-    tne=models.BooleanField("tne")
-    kkal=models.BooleanField("kkal")
-    gj=models.BooleanField("gj")
+    cheks=models.CharField("Chart va Birlik", max_length=255)
     
     
     vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 

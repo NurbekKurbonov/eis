@@ -12,13 +12,16 @@
     <div class="col-8 " >
         <h6 class="card-subtitle mb-2 text-muted">Birliklar</h6>
         <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
+            
             <button type="button" class="btn btn-outline-info">Nomli birliklarda</button>
-            <button type="button" class="btn btn-outline-info">Middle</button>
-            <button type="button" class="btn btn-outline-info">Middle</button>
-            <button type="button" class="btn btn-outline-info">Middle</button>
-            <button type="button" class="btn btn-outline-info">Middle</button>
-            <button type="button" class="btn btn-outline-info">Middle</button>
-            <button type="button" class="btn btn-outline-info">Middle</button>
+            {% if '7' in his.cheks %}<button type="button" class="btn btn-outline-info">Mln.so'mda</button>{% endif %}       
+            {% if '8' in his.cheks %}<button type="button" class="btn btn-outline-info">Ming.dollar</button>{% endif %}
+            {% if '9' in his.cheks %}<button type="button" class="btn btn-outline-info">tshy</button>{% endif %} 
+            {% if '0' in his.cheks %}<button type="button" class="btn btn-outline-info">tne</button>{% endif %} 
+            {% if 'a' in his.cheks %}<button type="button" class="btn btn-outline-info">kKal</button>{% endif %}   
+            {% if 'b' in his.cheks %}<button type="button" class="btn btn-outline-info">GJ</button>{% endif %}
+            
+            
             
         </div>
     </div>
@@ -29,59 +32,58 @@
             <i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
         </button>
     </div>
-
-	
-	
 </div>
 
 <div class="col-12 col-lg-12" id="graph" >
     <div class="tab" >
         <ul class="nav nav-tabs" role="tablist">
+            {% if '1' in his.cheks %}
             <li class="nav-item">
                 <a class="nav-link active" href="#icon-tab-1" data-bs-toggle="tab" role="tab">
                     Ch<i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
                 </a>
-            </li>
+            </li>{% endif %}
+            {% if '2' in his.cheks %}
             <li class="nav-item">
                 <a class="nav-link" href="#icon-tab-2" data-bs-toggle="tab" role="tab">
                     V<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i>
                 </a>
-            </li>
+            </li>{% endif %}
+            {% if '3' in his.cheks %}
             <li class="nav-item">
                 <a class="nav-link" href="#icon-tab-3" data-bs-toggle="tab" role="tab">
                     G<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i>
                 </a>
-            </li>
+            </li>{% endif %}
+            {% if '4' in his.cheks %}
             <li class="nav-item">
                 <a class="nav-link" href="#icon-tab-4" data-bs-toggle="tab" role="tab">
                     M<i class="align-middle me-2 fas fa-fw fa-chart-area"></i>
                 </a>
-            </li>
+            </li>{% endif %}
+            {% if '5' in his.cheks %}
             <li class="nav-item">
                 <a class="nav-link" href="#icon-tab-5" data-bs-toggle="tab" role="tab">
                     U<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
                 </a>
-            </li>
+            </li>{% endif %}
+            {% if '6' in his.cheks %}
             <li class="nav-item">
                 <a class="nav-link" href="#icon-tab-6" data-bs-toggle="tab" role="tab">
                     A<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
                 </a>
-            </li>
+            </li>{% endif %}
             
         </ul>
         <div class="tab-content" style="background: rgb(63,94,251);
         background: linear-gradient(62deg, rgba(63,94,251,0.3351540445279675) 0%, rgba(239,191,254,0.5704481621750263) 4%, rgba(255,255,255,0.7133053050321692) 6%, rgba(255,255,255,1) 18%, rgba(255,255,255,1) 51%, rgba(255,255,255,0.8757702910265669) 89%, rgba(192,192,252,0.7469187504103203) 95%, rgba(243,202,254,0.5928571257604605) 98%, rgba(71,70,252,0.3127450809425333) 100%);">
             <div class="tab-pane active" id="icon-tab-1" role="tabpanel">
-                
-                    <div class="card-body">
-                        <div class="chart w-100">
-                            <div id="apexcharts-line"></div>
-                        </div>
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-line"></div>
                     </div>
-               
-
-            </div>
-
+                </div>
+            </div>            
             <div class="tab-pane" id="icon-tab-2" role="tabpanel">                
                 <div class="card-body">
                     <div class="chart w-100">
@@ -89,6 +91,7 @@
                     </div>
                 </div> 
             </div>
+
             <div class="tab-pane" id="icon-tab-3" role="tabpanel">
                 <div class="card-body">
                     <div class="chart w-100">
@@ -104,11 +107,16 @@
                 </div>
             </div>
             <div class="tab-pane" id="icon-tab-5" role="tabpanel">
-                <div class="card-body text-center">
-                    <div class="chart w-100">
-                        <div id="apexcharts-pie" style="max-width: 440px;margin:auto;"></div>
-                    </div>
+                <div class="row">
+                    
+                        <div class="col-3 card-body text-center">
+                            <div class="chart w-100">
+                                <div id="pie-chart" style="max-width: 440px;margin:auto;"></div>
+                            </div>
+                        </div>
+                   
                 </div>
+
             </div>
             <div class="tab-pane" id="icon-tab-6" role="tabpanel">
                 <div class="row">
@@ -223,6 +231,11 @@
             xaxis: {
                 categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
             },
+            yaxis: {
+                title: {
+                    text: "Birlik"
+                }
+            },
             tooltip: {
                 y: [{
                     title: {
@@ -278,22 +291,17 @@
                 width: 2,
                 colors: ["transparent"]
             },
-            series: [{
-                name: "Net Profit",
-                data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-            }, {
-                name: "Revenue",
-                data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-            }, {
-                name: "Free Cash Flow",
-                data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-            }],
+            series: [{% for key, value in obj.items %}
+                        {   name: "{{key}}",
+                            data: {{value}}
+                        },{% endfor %} 
+            ],
             xaxis: {
-                categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+                categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
             },
             yaxis: {
                 title: {
-                    text: "$ (thousands)"
+                    text: "Birlik"
                 }
             },
             fill: {
@@ -302,7 +310,7 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return "$ " + val + " thousands"
+                        return "" + val + " "
                     }
                 }
             }
@@ -332,27 +340,18 @@
                 width: 1,
                 colors: ["#fff"]
             },
-            series: [{
-                name: "Marine Sprite",
-                data: [44, 55, 41, 37, 22, 43, 21]
-            }, {
-                name: "Striking Calf",
-                data: [53, 32, 33, 52, 13, 43, 32]
-            }, {
-                name: "Tank Picture",
-                data: [12, 17, 11, 9, 15, 11, 20]
-            }, {
-                name: "Bucket Slope",
-                data: [9, 7, 5, 8, 6, 9, 4]
-            }, {
-                name: "Reborn Kid",
-                data: [25, 12, 19, 32, 25, 24, 10]
-            }],
+            series: [
+                        {% for key, value in obj.items %}
+                        {   name: "{{key}}",
+                            data: {{value}}
+                        },{% endfor %} 
+            
+            ],
             xaxis: {
-                categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
+                categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
                 labels: {
                     formatter: function(val) {
-                        return val + "K"
+                        return val + ""
                     }
                 }
             },
@@ -364,7 +363,7 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return val + "K"
+                        return val + ""
                     }
                 }
             },
@@ -399,22 +398,18 @@
             stroke: {
                 curve: "smooth"
             },
-            series: [{
-                name: "series1",
-                data: [31, 40, 28, 51, 42, 109, 100]
-            }, {
-                name: "series2",
-                data: [11, 32, 45, 32, 34, 52, 41]
-            }],
+            series: [ {% for key, value in obj.items %}
+                        {   name: "{{key}}",
+                            data: {{value}}
+                        },{% endfor %} 
+            ],
             xaxis: {
-                type: "datetime",
-                categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00",
-                    "2018-09-19T05:30:00", "2018-09-19T06:30:00"
-                ],
+                type: "date",
+                categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
             },
             tooltip: {
                 x: {
-                    format: "dd/MM/yy HH:mm"
+                    format: "dd-MM-yyyy"
                 },
             }
         }
@@ -427,6 +422,7 @@
 </script>
 
 <script>
+    
     document.addEventListener("DOMContentLoaded", function() {
         // Pie chart
         var options = {
@@ -435,16 +431,17 @@
                 type: "donut",
             },
             dataLabels: {
-                enabled: false
+                enabled: true
             },
-            series: [44, 55, 13, 33]
+            series: [{% for i in v %}{{i}},{% endfor %}]
         }
         var chart = new ApexCharts(
-            document.querySelector("#apexcharts-pie"),
+            document.querySelector("#pie-chart"),
             options
         );
         chart.render();
     });
+    
 </script>
 
 <script>

@@ -420,15 +420,17 @@ def addhisobot(request):
             messages.error(request, "Hurmatli foydalanuvchi ushbu bugungi hisobot allaqachon tayyorlangan. Kunida bitta hisobot tayyorlash mumkin!")
             return redirect('hisobot') 
         
-        #for v in his_res:
-        #    hisobot_full.resurs.add(v.id)
+        #diagramma va qo'shimcha birliklarni qo'shish
+        
+        cheks = request.POST.getlist('chart')
         
         hisobot_full.objects.create(
            owner=request.user,
            nomi=nomi,
            oraliq_min=oraliq_min,
            oraliq_max=oraliq_max,           
-           vaqt=vaqt            
+           vaqt=vaqt,
+           cheks=cheks                                 
         )
         for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
             h_id=h.id
@@ -470,7 +472,7 @@ def delhis(request, id):
 ##########################################################################
 def result_his(request,id):   
      
-    his=hisobot_full.objects.get(pk=1)
+    his=hisobot_full.objects.get(pk=id)
     
     hisobotlar=his.hisobotlar.all()
     
@@ -527,6 +529,6 @@ def result_his(request,id):
         'hisobotlar':hisobotlar ,
         'obj':obj,
         'titleown':titleown,
-        'obj_table': obj_table,
+        'obj_table': obj_table,        
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)
