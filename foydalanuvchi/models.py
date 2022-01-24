@@ -150,6 +150,23 @@ class hisobot_full(models.Model):
     oraliq_max=models.CharField("Minimal oraliq", max_length=50)
     hisobotlar=models.ManyToManyField(hisobot_item, verbose_name=("Hisobotlar"))
     
+    #Grafiklar:
+    Chchart=models.BooleanField("CH diagramma")
+    Vchart=models.BooleanField("V diagramma")
+    Gchart=models.BooleanField("G diagramma")
+    Mchart=models.BooleanField("M diagramma")
+    Uchart=models.BooleanField("U diagramma")
+    Achart=models.BooleanField("A diagramma")
+    
+    # qo'shimcha birliklar        
+    som=models.BooleanField("so'm")
+    dol=models.BooleanField("dollar")
+    tshy=models.BooleanField("tshy")
+    tne=models.BooleanField("tne")
+    kkal=models.BooleanField("kkal")
+    gj=models.BooleanField("gj")
+    
+    
     vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
     
     owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)

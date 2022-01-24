@@ -470,7 +470,7 @@ def delhis(request, id):
 ##########################################################################
 def result_his(request,id):   
      
-    his=hisobot_full.objects.get(pk=id)
+    his=hisobot_full.objects.get(pk=1)
     
     hisobotlar=his.hisobotlar.all()
     

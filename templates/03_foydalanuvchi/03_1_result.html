@@ -9,20 +9,122 @@
 </div>
 
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Hisobot nomi</h5>
-                <h6 class="card-subtitle text-muted">Sanasi</h6>
-            </div>
-            <div class="card-body">
-                <div class="chart w-100">
-                    <div id="apexcharts-line"></div>
-                </div>
-            </div>
+    <div class="col-8 " >
+        <h6 class="card-subtitle mb-2 text-muted">Birliklar</h6>
+        <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
+            <button type="button" class="btn btn-outline-info">Nomli birliklarda</button>
+            <button type="button" class="btn btn-outline-info">Middle</button>
+            <button type="button" class="btn btn-outline-info">Middle</button>
+            <button type="button" class="btn btn-outline-info">Middle</button>
+            <button type="button" class="btn btn-outline-info">Middle</button>
+            <button type="button" class="btn btn-outline-info">Middle</button>
+            <button type="button" class="btn btn-outline-info">Middle</button>
+            
         </div>
     </div>
 
+    <div class="col-4">
+        <button width="100%"  class="btn btn-outline-warning float-end my-1" id="button" onclick="showhide()"> 
+            <i id="graph1" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
+            <i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+        </button>
+    </div>
+
+	
+	
+</div>
+
+<div class="col-12 col-lg-12" id="graph" >
+    <div class="tab" >
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" href="#icon-tab-1" data-bs-toggle="tab" role="tab">
+                    Ch<i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#icon-tab-2" data-bs-toggle="tab" role="tab">
+                    V<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#icon-tab-3" data-bs-toggle="tab" role="tab">
+                    G<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#icon-tab-4" data-bs-toggle="tab" role="tab">
+                    M<i class="align-middle me-2 fas fa-fw fa-chart-area"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#icon-tab-5" data-bs-toggle="tab" role="tab">
+                    U<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#icon-tab-6" data-bs-toggle="tab" role="tab">
+                    A<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
+                </a>
+            </li>
+            
+        </ul>
+        <div class="tab-content" style="background: rgb(63,94,251);
+        background: linear-gradient(62deg, rgba(63,94,251,0.3351540445279675) 0%, rgba(239,191,254,0.5704481621750263) 4%, rgba(255,255,255,0.7133053050321692) 6%, rgba(255,255,255,1) 18%, rgba(255,255,255,1) 51%, rgba(255,255,255,0.8757702910265669) 89%, rgba(192,192,252,0.7469187504103203) 95%, rgba(243,202,254,0.5928571257604605) 98%, rgba(71,70,252,0.3127450809425333) 100%);">
+            <div class="tab-pane active" id="icon-tab-1" role="tabpanel">
+                
+                    <div class="card-body">
+                        <div class="chart w-100">
+                            <div id="apexcharts-line"></div>
+                        </div>
+                    </div>
+               
+
+            </div>
+
+            <div class="tab-pane" id="icon-tab-2" role="tabpanel">                
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-column"></div>
+                    </div>
+                </div> 
+            </div>
+            <div class="tab-pane" id="icon-tab-3" role="tabpanel">
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="icon-tab-4" role="tabpanel">
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-area"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="icon-tab-5" role="tabpanel">
+                <div class="card-body text-center">
+                    <div class="chart w-100">
+                        <div id="apexcharts-pie" style="max-width: 440px;margin:auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="icon-tab-6" role="tabpanel">
+                <div class="row">
+                    <div class="card-body">
+                        <div class="chart w-100">
+                            <div id="apexcharts-mixed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-12">
         <div class="card">            
             <div class="card-body">
@@ -71,6 +173,22 @@
 {% endblock content %}
 
 {% block scripts %}
+
+<script>  
+    function showhide()
+    {  
+         var div = document.getElementById("newpost");  
+         if (div.style.display !== "none") 
+         {  
+             div.style.display = "none";  
+         }  
+         else
+         {  
+             div.style.display = "block";  
+         }  
+    }  
+</script>  
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         
@@ -137,5 +255,460 @@
         chart.render();
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Column chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "bar",
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    endingShape: "rounded",
+                    columnWidth: "55%",
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ["transparent"]
+            },
+            series: [{
+                name: "Net Profit",
+                data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+            }, {
+                name: "Revenue",
+                data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+            }, {
+                name: "Free Cash Flow",
+                data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+            }],
+            xaxis: {
+                categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+            },
+            yaxis: {
+                title: {
+                    text: "$ (thousands)"
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return "$ " + val + " thousands"
+                    }
+                }
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-column"),
+            options
+        );
+        chart.render();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Bar chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "bar",
+                stacked: true,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                },
+            },
+            stroke: {
+                width: 1,
+                colors: ["#fff"]
+            },
+            series: [{
+                name: "Marine Sprite",
+                data: [44, 55, 41, 37, 22, 43, 21]
+            }, {
+                name: "Striking Calf",
+                data: [53, 32, 33, 52, 13, 43, 32]
+            }, {
+                name: "Tank Picture",
+                data: [12, 17, 11, 9, 15, 11, 20]
+            }, {
+                name: "Bucket Slope",
+                data: [9, 7, 5, 8, 6, 9, 4]
+            }, {
+                name: "Reborn Kid",
+                data: [25, 12, 19, 32, 25, 24, 10]
+            }],
+            xaxis: {
+                categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
+                labels: {
+                    formatter: function(val) {
+                        return val + "K"
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text: undefined
+                },
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return val + "K"
+                    }
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            legend: {
+                position: "top",
+                horizontalAlign: "left",
+                offsetX: 40
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-bar"),
+            options
+        );
+        chart.render();
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Area chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "area",
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: "smooth"
+            },
+            series: [{
+                name: "series1",
+                data: [31, 40, 28, 51, 42, 109, 100]
+            }, {
+                name: "series2",
+                data: [11, 32, 45, 32, 34, 52, 41]
+            }],
+            xaxis: {
+                type: "datetime",
+                categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00",
+                    "2018-09-19T05:30:00", "2018-09-19T06:30:00"
+                ],
+            },
+            tooltip: {
+                x: {
+                    format: "dd/MM/yy HH:mm"
+                },
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-area"),
+            options
+        );
+        chart.render();
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Pie chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "donut",
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [44, 55, 13, 33]
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-pie"),
+            options
+        );
+        chart.render();
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Heatmap chart
+        function generateData(count, yrange) {
+            var i = 0;
+            var series = [];
+            while (i < count) {
+                var x = (i + 1).toString();
+                var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+                series.push({
+                    x: x,
+                    y: y
+                });
+                i++;
+            }
+            return series;
+        }
+        var options = {
+            chart: {
+                height: 350,
+                type: "heatmap",
+            },
+            dataLabels: {
+                enabled: false
+            },
+            colors: ["#008FFB"],
+            series: [{
+                    name: "Metric1",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric2",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric3",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric4",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric5",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric6",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric7",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric8",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                },
+                {
+                    name: "Metric9",
+                    data: generateData(20, {
+                        min: 0,
+                        max: 90
+                    })
+                }
+            ],
+            xaxis: {
+                type: "category",
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-heatmap"),
+            options
+        );
+        chart.render();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Mixed chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "line",
+                stacked: false,
+            },
+            stroke: {
+                width: [0, 2, 5],
+                curve: "smooth"
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: "50%"
+                }
+            },
+            series: [{
+                name: "TEAM A",
+                type: "column",
+                data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+            }, {
+                name: "TEAM B",
+                type: "area",
+                data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
+            }, {
+                name: "TEAM C",
+                type: "line",
+                data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+            }],
+            fill: {
+                opacity: [0.85, 0.25, 1],
+                gradient: {
+                    inverseColors: false,
+                    shade: "light",
+                    type: "vertical",
+                    opacityFrom: 0.85,
+                    opacityTo: 0.55,
+                    stops: [0, 100, 100, 100]
+                }
+            },
+            labels: ["01/01/2003", "02/01/2003", "03/01/2003", "04/01/2003", "05/01/2003", "06/01/2003", "07/01/2003", "08/01/2003", "09/01/2003",
+                "10/01/2003", "11/01/2003"
+            ],
+            markers: {
+                size: 0
+            },
+            xaxis: {
+                type: "datetime"
+            },
+            yaxis: {
+                title: {
+                    text: "Points",
+                },
+                min: 0
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function(y) {
+                        if (typeof y !== "undefined") {
+                            return y.toFixed(0) + " points";
+                        }
+                        return y;
+                    }
+                }
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-mixed"), {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: false,
+                },
+                stroke: {
+                    width: [0, 2, 5],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                series: [{
+                    name: "TEAM A",
+                    type: "column",
+                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+                }, {
+                    name: "TEAM B",
+                    type: "area",
+                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
+                }, {
+                    name: "TEAM C",
+                    type: "line",
+                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+                }],
+                fill: {
+                    opacity: [0.85, 0.25, 1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["01/01/2003", "02/01/2003", "03/01/2003", "04/01/2003", "05/01/2003", "06/01/2003", "07/01/2003", "08/01/2003", "09/01/2003",
+                    "10/01/2003", "11/01/2003"
+                ],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points",
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function(y) {
+                            if (typeof y !== "undefined") {
+                                return y.toFixed(0) + " points";
+                            }
+                            return y;
+                        }
+                    }
+                }
+            }
+        );
+        chart.render();
+    });
+</script>
+
+<script>  
+    function showhide() 
+    {  
+        var div = document.getElementById("graph");
+        var i = document.getElementById("graph1");        
+
+        if (div.style.display !== "none") {  
+            div.style.display = "none";  
+        }  
+        if (i.style.display !== "none") {  
+            i.style.display = "none";  
+        } 
+       
+        else {  
+            div.style.display = "block";  
+            i.style.display = "block";             
+        }  
+    }  
+</script>  
 
 {% endblock scripts %}
