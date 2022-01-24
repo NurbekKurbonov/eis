@@ -481,6 +481,7 @@ def result_his(request,id):
             res.append(i.nom)
     res=set(res)       
     
+    #for linegraph
     obj = {}    
     for i in res:
         obj[i]=[]
@@ -497,8 +498,27 @@ def result_his(request,id):
             else:
                 obj[i].append(0)
                
+    #table
+    obj_table = {}    
     
-    
+    for v in hisobotlar:        
+        lst=[]
+        resurs=v.ich.all() 
+                   
+        sana = v.vaqt.strftime("%d-%m-%Y")
+        obj_table[sana]=[]
+        for i in res:
+            for k in resurs:
+                lst.append(k.nom)            
+            if i in lst:   
+                for j in resurs:                            
+                    if i in j.nom:
+                        if i==j.nom:
+                                obj_table[sana].append(j.qiymat)                               
+            else:
+                obj_table[sana].append(0)                  
+            
+            
     titleown=his.nomi +' // '+his.oraliq_min+' dan '+his.oraliq_max+' gacha'
             
     context={
@@ -506,6 +526,7 @@ def result_his(request,id):
         'res':res,
         'hisobotlar':hisobotlar ,
         'obj':obj,
-        'titleown':titleown
+        'titleown':titleown,
+        'obj_table': obj_table,
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)

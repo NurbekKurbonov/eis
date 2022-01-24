@@ -26,46 +26,37 @@
     <div class="col-12">
         <div class="card">            
             <div class="card-body">
-                <h4 style="color:blue"><B>___________</B></h4>
-                <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Resurs qo'shish</a></button>
-                <table class="table table-striped " style="width:100%">
+                <table id="datatables-column-search-select-inputs" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
                             <th>T/r</th>
                             <th>sana</th>
                             {% for v in obj %}                          
-                            <th class="d-none d-md-table-cell">{{v}}</th>
+                            <th>{{v}}</th>
                             {% endfor %}                              
 
                         </tr>
                         </thead>
                         <tbody>
-
-                            <td class="d-none d-md-table-cell">                            
-                                {% for v in hisobotlar%}                        
-                                    <tr>{{forloop.counter}}</tr>
-                                {% endfor %}
-                            </td>
-
-                            {% for key, value in obj.items%} 
-                            <td class="d-none d-md-table-cell">                                
-                                {% for v in value %}                    
-                                    <tr>{{v}}</tr>
-                                {% endfor %}
-                            </td>
-                            {% endfor %}
-
-                        
-                        <tfoot>
+                            {% for k,v in obj_table.items %}
                             <tr>
-                                <th>T/r</th>
-                                {% for v in obj %}                          
-                                <th class="d-none d-md-table-cell">{{v}}</th>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{k}}</td>
+                                {% for i in v %}                          
+                                <td>{{i}}</td>                                
                                 {% endfor %} 
                             </tr>
-                        </tfoot>
+                            {% endfor %}                        
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>T/r</th>
+                            <th>sana</th>
+                            {% for v in obj %}                          
+                            <th>{{v}}</th>
+                            {% endfor %} 
+                        </tr>
+                    </tfoot>
                    
                 </table>
            
@@ -111,7 +102,7 @@
                 size: 0,
                 style: "hollow", // full, hollow, inverted
             },
-            yaxis: {
+            xaxis: {
                 categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
             },
             tooltip: {
