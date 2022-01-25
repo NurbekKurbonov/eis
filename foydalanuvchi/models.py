@@ -61,7 +61,7 @@ class sotres(models.Model):
 class hisobot_ich(models.Model):
     
     title = models.CharField("Hisobot nomi", max_length=100)
-    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False)
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False)
     
     nom = models.TextField('Resurs nomi')
     birlik = models.TextField('Resurs birligi')    
@@ -78,7 +78,7 @@ class hisobot_ich(models.Model):
 class hisobot_ist(models.Model):
     
     title = models.CharField("Hisobot nomi", max_length=100)
-    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False)
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False)
     
     nom = models.TextField('Resurs nomi')
     birlik = models.TextField('Resurs birligi')    
@@ -95,7 +95,7 @@ class hisobot_ist(models.Model):
 class hisobot_uzat(models.Model):
     
     title = models.CharField("Hisobot nomi", max_length=100)
-    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False)
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False)
     
     nom = models.TextField('Resurs nomi')
     birlik = models.TextField('Resurs birligi')    
@@ -111,7 +111,7 @@ class hisobot_uzat(models.Model):
 
 class hisobot_item(models.Model):
     title = models.CharField("Hisobot nomi", max_length=100)
-    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False) 
     
     ich=models.ManyToManyField(hisobot_ich, verbose_name=("Ishlab chiqarish"), blank=True)
     ist=models.ManyToManyField(hisobot_ist, verbose_name=("Iste'mol"), blank=True)
@@ -153,7 +153,7 @@ class hisobot_full(models.Model):
     cheks=models.CharField("Chart va Birlik", max_length=255)
     
     
-    vaqt=models.DateTimeField("Vaqti",auto_now=True, auto_now_add=False) 
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False) 
     
     owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
 
