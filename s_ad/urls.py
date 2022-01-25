@@ -62,4 +62,10 @@ urlpatterns = [
     #******Foydalanuvchi sozlama****************************
     path('usersozlama', views.usersozlama, name='usersozlama'),
     
+    #*******Resurs*********************************************
+    path('valyuta', views.valyuta, name='valyuta'),
+    path('addvalyuta', views.addvalyuta, name='addvalyuta'),
+    path('editvalyuta/<int:id>', views.editvalyuta, name='editvalyuta'),
+    path('delvalyuta/<int:id>', views.delvalyuta, name='delvalyuta'), 
+    
 ]

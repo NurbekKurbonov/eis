@@ -470,23 +470,32 @@ def delhis(request, id):
     return redirect('addhisobot')
 
 ##########################################################################
-def result_his(request,id):   
+def result_his(request, id, qiy_bir):   
      
     his=hisobot_full.objects.get(pk=id)
     
     hisobotlar=his.hisobotlar.all()
     
     res=[]
+    resb=[]
     for v in hisobotlar:        
         resurs=v.ich.all()
         for i in resurs:
+            qb=i.nom+' ( '+i.birlik+' )'
             res.append(i.nom)
-    res=set(res)       
+            resb.append(qb)
+    res=set(res)
+    resb=list(set(resb))
     
     #for linegraph
-    obj = {}    
+    obj = {}
+    count=0    
     for i in res:
-        obj[i]=[]
+        key=resb[count]
+        
+        obj[key]=[]
+        
+        count+=1
         for v in hisobotlar:        
             lst=[]
             resurs=v.ich.all()
@@ -496,7 +505,7 @@ def result_his(request,id):
                 for j in resurs:                            
                     if i in j.nom:
                         if i==j.nom:
-                                obj[i].append(j.qiymat)
+                                obj[key].append(j.qiymat)
             else:
                 obj[i].append(0)
                
@@ -519,16 +528,66 @@ def result_his(request,id):
                                 obj_table[sana].append(j.qiymat)                               
             else:
                 obj_table[sana].append(0)                  
-            
+        
+    # mlm so'mda qiymatni chiqarish
+           
             
     titleown=his.nomi +' // '+his.oraliq_min+' dan '+his.oraliq_max+' gacha'
+    if qiy_bir=='som':
+        res=[]        
+        for v in hisobotlar:        
+            resurs=v.ich.all()
+            for i in resurs:                
+                res.append(i.nom)                
+        res=set(res)       
+        
+        #for linegraph
+        obj = {}
+        count=0    
+        for i in res:                     
+            obj[i]=[]
             
+            for v in hisobotlar:        
+                lst=[]
+                resurs=v.ich.all()
+                for k in resurs:
+                    lst.append(k.nom)            
+                if i in lst:   
+                    for j in resurs:                            
+                        if i in j.nom:
+                            if i==j.nom:
+                                    obj[i].append(j.qiymat_pul)
+                else:
+                    obj[i].append(0)
+                
+        #table
+        obj_table = {}    
+        
+        for v in hisobotlar:        
+            lst=[]
+            resurs=v.ich.all() 
+                    
+            sana = v.vaqt.strftime("%d-%m-%Y")
+            obj_table[sana]=[]
+            for i in res:
+                for k in resurs:
+                    lst.append(k.nom)            
+                if i in lst:   
+                    for j in resurs:                            
+                        if i in j.nom:
+                            if i==j.nom:
+                                    obj_table[sana].append(j.qiymat_pul)                               
+                else:
+                    obj_table[sana].append(0)
+         
     context={
         'his':his,
         'res':res,
         'hisobotlar':hisobotlar ,
         'obj':obj,
         'titleown':titleown,
-        'obj_table': obj_table,        
+        'obj_table': obj_table,
+        'qiy_bir':qiy_bir
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)
+    

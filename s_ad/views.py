@@ -627,3 +627,63 @@ def delresurs(request, id):
 def usersozlama(request):
     
     return render(request, '02_s_ad/10_1_sozlamalar.html')
+
+#Valyuta bo'yicha ma'lumotlarni kiritish*********************
+
+def valyuta(request):
+    titleown='Davlatlar'
+    dav = davlatlar.objects.filter(owner=request.user)
+    
+    context = {
+        'dav': dav,
+        'titleown':titleown
+        }
+    
+    return render(request, '02_s_ad/11_0_valyuta.html', context)
+
+def addvalyuta(request):
+    titleown='Davlatlar'
+    context = {
+        'titleown':titleown
+    }
+    if request.method == 'GET':
+        return render(request, '02_s_ad/02_1_adddavlat.html', context)
+            
+    if request.method == 'POST':        
+        davlat_kodi = request.POST['davlat_kodi']
+        davlat_nomi = request.POST['davlat_nomi']        
+        
+        davlatlar.objects.create(owner=request.user, davlat_kodi=davlat_kodi, davlat_nomi=davlat_nomi )        
+        messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        return redirect('davlat')
+
+def editvalyuta(request, id):
+       
+    davlat = davlatlar.objects.get(pk=id)
+    
+    context = {
+        'davlat': davlat,
+        'values': davlat,
+    } 
+    
+    if request.method == 'GET':  
+        return render(request, '02_s_ad/02_2_editdavlat.html', context)
+    
+    if request.method == 'POST':  
+        davlat_kodi = request.POST['davlat_kodi']
+        davlat_nomi = request.POST['davlat_nomi'] 
+        
+        davlat.owner=request.user
+        davlat.davlat_kodi=davlat_kodi
+        davlat.davlat_nomi=davlat_nomi
+        
+        davlat.save()
+        messages.success(request, 'Davlat muvofaqqiyatli yangilandi!')
+        
+        return redirect('davlat')
+
+def delvalyuta(request, id):
+    davlat = davlatlar.objects.get(pk=id)
+    davlat.delete()
+    messages.success(request, 'Davlat muvofaqqiyatli o`chirildi')
+    return redirect('davlat')

@@ -67,6 +67,16 @@
 						</a>
 					</li>
 					<li class="sidebar-header">
+						Iqtisodiy bo'lim
+					</li>
+					<li class="sidebar-item {% block bari1 %}{% endblock bari1 %}">
+						<a class="sidebar-link" href="{% url 'valyuta' %}" >
+							<i class="align-middle" data-feather="dollar-sign"></i> 
+                            <span class="align-middle">Valyuta</span>
+						</a>
+					</li>
+
+					<li class="sidebar-header">
 						Hududlar bo'yicha ma'lumotlar
 					</li>		
 					
@@ -75,7 +85,8 @@
 							<i class="align-middle" data-feather="navigation"></i> 
                             <span class="align-middle">Davlatlar</span>
 						</a>
-					</li>			
+					</li>					
+
 					<li class="sidebar-item {% block barh2 %}{% endblock barh2 %}">
 						<a class="sidebar-link" href="{% url 'viloyat' %}" >
 							<i class="align-middle" data-feather="navigation"></i> 

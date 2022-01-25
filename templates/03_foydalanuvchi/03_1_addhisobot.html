@@ -29,7 +29,7 @@
                             <td> {{forloop.counter}}</td>
                             <td class="d-none d-md-table-cell">{{v.resurs}}</td>
 
-                            <td class="d-none d-md-table-cell"><a href={% url 'delhis' v.id %}><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                            <td class="d-none d-md-table-cell"><a href="{% url 'delhis' v.id %}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
                         </tr>
                     {% endfor %}
                     </tbody>
