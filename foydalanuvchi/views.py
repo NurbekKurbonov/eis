@@ -483,58 +483,72 @@ def result_his(request, id, qiy_bir):
     hisobotlar=his.hisobotlar.all()
     valyuta=his.valyuta
     
-    res=[]
-    resb=[]
-    for v in hisobotlar:        
-        resurs=v.ich.all()
-        for i in resurs:
-            qb=i.nom+' ( '+i.birlik+' )'
-            res.append(i.nom)
-            resb.append(qb)
-    res=set(res)
-    resb=list(set(resb))
-    
-    #for linegraph
-    obj = {}
-    count=0    
-    for i in res:
-        key=resb[count]
+    if qiy_bir=='nomli' or qiy_bir=='tshy' or qiy_bir=='tne' or qiy_bir=='gj' or qiy_bir=='gkal':
+        res=[]
+        resb=[]
+        for v in hisobotlar:        
+            resurs=v.ich.all()
+            for i in resurs:
+                qb=i.nom+' ( '+i.birlik+' )'
+                res.append(i.nom)
+                resb.append(qb)
+        res=set(res)
+        resb=list(set(resb))
         
-        obj[key]=[]
+        #for linegraph
+        obj = {}
+        count=0    
+        for i in res:
+            key=resb[count]
+            
+            obj[key]=[]
+            
+            count+=1
+            for v in hisobotlar:        
+                lst=[]
+                resurs=v.ich.all()
+                for k in resurs:
+                    lst.append(k.nom)            
+                if i in lst:   
+                    for j in resurs:                            
+                        if i in j.nom:
+                            if i==j.nom:
+                                koef=1
+                                if qiy_bir=='tne':                                    
+                                    for blik in resurslar.objects.all():
+                                        if j.nom==blik.nomi:
+                                            koef=blik.tne
+                                if qiy_bir=='gj':                                    
+                                    for blik in resurslar.objects.all():
+                                        if j.nom==blik.nomi:
+                                            koef=blik.tne                                
+                                if qiy_bir=='gkal':                                    
+                                    for blik in resurslar.objects.all():
+                                        if j.nom==blik.nomi:
+                                            koef=blik.tne
+                                obj[key].append(j.qiymat/koef)
+                else:
+                    obj[i].append(0)
+                
+        #table
+        obj_table = {}    
         
-        count+=1
         for v in hisobotlar:        
             lst=[]
-            resurs=v.ich.all()
-            for k in resurs:
-                lst.append(k.nom)            
-            if i in lst:   
-                for j in resurs:                            
-                    if i in j.nom:
-                        if i==j.nom:
-                                obj[key].append(j.qiymat)
-            else:
-                obj[i].append(0)
-               
-    #table
-    obj_table = {}    
-    
-    for v in hisobotlar:        
-        lst=[]
-        resurs=v.ich.all() 
-                   
-        sana = v.vaqt.strftime("%d-%m-%Y")
-        obj_table[sana]=[]
-        for i in res:
-            for k in resurs:
-                lst.append(k.nom)            
-            if i in lst:   
-                for j in resurs:                            
-                    if i in j.nom:
-                        if i==j.nom:
-                                obj_table[sana].append(j.qiymat)                               
-            else:
-                obj_table[sana].append(0)                  
+            resurs=v.ich.all() 
+                    
+            sana = v.vaqt.strftime("%d-%m-%Y")
+            obj_table[sana]=[]
+            for i in res:
+                for k in resurs:
+                    lst.append(k.nom)            
+                if i in lst:   
+                    for j in resurs:                            
+                        if i in j.nom:
+                            if i==j.nom:
+                                    obj_table[sana].append(j.qiymat/koef)                               
+                else:
+                    obj_table[sana].append(0)                  
         
     # mlm so'mda qiymatni chiqarish
            
