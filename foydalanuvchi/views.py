@@ -380,6 +380,8 @@ def addhisobot(request):
     m =vaqt.strftime("%m")
     oylar = ['YANVAR', 'FEVRAL', 'MART', 'APREL', 'MAY', 'IYUN', 'IYUL', 'AVGUST','SENTYABR', 'OKTYABR', 'NOYABR', 'DEKABR']
     
+    mich=ichres.objects.filter(owner=request.user)
+    sot=sotres.objects.filter(owner=request.user)
     
     context={
         'titleown':titleown,        
@@ -387,7 +389,9 @@ def addhisobot(request):
         'his_res':his_res,
         'ich_res':ich_res,
         'oylar':oylar,
-        'valyuta':valyuta
+        'valyuta':valyuta,
+        'mich':mich,
+        'sot':sot
     }
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/03_1_addhisobot.html', context)
@@ -421,13 +425,17 @@ def addhisobot(request):
         nomi=sana+' hisoboti'
         
         if hisobot_full.objects.filter(nomi = nomi).first():
-            messages.error(request, "Hurmatli foydalanuvchi ushbu bugungi hisobot allaqachon tayyorlangan. Kunida bitta hisobot tayyorlash mumkin!")
-            return redirect('hisobot') 
+            messages.error(request, "Hisobot turini tanlang!")
+            return redirect('addhisobot') 
         
         #diagramma va qo'shimcha birliklarni qo'shish
         
         cheks = request.POST.getlist('chart')
-        lastvalute=Valyuta.objects.latest('id').id
+        tur = request.POST.getlist('his_tur')
+        
+        if len(tur)==1 and tur[0]=='':
+            messages.success(request, 'Hisobot muvofaqqiyatli tayyorlandi! ')
+            return redirect('hisobot')
         
         hisobot_full.objects.create(
            owner=request.user,
@@ -436,7 +444,9 @@ def addhisobot(request):
            oraliq_max=oraliq_max,           
            vaqt=vaqt,
            cheks=cheks,
-           valyuta=Valyuta(valute)
+           valyuta=Valyuta(valute),
+           tur=tur
+           
         )
         
         for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
@@ -477,17 +487,26 @@ def delhis(request, id):
     return redirect('addhisobot')
 
 ##########################################################################
-def result_his(request, id, qiy_bir):   
+
+def result_his(request,id,qiy_bir,tur_hisob):   
      
-    his=hisobot_full.objects.get(pk=id)    
+    his=hisobot_full.objects.get(pk=id)
     hisobotlar=his.hisobotlar.all()
-    valyuta=his.valyuta
-    
+    valyuta=his.valyuta 
+    if tur_hisob=='mich':
+        pass
     if qiy_bir=='nomli' or qiy_bir=='tshy' or qiy_bir=='tne' or qiy_bir=='gj' or qiy_bir=='gkal':
+        
         res=[]
         resb=[]
-        for v in hisobotlar:        
-            resurs=v.ich.all()
+        for v in hisobotlar:
+            if tur_hisob=='A':
+                resurs=v.ich.all()
+            if tur_hisob=='B':
+                resurs=v.ist.all()
+            if tur_hisob=='C':
+                resurs=v.uzat.all()
+                
             for i in resurs:
                 qb=i.nom+' ( '+i.birlik+' )'
                 res.append(i.nom)
@@ -506,7 +525,13 @@ def result_his(request, id, qiy_bir):
             count+=1
             for v in hisobotlar:        
                 lst=[]
-                resurs=v.ich.all()
+                if tur_hisob=='A':
+                    resurs=v.ich.all()
+                if tur_hisob=='B':
+                    resurs=v.ist.all()
+                if tur_hisob=='C':
+                    resurs=v.uzat.all()
+                
                 for k in resurs:
                     lst.append(k.nom)            
                 if i in lst:   
@@ -518,7 +543,7 @@ def result_his(request, id, qiy_bir):
                                     for blik in resurslar.objects.all():
                                         if j.nom==blik.nomi:
                                             koef=blik.tne
-                                if qiy_bir=='gj':                                    
+                                if qiy_bir=='gj':
                                     for blik in resurslar.objects.all():
                                         if j.nom==blik.nomi:
                                             koef=blik.tne                                
@@ -535,7 +560,12 @@ def result_his(request, id, qiy_bir):
         
         for v in hisobotlar:        
             lst=[]
-            resurs=v.ich.all() 
+            if tur_hisob=='A':
+                resurs=v.ich.all()
+            if tur_hisob=='B':
+                resurs=v.ist.all()
+            if tur_hisob=='C':
+                resurs=v.uzat.all()            
                     
             sana = v.vaqt.strftime("%d-%m-%Y")
             obj_table[sana]=[]
@@ -563,8 +593,13 @@ def result_his(request, id, qiy_bir):
             koef=valyuta.somda/(valyuta.qiymati*1000)
             
         res=[]        
-        for v in hisobotlar:        
-            resurs=v.ich.all()
+        for v in hisobotlar:
+            if tur_hisob=='A':
+                resurs=v.ich.all()
+            if tur_hisob=='B':
+                resurs=v.ist.all()
+            if tur_hisob=='C':
+                resurs=v.uzat.all()
             for i in resurs:                
                 res.append(i.nom)                
         res=set(res)       
@@ -577,7 +612,14 @@ def result_his(request, id, qiy_bir):
             
             for v in hisobotlar:        
                 lst=[]
-                resurs=v.ich.all()
+                if tur_hisob=='A':
+                    resurs=v.ich.all()
+                if tur_hisob=='B':
+                    resurs=v.ist.all()
+                if tur_hisob=='C':
+                    resurs=v.uzat.all()
+                for i in resurs:                
+                    res.append(i.nom)                   
                 for k in resurs:
                     lst.append(k.nom)
                 if i in lst:   
@@ -593,7 +635,14 @@ def result_his(request, id, qiy_bir):
         
         for v in hisobotlar:        
             lst=[]
-            resurs=v.ich.all() 
+            if tur_hisob=='A':
+                resurs=v.ich.all()
+            if tur_hisob=='B':
+                resurs=v.ist.all()
+            if tur_hisob=='C':
+                resurs=v.uzat.all()
+            for i in resurs:                
+                res.append(i.nom)   
                     
             sana = v.vaqt.strftime("%d-%m-%Y")
             obj_table[sana]=[]
@@ -607,7 +656,18 @@ def result_his(request, id, qiy_bir):
                                     obj_table[sana].append(j.qiymat_pul/koef)                               
                 else:
                     obj_table[sana].append(0)
-    
+    if tur_hisob=='A':
+        active1='active'
+        active2=''
+        active3=''
+    if tur_hisob=='B':
+        active1=''
+        active2='active'
+        active3=''
+    if tur_hisob=='C':
+        active1=''
+        active2=''
+        active3='active'
    
     valyut_nom=valyuta.name     
     context={
@@ -619,7 +679,11 @@ def result_his(request, id, qiy_bir):
         'obj_table': obj_table,
         'qiy_bir':qiy_bir,
         'valyuta':valyuta,
-        'valyut_nom':valyut_nom
+        'valyut_nom':valyut_nom,
+        'tur_hisob':tur_hisob,
+        'active1':active1,
+        'active2':active2,
+        'active3':active3,
     }
-    return render(request, '03_foydalanuvchi/03_1_result.html',context)
+    return render(request, '03_foydalanuvchi/03_1_result.html', context)
     

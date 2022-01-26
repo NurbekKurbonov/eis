@@ -148,9 +148,10 @@ class hisobot_full(models.Model):
     
     oraliq_min=models.CharField("Maksimal oraliq", max_length=50)
     oraliq_max=models.CharField("Minimal oraliq", max_length=50)
-    hisobotlar=models.ManyToManyField(hisobot_item, verbose_name=("Hisobotlar"))
+    hisobotlar=models.ManyToManyField(hisobot_item, verbose_name=("Ishlab chiqarish hisobotlari"))
     
     cheks=models.CharField("Chart va Birlik", max_length=255)
+    tur=models.CharField("Hisobot turi",blank=True, max_length=255)
     
     valyuta=models.ForeignKey(Valyuta,blank=True, verbose_name=("valyuta"), on_delete=models.CASCADE)
     

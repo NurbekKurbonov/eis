@@ -30,7 +30,7 @@
                     <thead>
                         <tr>
                             <th>T/r</th>                            
-                            <th>Hisobot nomi</th>                            
+                            <th>Hisobot nomi {% for tur in v.tur %}{{tur}}{% endfor %}</th>                            
                             <th>Sana</th> 
                             <th>Yil</th> 
                                                         
@@ -43,11 +43,20 @@
                     {% for v in his%}
                     <tr>
                         <td> {{forloop.counter}}</td>
-                        <td>{{v.nomi}}</td>     
-                        <td>{{v.vaqt|date:"d-m-Y"}}</td>  
-                        <td>{{v.vaqt|date:"Y"}}</td>  
-                        <td class="table-action text-center">
-                            <a href="{% url 'result_his' v.id 'nomli' %}" class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
+                        <td>{{v.nomi}} {{his.tur}}</td>
+                        <td>{{v.vaqt|date:"d-m-Y"}}</td>
+                        <td>{{v.vaqt|date:"Y"}}</td>
+                        <td class="table-action text-center">  
+                        
+                        <a {% if '1' in v.tur %}
+                                href="{% url 'result_his' v.id 'nomli' 'A' %}" 
+                            
+                            {% elif '2' in v.tur %}
+                                    href="{% url 'result_his' v.id 'nomli' 'B' %}" 
+                            {% else %}
+                                    href="{% url 'result_his' v.id 'nomli' 'C' %}" 
+                            {% endif %}
+                            class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
                         </td> 
                         <td class="table-action text-center">
                             <a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-excel"></i></a> 
