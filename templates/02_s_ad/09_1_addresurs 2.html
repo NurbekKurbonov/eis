@@ -5,41 +5,88 @@
 {% block content %}
 
 <div class="mb-3">
-    <h1 class="h3 d-inline align-middle">Yangi THSHT kodini qo`shish</h1>
+    <h1 class="h3 d-inline align-middle">Yangi resurs qo`shish</h1>
     <a href="{% url 'resurs' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
 </div>
 
 <div class="row">
+<form action="{% url 'addresurs' %}" method="post">
+        {% csrf_token %}
+        <div class="col-12 col-xl-12">
+            <div class="card">            
+                <div class="card-body">                
+                        <div class="row"> 
+                            <div class="mb-3 col-md-8">
+                                <label class="form-label" for="">Nomi</label>
+                                <input type="text" 
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    placeholder = " "                              
+                                    name = "nomi"
+                                    value = {{values.nomi}}>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="">Birligi</label>
+                                <select class="form-select flex-grow-1"                                
+                                name="birlik">                                    
+                                    {% for v in birlik %}
+                                    <option name="birlik" value = {{v.birlik}}>{{v.birlik}}</option> 
+                                    {% endfor %}
+                                </select>  
+                            </div>
+                        </div>
+                </div>
+            </div>                   
+        </div> 
+
     <div class="col-12 col-xl-12">
         <div class="card">            
-            <div class="card-body">
-                <form action="{% url 'addresurs' %}" method="post">
-                    {% csrf_token %}
+            <div class="card-body">                
                     <div class="row"> 
-                        <div class="mb-3 col-md-8">
-                            <label class="form-label" for="">Nomi</label>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">TSHY</label>
                             <input type="text" 
                                 class="form-control" 
                                 autofocus required="true"
-                                placeholder = " "                              
-                                name = "nomi"
+                                placeholder = "resurs birligini tshy dagi qiymatini kiriting"                              
+                                name = "tshy"
                                 value = {{values.nomi}}>
                         </div>
-                        <div class="mb-3 col-md-4">
-                            <label class="form-label" for="">Birligi</label>
-                            <select class="form-select flex-grow-1"                                
-                            name="birlik">                                    
-                                {% for v in birlik %}
-                                <option name="birlik" value = {{v.birlik}}>{{v.birlik}}</option> 
-                                {% endfor %}
-                            </select>  
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">TNE</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini tne dagi qiymatini kiriting"                              
+                                name = "tne"
+                                value = {{values.nomi}}>
                         </div>
-                    </div>                
-                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
-                </form>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">GJ</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini GJ dagi qiymatini kiriting"                              
+                                name = "gj"
+                                value = {{values.nomi}}>
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">GKal</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini GKaldagi qiymatini kiriting"                              
+                                name = "gkal"
+                                value = {{values.nomi}}>
+                        </div>
+                    </div> 
             </div>
         </div>
+        <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button> 
     </div>  
+    
+    
+</form>
     
 
     

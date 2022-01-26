@@ -66,6 +66,6 @@ urlpatterns = [
     path('valyuta', views.valyuta, name='valyuta'),
     path('addvalyuta', views.addvalyuta, name='addvalyuta'),
     path('editvalyuta/<int:id>', views.editvalyuta, name='editvalyuta'),
-    path('delvalyuta/<int:id>', views.delvalyuta, name='delvalyuta'), 
-    
+    path('savevalyuta/<int:id>', views.savevalyuta, name='savevalyuta'),
+    path('delvalyuta/<int:id>', views.delvalyuta, name='delvalyuta'),
 ]

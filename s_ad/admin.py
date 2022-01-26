@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar
+from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar, Valyuta
 
 
 
@@ -58,3 +58,6 @@ class resursAdmin(admin.ModelAdmin):
     search_files = ('nomi', 'birlik')  
     
 admin.site.register(resurslar, resursAdmin)
+
+admin.site.register(Valyuta)
+

@@ -107,6 +107,11 @@ class resurslar(models.Model):
     nomi = models.TextField('Resurs nomi')
     birlik = models.CharField('Resurs birligi', max_length=20)    
     
+    tshy=models.FloatField("TSHY", blank=True, default=0.0)
+    tne=models.FloatField("TNE", blank=True, default=0.0)
+    gj=models.FloatField("GJ", blank=True, default=0.0)
+    gkal=models.FloatField("GKAL",blank=True, default=0.0)
+    
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -115,3 +120,20 @@ class resurslar(models.Model):
     class Meta:
         verbose_name_plural = '08_Resurslar'
 
+class Valyuta(models.Model):
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    
+    name = models.TextField('Nomi', blank=True)
+    somda = models.FloatField('Necha so`mi', default=0, blank=True)
+    qiymati= models.FloatField("Qancha valyuta", default=0, blank=True)    
+
+    checker=models.BooleanField("Tekshirish", blank=True)
+    class Meta:
+        verbose_name = ("Valyuta")
+        verbose_name_plural = ("09_Valyutalar")
+
+    def __str__(self):
+        return f"Valyuta: {self.name}"
+
+    def get_absolute_url(self):
+        return reverse("Valyuta_detail", kwargs={"pk": self.pk})

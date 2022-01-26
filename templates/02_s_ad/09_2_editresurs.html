@@ -9,12 +9,13 @@
     <a href="{% url 'resurs' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
 </div>
 
+<form action="{% url 'editresurs' r.id %}" method="post">
+                    {% csrf_token %}
 <div class="row">
     <div class="col-12 col-xl-12">
         <div class="card">            
             <div class="card-body">
-                <form action="{% url 'editresurs' r.id %}" method="post">
-                    {% csrf_token %}
+                
                     <div class="row"> 
                         <div class="mb-3 col-md-8">
                             <label class="form-label" for="">Nomi</label>
@@ -34,16 +35,56 @@
                                 {% endfor %}
                             </select>  
                         </div>
-                    </div>                
-                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
-                    <a href="{% url 'delresurs' values.id %}" class="btn btn-danger" id="notyf-show">O'chirish</a>
-                </form>
+                    </div>
             </div>
         </div>
     </div>  
-    
-
-    
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">                
+                    <div class="row"> 
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">TSHY</label>
+                            <input type="float" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini tshy dagi qiymatini kiriting"                              
+                                name = "tshy"
+                                value = {{values.tshy}}>
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">TNE</label>
+                            <input type="float" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini tne dagi qiymatini kiriting"                              
+                                name = "tne"
+                                value = {{values.tshy}}>
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">GJ</label>
+                            <input type="float" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini GJ dagi qiymatini kiriting"                              
+                                name = "gj"
+                                value = {{values.gj}}>
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label" for="">GKal</label>
+                            <input type="float" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder = "resurs birligini GKaldagi qiymatini kiriting"                              
+                                name = "gkal"
+                                value = {{values.gkal}}>
+                        </div>
+                    </div> 
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>        
+        <a href="{% url 'delresurs' values.id %}" class="btn btn-danger" id="notyf-show">O'chirish</a> 
+    </div> 
 </div>
-
+ </form>
 {% endblock content %}

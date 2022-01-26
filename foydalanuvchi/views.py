@@ -9,7 +9,7 @@ from django.utils import timezone
 import datetime
 
 #modelsdan chaqirish******************
-from s_ad.models import resurslar
+from s_ad.models import resurslar, Valyuta
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich
 from kirish.models import savolnoma
 
@@ -372,6 +372,8 @@ def addhisobot(request):
     his_oraliq = hisobot_full.objects.filter(owner=request.user)  
     his_res = his_ich.objects.filter(owner=request.user)
     
+    valyuta=Valyuta.objects.all()
+    
     vaqt=timezone.now()
     sana = vaqt.strftime("%d-%m-%Y")
     
@@ -384,13 +386,15 @@ def addhisobot(request):
         'values':ist,
         'his_res':his_res,
         'ich_res':ich_res,
-        'oylar':oylar
+        'oylar':oylar,
+        'valyuta':valyuta
     }
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/03_1_addhisobot.html', context)
 
     if request.method=="POST":
         oraliq=request.POST['oraliq']
+        valute=request.POST['valute']
         
         if not oraliq:
             messages.error(request, 'Iltimos oraliqni kiriting?! ')           
@@ -423,6 +427,7 @@ def addhisobot(request):
         #diagramma va qo'shimcha birliklarni qo'shish
         
         cheks = request.POST.getlist('chart')
+        lastvalute=Valyuta.objects.latest('id').id
         
         hisobot_full.objects.create(
            owner=request.user,
@@ -430,8 +435,10 @@ def addhisobot(request):
            oraliq_min=oraliq_min,
            oraliq_max=oraliq_max,           
            vaqt=vaqt,
-           cheks=cheks                                 
+           cheks=cheks,
+           valyuta=Valyuta(valute)
         )
+        
         for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
             h_id=h.id
         his=hisobot_full.objects.get(pk=h_id)
@@ -472,9 +479,9 @@ def delhis(request, id):
 ##########################################################################
 def result_his(request, id, qiy_bir):   
      
-    his=hisobot_full.objects.get(pk=id)
-    
+    his=hisobot_full.objects.get(pk=id)    
     hisobotlar=his.hisobotlar.all()
+    valyuta=his.valyuta
     
     res=[]
     resb=[]
@@ -533,7 +540,14 @@ def result_his(request, id, qiy_bir):
            
             
     titleown=his.nomi +' // '+his.oraliq_min+' dan '+his.oraliq_max+' gacha'
-    if qiy_bir=='som':
+    
+    if qiy_bir=='som' or qiy_bir=='dollar':
+        
+        if qiy_bir=='som':
+            koef=1
+        if qiy_bir=="dollar":
+            koef=valyuta.somda/(valyuta.qiymati*1000)
+            
         res=[]        
         for v in hisobotlar:        
             resurs=v.ich.all()
@@ -551,12 +565,12 @@ def result_his(request, id, qiy_bir):
                 lst=[]
                 resurs=v.ich.all()
                 for k in resurs:
-                    lst.append(k.nom)            
+                    lst.append(k.nom)
                 if i in lst:   
                     for j in resurs:                            
                         if i in j.nom:
                             if i==j.nom:
-                                    obj[i].append(j.qiymat_pul)
+                                    obj[i].append(j.qiymat_pul/koef)
                 else:
                     obj[i].append(0)
                 
@@ -576,10 +590,12 @@ def result_his(request, id, qiy_bir):
                     for j in resurs:                            
                         if i in j.nom:
                             if i==j.nom:
-                                    obj_table[sana].append(j.qiymat_pul)                               
+                                    obj_table[sana].append(j.qiymat_pul/koef)                               
                 else:
                     obj_table[sana].append(0)
-         
+    
+   
+    valyut_nom=valyuta.name     
     context={
         'his':his,
         'res':res,
@@ -587,7 +603,9 @@ def result_his(request, id, qiy_bir):
         'obj':obj,
         'titleown':titleown,
         'obj_table': obj_table,
-        'qiy_bir':qiy_bir
+        'qiy_bir':qiy_bir,
+        'valyuta':valyuta,
+        'valyut_nom':valyut_nom
     }
     return render(request, '03_foydalanuvchi/03_1_result.html',context)
     

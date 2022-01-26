@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
-from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar
+from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta
 
 def icons(request):
     return render(request, 'partials/01_icons.html')
@@ -562,7 +562,7 @@ def delbirlik(request, id):
 #Resurs ******************************************************************
 def resurs(request):
     values = resurslar.objects.all()
-    context = {
+    context = {        
         'values': values,
         'titleown': 'Resurslar'
     }
@@ -583,8 +583,14 @@ def addresurs(request):
         
         nomi = request.POST['nomi']
         birlik = request.POST['birlik'] 
+        
+        tshy = request.POST['tshy']
+        tne = request.POST['tne']
+        gj = request.POST['gj']
+        gkal = request.POST['gkal']
 
-        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birlik)
+        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birlik,
+                                 tshy=tshy,tne=tne,gj=gj, gkal=gkal)
         messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('resurs') 
 
@@ -604,23 +610,35 @@ def editresurs(request, id):
     
     if request.method == 'POST':  
         nomi = request.POST['nomi']
-        birlik = request.POST['nomi'] 
+        birlik = request.POST['birlik'] 
+        
+        tshy = request.POST['tshy']
+        tne = request.POST['tne']
+        gj = request.POST['gj']
+        gkal = request.POST['gkal']
         
         r.nomi =nomi 
-        r.birlik =birlik 
+        r.birlik =birlik
+        r.tshy=tshy
+        r.tne=tne
+        r.gj=gj
+        r.gkal=gkal
         
         r.owner=request.user
         
         r.save()
         messages.success(request, 'Kattalik muvofaqqiyatli yangilandi!')
         
-        return redirect('kattalik')
+        return redirect('resurs')
     
 def delresurs(request, id):
     yoqol = resurslar.objects.get(pk=id)
     yoqol.delete()
     messages.success(request, 'Resurs muvofaqqiyatli o`chirildi')
     return redirect('resurs')
+
+def univbirl(request):
+    return render(request, '02_s_ad/12_0_universal_birlik.html', context)
 
 #************______Foydalanuvchilar bo'yicha ma'lumotlar________________*********
 
@@ -631,59 +649,53 @@ def usersozlama(request):
 #Valyuta bo'yicha ma'lumotlarni kiritish*********************
 
 def valyuta(request):
-    titleown='Davlatlar'
-    dav = davlatlar.objects.filter(owner=request.user)
+    titleown='Valyuta'
+    val = Valyuta.objects.filter(owner=request.user)
     
     context = {
-        'dav': dav,
+        'val': val,
         'titleown':titleown
         }
     
-    return render(request, '02_s_ad/11_0_valyuta.html', context)
+    if request.method == 'GET':
+        
+        return render(request, '02_s_ad/11_0_valyuta.html', context)
+    
+    if request.method == 'POST':       
+        
+        return redirect('valyuta')
 
 def addvalyuta(request):
-    titleown='Davlatlar'
-    context = {
-        'titleown':titleown
-    }
-    if request.method == 'GET':
-        return render(request, '02_s_ad/02_1_adddavlat.html', context)
-            
-    if request.method == 'POST':        
-        davlat_kodi = request.POST['davlat_kodi']
-        davlat_nomi = request.POST['davlat_nomi']        
-        
-        davlatlar.objects.create(owner=request.user, davlat_kodi=davlat_kodi, davlat_nomi=davlat_nomi )        
-        messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
-        return redirect('davlat')
+    Valyuta.objects.create(owner=request.user, name='', somda=0, qiymati=0, checker=False)
+    return redirect('valyuta')
 
 def editvalyuta(request, id):
        
-    davlat = davlatlar.objects.get(pk=id)
+    val = Valyuta.objects.get(pk=id)    
+    val.checker=False           
+    val.save()    
+    messages.success(request, 'Valyutani o`zgartirishingiz mumkin!')        
+    return redirect('valyuta')
+
+def savevalyuta(request, id):
+    val = Valyuta.objects.get(pk=id)
     
-    context = {
-        'davlat': davlat,
-        'values': davlat,
-    } 
+    if request.method=="POST": 
+        nom='nom'+str(id)
+        som='som'+str(id)
+        qiy='qiy'+str(id)
+        
+        val.name = request.POST[nom]
+        val.somda = request.POST[som]
+        val.qiymati = request.POST[qiy] 
+        val.checker=True
+        val.save()
+        messages.success(request, 'Valyuta muvafaqqiyatli yangilandi!')        
     
-    if request.method == 'GET':  
-        return render(request, '02_s_ad/02_2_editdavlat.html', context)
-    
-    if request.method == 'POST':  
-        davlat_kodi = request.POST['davlat_kodi']
-        davlat_nomi = request.POST['davlat_nomi'] 
-        
-        davlat.owner=request.user
-        davlat.davlat_kodi=davlat_kodi
-        davlat.davlat_nomi=davlat_nomi
-        
-        davlat.save()
-        messages.success(request, 'Davlat muvofaqqiyatli yangilandi!')
-        
-        return redirect('davlat')
+    return redirect('valyuta')
 
 def delvalyuta(request, id):
-    davlat = davlatlar.objects.get(pk=id)
+    davlat = Valyuta.objects.get(pk=id)    
     davlat.delete()
-    messages.success(request, 'Davlat muvofaqqiyatli o`chirildi')
-    return redirect('davlat')
+    messages.success(request, 'Valyuta o`chirildi')
+    return redirect('valyuta')

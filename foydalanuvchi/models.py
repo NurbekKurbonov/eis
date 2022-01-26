@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from s_ad.models import resurslar
+from s_ad.models import resurslar, Valyuta
 
 # user*******************
 class allfaqir(models.Model): 
@@ -152,6 +152,7 @@ class hisobot_full(models.Model):
     
     cheks=models.CharField("Chart va Birlik", max_length=255)
     
+    valyuta=models.ForeignKey(Valyuta,blank=True, verbose_name=("valyuta"), on_delete=models.CASCADE)
     
     vaqt=models.DateTimeField("Vaqti", auto_now_add=False) 
     

@@ -23,8 +23,11 @@
                         <tr>
                             <th>t/r</th> 
                             <th>Resurs nomi</th>                            
-                            <th>Resurs o`lchanadigan birlik</th> 
-                            
+                            <th>Birligi</th>
+                            <th>TSHY</th> 
+                            <th>TNE</th>
+                            <th>GJ</th>
+                            <th>GKal</th>                            
                             <th width="2%">harakat</th> 
                         </tr>
                         </thead>
@@ -33,18 +36,27 @@
                     <tr>
                         <td> {{forloop.counter}}</td>
                         <td>{{v.nomi}}</td>     
-                        <td>{{v.birlik}}</td>  
+                        <td>{{v.birlik}}</td>
+                        <td>{{v.tshy}}</td>  
+                        <td>{{v.tne}}</td>  
+                        <td>{{v.gj}}</td> 
+                        <td>{{v.gkal}}</td> 
+
                         <td class="table-action text-center">
                             <a href="{% url 'editresurs' v.id %}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a> 
-                        </td> 
+                        </td>
                     </tr>
                     {% endfor %}
                     </tbody>
                     <tfoot>
                     <tr>
                         <th>t/r</th> 
-                        <th>Resurs nomi</th>                            
-                        <th>Resurs o`lchanadigan birlik</th> 
+                            <th>Resurs nomi</th>                            
+                            <th>Birligi</th>
+                            <th>TSHY</th> 
+                            <th>TNE</th>
+                            <th>GJ</th>
+                            <th>kKal</th>
                     </tr>
                     </tfoot>
                     </table>

@@ -162,7 +162,7 @@
                             <div class="mb-3">
                                 <div class="input-group">
                                     <div class="input-group-text">
-                                        <input type="checkbox" name="chart" value="7">
+                                        <input type="checkbox" name="chart" value="7" checked>
                                     </div>
                                     <a class="form-control" placeholder="Checkbox" disabled>mln. so'mda</a>
                                 </div>
@@ -176,7 +176,11 @@
                                     <div class="input-group-text">
                                         <input type="checkbox" name="chart" value="8">
                                     </div>
-                                    <a class="form-control" placeholder="Checkbox" disabled>ming.dollar</a>
+                                    <select name="valute" class="form-select" placeholder="Checkbox">
+                                        {% for i in valyuta %}
+                                            <option value="{{i.id}}">{{i.name}}</option>  
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>

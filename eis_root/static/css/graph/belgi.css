@@ -1,0 +1,8 @@
+.yozuv_grad {
+    background: #121FCF;
+    background: -webkit-radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
+    background: -moz-radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
+    background: radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

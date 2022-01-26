@@ -19,19 +19,12 @@
         <h6 class="card-subtitle mb-2 text-muted">Birliklar {{qiy_bir}}</h6>
         <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
             
-            <a href="{% url 'result_his' his.id 'nomli' %}" type="button" class="btn btn-outline-info" {% if qiy_bir == 'nomli' %} style="background: #121FCF;
-            background: -webkit-radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
-            background: -moz-radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
-            background: radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;"{% endif %}>Nomli birliklarda</a>
-            {% if '7' in his.cheks %}<a href="{% url 'result_his' his.id 'som' %}" type="button" class="btn btn-outline-info" {% if qiy_bir == 'som' %} style="background: #121FCF;
-            background: -webkit-radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
-            background: -moz-radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
-            background: radial-gradient(ellipse farthest-corner at center center, #121FCF 0%, #CF1512 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;"{% endif %}>Mln.so'mda</a>{% endif %}       
-            {% if '8' in his.cheks %}<a href="#" type="button" class="btn btn-outline-info">Ming.dollar</a>{% endif %}
+            <a href="{% url 'result_his' his.id 'nomli' %}" type="button" class="btn btn-outline-info 
+                {% if qiy_bir == 'nomli' %} yozuv_grad{% endif %}">Nomli birliklarda</a>
+            {% if '7' in his.cheks %}<a href="{% url 'result_his' his.id 'som' %}" type="button" class="btn btn-outline-info 
+                {% if qiy_bir == 'som' %}yozuv_grad {% endif %}" >Mln.so'mda</a>{% endif %}       
+            {% if '8' in his.cheks %}<a href="{% url 'result_his' his.id 'dollar' %}" type="button" class="btn btn-outline-info 
+            {% if qiy_bir == 'dollar' %}yozuv_grad {% endif %}">Ming.{{valyut_nom}}</a>{% endif %}
             {% if '9' in his.cheks %}<a href="#" type="button" class="btn btn-outline-info">tshy</a>{% endif %} 
             {% if '0' in his.cheks %}<a href="#" type="button" class="btn btn-outline-info">tne</a>{% endif %} 
             {% if 'a' in his.cheks %}<a href="#" type="button" class="btn btn-outline-info">kKal</a>{% endif %}   
