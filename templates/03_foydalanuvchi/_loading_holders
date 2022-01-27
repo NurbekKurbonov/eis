@@ -1,0 +1,41 @@
+
+								<div class="card-body">
+									<span class="placeholder col-12"></span>
+									<span class="placeholder col-12 bg-primary"></span>
+									<span class="placeholder col-12 bg-secondary"></span>
+									<span class="placeholder col-12 bg-success"></span>
+									<span class="placeholder col-12 bg-danger"></span>
+									<span class="placeholder col-12 bg-warning"></span>
+									<span class="placeholder col-12 bg-info"></span>
+									<span class="placeholder col-12 bg-light"></span>
+									<span class="placeholder col-12 bg-dark"></span>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title">Width</h5>
+									<h6 class="card-subtitle text-muted">You can change the <code>width</code> through grid column classes, width utilities, or
+										inline styles.</h6>
+								</div>
+								<div class="card-body">
+									<span class="placeholder col-6"></span>
+									<span class="placeholder w-75"></span>
+									<span class="placeholder" style="width: 25%;"></span>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title">Animation</h5>
+									<h6 class="card-subtitle text-muted">Animate placeholders with <code>.placeholder-glow</code> or
+										<code>.placeholder-wave</code> to better convey the perception of something being actively loaded.</h6>
+								</div>
+								<div class="card-body">
+									<p class="placeholder-glow">
+										<span class="placeholder col-12"></span>
+									</p>
+									<p class="placeholder-wave">
+										<span class="placeholder col-12"></span>
+									</p>
+								</div>
+							</div>
+						</div>

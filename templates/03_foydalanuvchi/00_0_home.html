@@ -6,7 +6,7 @@
 
 {% block content %}
 {% csrf_token %}
-<div class="col-auto d-none d-sm-block">
+<div class="col-auto d-none d-sm-block">	
 	<div class="row mb-3">
 		{% for v in hammasi %}
 			<div class="col-sm-1">		
@@ -25,7 +25,7 @@
 		<div class="card" style="background: rgb(0,0,0);
 		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
 			<div class="card-body text-center">
-			<a class="" href="asosiyset"  width="100%" style="color:white"><i class="align-middle" data-feather="settings"></i>Sozlamalar</a>	
+			<a class="" href="{% url 'asosiyset' '1' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="settings"></i>Sozlamalar</a>	
 			</div>
 		</div>
 	</div>
@@ -33,7 +33,7 @@
 		<div class="card" style=" background: rgb(0,0,0);
 		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
 			<div class="card-body text-center">
-			<a class="" href="asosiyset"  width="100%" style="color:white"><i class="align-middle" data-feather="edit"></i>Ma'lumotlarni kiritish</a>	
+			<a class="" href="{% url 'davr' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="edit"></i>Ma'lumotlarni kiritish</a>	
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 		<div class="card" style="background: rgb(0,0,0);
 		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
 			<div class="card-body text-center">
-			<a class="" href="asosiyset"  width="100%" style="color:white"><i class="align-middle" data-feather="sliders"></i>Hisobotlar</a>	
+			<a class="" href="{% url 'hisobot' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="sliders"></i>Hisobotlar</a>	
 			</div>
 		</div>
 	</div>
@@ -110,12 +110,175 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="col-sm-12 col-xl-12">
+		<div class="card">
+			<div class="card-body">
+				
+				<div class="row">
+                    <div class="card-body">
+                        <div class="chart w-100">
+                            <div id="apexcharts-mixed"></div>
+                        </div>
+                    </div>
+                </div> 
+				
+				
+			</div>
+		</div>
+	</div>
 	
 </div>
 
 {% endblock content %}
 
 {% block scripts %}
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Mixed chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "line",
+                stacked: false,
+            },
+            stroke: {
+                width: [0, 2, 5],
+                curve: "smooth"
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: "50%"
+                }
+            },
+            series: [
+            {
+                name: "TEAM A",
+                type: "column",
+                data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+            }, {
+                name: "TEAM B",
+                type: "area",
+                data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
+            }, {
+                name: "TEAM C",
+                type: "line",
+                data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+            }
+            
+            ],
+            fill: {
+                opacity: [0.85, 0.25, 1],
+                gradient: {
+                    inverseColors: false,
+                    shade: "light",
+                    type: "vertical",
+                    opacityFrom: 0.85,
+                    opacityTo: 0.55,
+                    stops: [0, 100, 100, 100]
+                }
+            },
+            labels: ["01/01/2003", "02/01/2003", "03/01/2003", "04/01/2003", "05/01/2003", "06/01/2003", "07/01/2003", "08/01/2003", "09/01/2003",
+                "10/01/2003", "11/01/2003"
+            ],
+            markers: {
+                size: 0
+            },
+            xaxis: {
+                type: "datetime"
+            },
+            yaxis: {
+                title: {
+                    text: "Points",
+                },
+                min: 0
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function(y) {
+                        if (typeof y !== "undefined") {
+                            return y.toFixed(0) + " points";
+                        }
+                        return y;
+                    }
+                }
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-mixed"), {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: false,
+                },
+                stroke: {
+                    width: [0, 2, 5],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                series: [
+				{% if h_ich.count %}{% endif %}
+				{
+                    name: "Energiya resurs/mahsulot ishlab chiqarish",
+                    type: "column",
+                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+                }, {
+                    name: "Energiya iste`moli",
+                    type: "area",
+                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
+                }, {
+                    name: "Energiya resurs/mahsulot uzatish sotish",
+                    type: "line",
+                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+                }],
+                fill: {
+                    opacity: [0.85, 0.25, 1],
+                    gradient: {
+                        inverseColors: false,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: 0.85,
+                        opacityTo: 0.55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["01/01/2003", "02/01/2003", "03/01/2003", "04/01/2003", "05/01/2003", "06/01/2003", "07/01/2003", "08/01/2003", "09/01/2003",
+                    "10/01/2003", "11/01/2003"
+                ],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                yaxis: {
+                    title: {
+                        text: "Mln.so'm",
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function(y) {
+                            if (typeof y !== "undefined") {
+                                return y.toFixed(0) + " mln.so`m";
+                            }
+                            return y;
+                        }
+                    }
+                }
+            }
+        );
+        chart.render();
+    });
+</script>
 		
 {% endblock scripts %}

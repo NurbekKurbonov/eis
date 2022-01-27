@@ -9,7 +9,7 @@
 
 {% block content %}
 {% if not values.count %}
-<a href="{% url 'ist'%}" class="btn btn-primary float-end mt-n1" id="notyf-show" style="width:50%"> Iltimos ma'lumotlarni qo'shing!</a>
+<a href="{% url 'ist'%}" class="btn btn-primary float-end mt-n1" id="notyf-show" style="width:50%"> Iltimos faoliyat turini tanlang!</a>
 {%endif%}
 {% if values.count %}
 <a href="{% url 'adddavr' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Hisobot qo'shish</a>
@@ -63,9 +63,8 @@
 <div class="alert alert-warning alert-dismissible" role="alert">
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     <div class="alert-message">
-        <strong>Assalomu aleykum hurmatli foydallanuvchi!</strong> 
-        Hurmatli foydalanuvchi ushbu sahifa ishlashi uchun dastavval siz ishlab chiqaradigan/iste'mol qiladigan/sotadigan
-energiya resurs/nahsulot laringizni biriktirishingiz lozim!
+        <strong>Assalomu alaykum hurmatli foydallanuvchi!</strong> 
+       Ushbu sahifani faollashtirish uchun faoliyat turini tanlang (energiya resurs/mahsulot ishlab chiqaradigan/iste'mol qiladigan/uzatadigan sotadigan)
     </div>
 </div>
 {%endif%}

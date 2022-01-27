@@ -23,6 +23,7 @@ def home(request):
     h_ist=hisobot_ist.objects.filter(owner=request.user)
     h_uzat=hisobot_uzat.objects.filter(owner=request.user)
     
+    
     full_ich=0
     for v in h_ich:
         full_ich += v.qiymat_pul
@@ -425,8 +426,8 @@ def addhisobot(request):
         nomi=sana+' hisoboti'
         
         if hisobot_full.objects.filter(nomi = nomi).first():
-            messages.error(request, "Hisobot turini tanlang!")
-            return redirect('addhisobot') 
+            messages.error(request, "Siz bugungi so'rov limitini bajargansiz, keyinroq urinib ko'ring!")
+            return redirect('hisobot') 
         
         #diagramma va qo'shimcha birliklarni qo'shish
         
@@ -617,9 +618,7 @@ def result_his(request,id,qiy_bir,tur_hisob):
                 if tur_hisob=='B':
                     resurs=v.ist.all()
                 if tur_hisob=='C':
-                    resurs=v.uzat.all()
-                for i in resurs:                
-                    res.append(i.nom)                   
+                    resurs=v.uzat.all()                               
                 for k in resurs:
                     lst.append(k.nom)
                 if i in lst:   
@@ -641,9 +640,7 @@ def result_his(request,id,qiy_bir,tur_hisob):
                 resurs=v.ist.all()
             if tur_hisob=='C':
                 resurs=v.uzat.all()
-            for i in resurs:                
-                res.append(i.nom)   
-                    
+                                  
             sana = v.vaqt.strftime("%d-%m-%Y")
             obj_table[sana]=[]
             for i in res:
