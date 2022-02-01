@@ -19,29 +19,50 @@ def home(request):
     
     vaqt=timezone.now()
     
-    h_ich=hisobot_ich.objects.filter(owner=request.user)
-    h_ist=hisobot_ist.objects.filter(owner=request.user)
-    h_uzat=hisobot_uzat.objects.filter(owner=request.user)
+    h_item=hisobot_item.objects.filter(owner=request.user)
+    ich=hisobot_ich.objects.filter(owner=request.user)
+    ist=hisobot_uzat.objects.filter(owner=request.user)
+    sot=hisobot_uzat.objects.filter(owner=request.user)
     
-    
-    full_ich=0
-    for v in h_ich:
-        full_ich += v.qiymat_pul
-    
-    full_ist=0
-    for v in h_ist:
-        full_ist += v.qiymat_pul
-    
+    sanalar=[]
+    obj_ich={}
+    obj_ist={}
+    obj_uzat={}
+    for v in h_item:
+        sana = v.vaqt.strftime("%m-%Y")
+        sanalar.append(sana)
+        x=0
+        obj_ich[sana]=[]
+        obj_ist[sana]=[]
+        obj_uzat[sana]=[]
+        
+        for i in ich.filter(vaqt=v.vaqt):
+            x+=i.qiymat_pul
+        obj_ich[sana].append(x)
+        x=0
+        for i in ist.filter(vaqt=v.vaqt):
+            x+=i.qiymat_pul
+        obj_ist[sana].append(x)
+        x=0
+        
+        for i in sot.filter(vaqt=v.vaqt):
+            x+=i.qiymat_pul
+        obj_uzat[sana].append(x)
+       
     titleown="Bosh menyu"
     
     context ={
         'hammasi':hammasi,
-        'h_ich':h_ich,
-        'h_ist':h_ist,
-        'h_uzat':h_uzat,
-        'titleown':titleown,
-        "full_ist":full_ist,
-        'full_ich':full_ich
+        'h_item':h_item,
+        'ich':ich,
+        'ist':ist,
+        'sot':sot,
+        'sanalar':sanalar,
+        
+        'titleown':titleown,        
+        'obj_ich':obj_ich,
+        'obj_ist':obj_uzat,
+        'obj_uzat':obj_uzat,
     }
     return render(request, '03_foydalanuvchi/00_0_home.html', context)
 
@@ -146,24 +167,6 @@ def ist(request):
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
-
-def addist(request):
-    nom = request.POST['nom']  
-    resurs=resurslar.objects.all()
-     
-    for i in resurs:
-        if nom==i.nomi:
-            blik = i.birlik
-            
-    if istres.objects.filter(birlik = blik).first():
-        messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
-        return redirect('mich')  
-          
-    istres.objects.create(owner=request.user, nom=nom, birlik=blik)
-    
-    messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
-    return redirect('mich')  
-
 #Sotish********************************************************************************
 def sot(request):
     titleown = 'Energiya resurs/mahsulot sotish qilish bo`yicha ma`lumotlar'
@@ -203,7 +206,7 @@ def add(request):
     res_id = request.POST['nom'] 
  
     if sahnom=='1':  
-        if ichres.objects.filter(resurs=resurslar(res_id)).first():
+        if ichres.objects.filter(owner=request.user, resurs=resurslar(res_id)).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('mich')  
             
@@ -213,7 +216,7 @@ def add(request):
         return redirect('mich')
     
     if sahnom=='2':
-        if istres.objects.filter(resurs=resurslar(res_id)).first():
+        if istres.objects.filter(owner=request.user, resurs=resurslar(res_id)).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('ist')  
           
@@ -223,7 +226,7 @@ def add(request):
         return redirect('ist')
     
     if sahnom=='3':
-        if sotres.objects.filter(resurs=resurslar(res_id)).first():
+        if sotres.objects.filter(owner=request.user, resurs=resurslar(res_id)).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('sot')  
           
@@ -291,7 +294,7 @@ def adddavr(request):
             vaqt=datetime.datetime(int(yil_post), int(k), 15)
             title=oy_post+'-'+yil_post
         #*******************************************
-        if hisobot_item.objects.filter(title = title).first():
+        if hisobot_item.objects.filter(owner=request.user, title = title).first():
             messages.error(request, 'Siz allaqachon uchbu davr uchun hisobot yuborgansiz, agar xatoliklar yuzasidan murojaatingiz bo`lsa murojaat bo`limidan murojaat qilishingiz mumkin! Rahmat! Charchamang! :)')            
             return redirect('davr')
           
@@ -451,7 +454,7 @@ def addhisobot(request):
         
         nomi='Hisobot: '+sana
         
-        if hisobot_full.objects.filter(nomi = nomi).first():
+        if hisobot_full.objects.filter(owner=request.user, nomi = nomi).first():
             messages.error(request, "Siz bugungi so'rov limitini bajargansiz, keyinroq urinib ko'ring!")
             return redirect('hisobot') 
         
@@ -506,7 +509,7 @@ def addichresforhis(request):
     if request.method=="POST":        
         resurs=request.POST['resurs_id']
         
-        if his_ich.objects.filter(resurs = resurs).first():
+        if his_ich.objects.filter(owner=request.user, resurs = resurs).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('addhisobot')
         #resurs id ni aniqlash        
@@ -525,12 +528,29 @@ def delhis(request, id):
 
 ##########################################################################
 
-def result_his(request,id):   
+def result_his(request, id, tur, birl):   
      
-    his=hisobot_full.objects.get(pk=id)    
+    his=hisobot_full.objects.get(pk=id) 
+       
     valyuta=his.valyuta
     
-    res=his.ich.all()
+    active1=''
+    active2=''
+    active3=''
+    
+    if tur=="A":
+        active1='active'
+        res=his.ich.all()
+    
+    if tur=="B":
+        active2='active'
+        res=his.ist.all()
+        
+    if tur=="C":
+        active3='active'
+        res=his.sot.all()
+        
+    
     
     # Nomli Birliklarda
     sana=[]
@@ -552,10 +572,24 @@ def result_his(request,id):
     
     obj={}
     for i in res_id: 
-        r=resurslar.objects.get(pk=i).nomi
-        obj[r]=[]        
+        if birl=="nomli":
+            b=' ('+resurslar.objects.get(pk=i).birlik+' )'               
+        if birl=="tshy":
+            b=' ( tshy )'
+        if birl=="tne":
+            b=' ( tne )'
+        if birl=="gj":
+            b=' ( GJ )'
+        if birl=="gkal":
+            b=' ( GKal )'
+        if birl=="som":
+            b=' ( mln.so`m )'
+        if birl=="valut":
+            b=' ( ming.'+his.valyuta.name+' )'
+        r=resurslar.objects.get(pk=i).nomi+b
+        obj[r]=[]
         
-        lst=[]                        
+        lst=[]
         for j in res.filter(resurs__resurs__id=i):
             s = j.vaqt.strftime("%Y-%m")
             lst.append(s)            
@@ -565,24 +599,43 @@ def result_his(request,id):
                 for j in res.filter(resurs__resurs__id=i):
                     s = j.vaqt.strftime("%Y-%m")            
                     if k==s:
-                        obj[r].append(j.qiymat)
+                        if birl=='nomli' or birl=='tshy' or birl=='tne' or birl=='gj' or birl=='gkal':
+                            def birlik(i):
+                                switcher={
+                                    'nomli':1,
+                                    'tshy':j.resurs.resurs.tshy,
+                                    'tne':j.resurs.resurs.tne,
+                                    'gj':j.resurs.resurs.gj,
+                                    'gkal':j.resurs.resurs.gkal,                                    
+                                }
+                                return switcher.get(i, "xato")    
+                            
+                            koef1=birlik(birl)           
+                            q=j.qiymat*koef1
+                        if birl=='som' or birl=='valut':
+                            if birl == 'som':
+                                koef2=1
+                            if birl == 'valut':
+                                koef2=1000*his.valyuta.qiymati/his.valyuta.somda
+                            q=j.qiymat_pul*koef2
+                        
+                        obj[r].append(q)
+                        
             else:
                 obj[r].append(0)
-            
-                        
-                
-    
-    
-    
-    #obj[i].append(k.qiymat)
-    #s = k.vaqt.strftime("%Y-%m")     
-    
         
     context={
+        'titleown':his.nomi,
        'his':his,
        'obj':obj,
        'sana':sana,
-       'res_id':res_id
+       'res_id':res_id,
+       'birl':birl,
+       'tur1':tur,
+       
+       'active1':active1,
+       'active2':active2,
+       'active3':active3,
     }   
     return render(request, '03_foydalanuvchi/03_1_result.html', context)
     

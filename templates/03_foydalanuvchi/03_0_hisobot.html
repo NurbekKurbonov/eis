@@ -49,12 +49,12 @@
                         <td class="table-action text-center">  
                         
                         <a {% if '1' in v.tur %}
-                                href="{% url 'result_his' v.id %}" 
+                                href="{% url 'result_his' v.id 'A' 'nomli' %}" 
                             
                             {% elif '2' in v.tur %}
-                                    href="{% url 'result_his' v.id%}" 
+                                    href="{% url 'result_his' v.id 'B' 'nomli'%}" 
                             {% else %}
-                                    href="{% url 'result_his' v.id%}" 
+                                    href="{% url 'result_his' v.id 'C' 'nomli'%}" 
                             {% endif %}
                             class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
                         </td> 
