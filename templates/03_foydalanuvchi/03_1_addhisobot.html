@@ -5,7 +5,7 @@
 {% csrf_token %}
 
 <div class="mb-3">
-    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+    <h1 class="h3 d-inline align-middle">{{titleown}} {{res_for_add_show}}</h1>
 </div>
 
 <div class="row">    
@@ -27,8 +27,7 @@
                     {% for v in his_res%}
                         <tr>
                             <td> {{forloop.counter}}</td>
-                            <td class="d-none d-md-table-cell">{{v.resurs}}</td>
-
+                            <td class="d-none d-md-table-cell">{{v.resurs.nomi}}</td>
                             <td class="d-none d-md-table-cell"><a href="{% url 'delhis' v.id %}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
                         </tr>
                     {% endfor %}
@@ -51,8 +50,8 @@
                             <label class="form-label" for="">Resurs nomi</label>
                             <select class="form-select flex-grow-1"                                
                             name="resurs_id">                                    
-                                {% for v in ich_res %}
-                                <option value ="{{v.nom}}">{{v.nom}} // {{v.birlik}}</option> 									
+                                {% for k, v in res_show.items%}
+                                <option value ="{{k}}">{{v}}</option> 									
                                 {% endfor %}
                             </select>																				
                         </div>

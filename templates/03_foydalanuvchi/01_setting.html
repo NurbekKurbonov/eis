@@ -43,8 +43,8 @@
                     {% for v in ich %}
                     <tr>
                         <td> {{forloop.counter}}</td>
-                        <td>{{v.nom}}</td>     
-                        <td>{{v.birlik}}</td>  
+                        <td>{{v.resurs.nomi}}</td>     
+                        <td>{{v.resurs.birlik}}</td>  
                         <td class="table-action text-center">
                             <a href="#"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a> 
                         </td> 
@@ -54,8 +54,8 @@
                     <tfoot>
                     <tr>
                         <th>t/r</th> 
-                        <th>Resurs nomi</th>                            
-                        <th>Resurs o`lchanadigan birlik</th> 
+                        <th>Energiya resursi turi</th>                            
+                        <th>O'lchov birligi</th> 
                     </tr>
                     </tfoot>
                     </table>
@@ -79,7 +79,7 @@
 								<select class="form-select flex-grow-1"                                
 								name="nom">                                    
 									{% for v in resurs %}
-									<option name="nom" value ="{{v.nomi}}">{{v.nomi}} // {{v.birlik}}</option> 									
+									<option name="nom" value ="{{v.id}}">{{v.nomi}} // {{v.birlik}}</option> 									
 									{% endfor %}
 								</select>																				
 							</div>

@@ -4,15 +4,52 @@
 
 {% block content %}
 
-<div class="mb-3">
+<div class="mb-3" id="dvtitle">
     <h2 class="h2 d-inline align-middle" style="color:blue">{{titleown}} </h2>
     <a href="{% url 'davr' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
-    <p><h5 class="h5 d-inline align-middle">Hisobot topshirilayotgan sana: <B>{{sana}}</B> </h5></p>
+    <div id="sana"><p><h5 class="h5 d-inline align-middle">Hisobot topshirilayotgan sana: <B>{{sana}}</B> </h5></p></div>
     
 </div>
+<div class="mb-3" id="dvtitle2" style="display: none">
+    <h2 class="h2 d-inline align-middle" style="color:blue">Tarixiy hisobotlarni kiritish </h2>
+    <a href="{% url 'davr' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+    
+</div>
+
 <form action="{% url 'adddavr' %}" method="post">
 <div class="row">
     {% if ich.count %}
+    
+    <div class="col-12 col-xl-4" id="tarix1">
+        <div class="col-md">
+            <div class="mb-3">
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <input type="checkbox" name="c1" value="True" id="title">
+                    </div>
+                    <a class="form-control" placeholder="Checkbox">Oldingi ma'lumotlarni kiritish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-8" id="div1" style="display:none">
+        <div class="row">
+            <div class="col-12 col-xl-6">
+                <select name="yil" class="form-select">            
+                    {% for i in yil %}
+                        <option value="{{i}}">{{i}}</option>  
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-xl-6">
+                <select name="oy" class="form-select">            
+                    {% for i in oylar %}
+                        <option value="{{i}}">{{i}}</option>  
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>    
     <div class="col-12 col-xl-12">
         <div class="card"> 
             <div class="card-header">
@@ -23,18 +60,18 @@
                     <div class="row">
                         {% for v in ich %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.nom}} ({{v.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.nomi}} ({{v.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control" 
                                     autofocus required="true"
-                                    name="{{v.nom}}1">                            
+                                    name="{{v.resurs.id}}.1">                            
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{v.nom}} (mln.so'm)</label>
+                            <label class="form-label">{{v.resurs.nomi}} (mln.so'm)</label>
                             <input type="number"
                                     class="form-control" 
                                     autofocus required="true"
-                                    name="{{v.nom}}pul1">
+                                    name="{{v.resurs.id}}.pul1">
                         </div>
                         {% endfor %}
                     </div>                
@@ -55,19 +92,19 @@
                     <div class="row">
                         {% for v in ist %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.nom}} ({{v.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.nomi}} ({{v.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control" 
                                     autofocus required="true"
-                                    name="{{v.nom}}2">
+                                    name="{{v.resurs.id}}.2">
                         </div>
                         
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{v.nom}} (mln.so'm)</label>
+                            <label class="form-label">{{v.resurs.nomi}} (mln.so'm)</label>
                             <input type="number"
                                     class="form-control" 
                                     autofocus required="true"
-                                    name="{{v.nom}}pul2">
+                                    name="{{v.resurs.id}}.pul2">
                         </div>
                         {% endfor %}
                     </div>                
@@ -88,18 +125,18 @@
                     <div class="row">
                         {% for v in sot %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.nom}} ({{v.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.nomi}} ({{v.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control" 
                                     autofocus required="true"
-                                    name="{{v.nom}}3">
+                                    name="{{v.resurs.id}}.3">
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{v.nom}} (mln.so'm)</label>
+                            <label class="form-label">{{v.resurs.nomi}} (mln.so'm)</label>
                             <input type="number"
                                     class="form-control" 
                                     autofocus required="true"
-                                    name="{{v.nom}}pul3">
+                                    name="{{v.resurs.id}}.pul3">
                         </div> 
                         {% endfor %}                       
                
@@ -113,3 +150,22 @@
 </form>
 
 {% endblock content %}
+
+{% block scripts %}
+<script>  
+    $(function () {
+        $("#title").click(function () {
+            if ($(this).is(":checked")) {
+                $("#dvtitle").hide();
+                $("#dvtitle2").show();
+                $("#div1").show();
+
+            } else {
+                $("#dvtitle").show();  
+                $("#dvtitle2").hide();  
+                $("#div1").hide();
+            }
+        });
+    });
+</script>  
+{% endblock scripts %}

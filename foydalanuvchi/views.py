@@ -161,7 +161,7 @@ def addist(request):
           
     istres.objects.create(owner=request.user, nom=nom, birlik=blik)
     
-    messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvofaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
+    messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
     return redirect('mich')  
 
 #Sotish********************************************************************************
@@ -198,40 +198,38 @@ def sot(request):
 def add(request):
     
     sahnom = request.POST['sahifanomi'] 
+    
     resurs=resurslar.objects.all()  
-    nom = request.POST['nom'] 
-    for i in resurs:
-            if nom==i.nomi:
-                blik = i.birlik
-                
+    res_id = request.POST['nom'] 
+ 
     if sahnom=='1':  
-        if ichres.objects.filter(nom = nom).first():
+        if ichres.objects.filter(resurs=resurslar(res_id)).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('mich')  
             
-        ichres.objects.create(owner=request.user, nom=nom, birlik=blik)        
+        ichres.objects.create(owner=request.user, resurs=resurslar(res_id))        
         
-        messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvofaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
+        messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
         return redirect('mich')
     
     if sahnom=='2':
-        if istres.objects.filter(nom = nom).first():
+        if istres.objects.filter(resurs=resurslar(res_id)).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('ist')  
           
-        istres.objects.create(owner=request.user, nom=nom, birlik=blik)
+        istres.objects.create(owner=request.user, resurs=resurslar(res_id))
         
-        messages.success(request, 'Siz iste`mol resurs/mahsulotni muvofaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
+        messages.success(request, 'Siz iste`mol resurs/mahsulotni muvafaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
         return redirect('ist')
     
     if sahnom=='3':
-        if sotres.objects.filter(nom = nom).first():
+        if sotres.objects.filter(resurs=resurslar(res_id)).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('sot')  
           
-        sotres.objects.create(owner=request.user, nom=nom, birlik=blik)
+        sotres.objects.create(owner=request.user, resurs=resurslar(res_id))
         
-        messages.success(request, 'Siz sotish bo`limi chiqarish resurs/mahsulotni muvofaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
+        messages.success(request, 'Siz sotish bo`limi chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! Rahmat! Charchamang! :)')
         return redirect('sot')
     
 #*****************************Ma'lumotlarni kiritish*********************
@@ -263,50 +261,65 @@ def adddavr(request):
     title = str(oylar[int(m)-2])+'-'+yil
     titleown = title+' OYI UCHUN HISOBOT'    
     
+    yil=[]
+    for i in range(2010,2021):
+        yil.append(i)
+        
     context={
             'titleown':titleown,        
             'ich':ich,
             'ist':ist,
             'sot':sot,
-            'sana':sana
+            'sana':sana,
+            'oylar':oylar,
+            'yil':yil
         }
     
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/02_1_adddavr.html', context)
     
     if request.method=="POST":
+        #************tarix***************
+        tarix=request.POST.get('c1')
+        
+        yil_post=request.POST['yil']
+        oy_post=request.POST['oy']
+        if tarix=="True":
+            for i in range(len(oylar)):
+                if oy_post==oylar[i]:
+                    k=i+1                
+            vaqt=datetime.datetime(int(yil_post), int(k), 15)
+            title=oy_post+'-'+yil_post
+        #*******************************************
         if hisobot_item.objects.filter(title = title).first():
-            messages.success(request, 'Siz allaqachon uchbu davr uchun hisobot yuborgansiz, agar xatoliklar yuzasidan murojaatingiz bo`lsa murojaat bo`limidan murojaat qilishingiz mumkin! Rahmat! Charchamang! :)')            
+            messages.error(request, 'Siz allaqachon uchbu davr uchun hisobot yuborgansiz, agar xatoliklar yuzasidan murojaatingiz bo`lsa murojaat bo`limidan murojaat qilishingiz mumkin! Rahmat! Charchamang! :)')            
             return redirect('davr')
           
         for v in ich:                        
-            qiymat=request.POST[str(v.nom)+'1']
-            qiymat_pul=request.POST[str(v.nom+'pul1')]
+            qiymat=request.POST[(str(v.resurs.id)+'.1')]
+            qiymat_pul=request.POST[str(v.resurs.id)+'.pul1']
             hisobot_ich.objects.create(owner=request.user, 
                                     title=title,
                                     vaqt=vaqt,
-                                    nom=v.nom,
-                                    birlik=v.birlik,
+                                    resurs=ichres(v.id),
                                     qiymat=qiymat,
                                     qiymat_pul=qiymat_pul)
         for v in ist:                        
-            qiymat=request.POST[str(v.nom)+'2']
-            qiymat_pul=request.POST[str(v.nom+'pul2')]
+            qiymat=request.POST[str(v.resurs.id)+'.2']
+            qiymat_pul=request.POST[str(v.resurs.id)+'.pul2']
             hisobot_ist.objects.create(owner=request.user, 
                                     title=title,
                                     vaqt=vaqt,
-                                    nom=v.nom,
-                                    birlik=v.birlik,
+                                    resurs=istres(v.id),
                                     qiymat=qiymat,
                                     qiymat_pul=qiymat_pul)
         for v in sot:                        
-            qiymat=request.POST[str(v.nom)+'3']
-            qiymat_pul=request.POST[str(v.nom+'pul3')]
+            qiymat=request.POST[str(v.resurs.id)+'.3']
+            qiymat_pul=request.POST[str(v.resurs.id)+'.pul3']
             hisobot_uzat.objects.create(owner=request.user, 
                                     title=title,
                                     vaqt=vaqt,
-                                    nom=v.nom,
-                                    birlik=v.birlik,
+                                    resurs=sotres(v.id),
                                     qiymat=qiymat,
                                     qiymat_pul=qiymat_pul)
         
@@ -326,7 +339,7 @@ def adddavr(request):
         for i in hisobot_uzat.objects.filter(owner=request.user, title=title):
             his.uzat.add(i.id) 
             
-        messages.success(request, 'Hisobot muvofaqqiyatli yuborildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Hisobot muvafaqqiyatli yuborildi! Rahmat! Charchamang! :)')
         return redirect('davr')
 
 def checkdavr(request, id):
@@ -353,8 +366,7 @@ def checkdavr(request, id):
 def hisobot(request):
     titleown = 'Davriy hisobotlar'
     
-    his = hisobot_full.objects.filter(owner=request.user)  
-        
+    his = hisobot_full.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
     
     context={
@@ -367,10 +379,24 @@ def hisobot(request):
 
 def addhisobot(request):
     titleown = 'Davriy hisobotlarni shakllantirish'
-    ich_res = ichres.objects.filter(owner=request.user)
+    #***Resurslarni ko'rsatish
+    res_for_add_show=[]
+    for r in ichres.objects.filter(owner=request.user):
+        res_for_add_show.append(r.resurs.id)
+    for r in istres.objects.filter(owner=request.user):
+        res_for_add_show.append(r.resurs.id)
+    for r in sotres.objects.filter(owner=request.user):
+        res_for_add_show.append(r.resurs.id)
+    
+    res_for_add_show=list(set(res_for_add_show))
+    res_show={}
+    for i in res_for_add_show:
+        res_show[i]=resurslar.objects.get(pk=i).nomi+' ( '+resurslar.objects.get(pk=i).birlik+' )'
+    #**************************************************************************************************
+    
     ist = istres.objects.filter(owner=request.user)    
     
-    his_oraliq = hisobot_full.objects.filter(owner=request.user)  
+    his_oraliq = hisobot_full.objects.filter(owner=request.user)    
     his_res = his_ich.objects.filter(owner=request.user)
     
     valyuta=Valyuta.objects.all()
@@ -388,11 +414,11 @@ def addhisobot(request):
         'titleown':titleown,        
         'values':ist,
         'his_res':his_res,
-        'ich_res':ich_res,
         'oylar':oylar,
         'valyuta':valyuta,
         'mich':mich,
-        'sot':sot
+        'sot':sot,
+        'res_show':res_show
     }
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/03_1_addhisobot.html', context)
@@ -417,13 +443,13 @@ def addhisobot(request):
         
         if not hisobot_ich.objects.filter(owner=request.user, vaqt__range=[str(oraliq_min), str(oraliq_max)]):
             messages.error(request, "Ushbu oraliqda ma'lumotlar mavjud emas, boshqa oraliq tanlang!")
-            return redirect('addhisobot') 
+            return redirect('addhisobot')
         
         vaqt=timezone.now()
         sana = vaqt.strftime("%d-%m-%Y")
         yil = vaqt.strftime("%Y")
         
-        nomi=sana+' hisoboti'
+        nomi='Hisobot: '+sana
         
         if hisobot_full.objects.filter(nomi = nomi).first():
             messages.error(request, "Siz bugungi so'rov limitini bajargansiz, keyinroq urinib ko'ring!")
@@ -435,7 +461,7 @@ def addhisobot(request):
         tur = request.POST.getlist('his_tur')
         
         if len(tur)==1 and tur[0]=='':
-            messages.success(request, 'Hisobot muvofaqqiyatli tayyorlandi! ')
+            messages.success(request, 'Hisobot muvafaqqiyatli tayyorlandi! ')
             return redirect('hisobot')
         
         hisobot_full.objects.create(
@@ -447,240 +473,116 @@ def addhisobot(request):
            cheks=cheks,
            valyuta=Valyuta(valute),
            tur=tur
-           
         )
         
         for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
             h_id=h.id
         his=hisobot_full.objects.get(pk=h_id)
-                        
-        for i in hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):
-            his.hisobotlar.add(i.id)
         
-        messages.success(request, 'Hisobot muvofaqqiyatli tayyorlandi! ')
+        #hisobot shakllantirish uchun resurslarni qo'shish:
+        for i in his_res:
+            his.resurs.add(i.resurs.id)
+        
+        #oraliqqa ko'ra davriy hisobotlar qo'shish:             
+        for v in hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):            
+            his.h_item.add(v.id)
+            for r in v.ich.all():                
+                for i in his_res:
+                    if r.resurs.resurs.id==i.resurs.id:
+                        his.ich.add(r.id)
+            for r in v.ist.all():                
+                for i in his_res:
+                    if r.resurs.resurs.id==i.resurs.id:
+                        his.ist.add(r.id)
+            for r in v.uzat.all():                
+                for i in his_res:
+                    if r.resurs.resurs.id==i.resurs.id:
+                        his.sot.add(r.id)
+        
+        messages.success(request, 'Hisobot muvafaqqiyatli tayyorlandi! ')
         return redirect('hisobot')
         
 def addichresforhis(request):
-    if request.method=="POST":
-        
-        vaqt=timezone.now()
-        sana = vaqt.strftime("%d-%m-%Y")
-        yil=vaqt.strftime("%Y")
-        nomi=sana+' hisoboti'
+    if request.method=="POST":        
         resurs=request.POST['resurs_id']
         
         if his_ich.objects.filter(resurs = resurs).first():
             messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
             return redirect('addhisobot')
-    
+        #resurs id ni aniqlash        
         his_ich.objects.create(
-            nomi=nomi,
             owner=request.user,
-            resurs=resurs        
+            resurs=resurslar(pk=resurs)
         )
-        messages.success(request, 'Resurs muvofaqqiyatli qo`shildi')
+        messages.success(request, 'Resurs muvafaqqiyatli qo`shildi')
         return redirect('addhisobot')
 
 def delhis(request, id):
     davlat = his_ich.objects.get(pk=id)
     davlat.delete()
-    messages.success(request, 'Resurs muvofaqqiyatli o`chirildi')
+    messages.success(request, 'Resurs muvafaqqiyatli o`chirildi')
     return redirect('addhisobot')
 
 ##########################################################################
 
-def result_his(request,id,qiy_bir,tur_hisob):   
+def result_his(request,id):   
      
-    his=hisobot_full.objects.get(pk=id)
-    hisobotlar=his.hisobotlar.all()
-    valyuta=his.valyuta 
-    if tur_hisob=='mich':
-        pass
-    if qiy_bir=='nomli' or qiy_bir=='tshy' or qiy_bir=='tne' or qiy_bir=='gj' or qiy_bir=='gkal':
-        
-        res=[]
-        resb=[]
-        for v in hisobotlar:
-            if tur_hisob=='A':
-                resurs=v.ich.all()
-            if tur_hisob=='B':
-                resurs=v.ist.all()
-            if tur_hisob=='C':
-                resurs=v.uzat.all()
-                
-            for i in resurs:
-                qb=i.nom+' ( '+i.birlik+' )'
-                res.append(i.nom)
-                resb.append(qb)
-        res=set(res)
-        resb=list(set(resb))
-        
-        #for linegraph
-        obj = {}
-        count=0    
-        for i in res:
-            key=resb[count]
-            
-            obj[key]=[]
-            
-            count+=1
-            for v in hisobotlar:        
-                lst=[]
-                if tur_hisob=='A':
-                    resurs=v.ich.all()
-                if tur_hisob=='B':
-                    resurs=v.ist.all()
-                if tur_hisob=='C':
-                    resurs=v.uzat.all()
-                
-                for k in resurs:
-                    lst.append(k.nom)            
-                if i in lst:   
-                    for j in resurs:                            
-                        if i in j.nom:
-                            if i==j.nom:
-                                koef=1
-                                if qiy_bir=='tne':                                    
-                                    for blik in resurslar.objects.all():
-                                        if j.nom==blik.nomi:
-                                            koef=blik.tne
-                                if qiy_bir=='gj':
-                                    for blik in resurslar.objects.all():
-                                        if j.nom==blik.nomi:
-                                            koef=blik.tne                                
-                                if qiy_bir=='gkal':                                    
-                                    for blik in resurslar.objects.all():
-                                        if j.nom==blik.nomi:
-                                            koef=blik.tne
-                                obj[key].append(j.qiymat/koef)
-                else:
-                    obj[i].append(0)
-                
-        #table
-        obj_table = {}    
-        
-        for v in hisobotlar:        
-            lst=[]
-            if tur_hisob=='A':
-                resurs=v.ich.all()
-            if tur_hisob=='B':
-                resurs=v.ist.all()
-            if tur_hisob=='C':
-                resurs=v.uzat.all()            
-                    
-            sana = v.vaqt.strftime("%d-%m-%Y")
-            obj_table[sana]=[]
-            for i in res:
-                for k in resurs:
-                    lst.append(k.nom)            
-                if i in lst:   
-                    for j in resurs:                            
-                        if i in j.nom:
-                            if i==j.nom:
-                                    obj_table[sana].append(j.qiymat/koef)                               
-                else:
-                    obj_table[sana].append(0)                  
-        
-    # mlm so'mda qiymatni chiqarish
-           
-            
-    titleown=his.nomi +' // '+his.oraliq_min+' dan '+his.oraliq_max+' gacha'
+    his=hisobot_full.objects.get(pk=id)    
+    valyuta=his.valyuta
     
-    if qiy_bir=='som' or qiy_bir=='dollar':
+    res=his.ich.all()
+    
+    # Nomli Birliklarda
+    sana=[]
+    resurs=[]
+    res_id=[]
+    for i in res:
+        s = i.vaqt.strftime("%Y-%m")
+        sana.append(s) 
+               
+        res_id.append(i.resurs.resurs.id)
         
-        if qiy_bir=='som':
-            koef=1
-        if qiy_bir=="dollar":
-            koef=valyuta.somda/(valyuta.qiymati*1000)
-            
-        res=[]        
-        for v in hisobotlar:
-            if tur_hisob=='A':
-                resurs=v.ich.all()
-            if tur_hisob=='B':
-                resurs=v.ist.all()
-            if tur_hisob=='C':
-                resurs=v.uzat.all()
-            for i in resurs:                
-                res.append(i.nom)                
-        res=set(res)       
+        r=i.resurs.resurs.nomi
+        resurs.append(r)
+    
+    sana=set(sana)
+    sana=sorted(sana)
+    resurs=set(resurs)
+    res_id=set(res_id)
+    
+    obj={}
+    for i in res_id: 
+        r=resurslar.objects.get(pk=i).nomi
+        obj[r]=[]        
         
-        #for linegraph
-        obj = {}
-        count=0    
-        for i in res:                     
-            obj[i]=[]
+        lst=[]                        
+        for j in res.filter(resurs__resurs__id=i):
+            s = j.vaqt.strftime("%Y-%m")
+            lst.append(s)            
+        
+        for k in sana:
+            if k in lst:
+                for j in res.filter(resurs__resurs__id=i):
+                    s = j.vaqt.strftime("%Y-%m")            
+                    if k==s:
+                        obj[r].append(j.qiymat)
+            else:
+                obj[r].append(0)
             
-            for v in hisobotlar:        
-                lst=[]
-                if tur_hisob=='A':
-                    resurs=v.ich.all()
-                if tur_hisob=='B':
-                    resurs=v.ist.all()
-                if tur_hisob=='C':
-                    resurs=v.uzat.all()                               
-                for k in resurs:
-                    lst.append(k.nom)
-                if i in lst:   
-                    for j in resurs:                            
-                        if i in j.nom:
-                            if i==j.nom:
-                                    obj[i].append(j.qiymat_pul/koef)
-                else:
-                    obj[i].append(0)
+                        
                 
-        #table
-        obj_table = {}    
+    
+    
+    
+    #obj[i].append(k.qiymat)
+    #s = k.vaqt.strftime("%Y-%m")     
+    
         
-        for v in hisobotlar:        
-            lst=[]
-            if tur_hisob=='A':
-                resurs=v.ich.all()
-            if tur_hisob=='B':
-                resurs=v.ist.all()
-            if tur_hisob=='C':
-                resurs=v.uzat.all()
-                                  
-            sana = v.vaqt.strftime("%d-%m-%Y")
-            obj_table[sana]=[]
-            for i in res:
-                for k in resurs:
-                    lst.append(k.nom)            
-                if i in lst:   
-                    for j in resurs:                            
-                        if i in j.nom:
-                            if i==j.nom:
-                                    obj_table[sana].append(j.qiymat_pul/koef)                               
-                else:
-                    obj_table[sana].append(0)
-    if tur_hisob=='A':
-        active1='active'
-        active2=''
-        active3=''
-    if tur_hisob=='B':
-        active1=''
-        active2='active'
-        active3=''
-    if tur_hisob=='C':
-        active1=''
-        active2=''
-        active3='active'
-   
-    valyut_nom=valyuta.name     
     context={
-        'his':his,
-        'res':res,
-        'hisobotlar':hisobotlar ,
-        'obj':obj,
-        'titleown':titleown,
-        'obj_table': obj_table,
-        'qiy_bir':qiy_bir,
-        'valyuta':valyuta,
-        'valyut_nom':valyut_nom,
-        'tur_hisob':tur_hisob,
-        'active1':active1,
-        'active2':active2,
-        'active3':active3,
-    }
+       'his':his,
+       'obj':obj,
+       'sana':sana,
+       'res_id':res_id
+    }   
     return render(request, '03_foydalanuvchi/03_1_result.html', context)
     

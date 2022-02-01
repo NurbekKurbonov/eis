@@ -25,7 +25,7 @@
     <div class="col-12">
         <div class="card">            
             <div class="card-body">
-{% if values.count %}              
+{% if his.count %}              
                 <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
                     <thead>
                         <tr>
@@ -49,12 +49,12 @@
                         <td class="table-action text-center">  
                         
                         <a {% if '1' in v.tur %}
-                                href="{% url 'result_his' v.id 'nomli' 'A' %}" 
+                                href="{% url 'result_his' v.id %}" 
                             
                             {% elif '2' in v.tur %}
-                                    href="{% url 'result_his' v.id 'nomli' 'B' %}" 
+                                    href="{% url 'result_his' v.id%}" 
                             {% else %}
-                                    href="{% url 'result_his' v.id 'nomli' 'C' %}" 
+                                    href="{% url 'result_his' v.id%}" 
                             {% endif %}
                             class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
                         </td> 

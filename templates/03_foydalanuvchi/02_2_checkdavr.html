@@ -23,7 +23,7 @@
                     <div class="row">
                         {% for v in h_ich %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.nom}} ({{v.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control"  disabled
                                     autofocus required="true"
@@ -31,7 +31,7 @@
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{v.nom}} (mln.so'm)</label>
+                            <label class="form-label">{{v.resurs.resurs.nomi}} (mln.so'm)</label>
                             <input type="number"
                                     class="form-control"  disabled
                                     autofocus required="true"
@@ -57,7 +57,7 @@
                     <div class="row">
                         {% for v in h_ist %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.nom}} ({{v.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control"  disabled
                                     autofocus required="true"
@@ -65,7 +65,7 @@
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{v.nom}} (mln.so'm)</label>
+                            <label class="form-label">{{v.resurs.resurs.nomi}} (mln.so'm)</label>
                             <input type="number"
                                     class="form-control"  disabled
                                     autofocus required="true"
@@ -91,7 +91,7 @@
                     <div class="row">
                         {% for v in h_uzat %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.nom}} ({{v.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control"  disabled
                                     autofocus required="true"
@@ -99,7 +99,7 @@
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{v.nom}} (mln.so'm)</label>
+                            <label class="form-label">{{v.resurs.resurs.nomi}} (mln.so'm)</label>
                             <input type="number"
                                     class="form-control"  disabled
                                     autofocus required="true"
