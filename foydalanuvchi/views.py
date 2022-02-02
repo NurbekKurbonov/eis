@@ -21,7 +21,7 @@ def home(request):
     
     h_item=hisobot_item.objects.filter(owner=request.user)
     ich=hisobot_ich.objects.filter(owner=request.user)
-    ist=hisobot_uzat.objects.filter(owner=request.user)
+    ist=hisobot_ist.objects.filter(owner=request.user)
     sot=hisobot_uzat.objects.filter(owner=request.user)
     
     sanalar=[]
@@ -29,25 +29,22 @@ def home(request):
     obj_ist={}
     obj_uzat={}
     for v in h_item:
-        sana = v.vaqt.strftime("%m-%Y")
+        sana = v.vaqt.strftime("01/%m/%Y")
         sanalar.append(sana)
         x=0
-        obj_ich[sana]=[]
-        obj_ist[sana]=[]
-        obj_uzat[sana]=[]
         
         for i in ich.filter(vaqt=v.vaqt):
             x+=i.qiymat_pul
-        obj_ich[sana].append(x)
+        obj_ich[sana]=x
         x=0
         for i in ist.filter(vaqt=v.vaqt):
             x+=i.qiymat_pul
-        obj_ist[sana].append(x)
+        obj_ist[sana]=x
         x=0
         
         for i in sot.filter(vaqt=v.vaqt):
             x+=i.qiymat_pul
-        obj_uzat[sana].append(x)
+        obj_uzat[sana]=x
        
     titleown="Bosh menyu"
     

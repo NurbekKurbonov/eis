@@ -13,7 +13,7 @@
 				<img alt="EMBLEMA" src="{{v.emblem.url}}" class=" img-responsive mt-2" width="65" height="65" />
 			</div>		
 			<div class="col-sm-11">		
-				<div class="col-sm-12" style="color:blue">Assalomu aleykum! {{obj}}</div>
+				<div class="col-sm-12" style="color:blue">Assalomu aleykum!</div>
 				<div class="col-sm-12"><h1><strong>{{v.nomi}}</strong></h1></div>				 
 				<div class="col-sm-12">{{v.about}}</div>
 			</div>
@@ -182,7 +182,7 @@
                         stops: [0, 100, 100, 100]
                     }
                 },
-                labels: ["01/01/2003", "02/01/2003", "03/01/2003",
+                labels: [{% for k,v in obj_ist.items %} '{{k}}', {% endfor %}
                 ],
                 markers: {
                     size: 0
