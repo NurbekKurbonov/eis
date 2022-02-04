@@ -611,9 +611,9 @@ def result_his(request, id, tur, birl):
                             q=j.qiymat*koef1
                         if birl=='som' or birl=='valut':
                             if birl == 'som':
-                                koef2=1
+                                koef2=j.qiymat
                             if birl == 'valut':
-                                koef2=1000*his.valyuta.qiymati/his.valyuta.somda
+                                koef2=1000*j.qiymat*his.valyuta.qiymati/his.valyuta.somda
                             q=j.qiymat_pul*koef2
                         
                         obj[r].append(q)
@@ -636,3 +636,6 @@ def result_his(request, id, tur, birl):
     }   
     return render(request, '03_foydalanuvchi/03_1_result.html', context)
     
+
+
+

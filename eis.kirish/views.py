@@ -6,15 +6,31 @@ from .models import sahifa, savolnoma
 from .forms import ContactForm
 import foydalanuvchi
 
+from django.http import JsonResponse
+
 
 #login_____*********************************************/
 
 def loginP(request):
     return render(request, '01_auth/01_login.html')
 
-def registerP(request):
-    return render(request, '01_auth/02_register.html')
+#Regisration **********************************************************
+class UsernameValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        username = data['username']
+        if not str(username).isalnum():
+            return JsonResponse({'username_error': 'foydalanuvchi nomi faqat harflardan tashkil topishi lozim'}, status=400)        
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'username_error': 'Foydalanilgan, boshqa tanlang'}, status=409)
+        return JsonResponse({'username_valid': True})
     
+class registerP(request):
+    def get(self, request):
+        
+        return render(request, '01_auth/02_register.html')
+    
+# END Regisration *****************************************************
 
 def xato500(request):
     return render(request, '01_auth/04_Xato_500.html')
