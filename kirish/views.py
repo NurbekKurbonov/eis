@@ -6,6 +6,11 @@ from django.views import View
 import json
 from django.contrib.auth.models import User
 from validate_email import validate_email
+from django.core.mail import EmailMessage
+
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
 
 from .models import sahifa, savolnoma
 from .forms import ContactForm
@@ -28,8 +33,8 @@ class EmailValidationView(View):
         if not validate_email(email):
             return JsonResponse({'email_error': 'Email xato'}, status=400)
         
-        if last !='@umail.uz':
-            return JsonResponse({'email_error': 'umail.uz bo`lishi lozim'}, status=401)
+        #if last !='@umail.uz':
+        #    return JsonResponse({'email_error': 'umail.uz bo`lishi lozim'}, status=401)
         
         if User.objects.filter(email=email).exists():
             return JsonResponse({'email_error': 'Uzur, ushbu email foydalanilgan, parolni unutgan bo`lsangiz, tiklash bo`limiga o`ting'}, status=409)
@@ -85,10 +90,48 @@ class registerP(View):
         return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
     
     def post(self, request):
-        usename=request.POST['username']
+        username=request.POST['username']
         email=request.POST['email']
+        password = request.POST['password']
+        context = {
+            'fieldValues': request.POST,
+            'captchaform': captchaform
+        }
         
-    
+        if str(password).isalnum():
+            messages.error(request, 'Parolga kamida bitta belgi qatnashishi lozim')
+            return render(request, '01_auth/02_register.html', context)
+        
+        if not User.objects.filter(username=username).exists():
+            if not User.objects.filter(email=email).exists():
+                if not User.objects.filter(password=password).exists():
+                    user=User.objects.create_user(username=username, email=email)
+                    user.set_password(password)
+                    user.is_active = False
+                    
+                    user.save()
+                    email_subject = 'Sistemaga kirish uchun aktiv qilish'
+                    
+                    # path_to_view
+                    # - getting domain we are on
+                    # - relative url ver
+                    # - encode uid
+                    # - token 
+                    email_body='Test Body'
+                    email=EmailMessage(
+                                email_subject,
+                                email_body,
+                                'noreply.nurbek.kurbonov@nur.uz',                                
+                                [email],                                                                
+                            )
+                    email.send(fail_silently=False)
+                    messages.success(request, 'Foydalanuvhi muvafaqqiyatli sistemaga qo`shildi!')
+                    return redirect('loginP')
+        return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
+
+class VerificationView(View):
+    def get(self, request, uidb64, token):
+        return redirect('login')
 
 #**************************************************************   
 def resetpas(request):

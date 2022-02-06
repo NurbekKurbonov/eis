@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import registerP, UsernameValidationView, EmailValidationView, StirValidationView, passwordValidationView
+from .views import registerP, UsernameValidationView, EmailValidationView, StirValidationView, passwordValidationView, VerificationView
 from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib import auth
@@ -20,6 +20,8 @@ urlpatterns = [
          name='validate-stir'),
     path('validate-password', csrf_exempt(passwordValidationView.as_view()),
          name='validate-password'),    
+    
+    path('activate/<uidb64>/<token>', VerificationView.as_view(), name="activate"),
     
     path('reset', views.resetpas, name='reset'),
     path('savolnoma', views.savol, name='savolnoma'),

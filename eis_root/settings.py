@@ -57,11 +57,12 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    
+    'django.middleware.common.CommonMiddleware',    
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -150,3 +151,10 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     messages.WARNING: 'warning'    
 }
+
+# email stuff *************************************************************
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'nurbek.kurbonov.96@gmail.com'
+EMAIL_HOST_PASSWORD = 'zdkkebohyiulpzrn'
+EMAIL_PORT = 587
