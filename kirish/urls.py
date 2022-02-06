@@ -1,11 +1,26 @@
-
 from django.urls import path
 from . import views
+from .views import registerP, UsernameValidationView, EmailValidationView, StirValidationView, passwordValidationView
+from django.views.decorators.csrf import csrf_exempt
+
+from django.contrib import auth
 
 urlpatterns = [
     path('login', views.loginP, name='loginP'),
-    path('register', views.registerP, name='register'),
-    path('xato500', views.xato500, name='xato500'),
+    
+    #registratsya url
+    path('register', registerP.as_view(), name='register'),
+    path('validate-username', csrf_exempt(UsernameValidationView.as_view()),
+         name="validate-username"),
+    
+    path('validate-email', csrf_exempt(EmailValidationView.as_view()),
+         name='validate_email'),
+    
+    path('validate-stir', csrf_exempt(StirValidationView.as_view()),
+         name='validate-stir'),
+    path('validate-password', csrf_exempt(passwordValidationView.as_view()),
+         name='validate-password'),    
+    
     path('reset', views.resetpas, name='reset'),
     path('savolnoma', views.savol, name='savolnoma'),
     

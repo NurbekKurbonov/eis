@@ -1,10 +1,17 @@
 from django.shortcuts import render, get_object_or_404,redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
+
+from django.views import View
+import json
+from django.contrib.auth.models import User
+from validate_email import validate_email
 
 from .models import sahifa, savolnoma
 from .forms import ContactForm
 import foydalanuvchi
+
+from .forms import captchaform
 
 
 #login_____*********************************************/
@@ -12,13 +19,78 @@ import foydalanuvchi
 def loginP(request):
     return render(request, '01_auth/01_login.html')
 
-def registerP(request):
-    return render(request, '01_auth/02_register.html')
+#registratsya**************************************************
+class EmailValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        email = data['email']
+        last=email[-9:]        
+        if not validate_email(email):
+            return JsonResponse({'email_error': 'Email xato'}, status=400)
+        
+        if last !='@umail.uz':
+            return JsonResponse({'email_error': 'umail.uz bo`lishi lozim'}, status=401)
+        
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({'email_error': 'Uzur, ushbu email foydalanilgan, parolni unutgan bo`lsangiz, tiklash bo`limiga o`ting'}, status=409)
+        return JsonResponse({'email_valid': True})
+    
+class UsernameValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        username = data['username']
+        if not str(username).isalnum():
+            return JsonResponse({'username_error': 'foydalanuvchi nomi faqat harf-raqamli belgilarni o`z ichiga olishi kerak'}, status=400)
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'username_error': 'Kechirasiz, ushbu nom foydalanilgan, boshqa nom tanlang  '}, status=409)
+        return JsonResponse({'username_valid': True})    
+
+class StirValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        stir = data['stir']
+        
+        if len(stir)!=9:
+            return JsonResponse({'stir_error': 'STIR raqami noto`g`ri'}, status=400)
+        
+        boshi=int(stir[:1])        
+        if boshi>3:
+            if boshi<7:
+                return JsonResponse({'stir_error': 'Sistema hozircha faqat yuridik shaxslarni qabul qiladi'}, status=401)
+            return JsonResponse({'stir_error': 'STIR yuridik shaxsga tegishli emas'}, status=400)
+            
+        
+        return JsonResponse({'stir_valid': True})    
+
+class passwordValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        password = data['password']
+        
+        if len(password)<8:
+            return JsonResponse({'password_error': 'parol 8 ta belgidan ko`p bo`lishi kerak. masalan:pArol12#'}, status=400)
+        
+        if str(password).isalnum():
+            return JsonResponse({'password_error': 'Kamida belgi qatnashishi kerak'}, status=400)                    
+        
+        lst=list(str(password))
+        if any(c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" for c in lst) is False:
+            return JsonResponse({'password_error': 'Kamida bitta harf katta bo`lishi kerak'}, status=409)
+        
+        return JsonResponse({'password_valid': True})    
+    
+class registerP(View):
+    def get(self, request):        
+          
+        return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
+    
+    def post(self, request):
+        usename=request.POST['username']
+        email=request.POST['email']
+        
     
 
-def xato500(request):
-    return render(request, '01_auth/04_Xato_500.html')
-
+#**************************************************************   
 def resetpas(request):
     return render(request, '01_auth/05_reset.html')
 

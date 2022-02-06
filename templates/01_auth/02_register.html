@@ -14,42 +14,66 @@
 <div class="card">
 	<div class="card-body">
 		<div class="m-sm-4">
-			<form>
+			<form action="{% url 'register' %}" method="post">
+				{% csrf_token %}
 				<div class="mb-3">
-					<label class="form-label">Ismingiz</label>
+					<label class="form-label">Foydalanish nomi</label>
 					<input class="form-control form-control-lg" 
 					type="text" 
-					name="name"
+					name="username"
+					id="usernameField"
 					required
 					placeholder="Ismingizni kiriting" />
 				</div>
+				<div class="invalid_feedback invalid-feedback" style="display:none">
+				</div>
+				<p class="text-sm text-success usernameSuccessOutput"></p>
 				<div class="mb-3">
-					<label class="form-label">INN</label>
+					<label class="form-label">STIR</label>
 					<input class="form-control form-control-lg" 
 					required
 					type="number" 
-					name="company" 
+					name="stir" 
+					min="0"
+					max="999999999"
+					id="stirField"
 					placeholder="INN ni kiriting" />
 				</div>
+				<div class="stirFeedBackArea invalid-feedback" style="display:none">
+				</div>
+
 				<div class="mb-3">
 					<label class="form-label">Email</label>
 					<input class="form-control form-control-lg" 
 					type="email" 
 					name="email" 
+					autofocus required="true"
+					id="emailField"
 					placeholder="Emailingizni kiriting" />
 				</div>
-				<div class="mb-3">
-					<label class="form-label">Parol</label>
-					<input class="form-control form-control-lg" 
-					type="password" 
-					autocomplete="current-password"
-					id="id_password"
-					name="password" placeholder="Parolingizni kiriting"> 
-					<i style="margin-left: -30px; cursor: pointer;" class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+				<div class="emailFeedBackArea invalid-feedback" style="display:none">
 				</div>
+
+				<div class="col-12 mb-3">
+						<label class="form-label">Parol</label>
+						<input class="form-control form-control-lg"						
+								autofocus required="true"
+								type="password" 
+								id="passwordField"
+								name="password" 
+								placeholder="Parolingizni kiriting"/>
+					<i class="far fa-eye" id="togglePassword" style="cursor: pointer; position:absolute; top:71%; left:85%; color:blue;" ></i>
+					<div class="passwordFeedBackArea invalid-feedback" style="display:none">
+					</div>					
+				</div>
+
+				<div class="col-12 mb-3">
+					{{captchaform.as_p}}
+					</div>
+		
 				<div class="text-center mt-3">
 					<!-- <a type="submit" href="https://id.gov.uz/cmn/LoginPage.do" class="btn btn-lg btn-primary">Ro'yxatdan o'tish/One ID orqali</a>-->
-					<button type="submit" class="btn btn-lg btn-primary">Ro'yxatdan o'tish</button> 
+					<button type="submit" value="Register" class="btn btn-lg btn-primary submit-btn">Ro'yxatdan o'tish</button> 
 				</div>
 			</form>
 		</div>
