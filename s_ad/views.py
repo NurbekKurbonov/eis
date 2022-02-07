@@ -28,14 +28,13 @@ def group_required(group, login_url=None, raise_exception=False):
         if raise_exception:
             raise PermissionDenied
         return False
-    return user_passes_test(check_perms, login_url=login_url)
+    return user_passes_test(check_perms, login_url='/login')
 
-@login_required(login_url='/login')
-@group_required('admin2', login_url='/login')
+@group_required('admin2')
 def icons(request):
     return render(request, 'partials/01_icons.html')
 #kirish qismini to'ldirish *********************************
-@login_required(login_url='/login')
+
 @group_required('admin2')
 def kirishP(request):    
     title='Kirish bo`limi'
@@ -52,7 +51,7 @@ def kirishP(request):
     }
     return render(request, '02_s_ad/01_0_kirishP.html', context)
 
-@login_required(login_url='/login')
+
 @group_required('admin2')
 def addkir(request):
     titleown='Yangi sahifa qo`shish'
@@ -77,7 +76,8 @@ def addkir(request):
         sahifa.objects.create(owner=request.user, title=title, permalink=permalink, update_date=update_date, bodytext=bodytext, icon=icon)
         messages.success(request, 'Yangi sahifa muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('kirishP')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def editkir(request, id):
     #perm tekshirish 
     user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
@@ -117,7 +117,8 @@ def editkir(request, id):
         messages.success(request, 'sahifa muvofaqqiyatli yangilandi! Rahmat! Charchamang! :)')
         
         return redirect('kirishP')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def delkir(request, id):
     #perm tekshirish 
     user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
@@ -132,7 +133,8 @@ def delkir(request, id):
     return redirect('kirishP')
 
 #Hududlar bo'yicha ma'lumotlarni kiritish*********************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def davlat(request):
     #perm tekshirish 
     user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
@@ -150,7 +152,8 @@ def davlat(request):
         }
     
     return render(request, '02_s_ad/02_0_davlat.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def adddavlat(request):
     #perm tekshirish 
     user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
@@ -174,7 +177,8 @@ def adddavlat(request):
         messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('davlat')
     
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def editdavlat(request, id):
     #perm tekshirish 
     user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
@@ -205,7 +209,8 @@ def editdavlat(request, id):
         messages.success(request, 'Davlat muvofaqqiyatli yangilandi!')
         
         return redirect('davlat')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def deldavlat(request, id):
     davlat = davlatlar.objects.get(pk=id)
     davlat.delete()
@@ -213,7 +218,8 @@ def deldavlat(request, id):
     return redirect('davlat')
 
 #viloyat*********************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def viloyat(request):
     vil = viloyatlar.objects.all()
     titleown = 'Viloyatlar'
@@ -222,7 +228,8 @@ def viloyat(request):
         'titleown':titleown
     }
     return render(request, '02_s_ad/03_0_viloyat.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def addviloyat(request):
     davlat = davlatlar.objects.all()
     
@@ -243,7 +250,8 @@ def addviloyat(request):
         viloyatlar.objects.create(owner=request.user, viloyat_davlati=viloyat_davlati, viloyat_kodi=viloyat_kodi, viloyat_nomi=viloyat_nomi)        
         messages.success(request, 'Yangi viloyat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('viloyat')
-@login_required(login_url='/login')    
+   
+@group_required('admin2')
 def editviloyat(request, id):
     davlat = davlatlar.objects.all()   
     vil = viloyatlar.objects.get(pk=id)
@@ -272,7 +280,8 @@ def editviloyat(request, id):
         messages.success(request, 'Davlat muvofaqqiyatli yangilandi!')
         
         return redirect('viloyat')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def delviloyat(request, id):
     yoqol = viloyatlar.objects.get(pk=id)
     yoqol.delete()
@@ -280,7 +289,8 @@ def delviloyat(request, id):
     return redirect('viloyat')
 
 #tuman****************************************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def tuman(request):
     
     tum = tumanlar.objects.all()
@@ -290,7 +300,8 @@ def tuman(request):
         'titleown':'Tumanlar'
     }
     return render(request, '02_s_ad/04_0_tuman.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def addtuman(request):           
     
     vil = viloyatlar.objects.all()
@@ -317,7 +328,9 @@ def addtuman(request):
         tumanlar.objects.create(owner=request.user, tuman_davlati =tuman_davlati, tuman_viloyati = tuman_viloyati, tuman_kodi = tuman_kodi, tuman_nomi = tuman_nomi)
         messages.success(request, 'Yangi tuman muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('tuman')
-@login_required(login_url='/login')    
+    
+   
+@group_required('admin2')
 def edittuman(request, id):   
     vil = viloyatlar.objects.all()
     dav = davlatlar.objects.all()       
@@ -349,7 +362,8 @@ def edittuman(request, id):
         messages.success(request, 'Tuman muvofaqqiyatli yangilandi!')
         
         return redirect('tuman')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def deltuman(request, id):
     yoqol = tumanlar.objects.get(pk=id)
     yoqol.delete()
@@ -357,7 +371,8 @@ def deltuman(request, id):
     return redirect('tuman')
 
 #***_________KODLAR__________**********************************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def iftums(request):
     iftum = IFTUM.objects.all()
     context = {
@@ -365,7 +380,8 @@ def iftums(request):
         'titleown':'IFTUM'
     }
     return render(request, '02_s_ad/05_0_iftum.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def addiftums(request):    
     bolimlist = ["A", "B", "C", "D","E", "F","G", "H","I", "J","K", "L","M", "N","O", "P",]    
     context = {    
@@ -388,7 +404,8 @@ def addiftums(request):
         IFTUM.objects.create(owner=request.user, bolim= bolim, bob= bob, guruh= guruh, sinf= sinf, tartib= tartib, nomi=nomi)
         messages.success(request, 'Yangi IFTUM kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('iftums')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def editiftums(request, id): 
     bolimlist = ["A", "B", "C", "D","E", "F","G", "H","I", "J","K", "L","M", "N","O", "P",]    
     iftum = IFTUM.objects.get(pk=id)
@@ -423,7 +440,8 @@ def editiftums(request, id):
         messages.success(request, 'IFTUM kodi muvofaqqiyatli yangilandi!')
         
         return redirect('iftums')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def deliftums(request, id):
     yoqol = IFTUM.objects.get(pk=id)
     yoqol.delete()
@@ -431,7 +449,8 @@ def deliftums(request, id):
     return redirect('iftums')
 
 #DBIBT******************************************************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def dbibt(request):
     dbibts=DBIBT.objects.all()
     
@@ -440,7 +459,8 @@ def dbibt(request):
         'titleown':'DBIBT kodi'
     }
     return render(request, '02_s_ad/06_0_dbibt.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def adddbibt(request):    
     
     context = { 
@@ -458,7 +478,8 @@ def adddbibt(request):
         DBIBT.objects.create(owner=request.user,dbibt=dbibt, ktut=ktut, nomi=nomi)
         messages.success(request, 'Yangi DBIBT kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('dbibt')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def editdbibt(request, id):
     dbibts=DBIBT.objects.get(pk=id)  
     
@@ -487,7 +508,8 @@ def editdbibt(request, id):
         messages.success(request, 'DBIBT kodi muvofaqqiyatli yangilandi!')
         
         return redirect('dbibt')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def deldbibt(request, id):
     yoqol = DBIBT.objects.get(pk=id)
     yoqol.delete()
@@ -495,7 +517,8 @@ def deldbibt(request, id):
     return redirect('dbibt')
 
 #TASHKIL-HUQUQIY SHAKLLARI TASNIFI. ******************************************************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def thst(request):
     ths=THST.objects.all()
     
@@ -504,7 +527,8 @@ def thst(request):
         'titleown':'THSHT kodi'
     }
     return render(request, '02_s_ad/07_0_thsht.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def addthst(request):    
     
     context = { 
@@ -522,7 +546,8 @@ def addthst(request):
         THST.objects.create(owner=request.user, bolim = bolim, tur = tur, nomi=nomi)
         messages.success(request, 'Yangi THSHT kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('thst')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def editthst(request, id):
     ths=THST.objects.get(pk=id)  
     
@@ -551,7 +576,8 @@ def editthst(request, id):
         messages.success(request, 'THSHT kodi muvofaqqiyatli yangilandi!')
         
         return redirect('thst')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def delthst(request, id):
     yoqol = THST.objects.get(pk=id)
     yoqol.delete()
@@ -559,7 +585,8 @@ def delthst(request, id):
     return redirect('thst')
 
 #Birliklar ******************************************************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def birlik(request):
     values = birliklar.objects.all()
     context = {
@@ -567,7 +594,9 @@ def birlik(request):
         'titleown': 'Birliklar kiritish'
     }
     return render(request, '02_s_ad/08_0_birlik.html', context)
-@login_required(login_url='/login')
+
+@group_required('admin2')
+
 def addbirlik(request):    
     
     context = { 
@@ -587,7 +616,9 @@ def addbirlik(request):
         birliklar.objects.create(owner=request.user, birlik=birlik, asos=asos, farq=farq)
         messages.success(request, 'Yangi birlik muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('birlik')
-@login_required(login_url='/login')
+
+
+@group_required('admin2')
 def editbirlik(request, id):
     b = birliklar.objects.get(pk=id)
     context = {          
@@ -613,7 +644,8 @@ def editbirlik(request, id):
         messages.success(request, 'Birlik muvofaqqiyatli yangilandi!')
         
         return redirect('birlik')
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def delbirlik(request, id):
     yoqol = birliklar.objects.get(pk=id)
     yoqol.delete()
@@ -621,7 +653,8 @@ def delbirlik(request, id):
     return redirect('birlik')
 
 #Resurs ******************************************************************
-@login_required(login_url='/login')
+
+@group_required('admin2')
 def resurs(request):
     values = resurslar.objects.all()
     context = {        
@@ -629,7 +662,9 @@ def resurs(request):
         'titleown': 'Resurslar'
     }
     return render(request, '02_s_ad/09_0_resurs.html', context)
-@login_required(login_url='/login')
+
+
+@group_required('admin2')
 def addresurs(request):
     birlik=birliklar.objects.all()
     context = {             
@@ -655,7 +690,9 @@ def addresurs(request):
                                  tshy=tshy,tne=tne,gj=gj, gkal=gkal)
         messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('resurs') 
-@login_required(login_url='/login')
+    
+
+@group_required('admin2')
 def editresurs(request, id):     
     r = resurslar.objects.get(pk=id)
     birlik=birliklar.objects.all()
@@ -692,7 +729,9 @@ def editresurs(request, id):
         messages.success(request, 'Kattalik muvofaqqiyatli yangilandi!')
         
         return redirect('resurs')
-@login_required(login_url='/login')    
+
+
+@group_required('admin2')   
 def delresurs(request, id):
     yoqol = resurslar.objects.get(pk=id)
     yoqol.delete()
@@ -700,12 +739,14 @@ def delresurs(request, id):
     return redirect('resurs')
 #************______Foydalanuvchilar bo'yicha ma'lumotlar________________*********
 
+@group_required('admin2')
 def usersozlama(request):
     
     return render(request, '02_s_ad/10_1_sozlamalar.html')
 
 #Valyuta bo'yicha ma'lumotlarni kiritish*********************
 
+@group_required('admin2')
 def valyuta(request):
     titleown='Valyuta'
     val = Valyuta.objects.filter(owner=request.user)
@@ -722,11 +763,12 @@ def valyuta(request):
     if request.method == 'POST':       
         
         return redirect('valyuta')
-
+@group_required('admin2')
 def addvalyuta(request):
     Valyuta.objects.create(owner=request.user, name='', somda=0, qiymati=0, checker=False)
     return redirect('valyuta')
 
+@group_required('admin2')
 def editvalyuta(request, id):
        
     val = Valyuta.objects.get(pk=id)    
@@ -735,6 +777,7 @@ def editvalyuta(request, id):
     messages.success(request, 'Valyutani o`zgartirishingiz mumkin!')        
     return redirect('valyuta')
 
+@group_required('admin2')
 def savevalyuta(request, id):
     val = Valyuta.objects.get(pk=id)
     
@@ -752,6 +795,7 @@ def savevalyuta(request, id):
     
     return redirect('valyuta')
 
+@group_required('admin2')
 def delvalyuta(request, id):
     davlat = Valyuta.objects.get(pk=id)    
     davlat.delete()

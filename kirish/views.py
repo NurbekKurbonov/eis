@@ -120,7 +120,7 @@ class registerP(View):
                     link = reverse('activate', kwargs={
                                'uidb64': email_body['uid'], 'token': email_body['token']})
                     
-                    email_subject = 'Sistemaga kirish uchun aktiv qilish'
+                    email_subject = 'Sistemaga kirish uchun faol qilish'
                     activate_url = 'http://'+current_site.domain+link                   
                     
                     email=EmailMessage(
@@ -132,7 +132,7 @@ class registerP(View):
                                 [email],
                             )
                     email.send(fail_silently=False)
-                    messages.success(request, 'Foydalanuvhi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangizni aktivlashtiring')
+                    messages.success(request, 'Foydalanuvhi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangiz orqali faollashtiring')
                     return redirect('loginP')
         return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
 
@@ -143,7 +143,7 @@ class VerificationView(View):
             user = User.objects.get(pk=id)
 
             if not account_activation_token.check_token(user, token):
-                messages.success(request, 'Assalomu aleykum '+user.username+'! Sizning sahifangiz allaqachon aktivlashtirilgan, marhamat sistemaga kirishingiz mumkin')
+                messages.success(request, 'Assalomu aleykum '+user.username+'! Sizning sahifangiz allaqachon faollashtirilgan, marhamat sistemaga kirishingiz mumkin')
                 return redirect('loginP')
 
             if user.is_active:                
@@ -152,7 +152,7 @@ class VerificationView(View):
             user.is_active = True
             user.save()
 
-            messages.success(request, 'Assalomu aleykum!'+user.username+' sahifangiz muvafaqqiyatli aktivlashtirildi')
+            messages.success(request, 'Assalomu aleykum!'+user.username+' sahifangiz muvafaqqiyatli faollashtirildi')
             return redirect('loginP')
 
         except Exception as ex:
@@ -176,9 +176,9 @@ class loginP(View):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-                    messages.success(request, 'Assalomu alaykum '+user.username+' EIS sistemasiga xush kelibsiz!')
+                    messages.success(request, 'Assalomu alaykum '+user.username+' EIS sistemasiga xush kelibsiz!')                    
                     return redirect('home')
-                messages.error(request, 'Foydalanuvchi aktivlashtirilmagan! iltimos emailingizni tekshiring va aktivlashtiring')
+                messages.error(request, 'Foydalanuvchi faollashtirilmagan! iltimos emailingizni tekshiring va faollashtiring')
             messages.error(request, 'Login yoki parol xato, iltimos qayta urinib ko`ring!')
             return render(request, '01_auth/01_login.html')
         
