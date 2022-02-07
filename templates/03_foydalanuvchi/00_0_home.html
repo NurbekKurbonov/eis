@@ -158,15 +158,15 @@
                 {
                 name: "Energiya resurs/mahsulot ishlab chiqarish",
                 type: "column",
-                data: [{% for k,v in obj_ich.items %} '{{v|round(method='ceil')}}', {% endfor %}]
+                data: [{% for k,v in obj_ich.items %} '{{v}}', {% endfor %}]
                 }, {
                 name: "Energiya resurs iste`mol qilish",
                 type: "area",
-                data: [{% for k,v in obj_ist.items %} '{{v|round(method='ceil')}}', {% endfor %}]
+                data: [{% for k,v in obj_ist.items %} '{{v}}', {% endfor %}]
                 }, {
                 name: "Energiya resurs/mahsulot uzatish/sotish",
                 type: "line",
-                data: [{% for k,v in obj_uzat.items %} '{{v|round(method='ceil')}}', {% endfor %}]
+                data: [{% for k,v in obj_uzat.items %} '{{v}}', {% endfor %}]
                 }
             
                 ],

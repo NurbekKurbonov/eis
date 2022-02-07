@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.views import View
 import json
 from django.contrib.auth.models import User
+from django.contrib import auth
 from validate_email import validate_email
 from django.core.mail import EmailMessage
 
@@ -12,17 +13,16 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 
+from django.urls import reverse
+from .utils import account_activation_token
+
 from .models import sahifa, savolnoma
 from .forms import ContactForm
 import foydalanuvchi
 
 from .forms import captchaform
 
-
-#login_____*********************************************/
-
-def loginP(request):
-    return render(request, '01_auth/01_login.html')
+#from foydalanuvchi.views import
 
 #registratsya**************************************************
 class EmailValidationView(View):
@@ -107,32 +107,88 @@ class registerP(View):
                 if not User.objects.filter(password=password).exists():
                     user=User.objects.create_user(username=username, email=email)
                     user.set_password(password)
-                    user.is_active = False
+                    user.is_active = False                    
+                    user.save()                    
+                        
+                    current_site = get_current_site(request)
+                    email_body = {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                        }
+                    link = reverse('activate', kwargs={
+                               'uidb64': email_body['uid'], 'token': email_body['token']})
                     
-                    user.save()
                     email_subject = 'Sistemaga kirish uchun aktiv qilish'
+                    activate_url = 'http://'+current_site.domain+link                   
                     
-                    # path_to_view
-                    # - getting domain we are on
-                    # - relative url ver
-                    # - encode uid
-                    # - token 
-                    email_body='Test Body'
                     email=EmailMessage(
                                 email_subject,
-                                email_body,
+                                'Assalomu alaykum '+user.username+'!\n Iltimos quyidagi havola orqali akkauntingizni aktivlashtiring:\n'+activate_url,
                                 'noreply.nurbek.kurbonov@nur.uz',                                
-                                [email],                                                                
+                                [email],
                             )
                     email.send(fail_silently=False)
-                    messages.success(request, 'Foydalanuvhi muvafaqqiyatli sistemaga qo`shildi!')
+                    messages.success(request, 'Foydalanuvhi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangizni aktivlashtiring')
                     return redirect('loginP')
         return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
 
 class VerificationView(View):
     def get(self, request, uidb64, token):
-        return redirect('login')
+        try:
+            id = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=id)
 
+            if not account_activation_token.check_token(user, token):
+                messages.success(request, 'Assalomu aleykum '+user.username+'! Sizning sahifangiz allaqachon aktivlashtirilgan, marhamat sistemaga kirishingiz mumkin')
+                return redirect('loginP')
+
+            if user.is_active:                
+                return redirect('loginP')
+            
+            user.is_active = True
+            user.save()
+
+            messages.success(request, 'Assalomu aleykum!'+user.username+' sahifangiz muvafaqqiyatli aktivlashtirildi')
+            return redirect('loginP')
+
+        except Exception as ex:
+            pass
+        messages.success(request, 'Xatolik, Ushbu noto`g`ri token bilan kirdingiz')
+        return redirect('loginP')
+    
+#login_____*********************************************/
+
+class loginP(View):
+    def get(self, request):
+        return render(request, '01_auth/01_login.html')
+    
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        if username and password:
+            user = auth.authenticate(username=username, password=password)
+            
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    messages.success(request, 'Assalomu alaykum '+user.username+' EIS sistemasiga xush kelibsiz!')
+                    return redirect('home')
+                messages.error(request, 'Foydalanuvchi aktivlashtirilmagan! iltimos emailingizni tekshiring va aktivlashtiring')
+            messages.error(request, 'Login yoki parol xato, iltimos qayta urinib ko`ring!')
+            return render(request, '01_auth/01_login.html')
+        
+        messages.error(request, 'Iltimos so`ralgan ma`lumotlarni to`ldiring')
+        return render(request, '01_auth/01_login.html')
+
+class LogoutView(View):
+    def post(self, request):
+        auth.logout(request)
+        messages.success(request, 'Siz sistemadan chiqdingiz! Salomat bo`ling')
+        return redirect('loginP')
+    
 #**************************************************************   
 def resetpas(request):
     return render(request, '01_auth/05_reset.html')
@@ -196,3 +252,6 @@ def savol(request):
         )
         messages.success(request, 'EIS sistemasiga xush kelibsiz! :)')
         return redirect('home')
+    
+def view404(request):
+    return render(request, '404.html' )

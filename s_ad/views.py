@@ -7,12 +7,22 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
+from django.contrib.auth.decorators import login_required
+
 from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta
 
+@login_required(login_url='/login')
 def icons(request):
     return render(request, 'partials/01_icons.html')
 #kirish qismini to'ldirish *********************************
+@login_required(login_url='/login')
 def kirishP(request):
+    
+    user_permission=User.objects.get(pk=request.user.id).get_group_permissions()
+    
+    if not 's_ad' in user_permission:
+        return redirect('view404')
+    
     title='Kirish bo`limi'
     
     sah = sahifa.objects.filter(owner=request.user)    
@@ -23,11 +33,12 @@ def kirishP(request):
     context = {
         'title':title,
         'sah':sah,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'user_permission':user_permission
     }
     return render(request, '02_s_ad/01_0_kirishP.html', context)
 
-
+@login_required(login_url='/login')
 def addkir(request):
     titleown='Yangi sahifa qo`shish'
     
@@ -51,7 +62,7 @@ def addkir(request):
         sahifa.objects.create(owner=request.user, title=title, permalink=permalink, update_date=update_date, bodytext=bodytext, icon=icon)
         messages.success(request, 'Yangi sahifa muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('kirishP')
-
+@login_required(login_url='/login')
 def editkir(request, id):
     titleown='O`zgartirish'
     sah = sahifa.objects.get(pk=id)
@@ -85,7 +96,7 @@ def editkir(request, id):
         messages.success(request, 'sahifa muvofaqqiyatli yangilandi! Rahmat! Charchamang! :)')
         
         return redirect('kirishP')
-
+@login_required(login_url='/login')
 def delkir(request, id):
     sah = sahifa.objects.get(pk=id)
     sah.delete()
@@ -93,10 +104,10 @@ def delkir(request, id):
     return redirect('kirishP')
 
 #Hududlar bo'yicha ma'lumotlarni kiritish*********************
-
+@login_required(login_url='/login')
 def davlat(request):
     titleown='Davlatlar'
-    dav = davlatlar.objects.filter(owner=request.user)
+    dav = davlatlar.objects.all()
     
     context = {
         'dav': dav,
@@ -104,7 +115,7 @@ def davlat(request):
         }
     
     return render(request, '02_s_ad/02_0_davlat.html', context)
-
+@login_required(login_url='/login')
 def adddavlat(request):
     titleown='Davlatlar'
     context = {
@@ -120,7 +131,7 @@ def adddavlat(request):
         davlatlar.objects.create(owner=request.user, davlat_kodi=davlat_kodi, davlat_nomi=davlat_nomi )        
         messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('davlat')
-
+@login_required(login_url='/login')
 def editdavlat(request, id):
        
     davlat = davlatlar.objects.get(pk=id)
@@ -145,7 +156,7 @@ def editdavlat(request, id):
         messages.success(request, 'Davlat muvofaqqiyatli yangilandi!')
         
         return redirect('davlat')
-
+@login_required(login_url='/login')
 def deldavlat(request, id):
     davlat = davlatlar.objects.get(pk=id)
     davlat.delete()
@@ -153,6 +164,7 @@ def deldavlat(request, id):
     return redirect('davlat')
 
 #viloyat*********************************
+@login_required(login_url='/login')
 def viloyat(request):
     vil = viloyatlar.objects.all()
     titleown = 'Viloyatlar'
@@ -161,7 +173,7 @@ def viloyat(request):
         'titleown':titleown
     }
     return render(request, '02_s_ad/03_0_viloyat.html', context)
-
+@login_required(login_url='/login')
 def addviloyat(request):
     davlat = davlatlar.objects.all()
     
@@ -182,7 +194,7 @@ def addviloyat(request):
         viloyatlar.objects.create(owner=request.user, viloyat_davlati=viloyat_davlati, viloyat_kodi=viloyat_kodi, viloyat_nomi=viloyat_nomi)        
         messages.success(request, 'Yangi viloyat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('viloyat')
-    
+@login_required(login_url='/login')    
 def editviloyat(request, id):
     davlat = davlatlar.objects.all()   
     vil = viloyatlar.objects.get(pk=id)
@@ -211,7 +223,7 @@ def editviloyat(request, id):
         messages.success(request, 'Davlat muvofaqqiyatli yangilandi!')
         
         return redirect('viloyat')
-
+@login_required(login_url='/login')
 def delviloyat(request, id):
     yoqol = viloyatlar.objects.get(pk=id)
     yoqol.delete()
@@ -219,7 +231,7 @@ def delviloyat(request, id):
     return redirect('viloyat')
 
 #tuman****************************************************
-
+@login_required(login_url='/login')
 def tuman(request):
     
     tum = tumanlar.objects.all()
@@ -229,7 +241,7 @@ def tuman(request):
         'titleown':'Tumanlar'
     }
     return render(request, '02_s_ad/04_0_tuman.html', context)
-
+@login_required(login_url='/login')
 def addtuman(request):           
     
     vil = viloyatlar.objects.all()
@@ -256,7 +268,7 @@ def addtuman(request):
         tumanlar.objects.create(owner=request.user, tuman_davlati =tuman_davlati, tuman_viloyati = tuman_viloyati, tuman_kodi = tuman_kodi, tuman_nomi = tuman_nomi)
         messages.success(request, 'Yangi tuman muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('tuman')
-    
+@login_required(login_url='/login')    
 def edittuman(request, id):   
     vil = viloyatlar.objects.all()
     dav = davlatlar.objects.all()       
@@ -288,7 +300,7 @@ def edittuman(request, id):
         messages.success(request, 'Tuman muvofaqqiyatli yangilandi!')
         
         return redirect('tuman')
-
+@login_required(login_url='/login')
 def deltuman(request, id):
     yoqol = tumanlar.objects.get(pk=id)
     yoqol.delete()
@@ -296,7 +308,7 @@ def deltuman(request, id):
     return redirect('tuman')
 
 #***_________KODLAR__________**********************************************
-
+@login_required(login_url='/login')
 def iftums(request):
     iftum = IFTUM.objects.all()
     context = {
@@ -304,7 +316,7 @@ def iftums(request):
         'titleown':'IFTUM'
     }
     return render(request, '02_s_ad/05_0_iftum.html', context)
-
+@login_required(login_url='/login')
 def addiftums(request):    
     bolimlist = ["A", "B", "C", "D","E", "F","G", "H","I", "J","K", "L","M", "N","O", "P",]    
     context = {    
@@ -327,7 +339,7 @@ def addiftums(request):
         IFTUM.objects.create(owner=request.user, bolim= bolim, bob= bob, guruh= guruh, sinf= sinf, tartib= tartib, nomi=nomi)
         messages.success(request, 'Yangi IFTUM kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('iftums')
-
+@login_required(login_url='/login')
 def editiftums(request, id): 
     bolimlist = ["A", "B", "C", "D","E", "F","G", "H","I", "J","K", "L","M", "N","O", "P",]    
     iftum = IFTUM.objects.get(pk=id)
@@ -362,7 +374,7 @@ def editiftums(request, id):
         messages.success(request, 'IFTUM kodi muvofaqqiyatli yangilandi!')
         
         return redirect('iftums')
-
+@login_required(login_url='/login')
 def deliftums(request, id):
     yoqol = IFTUM.objects.get(pk=id)
     yoqol.delete()
@@ -370,7 +382,7 @@ def deliftums(request, id):
     return redirect('iftums')
 
 #DBIBT******************************************************************
-
+@login_required(login_url='/login')
 def dbibt(request):
     dbibts=DBIBT.objects.all()
     
@@ -379,7 +391,7 @@ def dbibt(request):
         'titleown':'DBIBT kodi'
     }
     return render(request, '02_s_ad/06_0_dbibt.html', context)
-
+@login_required(login_url='/login')
 def adddbibt(request):    
     
     context = { 
@@ -397,7 +409,7 @@ def adddbibt(request):
         DBIBT.objects.create(owner=request.user,dbibt=dbibt, ktut=ktut, nomi=nomi)
         messages.success(request, 'Yangi DBIBT kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('dbibt')
-
+@login_required(login_url='/login')
 def editdbibt(request, id):
     dbibts=DBIBT.objects.get(pk=id)  
     
@@ -426,7 +438,7 @@ def editdbibt(request, id):
         messages.success(request, 'DBIBT kodi muvofaqqiyatli yangilandi!')
         
         return redirect('dbibt')
-
+@login_required(login_url='/login')
 def deldbibt(request, id):
     yoqol = DBIBT.objects.get(pk=id)
     yoqol.delete()
@@ -434,7 +446,7 @@ def deldbibt(request, id):
     return redirect('dbibt')
 
 #TASHKIL-HUQUQIY SHAKLLARI TASNIFI. ******************************************************************
-
+@login_required(login_url='/login')
 def thst(request):
     ths=THST.objects.all()
     
@@ -443,7 +455,7 @@ def thst(request):
         'titleown':'THSHT kodi'
     }
     return render(request, '02_s_ad/07_0_thsht.html', context)
-
+@login_required(login_url='/login')
 def addthst(request):    
     
     context = { 
@@ -461,7 +473,7 @@ def addthst(request):
         THST.objects.create(owner=request.user, bolim = bolim, tur = tur, nomi=nomi)
         messages.success(request, 'Yangi THSHT kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('thst')
-
+@login_required(login_url='/login')
 def editthst(request, id):
     ths=THST.objects.get(pk=id)  
     
@@ -490,7 +502,7 @@ def editthst(request, id):
         messages.success(request, 'THSHT kodi muvofaqqiyatli yangilandi!')
         
         return redirect('thst')
-
+@login_required(login_url='/login')
 def delthst(request, id):
     yoqol = THST.objects.get(pk=id)
     yoqol.delete()
@@ -498,7 +510,7 @@ def delthst(request, id):
     return redirect('thst')
 
 #Birliklar ******************************************************************
-
+@login_required(login_url='/login')
 def birlik(request):
     values = birliklar.objects.all()
     context = {
@@ -506,7 +518,7 @@ def birlik(request):
         'titleown': 'Birliklar kiritish'
     }
     return render(request, '02_s_ad/08_0_birlik.html', context)
-
+@login_required(login_url='/login')
 def addbirlik(request):    
     
     context = { 
@@ -526,7 +538,7 @@ def addbirlik(request):
         birliklar.objects.create(owner=request.user, birlik=birlik, asos=asos, farq=farq)
         messages.success(request, 'Yangi birlik muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('birlik')
-
+@login_required(login_url='/login')
 def editbirlik(request, id):
     b = birliklar.objects.get(pk=id)
     context = {          
@@ -552,7 +564,7 @@ def editbirlik(request, id):
         messages.success(request, 'Birlik muvofaqqiyatli yangilandi!')
         
         return redirect('birlik')
-
+@login_required(login_url='/login')
 def delbirlik(request, id):
     yoqol = birliklar.objects.get(pk=id)
     yoqol.delete()
@@ -560,6 +572,7 @@ def delbirlik(request, id):
     return redirect('birlik')
 
 #Resurs ******************************************************************
+@login_required(login_url='/login')
 def resurs(request):
     values = resurslar.objects.all()
     context = {        
@@ -567,7 +580,7 @@ def resurs(request):
         'titleown': 'Resurslar'
     }
     return render(request, '02_s_ad/09_0_resurs.html', context)
-
+@login_required(login_url='/login')
 def addresurs(request):
     birlik=birliklar.objects.all()
     context = {             
@@ -593,7 +606,7 @@ def addresurs(request):
                                  tshy=tshy,tne=tne,gj=gj, gkal=gkal)
         messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('resurs') 
-
+@login_required(login_url='/login')
 def editresurs(request, id):     
     r = resurslar.objects.get(pk=id)
     birlik=birliklar.objects.all()
@@ -630,16 +643,12 @@ def editresurs(request, id):
         messages.success(request, 'Kattalik muvofaqqiyatli yangilandi!')
         
         return redirect('resurs')
-    
+@login_required(login_url='/login')    
 def delresurs(request, id):
     yoqol = resurslar.objects.get(pk=id)
     yoqol.delete()
     messages.success(request, 'Resurs muvofaqqiyatli o`chirildi')
     return redirect('resurs')
-
-def univbirl(request):
-    return render(request, '02_s_ad/12_0_universal_birlik.html', context)
-
 #************______Foydalanuvchilar bo'yicha ma'lumotlar________________*********
 
 def usersozlama(request):
