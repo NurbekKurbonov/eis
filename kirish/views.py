@@ -125,7 +125,9 @@ class registerP(View):
                     
                     email=EmailMessage(
                                 email_subject,
-                                'Assalomu alaykum '+user.username+'!\n Iltimos quyidagi havola orqali akkauntingizni aktivlashtiring:\n'+activate_url,
+                                'Hurmatli '+user.username+'!\n Iltimos quyidagi havola orqali akkauntingizni faollashtiring:\n'+
+                                    'Уважаемый' + user.username + '!\n Пожалуйста, активируйте свой аккаунт по следующей ссылке: \n'+
+                                    'Dear' + user.username + '!\n Please activate your account using the following link: 👇🏻👇🏻👇🏻\n'+activate_url,
                                 'noreply.nurbek.kurbonov@nur.uz',                                
                                 [email],
                             )
@@ -254,4 +256,4 @@ def savol(request):
         return redirect('home')
     
 def view404(request):
-    return render(request, '404.html' )
+    return render(request, '404.html')

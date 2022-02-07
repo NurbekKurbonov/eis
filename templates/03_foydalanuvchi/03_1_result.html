@@ -50,7 +50,7 @@
                     {% if birl == 'tshy' %}yozuv_grad {% endif %}">tshy</a>{% endif %} 
 
                 {% if '0' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tne' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'tne' %}yozuv_grad {% endif %}">tne</a>{% endif %} 
+                    {% if birl == 'tne' %}yozuv_grad {% endif %}">tne</a>{% endif %}
 
                 {% if 'b' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gj' %}" type="button" class="btn btn-outline-info
                     {% if birl == 'gj' %}yozuv_grad {% endif %}">GJ</a>{% endif %}
@@ -63,8 +63,8 @@
 
         <div class="col-2">
             <button width="100%"  class="btn btn-outline-warning float-end my-1" id="button" onclick="showhide()"> 
-                <i id="graph1" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
-                <i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+                <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
+                <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
             </button>
         </div>
     </div>
@@ -156,7 +156,6 @@
 
             </div>
             <div class="tab-pane" id="icon-tab-6" role="tabpanel">
-
                 <div class="row">
                     <div class="card-body">
                         <div class="chart w-100">
@@ -164,7 +163,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
                 
         </div>
@@ -491,7 +489,32 @@
         });
         datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)");
     });
-    
 </script>
+<script>
+    const graph = document.getElementById("graph");
+    const icon = document.getElementById("icon");
+    const icon2 = document.getElementById("icon2");
 
+    const btn = document.getElementById("button");
+    btn.onclick = function () {
+
+    if (graph.style.display !== "none") {
+    graph.style.display = "none";
+    } else {
+    graph.style.display = "block";  
+    }
+    if (icon.style.display !== "none") {
+        icon.style.display = "none";
+    } else {
+        icon.style.display = "block";  
+    }
+    if (icon2.style.display !== "none") {
+        icon2.style.display = "none";
+    } else {
+        icon2.style.display = "block";  
+    }
+  
+};
+
+</script>
 {% endblock scripts %}

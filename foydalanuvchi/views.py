@@ -94,15 +94,12 @@ def asosiyset(request, id):
         h.nomi=request.POST['nomi']
         h.about=request.POST['about']
         
-        
         if not request.POST['emblem']:
             h.save()
         else:
             h.emblem=request.POST['emblem']
             h.save()
-                
-        
-        
+            
         return render(request, '03_foydalanuvchi/01_0_asosiy_setting.html', context)
         
 
@@ -435,6 +432,12 @@ def addhisobot(request):
         oraliq=request.POST['oraliq']
         valute=request.POST['valute']
         
+        tur = request.POST.getlist('his_tur')
+        
+        if not tur:
+            messages.error(request, 'Hisobot turlaridan birini tanlang! ')
+            return redirect('addhisobot')
+        
         if not oraliq:
             messages.error(request, 'Iltimos oraliqni kiriting?! ')           
             return redirect('addhisobot')
@@ -466,11 +469,7 @@ def addhisobot(request):
         #diagramma va qo'shimcha birliklarni qo'shish
         
         cheks = request.POST.getlist('chart')
-        tur = request.POST.getlist('his_tur')
         
-        if len(tur)==1 and tur[0]=='':
-            messages.success(request, 'Hisobot muvafaqqiyatli tayyorlandi! ')
-            return redirect('hisobot')
         
         hisobot_full.objects.create(
            owner=request.user,

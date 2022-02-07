@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 
+
 class sahifa(models.Model):
 
     title = models.CharField("Sarlavha", max_length=50)
@@ -32,3 +33,8 @@ class savolnoma(models.Model):
 
     def __str__(self):
         return self.owner.username
+
+            
+            
+        
+

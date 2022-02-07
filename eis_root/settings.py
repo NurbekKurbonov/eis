@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-evpaa0n7_xnyiqa*vjf$40i+-_)8wj%t*#eo0^i)xrvdeg1b0p
 RECAPTCHA_PUBLIC_KEY = '6LekXV8eAAAAAIeEKFr58LqcdnQliqsQVU64Zj-e'
 RECAPTCHA_PRIVATE_KEY = '6LekXV8eAAAAAMVGefbbbhzU0e7Jm1yTJlq9d92f'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,6 +45,7 @@ MONTH = [
     (11,'Noyabr'),
     (12,'Dekabr'),
 ]
+
 INSTALLED_APPS = [
     'kirish','s_ad', 'foydalanuvchi',
     'django.contrib.admin',

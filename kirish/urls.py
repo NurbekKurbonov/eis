@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from django.utils import timezone
 
-now=str(timezone.now())
-
 urlpatterns = [
     #registratsya url
     path('register', registerP.as_view(), name='register'),
@@ -33,6 +31,6 @@ urlpatterns = [
     path('contact', views.contact, name='contact'),
     path('<str:pagename>', views.kirish, name='index'),   
     
-    path(now, views.view404, name='view404'),
+    path('404', views.view404, name='view404'),
     
 ]

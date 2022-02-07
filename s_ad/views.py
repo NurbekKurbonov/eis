@@ -8,21 +8,36 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 
+from django.contrib.auth.decorators import user_passes_test
+import six
+from django.core.exceptions import PermissionDenied
 from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta
 
+
+def group_required(group, login_url=None, raise_exception=False):
+    def check_perms(user):
+        if isinstance(group, six.string_types):
+            groups = (group, )
+        else:
+            groups = group
+
+        if user.groups.filter(name__in=groups).exists():
+            return True
+        if raise_exception:
+            raise PermissionDenied
+        return False
+    return user_passes_test(check_perms, login_url=login_url)
+
 @login_required(login_url='/login')
+@group_required('admin2', login_url='/login')
 def icons(request):
     return render(request, 'partials/01_icons.html')
 #kirish qismini to'ldirish *********************************
 @login_required(login_url='/login')
-def kirishP(request):
-    
-    user_permission=User.objects.get(pk=request.user.id).get_group_permissions()
-    
-    if not 's_ad' in user_permission:
-        return redirect('view404')
-    
+@group_required('admin2')
+def kirishP(request):    
     title='Kirish bo`limi'
     
     sah = sahifa.objects.filter(owner=request.user)    
@@ -33,12 +48,12 @@ def kirishP(request):
     context = {
         'title':title,
         'sah':sah,
-        'page_obj':page_obj,
-        'user_permission':user_permission
+        'page_obj':page_obj
     }
     return render(request, '02_s_ad/01_0_kirishP.html', context)
 
 @login_required(login_url='/login')
+@group_required('admin2')
 def addkir(request):
     titleown='Yangi sahifa qo`shish'
     
@@ -64,6 +79,12 @@ def addkir(request):
         return redirect('kirishP')
 @login_required(login_url='/login')
 def editkir(request, id):
+    #perm tekshirish 
+    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
+    c='s_ad.change_resurslar'
+    if not (c in user_permission):
+        return redirect('view404')
+    #******************************
     titleown='O`zgartirish'
     sah = sahifa.objects.get(pk=id)
     
@@ -98,6 +119,13 @@ def editkir(request, id):
         return redirect('kirishP')
 @login_required(login_url='/login')
 def delkir(request, id):
+    #perm tekshirish 
+    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
+    c='s_ad.change_resurslar'
+    if not (c in user_permission):
+        return redirect('view404')
+    #******************************
+    
     sah = sahifa.objects.get(pk=id)
     sah.delete()
     messages.success(request, 'Sahifa muvofaqqiyatli o`chirildi')
@@ -106,6 +134,13 @@ def delkir(request, id):
 #Hududlar bo'yicha ma'lumotlarni kiritish*********************
 @login_required(login_url='/login')
 def davlat(request):
+    #perm tekshirish 
+    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
+    c='s_ad.change_resurslar'
+    if not (c in user_permission):
+        return redirect('view404')
+    #******************************
+    
     titleown='Davlatlar'
     dav = davlatlar.objects.all()
     
@@ -117,6 +152,13 @@ def davlat(request):
     return render(request, '02_s_ad/02_0_davlat.html', context)
 @login_required(login_url='/login')
 def adddavlat(request):
+    #perm tekshirish 
+    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
+    c='s_ad.change_resurslar'
+    if not (c in user_permission):
+        return redirect('view404')
+    #******************************
+    
     titleown='Davlatlar'
     context = {
         'titleown':titleown
@@ -131,8 +173,15 @@ def adddavlat(request):
         davlatlar.objects.create(owner=request.user, davlat_kodi=davlat_kodi, davlat_nomi=davlat_nomi )        
         messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('davlat')
+    
 @login_required(login_url='/login')
 def editdavlat(request, id):
+    #perm tekshirish 
+    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
+    c='s_ad.change_resurslar'
+    if not (c in user_permission):
+        return redirect('view404')
+    #******************************
        
     davlat = davlatlar.objects.get(pk=id)
     
