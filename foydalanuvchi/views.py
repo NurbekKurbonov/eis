@@ -82,7 +82,7 @@ def home(request):
 
 #____***_____ASosiy_settings_____***_____________________
 @group_required('Faqirlar')
-def asosiyset(request, id):
+def asosiyset(request):
     check=savolnoma.objects.filter(owner=request.user)
     
     mich=0
@@ -136,7 +136,7 @@ def mich(request):
         if v.savol2==True:
             uzat=1
     
-    hammasi = allfaqir.objects.get(pk=1)
+    #hammasi = allfaqir.objects.all()
     
     context={
         'titleown':titleown,
@@ -145,8 +145,7 @@ def mich(request):
         'active1': 'active',
         'pageid':'1',
         'mich':mich,
-        'uzat':uzat,
-        'hammasi':hammasi
+        'uzat':uzat
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
@@ -168,7 +167,7 @@ def ist(request):
         if v.savol2==True:
             uzat=1     
             
-    hammasi = allfaqir.objects.get(pk=1)
+    hammasi = allfaqir.objects.all()
     context={
         'titleown':titleown,
         'resurs':resurs,
@@ -177,7 +176,6 @@ def ist(request):
         'pageid':'2',
         'mich':mich,
         'uzat':uzat,
-        'hammasi':hammasi
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
@@ -199,7 +197,7 @@ def sot(request):
         if v.savol2==True:
             uzat=1
    
-    hammasi = allfaqir.objects.get(pk=1)
+    #hammasi = allfaqir.objects.get(pk=1)
     context={
         'titleown':titleown,
         'resurs':resurs,
@@ -207,8 +205,7 @@ def sot(request):
         'active3': 'active',
         'pageid':'3',
         'mich':mich,
-        'uzat':uzat,
-        'hammasi' :hammasi
+        'uzat':uzat
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)

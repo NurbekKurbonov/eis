@@ -20,6 +20,7 @@ from .models import sahifa, savolnoma
 from .forms import ContactForm
 import foydalanuvchi
 
+from django.contrib.auth.models import Group
 from .forms import captchaform
 
 #from foydalanuvchi.views import
@@ -107,6 +108,9 @@ class registerP(View):
                 if not User.objects.filter(password=password).exists():
                     user=User.objects.create_user(username=username, email=email)
                     user.set_password(password)
+                    faqir = Group.objects.get(name='Faqirlar') 
+                    faqir.user_set.add(user)
+                    
                     user.is_active = False                    
                     user.save()                    
                         
@@ -125,14 +129,14 @@ class registerP(View):
                     
                     email=EmailMessage(
                                 email_subject,
-                                'Hurmatli '+user.username+'!\n Iltimos quyidagi havola orqali akkauntingizni faollashtiring:\n'+
-                                    'Уважаемый' + user.username + '!\n Пожалуйста, активируйте свой аккаунт по следующей ссылке: \n'+
-                                    'Dear' + user.username + '!\n Please activate your account using the following link: 👇🏻👇🏻👇🏻\n'+activate_url,
+                                'Hurmatli '+user.username+'!\n\n Iltimos quyidagi havola orqali akkauntingizni faollashtiring:\n\n'+
+                                    'Уважаемый ' + user.username + '!\n\n Пожалуйста, активируйте свой аккаунт по следующей ссылке: \n'+
+                                    'Dear ' + user.username + '!\n\n Please activate your account using the following link: 👇🏻👇🏻👇🏻\n\n\n'+activate_url,
                                 'noreply.nurbek.kurbonov@nur.uz',                                
                                 [email],
                             )
                     email.send(fail_silently=False)
-                    messages.success(request, 'Foydalanuvhi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangiz orqali faollashtiring')
+                    messages.success(request, 'Foydalanuvchi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangiz orqali faollashtiring')
                     return redirect('loginP')
         return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
 

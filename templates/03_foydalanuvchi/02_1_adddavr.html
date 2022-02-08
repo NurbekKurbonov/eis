@@ -18,7 +18,7 @@
 
 <form action="{% url 'adddavr' %}" method="post">
 <div class="row">
-    {% if ich.count %}
+   
     
     <div class="col-12 col-xl-4" id="tarix1">
         <div class="col-md">
@@ -50,6 +50,7 @@
             </div>
         </div>
     </div>    
+    {% if ich.count %}
     <div class="col-12 col-xl-12">
         <div class="card"> 
             <div class="card-header">
@@ -67,7 +68,7 @@
                                     name="{{v.resurs.id}}.1">                            
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati  (mln.so'm)</label>
+                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
                             <input type="number"  step="0.000000001"step="0.001"
                                     class="form-control" 
                                     autofocus required="true"
@@ -100,7 +101,7 @@
                         </div>
                         
                         <div class="mb-3 col-6">
-                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati  (mln.so'm)</label>
+                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
                             <input type="number"  step="0.000000001"
                                     class="form-control" 
                                     autofocus required="true"
@@ -132,7 +133,7 @@
                                     name="{{v.resurs.id}}.3">
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati  (mln.so'm)</label>
+                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
                             <input type="number"  step="0.000000001"
                                     class="form-control" 
                                     autofocus required="true"

@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [    
     path('', views.home, name='home'), 
     
-    path('asosiyset/<int:id>', views.asosiyset, name='asosiyset'),  
+    path('asosiyset', views.asosiyset, name='asosiyset'),  
     path('mich', views.mich, name='mich'),      
     path('ist', views.ist, name='ist'),
     path('sot', views.sot, name='sot'),  

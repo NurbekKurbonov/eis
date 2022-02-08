@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="EIS sistemasi &amp; Energetik resurslarni ishlab chiqarishdan iste'mol qilishgacha bo'lgan hisoblarni amalga oshiradi ">
+	<meta name="author" content="NurbekKurbonov">
+	<meta name="keywords" content="NurbekKurbonov, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="{% static 'img/icons/icon-48x48.png' %}" />
+	
+	<link rel="canonical" href="https://demo.NurbekKurbonov.io/pages-sign-in.html" />
+
+	<title> EIS |{% block title %}NurbekKurbonov{% endblock title %}</title>
+
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	
+	<!-- Choose your prefered color scheme -->
+	<link href="{% static 'css/light.css'%}" rel="stylesheet">
+	<!-- <link href="{% static 'css/dark.css'%}" rel="stylesheet"> -->
+	<!--Parol uchun ko'z-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+</head>
+<!--
+  HOW TO USE: 
+  data-theme: default (default), dark, light, colored
+  data-layout: fluid (default), boxed
+  data-sidebar-position: left (default), right
+  data-sidebar-layout: default (default), compact
+-->
+
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
+	<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 100 100" fill="none" stroke="#FFFFFF" stroke-width="1.5"
+						stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
+						<defs>
+							<radialGradient id="RadialGrad"
+									  fx="50%" fy="50%" r="65%"
+									  spreadMethod="pad">
+									 <stop offset="50%"   stop-color="#E7D68C" stop-opacity="1"/>
+									 <stop offset="50%" stop-color="#FFFEED" stop-opacity="1" />
+								   </radialGradient>
+						   
+						   </defs>						   
+						   <g transform="rotate(-10 16 16)">
+						   <circle cx="12" cy="12" r="6" stroke="none"  fill="url(#RadialGrad)" />
+						   
+							<circle cx="12" cy="12" r="6" stroke="none" fill="black" >
+							
+							<animate id="youngMoon" attributeName="cx" values="12;-12;" begin="1s;oldMoon.end+1s" dur="10s" fill="freeze" />
+						    <animate id="oldMoon" attributeName="cx" values="30;10;" begin="youngMoon.end+1s" dur="10s"  fill="freeze" />
+						   </circle> 
+						   </g>
+					</svg>
+
+	<main class="d-flex w-100 h-100">		
+		<div class="container d-flex flex-column">
+			<div class="row vh-10">
+				<div class="col-sm-12 col-md-12 col-lg-12 mx-auto d-table h-10">
+					<div class="d-table-cell align-middle">	
+						{% include 'partials/_messages.html'%}					
+						{% block asosiy_qism %}
+						
+						{% endblock asosiy_qism %}
+						<a href="{% url 'kirish' %}" class="btn btn-outline-warning">Asosiy sahifaga o'tish</a>
+					</div>					
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="{% static 'js/login.js'%}"></script>
+	
+	<script src="{% static 'js/app.js'%}"></script>
+	
+
+</body>
+
+</html>

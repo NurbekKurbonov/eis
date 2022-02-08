@@ -1,4 +1,4 @@
-{% extends '01_base_auth.html' %}
+{% extends 'base_application.html' %}
 {% load static %}
 
 {% block title %}
@@ -8,69 +8,18 @@
 {% block asosiy_qism %}
 
 <div class="text-center mt-4">
-	<h1 class="h2">EIS sistemasiga xush kelibsiz!!!</h1>
+	<h1 class="h2">EIS sistemasiga xush kelibsiz!!!</h1>	
 	<p class="lead">
-		Iltimos qisqa savolnoma savollariga javob bering
+		EIS bilan barchasi oson!
 	</p>
 </div>
 
-<div class="card">
-	<div class="card-body">
-		<div class="m-sm-4">
-			<div class="text-center">
-				<img src="{% static 'img/emblem/login_emb.jpg'%}" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
-			</div>
-			<form action="{% url 'savolnoma' %}" method="post">
-				{% csrf_token %}
-				<div class="mb-3">
-					<label class="form-label">1. Sizning korxonangiz energiya resurs/mahsulot ishlab chiqaradimi?</label>
-					<div class="row">
-						<div class="col-sm-6 col-xl-6">
-							<div class="input-group">
-								<div class="input-group-text">
-									<input type="radio" name="savol1"  value="True">
-								</div>
-								<input type="text" class="form-control" placeholder="HA" disabled>
-							</div>
-						</div>
-						<div class="col-sm-6 col-xl-6">
-							<div class="input-group">
-								<div class="input-group-text">
-									<input type="radio" name="savol1"  value="False">
-								</div>
-								<input type="text" class="form-control" placeholder="Yo'q" disabled>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="mb-3">
-					<label class="form-label">2. Sizning korxonangizda energiya resurs uzatadimi/sotadimi?</label>
-					
-					<div class="row">
-						<div class="col-sm-6 col-xl-6">
-							<div class="input-group">
-								<div class="input-group-text">
-									<input type="radio" name="savol2" value="True">
-								</div>
-								<input type="text" class="form-control" placeholder="HA MAVJUD" disabled>
-							</div>
-						</div>
-						<div class="col-sm-6 col-xl-6">
-							<div class="input-group">
-								<div class="input-group-text">
-									<input type="radio" name="savol2" value="False">
-								</div>
-								<input type="text" class="form-control" placeholder="Yo'q mavjud emas" disabled>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="text-center mt-3">					
-					<button type="submit" class="btn btn-lg btn-primary">Kirish</button>
-				</div>
-			</form>
-		</div>
+<div class="row">
+	<div class="col-4">
+		{% include '01_auth/06.01_savolcha.html' %}
+	</div>
+	<div class="col-8">
+		{% include '01_auth/06.02_application.html' %}
 	</div>
 </div>
 
