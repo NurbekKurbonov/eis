@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">2. Sizning korxonangizda energiya resurs uzatadimi/sotadimi?</label>
+                    <label class="form-label text_ray">2. Sizning korxonangiz energiya resurs/mahsulot uzatadimi/sotadimi?</label>
                     
                     <div class="row">
                         <div class="col-sm-6 col-xl-6">
@@ -49,8 +49,31 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
+                </div> 
+                <div class="mb-3">
+                    <label class="form-label text_ray">3. Tasdiqlash uchun telefon raqamingizni kiriting</label>                    
+                    <div class="row">
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">Ish yurituvchi telefon raqami :</label>
+                            <input type="text" 
+                                data-inputmask-mask="99-999-99-99"
+                                class="form-control" 
+                                autofocus required="true"                                                             
+                                name="dbibt"
+                                value = {{values.dbibt}}>
+                            <spanclass="font-13 text-muted">Namuna: "99-999-99-99"</span>
+                        </div>
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">Tasdiqlash kodi :</label>
+                            <input type="text" 
+                                data-inputmask-mask="9-9-9-9-9-9"
+                                class="form-control" 
+                                autofocus required="true"                                                             
+                                name="dbibt"
+                                value = {{values.dbibt}}>
+                        </div> 
+                    </div>
+                </div>                
                 <div class="text-center mt-3">					
                     <button type="submit" class="btn btn-lg btn-primary">Kirish</button>
                 </div>

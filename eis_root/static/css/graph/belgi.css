@@ -11,3 +11,13 @@
     background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,0.23431370839351362) 0%, rgba(255,255,255,0.16708681763721112) 35%, rgba(0,212,255,0.16708681763721112) 100%);
 }
+
+.text_ray {
+    background: #CF783E;
+    background: -webkit-radial-gradient(circle farthest-corner at center center, #CF783E 0%, #231421 100%);
+    background: -moz-radial-gradient(circle farthest-corner at center center, #CF783E 0%, #231421 100%);
+    background: radial-gradient(circle farthest-corner at center center, #CF783E 0%, #231421 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
