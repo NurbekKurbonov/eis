@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'eis_root.urls'
-
+LOGIN_URL='/login/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

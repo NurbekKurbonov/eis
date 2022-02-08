@@ -8,60 +8,37 @@
             <form action="{% url 'savolnoma' %}" method="post">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label class="form-label">1. Sizning korxonangiz energiya resurs/mahsulot ishlab chiqaradimi?</label>
+                    <label class="form-label text_ray">Quyidagi funksyalar mavjudmi?</label>
                     <div class="row">
-                        <div class="col-sm-6 col-xl-6">
+                        <div class="col-xl-12 mb-3">
                             <div class="input-group">
                                 <div class="input-group-text">
-                                    <input type="radio" name="savol1"  value="True">
+                                    <input type="checkbox" name="savol1"  value="True">
                                 </div>
-                                <input type="text" class="form-control" placeholder="HA" disabled>
+                                <texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" disabled> Ishlab chiqarish/xizmat ko'rsatish</texteare>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-xl-6">
+                        <div class="col-xl-12 mb-3">
                             <div class="input-group">
                                 <div class="input-group-text">
-                                    <input type="radio" name="savol1"  value="False">
+                                    <input type="checkbox" name="savol2"  value="True">
                                 </div>
-                                <input type="text" class="form-control" placeholder="Yo'q" disabled>
+                                <texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" disabled>Uzatish/sotish</texteare>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                
                 <div class="mb-3">
-                    <label class="form-label text_ray">2. Sizning korxonangiz energiya resurs/mahsulot uzatadimi/sotadimi?</label>
-                    
+                    <label class="form-label text_ray">Tasdiqlash uchun telefon raqamingizni kiriting</label>                    
                     <div class="row">
-                        <div class="col-sm-6 col-xl-6">
-                            <div class="input-group">
-                                <div class="input-group-text">
-                                    <input type="radio" name="savol2" value="True">
-                                </div>
-                                <input type="text" class="form-control" placeholder="HA" disabled>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xl-6">
-                            <div class="input-group">
-                                <div class="input-group-text">
-                                    <input type="radio" name="savol2" value="False">
-                                </div>
-                                <input type="text" class="form-control" placeholder="YO`Q" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                <div class="mb-3">
-                    <label class="form-label text_ray">3. Tasdiqlash uchun telefon raqamingizni kiriting</label>                    
-                    <div class="row">
-                        <div class="mb-3 col-md-12">
-                            <label class="form-label text_ray" for="">Ish yurituvchi telefon raqami :</label>
+                        <div class="input-group mb-3 col-md-9">
                             <input type="text" 
                                 data-inputmask-mask="99-999-99-99"
                                 class="form-control" 
                                 autofocus required="true"                                                             
                                 name="dbibt"
                                 value = {{values.dbibt}}>
-                            <spanclass="font-13 text-muted">Namuna: "99-999-99-99"</span>
+                                <button class="btn btn-outline-success" type="button"><i class="align-middle me-2 fas fa-fw fa-comment-alt"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
                         </div>
                         <div class="mb-3 col-md-12">
                             <label class="form-label text_ray" for="">Tasdiqlash kodi :</label>
@@ -71,11 +48,11 @@
                                 autofocus required="true"                                                             
                                 name="dbibt"
                                 value = {{values.dbibt}}>
-                        </div> 
+                        </div>
                     </div>
                 </div>                
                 <div class="text-center mt-3">					
-                    <button type="submit" class="btn btn-lg btn-primary">Kirish</button>
+                    <button type="submit" class="btn btn-lg btn-primary">Keyingi bosqich</button>
                 </div>
             </form>
         </div>

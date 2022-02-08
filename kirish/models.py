@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-
+from django.contrib.auth.models import AbstractUser
 
 
 class sahifa(models.Model):
@@ -33,8 +33,3 @@ class savolnoma(models.Model):
 
     def __str__(self):
         return self.owner.username
-
-            
-            
-        
-

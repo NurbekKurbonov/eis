@@ -6,7 +6,7 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <div class="row">  
-                        <div class="mb-3 col-md-12">
+                        <div class="mb-3 col-md-10">
                             <label class="form-label text_ray" for="">Yuridik shaxs nomi</label>
                             <input type="number" 
                                 class="form-control" 
@@ -15,6 +15,15 @@
                                 name="dbibt"
                                 value = {{values.dbibt}}>
                         </div>  
+                        <div class="mb-3 col-md-2">
+                            <div class="text-center">
+                                <div class="mt-2">
+                                    <label for="id_emblem" class="btn btn-primary"> <i class="fas fa-upload">Emb</i></label>
+                                    <input type="file" id="id_emblem" name="emblem" accept="image/*" hidden>
+                                </div>
+                                <small>128px*128px .jpg</small>
+                            </div>
+                        </div> 
                         <div class="mb-3 col-md-6">
                             <label class="form-label text_ray" for="">Ish yurituvchi ismi</label>
                             <input type="number" 
@@ -114,3 +123,29 @@
         </div>
     </div>
 </div>
+
+<script>		
+    // DataTables with Column Search by Select Inputs
+    document.addEventListener("DOMContentLoaded", function() {
+        $("#datatables-column-search-select-inputs").DataTable({
+            initComplete: function() {
+                this.api().columns().every(function() {
+                    var column = this;
+                    var select = $("<select class=\"form-control\"><option value=\"\"></option></select>")
+                        .appendTo($(column.footer()).empty())
+                        .on("change", function() {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search(val ? "^" + val + "$" : "", true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append("<option value=\"" + d + "\">" + d + "</option>")
+                    });
+                });
+            }
+        });
+    });
+</script>
