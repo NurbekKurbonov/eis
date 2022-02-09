@@ -18,7 +18,7 @@ class davlatlar(models.Model):
         
 class viloyatlar(models.Model):
     viloyat_davlati = models.ForeignKey(davlatlar, on_delete=models.CASCADE)
-    viloyat_kodi = models.FloatField('Tuman kodi')
+    viloyat_kodi = models.FloatField('Viloyat kodi')
     viloyat_nomi = models.CharField('Viloyat nomi', max_length=100)
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)

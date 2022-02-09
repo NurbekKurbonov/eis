@@ -247,7 +247,7 @@ def addviloyat(request):
         viloyat_kodi = request.POST['viloyat_kodi']
         viloyat_nomi = request.POST['viloyat_nomi']           
         
-        viloyatlar.objects.create(owner=request.user, viloyat_davlati=viloyat_davlati, viloyat_kodi=viloyat_kodi, viloyat_nomi=viloyat_nomi)        
+        viloyatlar.objects.create(owner=request.user, viloyat_davlati=davlatlar(viloyat_davlati), viloyat_kodi=viloyat_kodi, viloyat_nomi=viloyat_nomi)        
         messages.success(request, 'Yangi viloyat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('viloyat')
    
@@ -272,7 +272,7 @@ def editviloyat(request, id):
         viloyat_nomi = request.POST['viloyat_nomi'] 
         
         vil.owner=request.user
-        vil.viloyat_davlati=viloyat_davlati
+        vil.viloyat_davlati=davlatlar(viloyat_davlati)
         vil.viloyat_nomi=viloyat_nomi
         vil.viloyat_kodi=viloyat_kodi
         
@@ -320,12 +320,11 @@ def addtuman(request):
         return render(request, '02_s_ad/04_1_addtuman.html', context)
             
     if request.method == 'POST':  
-        tuman_davlati = request.POST['tuman_davlati']
         tuman_viloyati = request.POST['tuman_viloyati']
         tuman_kodi = request.POST['tuman_kodi']        
         tuman_nomi = request.POST['tuman_nomi']
         
-        tumanlar.objects.create(owner=request.user, tuman_davlati =tuman_davlati, tuman_viloyati = tuman_viloyati, tuman_kodi = tuman_kodi, tuman_nomi = tuman_nomi)
+        tumanlar.objects.create(owner=request.user, tuman_viloyati = viloyatlar(tuman_viloyati), tuman_kodi = tuman_kodi, tuman_nomi = tuman_nomi)
         messages.success(request, 'Yangi tuman muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
         return redirect('tuman')
     
@@ -352,8 +351,7 @@ def edittuman(request, id):
         tuman_nomi = request.POST['tuman_nomi']
         
         tuman.owner=request.user
-        tuman.tuman_davlati=tuman_davlati
-        tuman.tuman_viloyati = tuman_viloyati
+        tuman.tuman_viloyati = viloyatlar(tuman_viloyati)
         tuman.tuman_kodi = tuman_kodi 
         tuman.tuman_nomi = tuman_nomi
         

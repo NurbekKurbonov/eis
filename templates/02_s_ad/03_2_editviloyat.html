@@ -21,10 +21,10 @@
                             
                             <div class="input-group mb-3">
                                 <select class="form-select flex-grow-1" name="viloyat_davlati">                                    
-                                    <option selected name="viloyat_davlati" value={{values.viloyat_davlati}}>{{values.viloyat_davlati}}</option>                                 
+                                    <option selected name="viloyat_davlati" value={{values.viloyat_davlati.id}}>{{values.viloyat_davlati.davlat_nomi}}</option>                                 
                                     
                                     {% for v in davlat %}
-                                        <option name="viloyat_davlati" value = {{v.davlat_nomi}}>{{v.davlat_nomi}}</option>                                         
+                                        <option name="viloyat_davlati" value = {{v.id}}>{{v.davlat_nomi}}</option>                                         
                                     {% endfor %}
                                 </select>                                
                             </div>

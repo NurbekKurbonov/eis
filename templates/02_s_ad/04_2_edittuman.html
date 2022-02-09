@@ -22,9 +22,9 @@
                             <div class="input-group mb-3">
                                 <select class="form-select flex-grow-1"                                
                                 name="viloyat_davlati">                                   
-                                <option selected name="viloyat_davlati">{{values.tuman_davlati}}</option>    
-                                {% for v in vil %}
-                                    <option value = {{v.viloyat_davlati}}>{{v.viloyat_davlati}}</option> 
+                                <option selected name="viloyat_davlati" value="{{values.tuman_viloyati.viloyat_davlati.id}}">{{values.tuman_viloyati.viloyat_davlati}}</option>    
+                                {% for v in dav %}
+                                    <option value = {{v.id}}>{{v.davlat_nomi}}</option> 
                                     {% endfor %}
                                 </select>                                
                             </div>
@@ -37,9 +37,9 @@
                                 <select class="form-select flex-grow-1"                                
                                 id="id_viloyat"
                                 name="tuman_viloyati">
-                                <option selected name="tuman_viloyati" value={{values.tuman_viloyati}}>{{values.tuman_viloyati}}</option>                            
+                                <option selected name="tuman_viloyati" value={{values.tuman_viloyati.id}}>{{values.tuman_viloyati}}</option>                            
                                     {% for v in vil %}
-                                    <option value = {{v.viloyat_nomi}}>{{v.viloyat_nomi}}</option> 
+                                    <option value = {{v.id}}>{{v.viloyat_nomi}}</option> 
                                     {% endfor %}
                                 </select>                                
                             </div>

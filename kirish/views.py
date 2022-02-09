@@ -253,13 +253,15 @@ def savol(request):
         dbibt=DBIBT.objects.all()
         dav=davlatlar.objects.all()
         vil=viloyatlar.objects.all()
+        tum=tumanlar.objects.all()
         
         context={
             'iftum':iftum,
             'thst':thst,
             'dbibt':dbibt,
             'dav': dav,
-            'vil':vil
+            'vil':vil,
+            'tum':tum
         }
         return render(request, '01_auth/06_savolnoma.html', context)
     
