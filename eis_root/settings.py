@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'captcha',
     'crispy_forms',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'eis_root.urls'
-LOGIN_URL='/login/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -160,3 +161,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'nurbek.kurbonov.96@gmail.com'
 EMAIL_HOST_PASSWORD = 'zdkkebohyiulpzrn'
 EMAIL_PORT = 587
+
+#additional -***************************************************************
+LOGIN_URL='/login/'
+#AUTH_USER_MODEL = 'kirish.CustomUser'

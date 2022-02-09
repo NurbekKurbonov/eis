@@ -17,6 +17,9 @@ from django.urls import reverse
 from .utils import account_activation_token
 
 from .models import sahifa, savolnoma
+from foydalanuvchi.models import allfaqir
+
+from s_ad.models import IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar
 from .forms import ContactForm
 import foydalanuvchi
 
@@ -63,8 +66,7 @@ class StirValidationView(View):
         if boshi>3:
             if boshi<7:
                 return JsonResponse({'stir_error': 'Sistema hozircha faqat yuridik shaxslarni qabul qiladi'}, status=401)
-            return JsonResponse({'stir_error': 'STIR yuridik shaxsga tegishli emas'}, status=400)
-            
+            return JsonResponse({'stir_error': 'STIR yuridik shaxsga tegishli emas'}, status=400)            
         
         return JsonResponse({'stir_valid': True})    
 
@@ -245,13 +247,41 @@ def contact(request):
 #QUIZ***************************************************************
 def savol(request):
     if request.method=="GET":
-        return render(request, '01_auth/06_savolnoma.html' )
+        
+        iftum=IFTUM.objects.all()
+        thst=THST.objects.all()
+        dbibt=DBIBT.objects.all()
+        dav=davlatlar.objects.all()
+        vil=viloyatlar.objects.all()
+        
+        context={
+            'iftum':iftum,
+            'thst':thst,
+            'dbibt':dbibt,
+            'dav': dav,
+            'vil':vil
+        }
+        return render(request, '01_auth/06_savolnoma.html', context)
     
     if request.method=="POST":
+        nomi=request.POST['nomi']
+        emb=request.FILES['emblem']
+        ism=request.POST['ism']
+        fam=request.POST['fam']
+        tel=request.POST['tel']
+        iftum=request.POST['iftum']
+        dbibt=request.POST['dbibt']
+        thst=request.POST['thst']
+        mobil=request.POST['mobil']
+        dav=request.POST['dav']
+        vil=request.POST['vil']
+        tum=request.POST['tum']
+        manzil=request.POST['manzil']
+        
         savol1=request.POST['savol1']
         savol2=request.POST['savol2']
         
-        savolnoma.objects.create(
+        allfaqir.objects.create(
             owner=request.user,
             savol1=savol1,
             savol2=savol2

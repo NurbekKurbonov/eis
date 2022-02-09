@@ -1,17 +1,33 @@
 from django.db import models
 from django.contrib.auth.models import User
+from s_ad.models import IFTUM, DBIBT, THST
 
-from s_ad.models import resurslar, Valyuta
+from s_ad.models import resurslar, Valyuta, davlatlar, viloyatlar, tumanlar
 
 # user*******************
 class allfaqir(models.Model): 
-    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
-    nomi=models.CharField("Korxona nomi", max_length=250)
-    admin=models.CharField("Boshqaruvchi nomi", max_length=50)
-    inn = models.CharField("STIR", max_length=50)
+    owner=models.OneToOneField(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    inn = models.CharField("STIR", max_length=50, blank=True)
+    
+    nomi=models.CharField("Korxona nomi", max_length=250, blank=True)    
+    iftum=models.OneToOneField(IFTUM, verbose_name=("IFTUM"), on_delete=models.CASCADE)
+    dbibt=models.OneToOneField(DBIBT, verbose_name=("DBIBT"), on_delete=models.CASCADE)    
+    thst=models.OneToOneField(THST, verbose_name=("DBIBT"), on_delete=models.CASCADE)    
+    
+    mobil=models.CharField("Korxona raqami", max_length=9)
+    tel=models.CharField("Korxona raqami", max_length=9)
+    
+    dav=models.OneToOneField(davlatlar, verbose_name=(""), on_delete=models.CASCADE)
+    vil=models.OneToOneField(viloyatlar, verbose_name=(""), on_delete=models.CASCADE)
+    tum=models.OneToOneField(tumanlar, verbose_name=(""), on_delete=models.CASCADE)
+    manzil=models.TextField("Manzil")
+    
+    savol1=models.BooleanField("Ishlab chiqarish/servis")
+    savol2=models.BooleanField("Uzatish/sotish")
+    
     about=models.TextField("Korxona haqida qisqacha", blank=True)
     emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=False, max_length=255)
-
+    
     class Meta:
         verbose_name = ("Foydalanuvchi")
         verbose_name_plural = ("00_Foydalanuvchilar")

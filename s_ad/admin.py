@@ -18,7 +18,7 @@ class vilAdmin(admin.ModelAdmin):
 admin.site.register(viloyatlar, vilAdmin)
 
 class tumAdmin(admin.ModelAdmin):
-    list_display = ('tuman_kodi', 'tuman_nomi', 'tuman_viloyati', 'tuman_davlati')
+    list_display = ('tuman_kodi', 'tuman_nomi', 'tuman_viloyati')
     ordering = ('tuman_kodi',)
     search_files = ('tuman_kodi',' tuman_nomi')
     

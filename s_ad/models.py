@@ -17,7 +17,7 @@ class davlatlar(models.Model):
         verbose_name_plural = '01_Davlatlar'
         
 class viloyatlar(models.Model):
-    viloyat_davlati = models.CharField('Viloyat davlati', max_length=50)
+    viloyat_davlati = models.ForeignKey(davlatlar, on_delete=models.CASCADE)
     viloyat_kodi = models.FloatField('Tuman kodi')
     viloyat_nomi = models.CharField('Viloyat nomi', max_length=100)
     
@@ -31,9 +31,7 @@ class viloyatlar(models.Model):
         verbose_name_plural = '02_Viloyatlar'
         
 class tumanlar(models.Model):
-    tuman_davlati = models.CharField('Tuman/shahar nomi', max_length=100)
-    tuman_viloyati = models.CharField('Tuman/shahar nomi', max_length=100)
-        
+    tuman_viloyati = models.ForeignKey(viloyatlar, on_delete=models.CASCADE)       
     tuman_kodi = models.IntegerField('Tuman/shahar kodi')
     tuman_nomi = models.CharField('Tuman/shahar nomi', max_length=100)
     

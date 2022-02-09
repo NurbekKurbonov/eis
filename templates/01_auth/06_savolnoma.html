@@ -13,14 +13,15 @@
 		EIS bilan barchasi oson!
 	</p>
 </div>
-
-<div class="row">
-	<div class="col-4">
-		{% include '01_auth/06.01_savolcha.html' %}
+<form action="{% url 'savolnoma' %}" method="post">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-8">
+			{% include '01_auth/06.02_application.html' %}
+		</div>
+		<div class="col-4">
+			{% include '01_auth/06.01_savolcha.html' %}
+		</div>	
 	</div>
-	<div class="col-8">
-		{% include '01_auth/06.02_application.html' %}
-	</div>
-</div>
-
+</form>
 {% endblock asosiy_qism %}

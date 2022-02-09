@@ -1,6 +1,6 @@
 from django.contrib import admin
-
-from .models import sahifa, savolnoma
+from django.contrib.auth.admin import UserAdmin
+from .models import sahifa, savolnoma, Code
 
 class sahifaAdmin(admin.ModelAdmin):
     list_display = ('title', 'update_date')
@@ -16,3 +16,4 @@ class SavAdmin(admin.ModelAdmin):
    
     
 admin.site.register(savolnoma, SavAdmin)
+admin.site.register(Code)

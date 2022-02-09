@@ -39,7 +39,7 @@ def icons(request):
 def kirishP(request):    
     title='Kirish bo`limi'
     
-    sah = sahifa.objects.filter(owner=request.user)    
+    sah = sahifa.objects.all() 
     paginator = Paginator(sah, 4)    
     page_number=request.GET.get('page')
     page_obj=Paginator.get_page(paginator, page_number)

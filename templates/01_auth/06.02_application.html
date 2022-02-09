@@ -1,9 +1,7 @@
 {% load static %}
 <div class="card">
     <div class="card-body">
-        <div class="m-sm-4">            
-            <form action="{% url 'savolnoma' %}" method="post">
-                {% csrf_token %}
+        <div class="m-sm-4">  
                 <div class="mb-3">
                     <div class="row">  
                         <div class="mb-3 col-md-10">
@@ -12,7 +10,7 @@
                                 class="form-control" 
                                 autofocus required="true"
                                 placeholder="Korxonangizni nomini kiriting"                              
-                                name="dbibt"
+                                name="nomi"
                                 value = {{values.dbibt}}>
                         </div>  
                         <div class="mb-3 col-md-2">
@@ -24,85 +22,104 @@
                                 <small>128px*128px .jpg</small>
                             </div>
                         </div> 
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-4">
                             <label class="form-label text_ray" for="">Ish yurituvchi ismi</label>
                             <input type="number" 
                                 class="form-control" 
                                 autofocus required="true"
                                 placeholder="Ismingizni kiriting"                              
-                                name="dbibt"
+                                name="ism"
                                 value = {{values.dbibt}}>
                         </div>  
-                        <div class="mb-3 col-md-6">
-                            <label class="form-label text_ray" for="">Ish yurituvchi familyasi</label>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="">Ish yurituvchi familiya</label>
                             <input type="number" 
                                 class="form-control" 
                                 autofocus required="true"
                                 placeholder="Familyangizni kiriting"                              
-                                name="dbibt"
+                                name="fam"
                                 value = {{values.dbibt}}>
-                        </div>  
+                        </div>
                         <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="">Ish yurituvchi telefon raqami</label>
+                            <div class="mb-3 col-md-4 input-group">
+                                <input type="text" 
+                                    data-inputmask-mask="99-999-99-99"
+                                    class="form-control" 
+                                    autofocus required="true"                                                             
+                                    name="tel"
+                                    value = {{values.dbibt}}>
+                                    <button class="btn btn-outline-success" type="button" disabled><i class="align-middle me-2 fas fa-fw fa-phone"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 col-md-12">
                             <label class="form-label text_ray" for="">IFTUM kodi (ру: ОКЭД)</label>
-                            <select class="form-select flex-grow-1"                                
-                                id="id_viloyat"
-                                name="tuman_viloyati">                                  
-                                    <option value = {{v.viloyat_nomi}}>111</option>                                     
+                            <select class="form-select flex-grow-1"
+                                name="iftum">
+                                {% for v in iftum %}
+                                    <option value = {{v.id}}>{{v.bolim}}{{v.bob}}{{v.guruh}}{{v.sinf}}{{v.tartib}}: {{v.nomi}}</option>    
+                                {% endfor %}
                             </select>  
                         </div> 
-                        <div class="mb-3 col-md-4">
-                            <label class="form-label text_ray" for="">DBIBT kodi (ру: СООГУ/ОКПО)</label>
-                            <select class="form-select flex-grow-1"                                
-                                id="id_viloyat"
-                                name="tuman_viloyati">                                  
-                                    <option value = {{v.viloyat_nomi}}>111</option>                                     
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">DBIBT/KTUT kodi (ру: СООГУ/ОКПО)</label>
+                            <select class="form-select flex-grow-1" 
+                                name="dbibt">
+                                {% for v in dbibt %}
+                                    <option value = {{v.id}}>{{v.dbibt}}/{{v.ktut}}: {{v.nomi}}</option>    
+                                {% endfor %}
+                            </select>                                   
                             </select>  
                         </div> 
-                        <div class="mb-3 col-md-4">
+                        <div class="mb-3 col-md-12">
                             <label class="form-label text_ray" for="">THSHT kodi (ру: ОПФ)</label>
-                            <select class="form-select flex-grow-1"                                
-                                id="id_viloyat"
-                                name="tuman_viloyati">                                  
-                                    <option value = {{v.viloyat_nomi}}>111</option>                                     
+                            <select class="form-select flex-grow-1"
+                                name="thst">                                  
+                                {% for v in thst %}
+                                <option value = {{v.id}}>{{v.bolim}}{{v.tur}}: {{v.nomi}}</option>    
+                                {% endfor %}                                 
                             </select>  
                         </div> 
                         <div class="mb-3 col-md-4">
-                            <label class="form-label text_ray" for="">Yuridik shaxs mobil raqami :</label>
+                            <label class="form-label text_ray" for="">Yuridik shaxs mobil telefon raqami :</label>
                             <input type="text" 
                                 data-inputmask-mask="99-999-99-99"
                                 class="form-control" 
                                 autofocus required="true"                                                             
-                                name="dbibt"
+                                name="mobil"
                                 value = {{values.dbibt}}>
-                            <spanclass="font-13 text-muted">Namuna: "99-999-99-99"</span>
+                            <spanclass="font-13 text-muted">na'muna: "99-999-99-99"</span>
                         </div>            
                     </div>					
                 </div>                
                 <div class="mb-3">
-                    <label class="form-label text_ray">Joylashgan o'rni bo'yicha ma'lumotlar:</label>                    
+                    <label class="form-label text_ray">Korxonaning joylashgan o'rni bo'yicha ma'lumotlar:</label>                    
                     <div class="row">
                         <div class="mb-3 col-md-4">
                             <label class="form-label text_ray" for="">Davlat :</label>
-                            <input type="number" 
-                                class="form-control" 
-                                autofocus required="true"                                                             
-                                name="dbibt"
-                                value = {{values.dbibt}}>
+                            <select class="form-select flex-grow-1"
+                                name="dav">                                  
+                                {% for v in dav %}
+                                <option value = {{v.id}}>{{v.davlat_nomi}}</option>    
+                                {% endfor %}                                 
+                            </select> 
                         </div> 
                         <div class="mb-3 col-md-4">
                             <label class="form-label text_ray" for="">Viloyat/shahar :</label>
-                            <input type="number" 
-                                class="form-control" 
-                                autofocus required="true"                                                             
-                                name="dbibt"
-                                value = {{values.dbibt}}>
+                            <select class="form-select flex-grow-1"
+                                name="vil">                                  
+                                {% for v in vil %}
+                                <option value = {{v.id}}>{{v.viloyat_nomi}}</option>    
+                                {% endfor %}                                 
+                            </select>                             
                         </div> 
                         <div class="mb-3 col-md-4">
                             <label class="form-label text_ray" for="">tuman/shahar :</label>
                             <input type="number" 
                                 class="form-control" 
                                 autofocus required="true"                                                             
-                                name="dbibt"
+                                name="tum"
                                 value = {{values.dbibt}}>
                         </div> 
                         <div class="mb-3 col-md-4">
@@ -110,16 +127,11 @@
                             <textarea rows="1" type="text" 
                                 class="form-control" 
                                 autofocus required="true"                                                             
-                                name="dbibt"
+                                name="manzil"
                                 value = {{values.dbibt}}></textarea>
                         </div>                   
                     </div>
                 </div>
-                
-                <div class="text-center mt-3">					
-                    <button type="submit" class="btn btn-lg btn-primary">Kirish</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
