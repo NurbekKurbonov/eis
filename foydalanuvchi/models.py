@@ -7,33 +7,30 @@ from s_ad.models import resurslar, Valyuta, davlatlar, viloyatlar, tumanlar
 # user*******************
 class allfaqir(models.Model): 
     owner=models.OneToOneField(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
-    inn = models.CharField("STIR", max_length=50, blank=True)
+    inn = models.CharField("STIR", max_length=50)
     
     nomi=models.CharField("Korxona nomi", max_length=250, blank=True)    
-    iftum=models.OneToOneField(IFTUM, verbose_name=("IFTUM"), on_delete=models.CASCADE)
-    dbibt=models.OneToOneField(DBIBT, verbose_name=("DBIBT"), on_delete=models.CASCADE)    
-    thst=models.OneToOneField(THST, verbose_name=("DBIBT"), on_delete=models.CASCADE)    
+    iftum=models.ForeignKey(IFTUM, verbose_name=("IFTUM"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    dbibt=models.ForeignKey(DBIBT, verbose_name=("DBIBT"), on_delete=models.CASCADE, default="",blank=True, null=True)    
+    thst=models.ForeignKey(THST, verbose_name=("DBIBT"), on_delete=models.CASCADE, default="",blank=True, null=True)    
     
-    mobil=models.CharField("Korxona raqami", max_length=9)
-    tel=models.CharField("Korxona raqami", max_length=9)
+    mobil=models.CharField("Korxona raqami", max_length=9, blank=True)
+    tel=models.CharField("Korxona raqami", max_length=9, blank=True)
     
-    dav=models.OneToOneField(davlatlar, verbose_name=(""), on_delete=models.CASCADE)
-    vil=models.OneToOneField(viloyatlar, verbose_name=(""), on_delete=models.CASCADE)
-    tum=models.OneToOneField(tumanlar, verbose_name=(""), on_delete=models.CASCADE)
-    manzil=models.TextField("Manzil")
-    
-    savol1=models.BooleanField("Ishlab chiqarish/servis")
-    savol2=models.BooleanField("Uzatish/sotish")
-    
+    dav=models.ForeignKey(davlatlar, verbose_name=("Davlat"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    vil=models.ForeignKey(viloyatlar, verbose_name=("Viloyat"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    tum=models.ForeignKey(tumanlar, verbose_name=("Tuman"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    manzil=models.TextField("Manzil", blank=True)
+        
     about=models.TextField("Korxona haqida qisqacha", blank=True)
-    emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=False, max_length=255)
+    emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=True, max_length=255)
     
     class Meta:
         verbose_name = ("Foydalanuvchi")
         verbose_name_plural = ("00_Foydalanuvchilar")
 
     def __str__(self):
-        return f"{self.nomi} - {self.admin} - {self.inn}"
+        return f"{self.nomi} - {self.inn}"
 
     def get_absolute_url(self):
         return reverse("allfaqir_detail", kwargs={"pk": self.pk})

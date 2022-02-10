@@ -1,8 +1,11 @@
 from django.contrib import messages
+from django.http import JsonResponse
+import json
 
 from django.shortcuts import render, redirect
 from kirish.models import sahifa
 from datetime import datetime
+
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -303,9 +306,14 @@ def tuman(request):
 
 @group_required('admin2')
 def addtuman(request):           
+    dav = davlatlar.objects.all()
+    vil = viloyatlar.objects.all() #.filter(viloyat_davlati=dav)
     
-    vil = viloyatlar.objects.all()
-    dav = davlatlar.objects.all()  
+    if request.is_ajax():
+        dav = request.GET.get('dav')
+        vil = viloyatlar.objects.all().filter(viloyat_davlati=dav)               
+        
+        #return JsonResponse(vil, safe=False)
     
     context = {    
         'dav': dav,           
@@ -435,8 +443,8 @@ def editiftums(request, id):
         iftum.owner=request.user
         
         iftum.save()
-        messages.success(request, 'IFTUM kodi muvofaqqiyatli yangilandi!')
-        
+        messages.success(request, 'IFTUM kodi muvofaqqiyatli yangilandi!')   
+             
         return redirect('iftums')
 
 @group_required('admin2')

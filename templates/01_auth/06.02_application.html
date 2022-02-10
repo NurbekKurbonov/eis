@@ -6,13 +6,13 @@
                     <div class="row">  
                         <div class="mb-3 col-md-10">
                             <label class="form-label text_ray" for="">Yuridik shaxs nomi</label>
-                            <input type="number" 
+                            <input type="text"
                                 class="form-control" 
                                 autofocus required="true"
                                 placeholder="Korxonangizni nomini kiriting"                              
                                 name="nomi"
                                 value = {{values.dbibt}}>
-                        </div>  
+                        </div>
                         <div class="mb-3 col-md-2">
                             <div class="text-center">
                                 <div class="mt-2">
@@ -22,9 +22,9 @@
                                 <small>128px*128px .jpg</small>
                             </div>
                         </div> 
-                        <div class="mb-3 col-md-4">
+                        <div class="mb-3 col-md-3">
                             <label class="form-label text_ray" for="">Ish yurituvchi ismi</label>
-                            <input type="number" 
+                            <input type="text" 
                                 class="form-control" 
                                 autofocus required="true"
                                 placeholder="Ismingizni kiriting"                              
@@ -32,17 +32,18 @@
                                 value = {{values.dbibt}}>
                         </div>  
                         <div class="mb-3 col-md-4">
-                            <label class="form-label text_ray" for="">Ish yurituvchi familiya</label>
-                            <input type="number" 
-                                class="form-control" 
+                            <label class="form-label text_ray" for="">Ish yurituvchi familiyasi</label>
+                            <input type="text" 
+                                class="form-control"
                                 autofocus required="true"
                                 placeholder="Familyangizni kiriting"                              
                                 name="fam"
                                 value = {{values.dbibt}}>
                         </div>
-                        <div class="mb-3 col-md-4">
+                        <div class="mb-3 col-md-5">
                             <label class="form-label text_ray" for="">Ish yurituvchi telefon raqami</label>
                             <div class="mb-3 col-md-4 input-group">
+                                <button class="btn btn-outline-secondary" type="button" disabled>+998</button>
                                 <input type="text" 
                                     data-inputmask-mask="99-999-99-99"
                                     class="form-control" 
@@ -81,16 +82,19 @@
                                 {% endfor %}                                 
                             </select>  
                         </div> 
-                        <div class="mb-3 col-md-4">
-                            <label class="form-label text_ray" for="">Yuridik shaxs mobil telefon raqami :</label>
-                            <input type="text" 
-                                data-inputmask-mask="99-999-99-99"
-                                class="form-control" 
-                                autofocus required="true"                                                             
-                                name="mobil"
-                                value = {{values.dbibt}}>
-                            <spanclass="font-13 text-muted">na'muna: "99-999-99-99"</span>
-                        </div>            
+                        <div class="mb-3 col-md-5">
+                            <label class="form-label text_ray" for="">Ish yurituvchi telefon raqami</label>
+                            <div class="mb-3 col-md-4 input-group">
+                                <button class="btn btn-outline-secondary" type="button" disabled>+998</button>
+                                <input type="text" 
+                                    data-inputmask-mask="99-999-99-99"
+                                    class="form-control" 
+                                    autofocus required="true"                                                             
+                                    name="mobil"
+                                    value = {{values.dbibt}}>
+                                <button class="btn btn-outline-success" type="button" disabled><i class="align-middle me-2 fas fa-fw fa-phone"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
+                            </div>
+                        </div>           
                     </div>					
                 </div>                
                 <div class="mb-3">
@@ -116,11 +120,12 @@
                         </div> 
                         <div class="mb-3 col-md-4">
                             <label class="form-label text_ray" for="">tuman/shahar :</label>
-                            <input type="number" 
-                                class="form-control" 
-                                autofocus required="true"                                                             
-                                name="tum"
-                                value = {{values.dbibt}}>
+                            <select class="form-select flex-grow-1"
+                                name="tuman">                                  
+                                {% for v in tum %}
+                                <option value = {{v.id}}>{{v.tuman_nomi}}</option>    
+                                {% endfor %}                                 
+                            </select>                              
                         </div> 
                         <div class="mb-3 col-md-4">
                             <label class="form-label text_ray" for="">Manzil :</label>

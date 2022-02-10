@@ -22,9 +22,12 @@ from foydalanuvchi.models import allfaqir
 from s_ad.models import IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar
 from .forms import ContactForm
 import foydalanuvchi
+from foydalanuvchi.models import allfaqir
 
 from django.contrib.auth.models import Group
 from .forms import captchaform
+
+from django.core.files.storage import FileSystemStorage
 
 #from foydalanuvchi.views import
 
@@ -88,13 +91,15 @@ class passwordValidationView(View):
         return JsonResponse({'password_valid': True})    
     
 class registerP(View):
-    def get(self, request):        
-          
-        return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
+    def get(self, request):       
+        
+        return render(request, '01_auth/02_register.html')
     
     def post(self, request):
+        stir=request.POST['stir']
+        
         username=request.POST['username']
-        email=request.POST['email']
+        email=request.POST['email']        
         password = request.POST['password']
         context = {
             'fieldValues': request.POST,
@@ -114,7 +119,12 @@ class registerP(View):
                     faqir.user_set.add(user)
                     
                     user.is_active = False                    
-                    user.save()                    
+                    user.save()         
+                               
+                    #korxona tayyorlash:
+                    allfaqir.objects.create(owner=user, inn=stir, savol1=False, savol2=False)
+                    
+                    #************************************************                   
                         
                     current_site = get_current_site(request)
                     email_body = {
@@ -138,6 +148,7 @@ class registerP(View):
                                 [email],
                             )
                     email.send(fail_silently=False)
+                    
                     messages.success(request, 'Foydalanuvchi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangiz orqali faollashtiring')
                     return redirect('loginP')
         return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
@@ -157,7 +168,7 @@ class VerificationView(View):
             
             user.is_active = True
             user.save()
-
+            
             messages.success(request, 'Assalomu aleykum!'+user.username+' sahifangiz muvafaqqiyatli faollashtirildi')
             return redirect('loginP')
 
@@ -253,7 +264,7 @@ def savol(request):
         dbibt=DBIBT.objects.all()
         dav=davlatlar.objects.all()
         vil=viloyatlar.objects.all()
-        tum=tumanlar.objects.all()
+        tum=tumanlar.objects.all() 
         
         context={
             'iftum':iftum,
@@ -261,13 +272,13 @@ def savol(request):
             'dbibt':dbibt,
             'dav': dav,
             'vil':vil,
-            'tum':tum
+            'tum':tum,
         }
         return render(request, '01_auth/06_savolnoma.html', context)
     
-    if request.method=="POST":
-        nomi=request.POST['nomi']
-        emb=request.FILES['emblem']
+    if request.method=="POST":        
+        nomi=request.POST['nomi']        
+        
         ism=request.POST['ism']
         fam=request.POST['fam']
         tel=request.POST['tel']
@@ -277,14 +288,39 @@ def savol(request):
         mobil=request.POST['mobil']
         dav=request.POST['dav']
         vil=request.POST['vil']
-        tum=request.POST['tum']
+        
+        emb=request.FILES['emblem']   
+        print(emb.name,' ', emb.size)
+        tuman=request.POST['tuman']
         manzil=request.POST['manzil']
         
         savol1=request.POST['savol1']
         savol2=request.POST['savol2']
         
-        allfaqir.objects.create(
+        allf=allfaqir.objects.get(owner=request.user)
+        allf.nomi=nomi
+        allf.iftum=IFTUM(iftum)
+        
+        allf.dbibt=DBIBT(dbibt) 
+        allf.thst=THST(thst)
+        
+        allf.mobil=mobil
+        allf.tel=tel
+        
+        allf.dav=davlatlar(dav)
+        allf.vil=viloyatlar(vil)
+        allf.tum=tumanlar(tuman)
+        
+        allf.manzil=manzil
+        allf.emblem=emb   
+        
+        fs = FileSystemStorage().save(emb)
+          
+        allf.save()
+           
+        savolnoma.objects.create(
             owner=request.user,
+            
             savol1=savol1,
             savol2=savol2
         )
@@ -293,3 +329,5 @@ def savol(request):
     
 def view404(request):
     return render(request, '404.html')
+
+

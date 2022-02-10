@@ -21,7 +21,9 @@
                             
                             <div class="input-group mb-3">
                                 <select class="form-select flex-grow-1"                                
-                                name="tuman_davlati">                                   
+                                name="tuman_davlati"
+                                id="dav"
+                                >                                   
                                     {% for v in dav %}
                                     <option value = {{v.id}}>{{v.davlat_nomi}}</option> 
                                     {% endfor %}
@@ -69,5 +71,22 @@
 
     
 </div>
-
+<script>
+    $(document).ready(function () {
+        $('#dav').select2({
+            ajax: {
+                url: '{% url 'addtuman' %}',
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {vil: vil};
+                        })
+                    };
+                }
+            },
+            minimumInputLength: 1
+        });
+    });
+</script>
 {% endblock content %}

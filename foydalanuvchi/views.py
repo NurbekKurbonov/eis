@@ -299,6 +299,7 @@ def adddavr(request):
         
         yil_post=request.POST['yil']
         oy_post=request.POST['oy']
+        
         if tarix=="True":
             for i in range(len(oylar)):
                 if oy_post==oylar[i]:
@@ -464,7 +465,7 @@ def addhisobot(request):
         
         his=hisobot_ich.objects.filter(owner=request.user)
         
-        if not hisobot_ich.objects.filter(owner=request.user, vaqt__range=[str(oraliq_min), str(oraliq_max)]):
+        if not hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(oraliq_min), str(oraliq_max)]):
             messages.error(request, "Ushbu oraliqda ma'lumotlar mavjud emas, boshqa oraliq tanlang!")
             return redirect('addhisobot')
         
