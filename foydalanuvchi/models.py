@@ -14,16 +14,16 @@ class allfaqir(models.Model):
     dbibt=models.ForeignKey(DBIBT, verbose_name=("DBIBT"), on_delete=models.CASCADE, default="",blank=True, null=True)    
     thst=models.ForeignKey(THST, verbose_name=("DBIBT"), on_delete=models.CASCADE, default="",blank=True, null=True)    
     
-    mobil=models.CharField("Korxona raqami", max_length=9, blank=True)
-    tel=models.CharField("Korxona raqami", max_length=9, blank=True)
+    mobil=models.CharField("Ish boshqaruvchi raqami", max_length=12, blank=True)
+    tel=models.CharField("Korxona raqami", max_length=12, blank=True)
     
     dav=models.ForeignKey(davlatlar, verbose_name=("Davlat"), on_delete=models.CASCADE, default="",blank=True, null=True)
     vil=models.ForeignKey(viloyatlar, verbose_name=("Viloyat"), on_delete=models.CASCADE, default="",blank=True, null=True)
     tum=models.ForeignKey(tumanlar, verbose_name=("Tuman"), on_delete=models.CASCADE, default="",blank=True, null=True)
     manzil=models.TextField("Manzil", blank=True)
-        
+
     about=models.TextField("Korxona haqida qisqacha", blank=True)
-    emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=True, max_length=255)
+    emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=True, max_length=255, default='profile_emb/login_emb.jpg')
     
     class Meta:
         verbose_name = ("Foydalanuvchi")

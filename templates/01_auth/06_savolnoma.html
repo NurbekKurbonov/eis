@@ -7,21 +7,47 @@
 
 {% block asosiy_qism %}
 
-<div class="text-center mt-4">
-	<h1 class="h2">EIS sistemasiga xush kelibsiz!!!</h1>	
+<div class="text-center mt-4" >
+	<h1 class="h2" style="
+	background: #121FCF;
+	background: -webkit-linear-gradient(to right, #121FCF 0%, #FF00D4 100%);
+	background: -moz-linear-gradient(to right, #121FCF 0%, #FF00D4 100%);
+	background: linear-gradient(to right, #121FCF 0%, #FF00D4 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	
+	"><B>EIS sistemasiga xush kelibsiz!!!</B></h1>	
 	<p class="lead">
-		EIS bilan barchasi oson!
-	</p>
+		<I style="
+		background: #25CC0F;
+		background: -webkit-linear-gradient(to bottom right, #25CC0F 0%, #9E3212 100%);
+		background: -moz-linear-gradient(to bottom right, #25CC0F 0%, #9E3212 100%);
+		background: linear-gradient(to bottom right, #25CC0F 0%, #9E3212 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		">Iltimos, quyidagi ma'lumotlarni kiriting!</I>
+	</p>	
+
 </div>
-<form action="{% url 'savolnoma' %}" method="post">
+<form action="{% url 'savolnoma' %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="row">
 		<div class="col-8">
 			{% include '01_auth/06.02_application.html' %}
 		</div>
-		<div class="col-4">
+		<div class="col-4 text-center">
+			<p class="lead">				
+			</p>
 			{% include '01_auth/06.01_savolcha.html' %}
-		</div>	
-	</div>
+		
+	
 </form>
+<form action="{% url  'logout' %}" method="POST">
+	{% csrf_token %}
+	<button
+		class="btn btn-outline-danger" type="submit" value="Sign out"><i class="align-middle me-2" data-feather="log-out"></i>Chiqish</button>
+  </form>
+</div>
+</div>	
+
 {% endblock asosiy_qism %}

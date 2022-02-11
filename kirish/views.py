@@ -28,8 +28,18 @@ from django.contrib.auth.models import Group
 from .forms import captchaform
 
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 
-#from foydalanuvchi.views import
+def application_req( login_url=None, raise_exception=False):
+    def check_perms(user):        
+        allf=allfaqir.objects.get(owner=user)        
+        if allf.nomi=="":
+            return True
+        if raise_exception:
+            raise PermissionDenied
+        return False
+    return user_passes_test(check_perms, login_url='/foydalanuvchi/')
 
 #registratsya**************************************************
 class EmailValidationView(View):
@@ -256,6 +266,8 @@ def contact(request):
     return render(request, '00_kirish/02_contact.html' )
 
 #QUIZ***************************************************************
+@login_required(login_url='/login')
+@application_req()
 def savol(request):
     if request.method=="GET":
         
@@ -287,10 +299,7 @@ def savol(request):
         thst=request.POST['thst']
         mobil=request.POST['mobil']
         dav=request.POST['dav']
-        vil=request.POST['vil']
-        
-        emb=request.FILES['emblem']   
-        print(emb.name,' ', emb.size)
+        vil=request.POST['vil']        
         tuman=request.POST['tuman']
         manzil=request.POST['manzil']
         
@@ -312,12 +321,14 @@ def savol(request):
         allf.tum=tumanlar(tuman)
         
         allf.manzil=manzil
-        allf.emblem=emb   
-        
-        fs = FileSystemStorage().save(emb)
           
         allf.save()
-           
+        
+        usr=User.objects.get(pk=request.user.id)   
+        usr.first_name=ism
+        usr.last_name=fam
+        usr.save()
+        
         savolnoma.objects.create(
             owner=request.user,
             
@@ -329,5 +340,3 @@ def savol(request):
     
 def view404(request):
     return render(request, '404.html')
-
-

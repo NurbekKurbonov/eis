@@ -29,9 +29,19 @@ def group_required(group, login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url='/login')
 
+def application_req( login_url=None, raise_exception=False):
+    def check_perms(user):        
+        allf=allfaqir.objects.get(owner=user)        
+        if allf.nomi!="":
+            return True
+        if raise_exception:
+            raise PermissionDenied
+        return False
+    return user_passes_test(check_perms, login_url='/savolnoma')
 
 #____***_____Bosh sahifa_____***_____________________
 @group_required('Faqirlar')
+@application_req()
 def home(request):    
     hammasi = allfaqir.objects.filter(owner=request.user)    
     vaqt=timezone.now()
@@ -77,11 +87,13 @@ def home(request):
         'obj_ich':obj_ich,
         'obj_ist':obj_uzat,
         'obj_uzat':obj_uzat,
+        'value':request.user
     }
     return render(request, '03_foydalanuvchi/00_0_home.html', context)
 
 #____***_____ASosiy_settings_____***_____________________
 @group_required('Faqirlar')
+@application_req()
 def asosiyset(request):
     check=savolnoma.objects.filter(owner=request.user)
     
@@ -120,6 +132,7 @@ def asosiyset(request):
 
 #ishlab chiqarish bo'limi***********************
 @group_required('Faqirlar')
+@application_req()
 def mich(request):
     titleown = 'Energiya resurs/mahsulot ishlab chiqarish bo`yicha ma`lumotlar'
     resurs=resurslar.objects.all()
@@ -152,6 +165,7 @@ def mich(request):
 
 #iste'mol qilish bo'limi***********************
 @group_required('Faqirlar')
+@application_req()
 def ist(request):
     titleown = 'Energiya resurs/mahsulot iste`mol qilish bo`yicha ma`lumotlar'
     resurs=resurslar.objects.all()
@@ -181,6 +195,7 @@ def ist(request):
     return render(request, '03_foydalanuvchi/01_setting.html', context)
 #Sotish********************************************************************************
 @group_required('Faqirlar')
+@application_req()
 def sot(request):
     titleown = 'Energiya resurs/mahsulot sotish qilish bo`yicha ma`lumotlar'
     resurs=resurslar.objects.all()
@@ -210,6 +225,7 @@ def sot(request):
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
 @group_required('Faqirlar')
+@application_req()
 def add(request):
     
     sahnom = request.POST['sahifanomi'] 
@@ -249,6 +265,7 @@ def add(request):
     
 #*****************************Ma'lumotlarni kiritish*********************
 @group_required('Faqirlar')
+@application_req()
 def davr(request):
     titleown = 'Davriy ma`lumotlarni yuborish'
     his = hisobot_item.objects.filter(owner=request.user)
@@ -261,6 +278,7 @@ def davr(request):
     }
     return render(request, '03_foydalanuvchi/02_0_davr.html', context)
 @group_required('Faqirlar')
+@application_req()
 def adddavr(request):
     ich = ichres.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)
@@ -277,7 +295,7 @@ def adddavr(request):
     titleown = title+' OYI UCHUN HISOBOT'    
     
     yil=[]
-    for i in range(2010,2021):
+    for i in range(2010,2022):
         yil.append(i)
         
     context={
@@ -358,6 +376,7 @@ def adddavr(request):
         messages.success(request, 'Hisobot muvafaqqiyatli yuborildi! Rahmat! Charchamang! :)')
         return redirect('davr')
 @group_required('Faqirlar')
+@application_req()
 def checkdavr(request, id):
     h_item=hisobot_item.objects.get(pk=id)
     
@@ -380,6 +399,7 @@ def checkdavr(request, id):
         return render(request, '03_foydalanuvchi/02_2_checkdavr.html', context)
 
 @group_required('Faqirlar')    
+@application_req()
 def hisobot(request):
     titleown = 'Davriy hisobotlar'
     
@@ -395,6 +415,7 @@ def hisobot(request):
     return render(request, '03_foydalanuvchi/03_0_hisobot.html', context)
 
 @group_required('Faqirlar')
+@application_req()
 def addhisobot(request):
     titleown = 'Davriy hisobotlarni shakllantirish'
     #***Resurslarni ko'rsatish
@@ -522,7 +543,8 @@ def addhisobot(request):
         messages.success(request, 'Hisobot muvafaqqiyatli tayyorlandi! ')
         return redirect('hisobot')
 
-@group_required('Faqirlar')        
+@group_required('Faqirlar')
+@application_req()
 def addichresforhis(request):
     if request.method=="POST":        
         resurs=request.POST['resurs_id']
@@ -539,6 +561,7 @@ def addichresforhis(request):
         return redirect('addhisobot')
 
 @group_required('Faqirlar')
+@application_req()
 def delhis(request, id):
     davlat = his_ich.objects.get(pk=id)
     davlat.delete()
@@ -548,6 +571,7 @@ def delhis(request, id):
 ##########################################################################
 
 @group_required('Faqirlar')
+@application_req()
 def result_his(request, id, tur, birl):   
      
     his=hisobot_full.objects.get(pk=id) 

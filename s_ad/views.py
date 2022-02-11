@@ -18,6 +18,7 @@ import six
 from django.core.exceptions import PermissionDenied
 from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta
 
+from foydalanuvchi.models import allfaqir
 
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
@@ -39,6 +40,7 @@ def icons(request):
 #kirish qismini to'ldirish *********************************
 
 @group_required('admin2')
+
 def kirishP(request):    
     title='Kirish bo`limi'
     
