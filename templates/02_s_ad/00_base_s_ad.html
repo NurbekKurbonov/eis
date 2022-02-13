@@ -244,10 +244,12 @@
 								</div>
 							</a>
 						</li>
-
-						<li class="nav-item dropdown">
-							<a href="{% url 'loginP' %}" class="nav-icon pe-md-0 dropdown-toggle"><i class="fas fa-door-open"></i> Chiqish </a>													
-						</li>
+						<form action="{% url  'logout' %}" method="POST">
+							{% csrf_token %}
+							<li class="nav-item dropdown">
+								<button type="submit" class="btn btn-outline-secondary nav-icon pe-md-0 dropdown-toggle"><i class="fas fa-door-open"></i> Chiqish </button>
+							</li>
+						  	</form>
 					</ul>
 				</div>
 			</nav>
@@ -275,7 +277,7 @@
 								</li>
 							</ul>
 						</div>
-
+						
 						<div class="col-3 text-end">
 							<ul class="list-inline">								
 								<li class="list-inline-item">

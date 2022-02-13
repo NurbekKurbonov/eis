@@ -376,25 +376,14 @@
             
             ],
             xaxis: {
-                categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
-                labels: {
-                    formatter: function(val) {
-                        return val + ""
-                    }
-                }
+                categories: [{% for v in sana %}"{{v}}",{% endfor %}],                
             },
             yaxis: {
                 title: {
                     text: undefined
                 },
             },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return val + ""
-                    }
-                }
-            },
+            
             fill: {
                 opacity: 1
             },

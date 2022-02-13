@@ -16,7 +16,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import account_activation_token
 
-from .models import sahifa, savolnoma
+from .models import sahifa, savolnoma, Code
 from foydalanuvchi.models import allfaqir
 
 from s_ad.models import IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar
@@ -132,9 +132,8 @@ class registerP(View):
                     user.save()         
                                
                     #korxona tayyorlash:
-                    allfaqir.objects.create(owner=user, inn=stir, savol1=False, savol2=False)
-                    
-                    #************************************************                   
+                    allfaqir.objects.create(owner=user, inn=stir, savol1=False, savol2=False)                    
+                    #************************************************
                         
                     current_site = get_current_site(request)
                     email_body = {
@@ -191,6 +190,7 @@ class VerificationView(View):
 
 class loginP(View):
     def get(self, request):
+        
         return render(request, '01_auth/01_login.html')
     
     def post(self, request):
@@ -219,11 +219,62 @@ class LogoutView(View):
         return redirect('loginP')
     
 #**************************************************************   
-def resetpas(request):
-    return render(request, '01_auth/05_reset.html')
+class resetpas(View):
+    def get(self, request):
+        usr=User.objects.all()
+        
+        emails=[]
+        for v in usr:
+            emails.append(v.email)
+            
+        context={
+            #'emails':emails,
+        }        
+        return render(request, '01_auth/05_reset.html', context)
+    
+    def post(self, request):
+        email=request.POST['email']        
+        usr=User.objects.all()
+        context={
+            'fieldValues': request.POST,            
+        }
+        
+        emails=[]
+        
+        for v in usr:
+            emails.append(v.email)            
+        
+        if not email in emails:
+            messages.error(request, 'ushbu pochta ro`yxatdan o`tkazilmagan')
+            return render(request, '01_auth/05_reset.html', context)            
+                
+        u=User.objects.get(email=email)
+        f=allfaqir.objects.get(owner=u.id)
+        
+        K=Code.objects.get(owner=u.id)
+        K.save()
+        
+        if not Code.objects.get(owner=u.id):
+            kod=Code.objects.create(owner=User(u.id))
+        else:
+            kod=Code.objects.get(owner=u.id)
+        
+        password='ES'+str(f.inn+kod.number)+'!'
+        
+        u.set_password(password)        
+        u.save()
+        email_subject='Parolni tiklash'
+        email=EmailMessage(
+            email_subject,
+            'Hurmatli '+u.username+'!\n\n Sizning yangi parolingiz: '+password,
+            'noreply.nurbek.kurbonov@nur.uz',                                
+            [email],
+                            )
+        email.send(fail_silently=False)
+        messages.success(request, 'Parolni tiklash so`rovi bo`yicha javob pochtangizga yuborildi! Iltimos pochtangizni tekshiring')        
+        return redirect('loginP')
 
-#Asosiy qism_____*********************************************/
-
+#Asosiy qism_____*********************************************
 def kirish(request, pagename):
     pagename = '/' + pagename
     pg = get_object_or_404(sahifa, permalink=pagename)  
@@ -244,8 +295,7 @@ def index(request):
     }
     return render(request, '00_kirish/01_index.html', context)
 
-#Contanct form ***************************************************/
-
+#Contanct form ***************************************************
 def contact(request):
     submitted = False
     if request.method == "POST":
@@ -276,7 +326,7 @@ def savol(request):
         dbibt=DBIBT.objects.all()
         dav=davlatlar.objects.all()
         vil=viloyatlar.objects.all()
-        tum=tumanlar.objects.all() 
+        tum=tumanlar.objects.all()
         
         context={
             'iftum':iftum,
@@ -285,7 +335,7 @@ def savol(request):
             'dav': dav,
             'vil':vil,
             'tum':tum,
-        }
+        }        
         return render(request, '01_auth/06_savolnoma.html', context)
     
     if request.method=="POST":        
@@ -303,8 +353,9 @@ def savol(request):
         tuman=request.POST['tuman']
         manzil=request.POST['manzil']
         
-        savol1=request.POST['savol1']
-        savol2=request.POST['savol2']
+        #Checkboxni chaqirish metodi
+        savol1=request.POST.get('savol1', False)
+        savol2=request.POST.get('savol2', False)              
         
         allf=allfaqir.objects.get(owner=request.user)
         allf.nomi=nomi
@@ -333,7 +384,7 @@ def savol(request):
             owner=request.user,
             
             savol1=savol1,
-            savol2=savol2
+            savol2=savol2,
         )
         messages.success(request, 'EIS sistemasiga xush kelibsiz! :)')
         return redirect('home')

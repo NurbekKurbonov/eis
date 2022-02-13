@@ -661,9 +661,9 @@ def result_his(request, id, tur, birl):
                                 koef2=j.qiymat
                             if birl == 'valut':
                                 koef2=1000*j.qiymat*his.valyuta.qiymati/his.valyuta.somda
-                            q=j.qiymat_pul*koef2
+                            q=j.qiymat_pul*koef2/1000000
                         
-                        obj[r].append(q)
+                        obj[r].append(float('{0:.2f}'.format(float(q))))
                         
             else:
                 obj[r].append(0)

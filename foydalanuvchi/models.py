@@ -114,7 +114,7 @@ class hisobot_uzat(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)    
     
     def __str__(self):
-        return f"{self.title} // {self.nom}"
+        return f"{self.title} // {self.resurs}"
     
     class Meta:
         verbose_name_plural = ("02_3_Uzatilgan resurs hisoboti")
@@ -129,7 +129,7 @@ class hisobot_item(models.Model):
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     def __str__(self):
-        return f"{self.title} // {self.vaqt}"
+        return f"{self.title} // {self.vaqt}===>>>{self.owner}"
     
     class Meta:
         verbose_name = ("hisobot_shakli")
@@ -146,7 +146,7 @@ class his_ich(models.Model):
         verbose_name_plural = ("04_0_Resurslar filteri")
 
     def __str__(self):
-        return f"{self.resurs}"
+        return f"{self.resurs}===>{self.owner}"
 
     def get_absolute_url(self):
         return reverse("his_ich_detail", kwargs={"pk": self.pk})
@@ -177,7 +177,7 @@ class hisobot_full(models.Model):
         verbose_name_plural = ("04_1_hisobot_full")
 
     def __str__(self):
-        return f"{self.nomi}: {self.oraliq_min} dan {self.oraliq_max} gacha"
+        return f"{self.nomi}: {self.oraliq_min} dan {self.oraliq_max} gacha ====>>>> {self.owner}"
 
     def get_absolute_url(self):
         return reverse("hisobot_full_detail", kwargs={"pk": self.pk})
