@@ -325,7 +325,7 @@
                         },{% endfor %} 
             ],
             xaxis: {
-                categories: [{% for i in sana %}{{i}},{% endfor %}],
+                categories: [{% for i in sana %}"{{i}}",{% endfor %}],
             },
             yaxis: {
                 title: {
@@ -376,7 +376,7 @@
             
             ],
             xaxis: {
-                categories: [{% for v in sana %}"{{v}}",{% endfor %}],                
+                categories: [{% for i in sana %}"{{i}}",{% endfor %}],      
             },
             yaxis: {
                 title: {
@@ -422,11 +422,11 @@
             ],
             xaxis: {
                 type: "date",
-                categories: [{% for v in hisobotlar %}"{{v.vaqt|date:"d-m-Y"}}",{% endfor %}],
+                categories: [{% for i in sana %}"{{i}}",{% endfor %}],     
             },
             tooltip: {
                 x: {
-                    format: "dd-MM-yyyy"
+                    format: "yyyy-MM"
                 },
             }
         }
@@ -445,7 +445,7 @@
         var options = {
             chart: {
                 height: 350,
-                type: "donut",
+                type: "pie",
             },
             dataLabels: {
                 enabled: true
@@ -455,7 +455,7 @@
                 text: '{{k}}'
             },           
             series: [{% for i in v %}{{i}},{% endfor %}],
-            labels: [{% for j in sana %}"{{j}}",{% endfor %}],
+            labels: [{% for j in sana %}"{{j}}",{% endfor %}],            
         };
         
         var chart = new ApexCharts(
