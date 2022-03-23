@@ -683,6 +683,41 @@ def result_his(request, id, tur, birl):
     }   
     return render(request, '03_foydalanuvchi/03_1_result.html', context)
     
+#_________________________________*************Prognozlash*********************__________________________________________________________________
+def prognoz(request):
+    
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/04_prognoz.html', context)
 
+def addprognoz(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/04_1_addprognoz.html', context)
 
+def resultprognoz(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/04_2_result.html', context)
 
+#_________________________________*************Energobalans*********************__________________________________________________________________
+def balans(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/06_balans.html', context)
+
+def addbalans(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/06_1_addbalans.html', context)
+
+def resultbalans(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/06_2_result.html', context)

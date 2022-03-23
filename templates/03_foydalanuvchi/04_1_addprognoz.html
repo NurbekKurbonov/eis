@@ -1,0 +1,184 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+{% csrf_token %}
+<h1 class="h3 mb-3">Yangi prognoz tayyorlash</h1>
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}} {{res_for_add_show}}</h1>
+</div>
+
+<div class="row">    
+    <div class="col-6">
+        <div class="card">            
+            <div class="card-body">
+                
+                <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Energiya resurs/mahsulot qo'shish</a></button>
+                <table class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th class="d-none d-md-table-cell">Energiya resurs/mahsulot</th>
+                            <th class="d-none d-md-table-cell"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his_res%}
+                        <tr>
+                            <td> {{forloop.counter}}</td>
+                            <td class="d-none d-md-table-cell">{{v.resurs.nomi}}</td>
+                            <td class="d-none d-md-table-cell"><a href="{% url 'delhis' v.id %}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                   
+                    </table>
+            <!-- *****************************offcanvas boshlandi*******************************************************************-->
+			<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+            aria-labelledby="offcanvasWithBothOptionsLabel" >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel" style="color: blue">{{titleown}} uchun resursni tanlang va qabul qilishni bosing!</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form action="{% url 'addichresforhis' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">                        
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="">Resurs nomi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="resurs_id">                                    
+                                {% for k, v in res_show.items%}
+                                <option value ="{{k}}">{{v}}</option> 									
+                                {% endfor %}
+                            </select>																				
+                        </div>
+                        <div class="mb-3 col-md-12">		
+                            {{sotform.as_table}}
+                        </div>
+                        <input type="number" name="sahifanomi" value="{{pageid}}" hidden/>
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card">         
+            <form action="{% url 'addhisobot' %}" method="post">
+                {% csrf_token %}   
+            <div class="card-body">
+                <div class="row">
+                    <h4 style="color:blue"><B>Prognoz turini tanlang</B></h4>   
+                    
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="his_tur" value="1">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-down"></i>Ishlab chiqarish</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="his_tur" value="2">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fab fa-fw fa-gripfire"></i>Iste'mol</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="his_tur" value="3">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-up"></i>Uzatish/sotish</a>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                             
+                <div class="row">
+                    <h4 style="color:blue"><B>Dastlabki ma'lumotlar</B></h4>
+                    <div class="col-12 col-xl-6">
+                        <div class="mb-3">
+                            <label class="form-label">Qabul qilish davrini tanlang</label>
+                            <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                        </div>                        
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="text-center">							
+							<div class="mt-2">
+                                <label class="form-label">Qo'shimcha fayl orqali</label>
+								<label for="id_csv" class="btn btn-primary"> <i class="fas fa-upload"></i></label>
+								<input type="file" id="id_csv" name="emblem" accept=".csv/*" hidden>
+							</div>
+							<small>.csv fayl yuklang</small>
+						</div>                                               
+                    </div>
+                    
+                    <h4 style="color:blue"><B>Prognoz qilinadigan davrni tanlang</B></h4>   
+                    <div class="col-12 col-xl-12">
+                        <div class="mb-3">
+                            <label class="form-label">Davrni tanlang</label>
+                            <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                        </div>                        
+                    </div>
+                    <h5 style="color:brown"><B>Ko'rsatma:</B><I> Prognoz xatoligi kirish ma'lumotlari miqdoriga,faktorlar soniga, bashorat qilish davriga bog'liq ravishda o'zgaradi</I></h5>   
+                    <a href="{% url 'resultprognoz' %}" class="btn btn-primary">Hisobot tayyorlash</a> 
+                    <!--<button type="submit" class="btn btn-primary">Hisobot tayyorlash</button> -->
+                </div>
+            </div>
+            
+            </form>
+        </div>
+    </div>
+    
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+{% endblock scripts %}

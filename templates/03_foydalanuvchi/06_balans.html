@@ -1,0 +1,79 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+<button class="btn btn-secondary" type="button">Go!</button>
+{% block title %}{{titleown}}{% endblock title %}
+{% block bar6 %}active{% endblock bar6 %}
+
+{% block content %}
+<h1 class="h3 mb-3">Balans</h1>
+<div class="row">
+<div class="col-12 col-lg-12">
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title">{{titleown}}</h5>						
+			<a href="{% url 'addbalans' %}" class="btn btn-primary float-end my-1"> <i class="fas fa-plus"></i> <B>balans</B></a></a>
+		</div>
+		<div class="card-body text-center">
+			<table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+				<thead>
+					<tr>
+						<th>T/r</th>                            
+						<th>Tayyorlanish sanasi</th>
+						<th>Sanasi</th> 
+													
+						<th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+						<th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-download"></i></th> 
+						
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td> test</td>
+							<td></td>
+							<td></td>
+							<td class="table-action text-center">  
+							
+							<a class="btn btn-outline-info " id="notyf-show" style="width:100%">Prognozni ko'rish</a>
+							</td> 
+							<td class="table-action text-center">
+								<a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-excel"></i></a> 
+								<a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-pdf"></i></a> 
+								<a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-word"></i></a> 
+							</td> 
+						</tr>
+				{% for v in his%}				
+				<tr>
+					<td> {{forloop.counter}}</td>
+					<td>{{v.nomi}} {{his.tur}}</td>
+					<td>{{v.vaqt|date:"d-m-Y"}}</td>
+					<td>{{v.vaqt|date:"Y"}}</td>
+					<td class="table-action text-center">  					
+					
+					</td> 
+					<td class="table-action text-center">
+						<a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-excel"></i></a> 
+						<a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-pdf"></i></a> 
+						<a href="#" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-file-word"></i></a> 
+					</td> 
+				</tr>
+				{% endfor %}
+				</tbody>
+				<tfoot>
+				<tr>
+					<th>T/r</th>                            
+					<th>Tayyorlanish sanasi</th>
+					<th>Sanasi</th>
+				</tr>
+				</tfoot>
+			</table>
+				<a href="{% url 'resultbalans'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+		</div>
+	</div>
+</div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+					
+{% endblock scripts %}

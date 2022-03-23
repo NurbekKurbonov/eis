@@ -12,7 +12,7 @@ class sahifa(models.Model):
     update_date = models.DateTimeField("Yangilanish sanasi")
     bodytext = models.TextField("Asosiy qism teksti", blank=True)
     icon = models.CharField("Icon nomi", max_length=30)
-                               
+                                   
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     class Meta:

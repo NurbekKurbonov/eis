@@ -23,5 +23,15 @@ urlpatterns = [
     path('delhis/<int:id>', views.delhis, name='delhis'),
     
     path('result_his/<int:id>/<str:tur>/<str:birl>', views.result_his, name='result_his'),
-    #path('checkdavr/<int:id>', views.checkdavr, name='checkdavr'),
+    
+    #_____________prognoz______________________
+    path('pronoz', views.prognoz, name='prognoz'),   
+    path('addprognoz', views.addprognoz, name='addprognoz'),
+    path('resultprognoz', views.resultprognoz, name='resultprognoz'),
+    
+    #_____________Balans______________________
+    path('balans', views.balans, name='balans'),
+    path('addbalans', views.addbalans, name='addbalans'),
+    path('resultbalans', views.resultbalans, name='resultbalans'),
+    
 ]

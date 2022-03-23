@@ -1,0 +1,248 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="row">
+<div class="col-md-3 col-xl-12">  
+    <h1 class="h3 d-inline align-middle yozuv_grad">Prognoz natijasi{{titleown}}</h1>   
+    <div class="row">
+        <div class="col-10 " >
+            <h6 class="card-subtitle mb-2 text-muted">Hisobot oralig'i: </h6>
+            <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">                
+            </div>
+        </div>
+
+        <div class="col-2">
+            <button width="100%"  class="btn btn-outline-warning float-end my-1" id="button" onclick="showhide()"> 
+                <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
+                <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="col-12 col-lg-12" id="graph" >
+    <div class="tab" >
+        <ul class="nav nav-tabs" role="tablist">            
+            <li class="nav-item">
+                <a class="nav-link active" href="#icon-tab-1" data-bs-toggle="tab" role="tab">
+                    Ch<i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" style="background: rgb(63,94,251);
+        background: linear-gradient(62deg, rgba(63,94,251,0.3351540445279675) 0%, rgba(239,191,254,0.5704481621750263) 4%, rgba(255,255,255,0.7133053050321692) 6%, rgba(255,255,255,1) 18%, rgba(255,255,255,1) 51%, rgba(255,255,255,0.8757702910265669) 89%, rgba(192,192,252,0.7469187504103203) 95%, rgba(243,202,254,0.5928571257604605) 98%, rgba(71,70,252,0.3127450809425333) 100%);">
+            <div class="tab-pane active" id="icon-tab-1" role="tabpanel">
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-line"></div>
+                    </div>
+                </div>
+            </div>            
+            <div class="tab-pane" id="icon-tab-2" role="tabpanel">                
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-column"></div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="tab-pane" id="icon-tab-3" role="tabpanel">
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="icon-tab-4" role="tabpanel">
+                <div class="card-body">
+                    <div class="chart w-100">
+                        <div id="apexcharts-area"></div>
+                    </div>
+                </div>
+            </div>            
+            <div class="tab-pane" id="icon-tab-6" role="tabpanel">
+                <div class="row">
+                    <div class="card-body">
+                        <div class="chart w-100">
+                            <div id="apexcharts-mixed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                <table id="datatables-buttons" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>
+                            <th>sana</th>
+                            {% for v in sana %}                          
+                            <th>{{v}}</th>
+                            {% endfor %}                              
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for k,v in obj.items %}                            
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{k}}</td>
+                                {% for i in v %}                          
+                                <td>{{i}}</td>                                
+                                {% endfor %} 
+                            </tr>
+                            {% endfor %}                        
+                    </tbody>
+                   
+                </table>
+           
+            </div>
+        </div>
+    </div>
+    
+    
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>  
+    function showhide()
+    {  
+         var div = document.getElementById("newpost");  
+         if (div.style.display !== "none") 
+         {  
+             div.style.display = "none";  
+         }  
+         else
+         {  
+             div.style.display = "block";  
+         }  
+    }  
+</script>  
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // Line chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "line",
+                zoom: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: [5, 7, 5],
+                curve: "straight",
+                dashArray: [0, 8, 5]
+            },
+            series: [                                
+                {% for key, value in obj.items %}
+                {   name: "{{key}}",
+                    data: {{value}}
+                },{% endfor %}               
+                
+            ],
+            markers: {
+                size: 5,
+                style: "hollow", // full, hollow, inverted
+            },
+            xaxis: {
+                categories: [{% for v in sana %}"{{v}}",{% endfor %}],
+            },
+            yaxis: {
+                title: {
+                    text: ""
+                }
+            },
+            tooltip: {
+                y: [{
+                    title: {
+                        formatter: function(val) {
+                            return val + " "
+                        }
+                    }
+                }, {
+                    title: {
+                        formatter: function(val) {
+                            return val + " "
+                        }
+                    }
+                }, {
+                    title: {
+                        formatter: function(val) {
+                            return val;
+                        }
+                    }
+                }]
+            },
+            grid: {
+                borderColor: "#f1f1f1",
+            }
+        }
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-line"),
+            options
+        );
+        chart.render();
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Datatables with Buttons
+        var datatablesButtons = $("#datatables-buttons").DataTable({
+            responsive: true,
+            lengthChange: !1,
+            buttons: ["copy", "print"]
+        });
+        datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)");
+    });
+</script>
+<script>
+    const graph = document.getElementById("graph");
+    const icon = document.getElementById("icon");
+    const icon2 = document.getElementById("icon2");
+
+    const btn = document.getElementById("button");
+    btn.onclick = function () {
+
+    if (graph.style.display !== "none") {
+    graph.style.display = "none";
+    } else {
+    graph.style.display = "block";  
+    }
+    if (icon.style.display !== "none") {
+        icon.style.display = "none";
+    } else {
+        icon.style.display = "block";  
+    }
+    if (icon2.style.display !== "none") {
+        icon2.style.display = "none";
+    } else {
+        icon2.style.display = "block";  
+    }
+  
+};
+
+</script>
+{% endblock scripts %}

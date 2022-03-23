@@ -21,7 +21,6 @@
 	<link href="{% static 'css/graph/belgi.css'%}" rel="stylesheet">
 
 
-	<script src="{% static 'js/settings.js'%}"></script>
 </head>
 <!--
   HOW TO USE: 
@@ -97,7 +96,34 @@
 							<li class="sidebar-item {% block active1 %}{% endblock active1 %}"><a class="sidebar-link" href="{% url 'hisobot' %}">Davriy hisobotlar</a></li>							
 						</ul>
 					</li>
-
+					<li class="sidebar-header">
+						Energomenejment
+					</li>
+					<li class="sidebar-item {% block bar4 %}{% endblock bar4 %}">
+						<a class="sidebar-link" href="{% url 'prognoz' %}" >
+							<i class="align-middle" data-feather="cloud-snow"></i> 
+                            <span class="align-middle">Prognozlash</span>
+						</a>
+					</li>
+					<li class="sidebar-item {% block bar5 %}{% endblock bar5 %}">
+						<a class="sidebar-link" href="{% url 'home' %}" >
+							<i class="align-middle" data-feather="sliders"></i> 
+                            <span class="align-middle">Me'yorlash</span>
+						</a>
+					</li>
+					<li class="sidebar-item {% block bar6 %}{% endblock bar6%}">
+						<a class="sidebar-link" href="{% url 'balans' %}" >
+							<i class="align-middle" data-feather="minimize-2"></i> 
+                            <span class="align-middle">Energo balans</span>
+						</a>
+					</li>
+					<li class="sidebar-item {% block bar7 %}{% endblock bar7%}">
+						<a class="sidebar-link" href="{% url 'home' %}" >
+							<i class="align-middle" data-feather="check-circle"></i> 
+                            <span class="align-middle">Energo samaradorlik</span>
+						</a>
+					</li>
+					
 				</ul>
 			</div>
 		</nav>
@@ -216,7 +242,7 @@
 		</div>
 	</div>
 
-	<script src="{% static 'js/app.js'%}"></script>
+	<script src="{% static 'js/app.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}"></script>
 	<script src="{% static 'js/datatables.js'%}"></script>
 	
 	{% block scripts %}{% endblock scripts %}
