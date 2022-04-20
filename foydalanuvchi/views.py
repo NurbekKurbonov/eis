@@ -703,6 +703,26 @@ def resultprognoz(request):
     }
     return render(request, '03_foydalanuvchi/04_2_result.html', context)
 
+#_________________________________*************Me'yorlash*********************__________________________________________________________________
+def norm(request):
+    
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/05_norm.html', context)
+
+def addnorm(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/05_1_addnorm.html', context)
+
+def resultnorm(request):
+    context={
+        't':"text"
+    }
+    return render(request, '03_foydalanuvchi/05_2_resnorm.html', context)
+
 #_________________________________*************Energobalans*********************__________________________________________________________________
 def balans(request):
     context={

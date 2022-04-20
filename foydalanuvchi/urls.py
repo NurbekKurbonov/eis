@@ -29,6 +29,11 @@ urlpatterns = [
     path('addprognoz', views.addprognoz, name='addprognoz'),
     path('resultprognoz', views.resultprognoz, name='resultprognoz'),
     
+    #_____________Me'yorlash______________________
+    path('norm', views.norm, name='norm'),   
+    path('addnorm', views.addnorm, name='addnorm'),
+    path('resultnorm', views.resultnorm, name='resultnorm'),
+    
     #_____________Balans______________________
     path('balans', views.balans, name='balans'),
     path('addbalans', views.addbalans, name='addbalans'),

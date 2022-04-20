@@ -19,7 +19,7 @@
 	
 	<link rel='stylesheet' type='text/css' href="{% static 'css/light.css'%}" rel="stylesheet">
 	<link href="{% static 'css/graph/belgi.css'%}" rel="stylesheet">
-
+	{% block head %}{% endblock head %}
 
 </head>
 <!--
@@ -30,7 +30,7 @@
   data-sidebar-layout: default (default), compact
 -->
 
-<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="compact">
 	<div class="wrapper">
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
@@ -106,7 +106,7 @@
 						</a>
 					</li>
 					<li class="sidebar-item {% block bar5 %}{% endblock bar5 %}">
-						<a class="sidebar-link" href="{% url 'home' %}" >
+						<a class="sidebar-link" href="{% url 'norm' %}" >
 							<i class="align-middle" data-feather="sliders"></i> 
                             <span class="align-middle">Me'yorlash</span>
 						</a>
