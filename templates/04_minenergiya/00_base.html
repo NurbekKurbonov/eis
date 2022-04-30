@@ -78,24 +78,19 @@
                             <span class="align-middle">Sozlamalar</span>
 						</a>
 					</li>
-
+					<li class="sidebar-header">
+						Jadvallar
+					</li>
 					<li class="sidebar-item {% block bar2 %}{% endblock bar2 %}">
 						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Ma'lumotlarni kiritish</span>
+							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Tahlil jadvallari</span>
 						</a>
 						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show %}{% endblock show %}" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block active %}{% endblock active %}"><a class="sidebar-link" href="{% url 'davr' %}">Davriy ma'lumotlar</a></li>							
+							<li class="sidebar-item {% block active %}{% endblock active %}"><a class="sidebar-link" href="{% url 'tahlil' %}">Umumiy tahlil jadvali</a></li>							
 						</ul>
 
 					</li>
-					<li class="sidebar-item {% block bar3 %}{% endblock bar3 %}">
-						<a data-bs-target="#dashboard" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="grid"></i> <span class="align-middle">Hisobotlar</span>
-						</a>
-						<ul id="dashboard" class="sidebar-dropdown list-unstyled collapse {% block show1 %}{% endblock show1 %}" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block active1 %}{% endblock active1 %}"><a class="sidebar-link" href="{% url 'hisobot' %}">Davriy hisobotlar</a></li>							
-						</ul>
-					</li>
+
 					<li class="sidebar-header">
 						Energomenejment
 					</li>

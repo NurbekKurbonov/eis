@@ -24,6 +24,8 @@ urlpatterns = [
     path('', include('kirish.urls')),
     path('s_ad/', include('s_ad.urls')),
     path('foydalanuvchi/', include('foydalanuvchi.urls')),
+    #path('minenergiya/', include('minenergiya.urls')),
+    
     path('admin/', admin.site.urls),
  
 ]

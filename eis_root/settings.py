@@ -47,6 +47,7 @@ MONTH = [
 ]
 
 INSTALLED_APPS = [
+    'minenergiya',
     'kirish','s_ad', 'foydalanuvchi',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,0 +1,69 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+{% csrf_token %}
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block show %}show{% endblock show %}
+{% block active %}active{% endblock active %}
+{% block bar2 %}active{% endblock bar2 %}
+
+{% block content %}
+<!--
+<a href="{% url 'adddavr' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Hisobot qo'shish</a>
+-->
+
+
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+         
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>TEK</th>                            
+                            <th>Ishlab chiqarishning qiyosiy hajmi (mln. sum)</th> 
+                            <th>Ishlab chiqarishning umumiy hajmi (mln. sum)</th> 
+                            <th>YERning umumiy qiymati (mln. sum)</th> 
+                            <th>tabiiy gaz</th> 
+                            <th>Elektroenergiya</th> 
+                            <th>Motor yoqilg'isi</th> 
+                            <th width="2%"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td>{{v.title}}</td>     
+                        <td>{{v.vaqt|date:"d-m-Y"}}</td>  
+                        <td class="table-action text-center">
+                            <a href="{%url 'checkdavr' v.id%}"><i class="align-middle me-2 fas fa-fw fa-clipboard-check"></i></a> 
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>Resurs nomi</th>                            
+                        <th>Resurs o`lchanadigan birlik</th> 
+                    </tr>
+                    </tfoot>
+                    </table>
+               
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

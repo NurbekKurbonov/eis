@@ -132,7 +132,7 @@ class registerP(View):
                     user.save()         
                                
                     #korxona tayyorlash:
-                    allfaqir.objects.create(owner=user, inn=stir, savol1=False, savol2=False)                    
+                    allfaqir.objects.create(owner=user, inn=stir)                    
                     #************************************************
                         
                     current_site = get_current_site(request)
