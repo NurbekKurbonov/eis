@@ -1142,7 +1142,6 @@ def addhisobot(request):
         
         cheks = request.POST.getlist('chart')
         
-        
         hisobot_full.objects.create(
            owner=request.user,
            nomi=nomi,
@@ -1151,7 +1150,8 @@ def addhisobot(request):
            vaqt=vaqt,
            cheks=cheks,
            valyuta=Valyuta(valute),
-           tur=tur
+           tur=tur,
+           koef=yaxlitlash(id=11),
         )
         
         for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
@@ -1211,9 +1211,11 @@ def delhis(request, id):
 @group_required('Faqirlar')
 @application_req()
 def result_his(request, id, tur, birl):   
-     
-    his=hisobot_full.objects.get(pk=id) 
-       
+    yaxlit_all=yaxlitlash.objects.all()
+   
+    his=hisobot_full.objects.get(pk=id)
+    yaxlit=his.koef
+
     valyuta=his.valyuta
     
     active1=''
@@ -1231,8 +1233,6 @@ def result_his(request, id, tur, birl):
     if tur=="C":
         active3='active'
         res=his.sot.all()
-        
-    
     
     # Nomli Birliklarda
     sana=[]
@@ -1255,7 +1255,7 @@ def result_his(request, id, tur, birl):
     obj={}
     for i in res_id: 
         if birl=="nomli":
-            b=' (mln.'+str(resurslar.objects.get(pk=i).birlik)+' )'               
+            b=' ('+str(yaxlit.nomi)+' '+str(resurslar.objects.get(pk=i).birlik)+' )'               
         if birl=="tshy":
             b=' ( tshy )'
         if birl=="tne":
@@ -1294,18 +1294,19 @@ def result_his(request, id, tur, birl):
                             
                             koef1=birlik(birl)
 
-                            q=j.qiymat*koef1
+                            q=j.qiymat*koef1*j.resurs.resurs.yaxlit.qiymati/yaxlit.qiymati
                         if birl=='som' or birl=='valut':
                             if birl == 'som':
                                 koef2=j.qiymat
                             if birl == 'valut':
                                 koef2=1000*j.qiymat*his.valyuta.qiymati/his.valyuta.somda
-                            q=j.qiymat_pul*koef2/(1000000)
+                            q=j.qiymat_pul*koef2/(k)
                         
                         obj[r].append(float('{0:.2f}'.format(float(q))))
                         
             else:
                 obj[r].append(0)
+    
     
     context={
         'titleown':his.nomi,
@@ -1315,14 +1316,25 @@ def result_his(request, id, tur, birl):
        'res_id':res_id,
        'birl':birl,
        'tur1':tur,
-       
-       
+       'yaxlit_all':yaxlit_all,
        'active1':active1,
        'active2':active2,
        'active3':active3,
+       'id':id, 'tur':tur, 'birl':birl,
+       
     }   
     return render(request, '03_foydalanuvchi/03_1_result.html', context)
-    
+
+def zoom_plus(request, id, tur, birl):
+    if request.method=="POST":
+        his=hisobot_full.objects.get(pk=id)    
+        his.koef=yaxlitlash(request.POST['yaxlit'])
+        his.save()
+
+        url='result_his/'+str(id)+'/'+str(tur)+'/'+str(birl)
+        next = request.POST.get('next', '/foydalanuvchi/'+url)            
+        return HttpResponseRedirect(next)
+
 #_________________________________*************Prognozlash*********************__________________________________________________________________
 def prognoz(request):
     

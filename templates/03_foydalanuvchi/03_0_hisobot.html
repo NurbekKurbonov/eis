@@ -48,8 +48,7 @@
                         <td class="table-action text-center">  
                         
                         <a {% if '1' in v.tur %}
-                                href="{% url 'result_his' v.id 'A' 'nomli' %}" 
-                            
+                                href="{% url 'result_his' v.id 'A' 'nomli' %}"                             
                             {% elif '2' in v.tur %}
                                     href="{% url 'result_his' v.id 'B' 'nomli'%}" 
                             {% else %}

@@ -2,7 +2,7 @@ from email.policy import default
 from xmlrpc.client import boolean
 from django.db import models
 from django.contrib.auth.models import User
-from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar
+from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar, yaxlitlash
 from django.urls import reverse
 
 from s_ad.models import resurslar, Valyuta, davlatlar, viloyatlar, tumanlar
@@ -104,8 +104,7 @@ class plan_ist(models.Model):
     class Meta:
         verbose_name_plural = ("02_2_Iste`mol rejasi")
 
-class plan_uzat(models.Model):
-    
+class plan_uzat(models.Model):    
     title = models.CharField("Hisobot nomi", max_length=100)
     vaqt=models.DateTimeField("Vaqti", auto_now_add=False)
     
@@ -213,8 +212,8 @@ class his_ich(models.Model):
     owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)    
 
     class Meta:
-        verbose_name = ("Davriy hisobot")
-        verbose_name_plural = ("04_0_Resurslar filteri")
+        verbose_name = ("hisobot")
+        verbose_name_plural = ("04_2_Hisobot_bolasi")
 
     def __str__(self):
         return f"{self.resurs}===>{self.owner}"
@@ -232,8 +231,7 @@ class hisobot_full(models.Model):
     ist=models.ManyToManyField(hisobot_ist, verbose_name=("Iste'mol hisobotlari"))
     sot=models.ManyToManyField(hisobot_uzat, verbose_name=("Sotish hisobotlari"))
     
-    h_item=models.ManyToManyField(hisobot_item, verbose_name=("Umumiy hisobot"))
-    
+    h_item=models.ManyToManyField(hisobot_item, verbose_name=("Umumiy hisobot"))    
     resurs=models.ManyToManyField(resurslar, verbose_name=("Resurslar"))
     
     cheks=models.CharField("Chart va Birlik", max_length=255)
@@ -241,6 +239,7 @@ class hisobot_full(models.Model):
     valyuta=models.ForeignKey(Valyuta,blank=True, verbose_name=("valyuta"), on_delete=models.CASCADE)
     vaqt=models.DateTimeField("Vaqti", auto_now_add=False) 
     
+    koef=models.ForeignKey(yaxlitlash, verbose_name=("Koeffitsient"), on_delete=models.CASCADE, blank=True, null=True)
     owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
 
     class Meta:

@@ -31,7 +31,7 @@ urlpatterns = [
     
     path('delhis/<int:id>', views.delhis, name='delhis'),    
     path('result_his/<int:id>/<str:tur>/<str:birl>', views.result_his, name='result_his'),
-    
+    path('zoom_plus/<int:id>/<str:tur>/<str:birl>', views.zoom_plus, name='zoom_plus'),
     
     #_______________Texnik tadbir__________________________________
     path('ftadbir', views.tadbir, name='ftadbir'),

@@ -5,8 +5,8 @@
 {% csrf_token %}
 
 <div class="row">
-    <div class="col-md-3 col-xl-2">
     
+    <div class="col-xl-2">    
         <div class="card">
             <!--Settinng's navbar-->	
             <div class="list-group list-group-flush gradiyent" role="tablist">
@@ -15,7 +15,6 @@
                     Ishlab chiqarish
                 </a>
                 {% endif %}
-
                 {% if '2' in his.tur %}
                 <a class="list-group-item list-group-item-action gradiyent {{active2}}" href="{% url 'result_his' his.id 'B' 'nomli' %}" >
                     Iste'mol qilish
@@ -30,46 +29,57 @@
         </div>
     </div>
 
-<div class="col-md-3 col-xl-10">  
-    <h1 class="h3 d-inline align-middle yozuv_grad">{{titleown}} LIST: {{lis_obj}}</h1>   
-    <div class="row">
-        <div class="col-10 " >
-            <h6 class="card-subtitle mb-2 text-muted">Hisobot oralig'i: {{obj}}</h6>
-            <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
-                
-                <a href="{% url 'result_his' his.id tur1 'nomli' %}" type="button" class="btn btn-outline-info 
-                    {% if birl == 'nomli' %} yozuv_grad{% endif %}">Nomli birliklarda</a>
+    <div class="col-8">  
+        <h1 class="h3 d-inline align-middle yozuv_grad">{{his.oraliq_min}} << >> {{his.oraliq_max}} </h1>   
+        <div class="row">
+            <div class="col-12" >
+                <h6 class="card-subtitle mb-2 text-muted">{{titleown}}</h6>
+                <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
+                    
+                    <a href="{% url 'result_his' his.id tur1 'nomli' %}" type="button" class="btn btn-outline-info 
+                        {% if birl == 'nomli' %} yozuv_grad{% endif %}">Nomli birliklarda</a>
 
-                {% if '7' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'som' %}" type="button" class="btn btn-outline-info 
-                    {% if birl == 'som' %}yozuv_grad {% endif %}" >Mln.so'mda</a>{% endif %} 
+                    {% if '7' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'som' %}" type="button" class="btn btn-outline-info 
+                        {% if birl == 'som' %}yozuv_grad {% endif %}" >Mln.so'mda</a>{% endif %} 
 
-                {% if '8' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'valut' %}" type="button" class="btn btn-outline-info 
-                {% if birl == 'valut' %}yozuv_grad {% endif %}">Ming.{{his.valyuta.name}}</a>{% endif %}
-                
-                {% if '9' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tshy' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'tshy' %}yozuv_grad {% endif %}">tshy</a>{% endif %} 
+                    {% if '8' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'valut' %}" type="button" class="btn btn-outline-info 
+                    {% if birl == 'valut' %}yozuv_grad {% endif %}">Ming.{{his.valyuta.name}}</a>{% endif %}
+                    
+                    {% if '9' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tshy' %}" type="button" class="btn btn-outline-info
+                        {% if birl == 'tshy' %}yozuv_grad {% endif %}">tshy</a>{% endif %} 
 
-                {% if '0' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tne' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'tne' %}yozuv_grad {% endif %}">tne</a>{% endif %}
+                    {% if '0' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tne' %}" type="button" class="btn btn-outline-info
+                        {% if birl == 'tne' %}yozuv_grad {% endif %}">tne</a>{% endif %}
 
-                {% if 'b' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gj' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'gj' %}yozuv_grad {% endif %}">GJ</a>{% endif %}
+                    {% if 'b' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gj' %}" type="button" class="btn btn-outline-info
+                        {% if birl == 'gj' %}yozuv_grad {% endif %}">GJ</a>{% endif %}
 
-                {% if 'a' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gkal' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'gkal' %}yozuv_grad {% endif %}">GKal</a>{% endif %}   
-                
+                    {% if 'a' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gkal' %}" type="button" class="btn btn-outline-info
+                        {% if birl == 'gkal' %}yozuv_grad {% endif %}">GKal</a>{% endif %}  
+                </div>
+            </div>                   
+        </div>
+    </div>    
+   
+    <div class="col-xl-2">
+        <form action="{% url 'zoom_plus' id tur birl%}" method="post">
+            {% csrf_token %}     
+            <div class="input-group mb-3">
+                <button width="100%"  class="btn float-end my-1" color="blue" id="button" onclick="showhide()"> 
+                    <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
+                    <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+                </button>
+
+                <select name="yaxlit" class="form-select flex-grow-1">
+                    <option value="{{his.koef.id}}">{{his.koef}}</option>
+                    {% for i in yaxlit_all %}
+                        <option value="{{i.id}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-info" type="button"><i id="icon" class="align-middle me-2 fas fa-fw fa-check"></i></button>            
             </div>
-        </div>
-
-        <div class="col-2">
-            <button width="100%"  class="btn btn-outline-warning float-end my-1" id="button" onclick="showhide()"> 
-                <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
-                <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
-            </button>
-        </div>
+        </form>
     </div>
-</div>
-</div>
 
 <div class="col-12 col-lg-12" id="graph" >
     <div class="tab" >
