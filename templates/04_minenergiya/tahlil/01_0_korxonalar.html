@@ -1,0 +1,73 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% load static %}
+{% csrf_token %}
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block show %}show{% endblock show %}
+{% block active %}active{% endblock active %}
+{% block bar1 %}active{% endblock bar1 %}
+
+{% block content %}
+<!--
+<a href="{% url 'adddavr' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Hisobot qo'shish</a>
+-->
+
+
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+         
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>            
+                            <th>STIR (ИНН)</th>           
+                            <th>Foydalanuvchi</th>                            
+                            <th>IFTUM (ОКЭД)</th>
+                            <th>DBIBT/KTUT (СООГУ/ОКПО)</th>
+                            <th>THST (ОПФ)</th>
+                            
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in fqir %}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td><a href="{% url 'home' %}">{{v.inn}}</a></td> 
+                        <td><a href="{% url 'home' %}">{{v.nomi}}</a></td>  
+                        <td>{{v.iftum.bolim}}{{v.iftum.bob}}{{v.iftum.guruh}}{{v.iftum.sinf}}{{v.iftum.tartib}}: {{v.iftum}}</td>                            
+                        <td>{{v.dbibt.dbibt}}/{{v.dbibt.ktut}}: {{v.dbibt}}</td>                            
+                        <td>{{v.thst.bolim}}{{v.thst.tur}}: {{v.dbibt}}</td>                            
+
+                        
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>STIR</th>  
+                        <th>Resurs nomi</th>                            
+                        <th>IFTUM</th>
+                        <th>DBIBT/KTUT</th>
+                        <th>THST</th>
+                    </tr>
+                    </tfoot>
+                    </table>
+               
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

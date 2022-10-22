@@ -1,9 +1,9 @@
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 import json
 
 from django.shortcuts import render, redirect
-from kirish.models import sahifa
+from kirish.models import sahifa, savolnoma
 from datetime import datetime
 
 from django.utils import timezone
@@ -15,10 +15,11 @@ from django.http import Http404, HttpResponse, HttpResponseForbidden
 
 from django.contrib.auth.decorators import user_passes_test
 import six
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta
+from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash
 
-from foydalanuvchi.models import allfaqir
+from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich
 
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
@@ -34,13 +35,13 @@ def group_required(group, login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url='/login')
 
+
 @group_required('admin2')
 def icons(request):
     return render(request, 'partials/01_icons.html')
 #kirish qismini to'ldirish *********************************
 
 @group_required('admin2')
-
 def kirishP(request):    
     title='Kirish bo`limi'
     
@@ -79,17 +80,12 @@ def addkir(request):
         icon = request.POST['icon'] 
         
         sahifa.objects.create(owner=request.user, title=title, permalink=permalink, update_date=update_date, bodytext=bodytext, icon=icon)
-        messages.success(request, 'Yangi sahifa muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi sahifa muvofaqqiyatli qo`shildi! ')
         return redirect('kirishP')
 
 @group_required('admin2')
 def editkir(request, id):
-    #perm tekshirish 
-    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
-    c='s_ad.change_resurslar'
-    if not (c in user_permission):
-        return redirect('view404')
-    #******************************
+    
     titleown='O`zgartirish'
     sah = sahifa.objects.get(pk=id)
     
@@ -119,7 +115,7 @@ def editkir(request, id):
         sah.owner=request.user
         
         sah.save()        
-        messages.success(request, 'sahifa muvofaqqiyatli yangilandi! Rahmat! Charchamang! :)')
+        messages.success(request, 'sahifa muvofaqqiyatli yangilandi! ')
         
         return redirect('kirishP')
 
@@ -179,7 +175,7 @@ def adddavlat(request):
         davlat_nomi = request.POST['davlat_nomi']        
         
         davlatlar.objects.create(owner=request.user, davlat_kodi=davlat_kodi, davlat_nomi=davlat_nomi )        
-        messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi davlat muvofaqqiyatli qo`shildi! ')
         return redirect('davlat')
     
 
@@ -253,7 +249,7 @@ def addviloyat(request):
         viloyat_nomi = request.POST['viloyat_nomi']           
         
         viloyatlar.objects.create(owner=request.user, viloyat_davlati=davlatlar(viloyat_davlati), viloyat_kodi=viloyat_kodi, viloyat_nomi=viloyat_nomi)        
-        messages.success(request, 'Yangi viloyat muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi viloyat muvofaqqiyatli qo`shildi! ')
         return redirect('viloyat')
    
 @group_required('admin2')
@@ -335,7 +331,7 @@ def addtuman(request):
         tuman_nomi = request.POST['tuman_nomi']
         
         tumanlar.objects.create(owner=request.user, tuman_viloyati = viloyatlar(tuman_viloyati), tuman_kodi = tuman_kodi, tuman_nomi = tuman_nomi)
-        messages.success(request, 'Yangi tuman muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi tuman muvofaqqiyatli qo`shildi! ')
         return redirect('tuman')
     
    
@@ -410,7 +406,7 @@ def addiftums(request):
         nomi = request.POST['nomi']
         
         IFTUM.objects.create(owner=request.user, bolim= bolim, bob= bob, guruh= guruh, sinf= sinf, tartib= tartib, nomi=nomi)
-        messages.success(request, 'Yangi IFTUM kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi IFTUM kodi muvofaqqiyatli qo`shildi! ')
         return redirect('iftums')
 
 @group_required('admin2')
@@ -484,7 +480,7 @@ def adddbibt(request):
         nomi = request.POST['nomi']
         
         DBIBT.objects.create(owner=request.user,dbibt=dbibt, ktut=ktut, nomi=nomi)
-        messages.success(request, 'Yangi DBIBT kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi DBIBT kodi muvofaqqiyatli qo`shildi! ')
         return redirect('dbibt')
 
 @group_required('admin2')
@@ -552,7 +548,7 @@ def addthst(request):
         nomi = request.POST['nomi']        
         
         THST.objects.create(owner=request.user, bolim = bolim, tur = tur, nomi=nomi)
-        messages.success(request, 'Yangi THSHT kodi muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi THSHT kodi muvofaqqiyatli qo`shildi! ')
         return redirect('thst')
 
 @group_required('admin2')
@@ -622,7 +618,7 @@ def addbirlik(request):
         farq = request.POST['farq'] 
 
         birliklar.objects.create(owner=request.user, birlik=birlik, asos=asos, farq=farq)
-        messages.success(request, 'Yangi birlik muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi birlik muvofaqqiyatli qo`shildi! ')
         return redirect('birlik')
 
 
@@ -675,11 +671,14 @@ def resurs(request):
 @group_required('admin2')
 def addresurs(request):
     birlik=birliklar.objects.all()
+    yaxlit_all=yaxlitlash.objects.all()
+
     context = {             
         'birlik':birlik,
         'values': request.POST,
         
-        'titleown': 'Resurs qo`shish'
+        'titleown': 'Resurs qo`shish',
+        'yaxlit_all':yaxlit_all,
     }
     if request.method == 'GET':
         return render(request, '02_s_ad/09_1_addresurs 2.html', context)
@@ -693,10 +692,11 @@ def addresurs(request):
         tne = request.POST['tne']
         gj = request.POST['gj']
         gkal = request.POST['gkal']
+        yaxlit = request.POST['yaxlit']
 
-        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birlik,
+        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birliklar(birlik),yaxlit=yaxlitlash(yaxlit),
                                  tshy=tshy,tne=tne,gj=gj, gkal=gkal)
-        messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! Rahmat! Charchamang! :)')
+        messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! ')
         return redirect('resurs') 
     
 
@@ -704,12 +704,15 @@ def addresurs(request):
 def editresurs(request, id):     
     r = resurslar.objects.get(pk=id)
     birlik=birliklar.objects.all()
-    
+    yaxlit_all=yaxlitlash.objects.all()
+
     context = {          
         'birlik': birlik,
         'r': r,        
         'values': r,
-        'titleown': 'Resursni yangilash'
+        'titleown': 'Resursni yangilash',
+        'yaxlit_all':yaxlit_all,
+
     } 
     
     if request.method == 'GET':  
@@ -723,14 +726,15 @@ def editresurs(request, id):
         tne = request.POST['tne']
         gj = request.POST['gj']
         gkal = request.POST['gkal']
+        yaxlit = request.POST['yaxlit']
         
         r.nomi =nomi 
-        r.birlik =birlik
+        r.birlik =birliklar(birlik)
         r.tshy=tshy
         r.tne=tne
         r.gj=gj
         r.gkal=gkal
-        
+        r.yaxlit=yaxlitlash(yaxlit)
         r.owner=request.user
         
         r.save()
@@ -809,3 +813,391 @@ def delvalyuta(request, id):
     davlat.delete()
     messages.success(request, 'Valyuta o`chirildi')
     return redirect('valyuta')
+
+@group_required('admin2')
+def monitoring_users(request):
+
+    fqir=allfaqir.objects.all()
+    
+    context={
+        'titleown': 'Foydalanuvchilar ro`yxati',
+        'fqir':fqir
+    }
+    return render(request, '02_s_ad/Monitoring/foydalanuvchi.html', context)
+
+@group_required('admin2')
+def passport(request,id):
+
+    fqir=allfaqir.objects.all()
+    foydalanuvchi = allfaqir.objects.get(pk=id)
+    
+    savol=savolnoma.objects.get(owner=foydalanuvchi.owner.id)
+
+    savol1=""
+    savol2=""
+    if savol.savol1==True:
+        savol1="checked"
+    if savol.savol2==True:
+        savol2="checked"
+    
+    context={
+        "id":id,
+        "active0": "active",
+        "titleown": "Passport",
+
+        'foydalanuvchi':foydalanuvchi,
+        'savol':savol,
+        'savol1':savol1,
+        'savol2':savol2,
+
+    }
+
+    return render(request, '02_s_ad/Monitoring/02_passport.html', context)
+
+@group_required('admin2')
+def hisobot(request, id):
+
+    foydalanuvchi = allfaqir.objects.get(pk=id)
+    
+    his = hisobot_item.objects.filter(owner=foydalanuvchi.owner.id)
+    ist = istres.objects.filter(owner=foydalanuvchi.owner.id)
+
+
+    context={
+        "id":id,
+        "active1": "active",
+        "titleown": "Hisobot",
+
+        'values':ist,
+        'his':his
+    }
+
+    return render(request, '02_s_ad/Monitoring/03_hisobot.html', context)
+
+@group_required('admin2')
+def hisobot_check_monitoring(request, id, own_id):
+    
+    h_item=hisobot_item.objects.get(pk=id)
+    
+    h_ich=hisobot_ich.objects.filter(owner=h_item.owner.id, title=h_item.title)
+    h_ist=hisobot_ist.objects.filter(owner=h_item.owner.id, title=h_item.title)
+    h_uzat=hisobot_uzat.objects.filter(owner=h_item.owner.id, title=h_item.title)
+    
+    titleown=h_item.title+' oyi uchun ma`lumotlarni tekshirish'
+    
+    context ={
+        "id":own_id,
+        "del_id":id,
+
+        "active1": "active",
+        "titleown": "Hisobot",
+        
+        'h_item':h_item,
+        'h_ich':h_ich,
+        'h_ist':h_ist,
+        'h_uzat':h_uzat,
+        'titleown':titleown,
+        'val':h_item        
+    }
+
+
+    return render(request, '02_s_ad/Monitoring/Hisobot/01_hisobot_check_monitoring.html', context)
+
+@group_required('admin2')
+def delhisobot(request, id, own_id):
+    h_item=hisobot_item.objects.get(pk=id)
+    
+    h_ich=hisobot_ich.objects.filter(owner=h_item.owner.id, title=h_item.title)
+    h_ist=hisobot_ist.objects.filter(owner=h_item.owner.id, title=h_item.title)
+    h_uzat=hisobot_uzat.objects.filter(owner=h_item.owner.id, title=h_item.title)
+
+    h_item.delete()
+    for v in h_ich:
+        v.delete()
+    for v in h_ist:
+        v.delete()
+    for v in h_uzat:
+        v.delete()
+    
+    messages.success(request, 'Davriy hisobot muvofaqqiyatli o`chirildi')
+    
+    url='hisobot_monitoring/'+str(own_id)
+    next = request.POST.get('next', '/s_ad/'+url)
+    
+    return HttpResponseRedirect(next)
+
+
+@group_required('admin2')
+def tayyorlangan_hisobot(request, id):      
+    fqir=allfaqir.objects.get(pk=id)
+
+    his = hisobot_full.objects.filter(owner=fqir.owner_id)
+    ist = istres.objects.filter(owner=fqir.owner_id)  
+
+    context ={
+    "id":id,
+    "titleown": "Tayyorlangan hisobotlar",
+    "active2": "active", 
+
+    'values':ist,
+    'his':his,   
+    
+    }
+
+
+    return render(request, '02_s_ad/Monitoring/04_tayyorlangan_hisobotlar.html', context)
+
+
+@group_required('admin2')
+def tayyorlangan_result(request, id, tur, birl, own_id):      
+    fqir=allfaqir.objects.get(pk=id)
+
+    his = hisobot_full.objects.filter(owner=fqir.owner_id)
+    ist = istres.objects.filter(owner=fqir.owner_id)  
+
+    his=hisobot_full.objects.get(pk=id) 
+       
+    valyuta=his.valyuta
+    
+    active1=''
+    active2=''
+    active3=''
+    
+    if tur=="A":
+        active1='active'
+        res=his.ich.all()
+    
+    if tur=="B":
+        active2='active'
+        res=his.ist.all()
+        
+    if tur=="C":
+        active3='active'
+        res=his.sot.all()
+        
+    
+    
+    # Nomli Birliklarda
+    sana=[]
+    resurs=[]
+    res_id=[]
+    for i in res:
+        s = i.vaqt.strftime("%Y-%m")
+        sana.append(s) 
+               
+        res_id.append(i.resurs.resurs.id)
+        
+        r=i.resurs.resurs.nomi
+        resurs.append(r)
+    
+    sana=set(sana)
+    sana=sorted(sana)
+    resurs=set(resurs)
+    res_id=set(res_id)
+    
+    obj={}
+    for i in res_id: 
+        if birl=="nomli":
+            b=' ('+resurslar.objects.get(pk=i).birlik+' )'               
+        if birl=="tshy":
+            b=' ( tshy )'
+        if birl=="tne":
+            b=' ( tne )'
+        if birl=="gj":
+            b=' ( GJ )'
+        if birl=="gkal":
+            b=' ( GKal )'
+        if birl=="som":
+            b=' ( mln.so`m )'
+        if birl=="valut":
+            b=' ( ming.'+his.valyuta.name+' )'
+        r=resurslar.objects.get(pk=i).nomi+b
+        obj[r]=[]
+        
+        lst=[]
+        for j in res.filter(resurs__resurs__id=i):
+            s = j.vaqt.strftime("%Y-%m")
+            lst.append(s)            
+        
+        for k in sana:
+            if k in lst:
+                for j in res.filter(resurs__resurs__id=i):
+                    s = j.vaqt.strftime("%Y-%m")            
+                    if k==s:
+                        if birl=='nomli' or birl=='tshy' or birl=='tne' or birl=='gj' or birl=='gkal':
+                            def birlik(i):
+                                switcher={
+                                    'nomli':1,
+                                    'tshy':j.resurs.resurs.tshy,
+                                    'tne':j.resurs.resurs.tne,
+                                    'gj':j.resurs.resurs.gj,
+                                    'gkal':j.resurs.resurs.gkal,                                    
+                                }
+                                return switcher.get(i, "xato")    
+                            
+                            koef1=birlik(birl)           
+                            q=j.qiymat*koef1
+                        if birl=='som' or birl=='valut':
+                            if birl == 'som':
+                                koef2=j.qiymat
+                            if birl == 'valut':
+                                koef2=1000*j.qiymat*his.valyuta.qiymati/his.valyuta.somda
+                            q=j.qiymat_pul*koef2/1000000
+                        
+                        obj[r].append(float('{0:.2f}'.format(float(q))))
+                        
+            else:
+                obj[r].append(0)
+        
+    context={        
+        "id":own_id,
+        "titleown": "Tayyorlangan hisobotlar",
+        "active2": "active", 
+        'titleown':his.nomi,
+       'his':his,
+       'obj':obj,
+       'sana':sana,
+       'res_id':res_id,
+       'birl':birl,
+       'tur1':tur,
+       
+       'activecha1':active1,
+       'activecha2':active2,
+       'activecha3':active3,
+    }   
+
+    return render(request, '02_s_ad/Monitoring/Hisobot/02_tayyorlangan_hisobot_result.html', context)
+
+@group_required('admin2')
+def deltayyorlangan_hisobot(request, id, own_id):  
+
+    his = hisobot_full.objects.get(pk=id)
+    
+    his.delete()
+    
+    messages.success(request, 'Muvofaqqiyatli o`chirildi')
+    
+    url='tayyorlangan_hisobot/'+str(own_id)
+    next = request.POST.get('next', '/s_ad/'+url)
+
+    return HttpResponseRedirect(next)
+
+#***************Tashkiliy tadbirlar*************************
+@group_required('admin2')
+def Tadbirlar(request):
+    titleown='Texnik tadbirlar'
+    tadbir=Tadbir.objects.all()
+    context = {
+        'titleown':titleown,
+        'tadbir':tadbir
+    }
+
+    return render(request, '02_s_ad/Tadbirlar/0_tadbirlar.html',context)
+
+@group_required('admin2')
+def addtadbir(request):
+    titleown='Texnik tadbirlar qo`shish'
+    context = {
+        'titleown':titleown
+    }
+    if request.method == 'GET':
+        return render(request, '02_s_ad/Tadbirlar/1_addtadbir.html', context)
+            
+    if request.method == 'POST':        
+        tadbir_kodi = request.POST['tadbir_kodi']
+        tadbir_nomi = request.POST['tadbir_nomi']        
+        
+        Tadbir.objects.create(owner=request.user, kodi=tadbir_kodi, nomi=tadbir_nomi )        
+        messages.success(request, 'Yangi tashkiliy texnik tadbir muvofaqqiyatli qo`shildi! ')
+        return redirect('Tadbirlar')
+
+@group_required('admin2')
+def edittadbir(request, id):
+    
+    titleown='O`zgartirish'
+    tadbir = Tadbir.objects.get(pk=id)
+    
+    context = {
+        'tadbir': tadbir,
+        'titleown':titleown
+    } 
+    
+    if request.method == 'GET':        
+        return render(request, '02_s_ad/Tadbirlar/2_edittadbir.html', context)
+    
+    if request.method =='POST':
+        tadbir_kodi = request.POST['tadbir_kodi']
+        tadbir_nomi = request.POST['tadbir_nomi']  
+        
+        tadbir.kodi=tadbir_kodi
+        tadbir.nomi=tadbir_nomi
+        tadbir.owner=request.user
+        
+        tadbir.save()        
+        messages.success(request, 'Texnik tadbir muvofaqqiyatli yangilandi! ')
+        
+        return redirect('Tadbirlar')
+
+@group_required('admin2')
+def deltadbir(request, id):          
+    tadbir = Tadbir.objects.get(pk=id)
+    tadbir.delete()
+    messages.success(request, 'Texnik tadbir muvofaqqiyatli o`chirildi')
+    return redirect('Tadbirlar')
+
+#yaxlitlash bo'yicha ma'lumotlarni kiritish*********************
+
+@group_required('admin2')
+def yaxlitlashV(request):
+    titleown='Yaxlitlash birliklari'
+    val = yaxlitlash.objects.all()
+    
+    context = {
+        'val': val,
+        'titleown':titleown
+        }
+    
+    if request.method == 'GET':
+        
+        return render(request, '02_s_ad/12_0_yaxlitlash.html', context)
+    
+    if request.method == 'POST':       
+        
+        return redirect('yaxlitlashV')
+
+@group_required('admin2')
+def addyaxlitlash(request):
+    yaxlitlash.objects.create(owner=request.user, nomi='', qiymati=0, checker=False)
+    return redirect('yaxlitlashV')
+
+@group_required('admin2')
+def edityaxlitlash(request, id):
+       
+    val = yaxlitlash.objects.get(pk=id)    
+    val.checker=False           
+    val.save()    
+    messages.success(request, 'Yaxlitlanuvchi qiymatni o`zgartirishingiz mumkin!')        
+    return redirect('yaxlitlashV')
+
+@group_required('admin2')
+def saveyaxlitlash(request, id):
+    val = yaxlitlash.objects.get(pk=id)
+    
+    if request.method=="POST": 
+        nomi='nomi'+str(id)
+        qiymati='qiymati'+str(id)
+        
+        val.nomi = request.POST[nomi]
+        val.qiymati = request.POST[qiymati] 
+        val.checker=True
+        val.save()
+        messages.success(request, 'Yaxlitlanuvchi qiymat muvafaqqiyatli saqlandi!')        
+    
+    return redirect('yaxlitlashV')
+
+@group_required('admin2')
+def delyaxlitlash(request, id):
+    val = yaxlitlash.objects.get(pk=id)    
+    val.delete()
+    messages.success(request, 'Yaxlitlanuvchi qiymat muvafaqqiyatli o`chirildi')
+    return redirect('yaxlitlashV')

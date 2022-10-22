@@ -1,0 +1,83 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bari1 %}active{% endblock bari1 %}
+
+{% block content %}
+
+{% include 'partials/_messages.html'%}
+<div class="row">
+    <div class="col-12, card-body">
+        <h1 class="h3 d-inline align-middle">Hisoblagichlar {{titleown}} </h1>
+        <a href="{% url 'addvalyuta' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>
+    </div>
+
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">            
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>Hisoblagich id</th>
+                            <th>Indikator</th>  
+                            <th>TTT (ehtimollik %da)</th>
+                            <th>u(%)</th>
+                            <th>i(%)</th>            
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>854635654</th>
+                            <th><a class="btn btn-info my-1" href="#" id="guruh">Normal</a></th>  
+                            <th>Maslahat (85 %da)</th>
+                            <th>2</th>
+                            <th>10</th>                            
+                            <th width="2%"><a href="{% url 'addvalyuta' %}" class="btn btn-outline-primary float-end mt-n1"><i class="fas fa-trash"></i></a></th>                            
+                        </tr>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>854635654</th>
+                            <th><a class="btn btn-warning my-1" href="#" id="guruh">Nonormal</a></th>  
+                            <th>Yuklanishni o'chirish(90 %da)</th>
+                            <th>2</th>
+                            <th>10</th>                            
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>854635654</th>
+                            <th><a class="btn btn-danger my-1" href="#" id="guruh">Avariya</a></th>  
+                            <th>103 ga qo'ng'iroq qilish (90 %da)</th>
+                            <th>2</th>
+                            <th>10</th>                            
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                        
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>Hisoblagich id</th>
+                            <th>Indikator</th>  
+                            <th>TTT (ehtimollik %da)</th>
+                            <th>u(%)</th>
+                            <th>i(%)</th>            
+                            <th width="2%">harakat</th>   
+                        </tr>
+                    </tfoot>
+                </table>
+                <a href="{% url 'valyuta'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+               
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

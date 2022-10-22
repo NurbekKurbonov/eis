@@ -1,0 +1,49 @@
+{% extends '00_base.html' %}
+{% load static %}
+<button class="btn btn-secondary" type="button">Go!</button>
+{% block title %}{{titleown}}{% endblock title %}
+{% block bar %}active{% endblock bar %}
+
+{% block content %}
+{% csrf_token %}
+<div class="col-auto d-none d-sm-block">	
+	<div class="row mb-3">
+			<div class="col-sm-1">		
+				<img alt="EMBLEMA" src="{{kitob.emblem.url}}" class=" img-responsive mt-2" width="90" height="60" />
+			</div>		
+			<div class="col-sm-11">		
+				<div class="col-sm-12" style="color:Green">...</div>
+				<div class="col-sm-12 yozuv_grad"><h1><strong>{{kitob.nomi}}</strong></h1></div>			
+				
+			</div>
+	</div>
+</div>
+<div class="row">	
+	{% for v in kitob.section.all %}
+	<h5 class="card-title">{{v.nomi}}</h5>
+		{% for m in v.mavzu.all %}
+		<div class="col-sm-6 col-xl-4" >
+		
+			<div class="card" style="background: rgb(67,228,19);
+			background: linear-gradient(322deg, rgba(67,228,19,0.2959383582534576) 0%, rgba(6,82,37,1) 0%, rgba(13,181,84,1) 26%, rgba(0,255,36,1) 74%, rgba(70,224,28,1) 100%);">
+				<div class="card-body text-center">		
+				
+				{% if m.holat is False %}
+				<i class="align-middle me-2 fas fa-fw fa-lock"></i>
+				<a class="" href="#" style="color:black" width="100%">{{forloop.counter}}. {{m.nomi}}</a>	
+				{% endif %}
+
+				{% if m.holat is True %}
+				<i class="align-middle me-2 fas fa-fw fa-lock-open" style="color:white"></i>
+				<a class="" href="{{m.fayl.url}}"  width="100%" style="color:white">{{forloop.counter}}. {{m.nomi}}</a>	
+				{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	{% endfor %}
+</div>
+
+{% endblock content %}
+
+

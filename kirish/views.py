@@ -9,7 +9,7 @@ from django.contrib import auth
 from validate_email import validate_email
 from django.core.mail import EmailMessage
 
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 
@@ -28,8 +28,12 @@ from django.contrib.auth.models import Group
 from .forms import captchaform
 
 from django.core.files.storage import FileSystemStorage
+from django.core.exceptions import PermissionDenied
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+
+import six
 
 def application_req( login_url=None, raise_exception=False):
     def check_perms(user):        
@@ -40,6 +44,22 @@ def application_req( login_url=None, raise_exception=False):
             raise PermissionDenied
         return False
     return user_passes_test(check_perms, login_url='/foydalanuvchi/')
+
+#whitebone ga tekshir*******************************
+def wbone_required(group, login_url=None, raise_exception=False):
+    def check_perms(user):
+        if isinstance(group, six.string_types):
+            groups = (group, )
+        else:
+            groups = group
+
+        if user.groups.filter(name__in=['whitebone']).exists():
+            return True
+        if raise_exception:
+            raise PermissionDenied
+        return False
+    return user_passes_test(check_perms, login_url='/login')
+
 
 #registratsya**************************************************
 class EmailValidationView(View):
@@ -76,7 +96,7 @@ class StirValidationView(View):
             return JsonResponse({'stir_error': 'STIR raqami noto`g`ri'}, status=400)
         
         boshi=int(stir[:1])        
-        if boshi>3:
+        if boshi>4:
             if boshi<7:
                 return JsonResponse({'stir_error': 'Sistema hozircha faqat yuridik shaxslarni qabul qiladi'}, status=401)
             return JsonResponse({'stir_error': 'STIR yuridik shaxsga tegishli emas'}, status=400)            
@@ -165,7 +185,7 @@ class registerP(View):
 class VerificationView(View):
     def get(self, request, uidb64, token):
         try:
-            id = force_text(urlsafe_base64_decode(uidb64))
+            id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=id)
 
             if not account_activation_token.check_token(user, token):
@@ -203,7 +223,12 @@ class loginP(View):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-                    messages.success(request, 'Assalomu alaykum '+user.username+' EIS sistemasiga xush kelibsiz!')                    
+                    messages.success(request, 'Assalomu alaykum '+user.username+' EIS sistemasiga xush kelibsiz!')
+                    if user.groups.filter(name__in=['whitebone']).exists():
+                        return redirect('wbonehome')  
+                    if user.groups.filter(name__in=['admin2']).exists():
+                        return redirect('kirishP')                    
+
                     return redirect('home')
                 messages.error(request, 'Foydalanuvchi faollashtirilmagan! iltimos emailingizni tekshiring va faollashtiring')
             messages.error(request, 'Login yoki parol xato, iltimos qayta urinib ko`ring!')

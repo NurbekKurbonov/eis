@@ -1,0 +1,73 @@
+{% extends '02_s_ad/Monitoring/00_base_monitoring.html' %}
+{% load static %}
+{% csrf_token %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">          
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>Hisobot nomi {% for tur in v.tur %}{{tur}}{% endfor %}</th>                            
+                            <th>Sana</th> 
+                            <th>Yil</th> 
+                                                        
+                            <th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                            <th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-trash"></i></th> 
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td>{{v.nomi}} {{his.tur}}</td>
+                        <td>{{v.vaqt|date:"d-m-Y"}}</td>
+                        <td>{{v.vaqt|date:"Y"}}</td>
+                        <td class="table-action text-center">  
+                        
+                        <a {% if '1' in v.tur %}
+                                href="{% url 'tayyorlangan_result' v.id 'A' 'nomli' id %}" 
+                            
+                            {% elif '2' in v.tur %}
+                                    href="{% url 'tayyorlangan_result' v.id 'B' 'nomli' id%}" 
+                            {% else %}
+                                    href="{% url 'tayyorlangan_result' v.id 'C' 'nomli' id%}" 
+                            {% endif %}
+                            class="btn btn-outline-info " id="notyf-show" style="width:100%">Hisobotni ko'rish</a>
+                        </td> 
+
+                        <td class="table-action text-center">
+                            <a href="{% url 'deltayyorlangan_hisobot' v.id id %}" class="btn btn-outline-info text-center"><i class="align-middle me-2 fas fa-fw fa-trash-alt"></i></a> 
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>T/r</th>                            
+                            <th>Hisobot nomi</th>                            
+                            <th>Sana</th> 
+                            <th>Yil</th> 
+                    </tr>
+                    </tfoot>
+                </table>
+               
+                <a href="{% url 'davr'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

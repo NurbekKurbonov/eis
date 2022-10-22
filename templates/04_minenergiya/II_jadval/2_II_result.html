@@ -1,0 +1,88 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bar3 %}active{% endblock bar3%}
+
+{% block content %}
+
+<!--<a href="{% url 'addtexniktadbir' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>-->
+
+{% csrf_token %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/tables/III.css' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}" rel="stylesheet">
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle" style="background: #1957FF;
+    background: repeating-radial-gradient(circle farthest-side at center center, #1957FF 0%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;">Iqtisodiyot sohalarida yoqilgyi-energiya resurslarini tejashning maqsadli kwrsatkichlari ijrosi</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                <div id="table-scroll" class="table-scroll">
+                    <table id="main-table" class="main-table">
+                      <thead>
+
+                        <tr>
+                          <th scope="col" rowspan="5" width="2%">T/r</th>
+                          <th scope="col" rowspan="4" width="30%" style="vertical-align : middle;text-align:center;">Vazirliklar, idoralar nomi</th>
+                          <th scope="col" colspan="8" style="vertical-align : middle;text-align:center;">Kutilayotgan yoqilg`i-energy resurslarini tejash ko'rsatkichlari</th>                                                                            
+                        </tr>                        
+                        <tr>
+                          <th scope="col" colspan="4" style="vertical-align : middle;text-align:center;">Tabiiy gaz (mln.kub.m)</th>
+                        </tr>
+                        <tr>
+                          
+                          <th scope="col" rowspan="2" style="vertical-align : middle;text-align:center;">Yil: {{yil}}</th>
+                          <th scope="col" colspan="3" style="vertical-align : middle;text-align:center;">Hisobot oyi: {{oy}}</th>
+                        </tr>
+                        <tr>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Rejada</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Amalda</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Foiz</th>
+                        </tr> 
+                        <tr>
+                          <th scope="col" style="vertical-align : bottom;text-align:right;">Jami:</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">-</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">-</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">-</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">-</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <!--Korxonalar-->
+                      {% for i in faqir %}
+                        <tr>
+                          <th class="orta" style="vertical-align : middle;text-align:center;">{{forloop.counter}}</th>
+                          <td class="chap" style="vertical-align : middle;text-align:left;">{{i.nomi}}</td>
+                          <td style="vertical-align : middle;text-align:left;"><B>0</B></td>      
+                          <td style="vertical-align : middle;text-align:left;">0</td>
+                          <td style="vertical-align : middle;text-align:left;">0</td>
+                          <td style="vertical-align : middle;text-align:left;">0</td>
+                        </tr>
+                      {% endfor %}  
+                        
+                    </tbody>
+                      <tfoot>  
+                        <th scope="col" style="vertical-align : middle;text-align:center;">T/r</th>
+                          <th scope="col" width="30%" style="vertical-align : middle;text-align:center;">Vazirliklar, idoralar nomi</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Yillik</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Rejada</th>                   
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Amalda</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">Farq, %</th>
+                      </tfoot>
+                    </table>
+                  </div>
+                
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

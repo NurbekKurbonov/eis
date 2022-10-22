@@ -62,10 +62,36 @@ urlpatterns = [
     #******Foydalanuvchi sozlama****************************
     path('usersozlama', views.usersozlama, name='usersozlama'),
     
-    #*******Resurs*********************************************
+    #*******Valyuta*********************************************
     path('valyuta', views.valyuta, name='valyuta'),
     path('addvalyuta', views.addvalyuta, name='addvalyuta'),
     path('editvalyuta/<int:id>', views.editvalyuta, name='editvalyuta'),
     path('savevalyuta/<int:id>', views.savevalyuta, name='savevalyuta'),
     path('delvalyuta/<int:id>', views.delvalyuta, name='delvalyuta'),
+
+    #**************Foydalanuvchilar********************************
+    path('monitoring_users', views.monitoring_users, name='monitoring_users'),
+    path('passport/<int:id>', views.passport, name='passport'),
+    path('hisobot_monitoring/<int:id>', views.hisobot, name='hisobot_monitoring'),
+    path('hisobot_check_monitoring/<int:id>/<int:own_id>', views.hisobot_check_monitoring, name='hisobot_check_monitoring'),
+    path('delhisobot/<int:id>/<int:own_id>', views.delhisobot, name='delhisobot'),
+    
+    path('tayyorlangan_hisobot/<int:id>', views.tayyorlangan_hisobot, name='tayyorlangan_hisobot'),
+    path('tayyorlangan_result/<int:id>/<str:tur>/<str:birl>/<int:own_id>', views.tayyorlangan_result, name='tayyorlangan_result'),
+    path('deltayyorlangan_hisobot/<int:id>/<int:own_id>', views.deltayyorlangan_hisobot, name='deltayyorlangan_hisobot'),
+    
+    #**************Foydalanuvchilar********************************
+    path('Tadbirlar', views.Tadbirlar, name='Tadbirlar'),
+    path('addtadbir', views.addtadbir, name='addtadbir'),
+    path('edittadbir/<int:id>', views.edittadbir, name='edittadbir'),
+
+    path('deltadbir/<int:id>', views.deltadbir, name='deltadbir'),
+
+    #*******Valyuta*********************************************
+    path('yaxlitlashV', views.yaxlitlashV, name='yaxlitlashV'),
+    path('addyaxlitlash', views.addyaxlitlash, name='addyaxlitlash'),
+    path('edityaxlitlash/<int:id>', views.edityaxlitlash, name='edityaxlitlash'),
+    path('saveyaxlitlash/<int:id>', views.saveyaxlitlash, name='saveyaxlitlash'),
+    path('delyaxlitlash/<int:id>', views.delyaxlitlash, name='delyaxlitlash'),
+    
 ]

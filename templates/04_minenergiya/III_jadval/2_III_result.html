@@ -1,0 +1,409 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bar4 %}active{% endblock bar4%}
+
+{% block content %}
+
+<!--<a href="{% url 'addtexniktadbir' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>-->
+
+{% csrf_token %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/tables/III.css'%}" rel="stylesheet">
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle" style="background: #1957FF;
+    background: repeating-radial-gradient(circle farthest-side at center center, #1957FF 0%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;">Energiya samaradorligini oshirish va energiya tejamkorligiiga erishishning maqsadli ko'rsatgichlari</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                <div id="table-scroll" class="table-scroll">
+                    <table id="main-table" class="main-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">T/r</th>
+                          <th scope="col" width="60%">Ko'rsatgich nomi</th>
+                          <th scope="col">O'lchov birligi</th>
+                          <th scope="col">2021 yil</th>
+                          <th scope="col">2022 yil</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th class="orta">1</th>
+                          <th class="chap">Yalpi ichki (hududiy) mahsulot hajmi (ishlab chiqarilgan mahsulot va ko‘rsatilgan xizmatlar tannarxi) jami:</th>
+                          <th>mln. so'm</th>
+                          <td>---</td>
+                          <td>---/</td>
+                        </tr>
+                        <tr>
+                            <th class="orta">2</th>
+                            <th class="chap">Mahsulotlar (ishlar, xizmatlar) ishlab chiqarish uchun yoqilg‘i-energetika resurslarining umumiy qiymati:</th>
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        
+                        <tr>
+                            <th class="orta">3</th>
+                            <th class="chap">Mahsulotlar (ishlar, xizmatlar) ishlab chiqarish uchun yoqilg‘i-energetika resurslarining umumiy iste’moli, shu jumladan:</th>
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>                        
+                        <!--3.1-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.1</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Tabiiy gaz</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--3.2-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.2</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Elektr energiyasi</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--3.3-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.3</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Motor yoqilg‘isi (benzin, dizel suyultirilgan va (yoki) siqilgan gaz va boshqalar)</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--3.4-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.4</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Pech yoqilg‘isi (mazut va boshqalar)</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--3.5-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.5</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Issiqlik energiyasi (tashqi ta’minotchidan olingan)</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>                                                     
+                            <th>t.sh.yo</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>                                                     
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <!--3.6-->
+                        <tr>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">3.6</th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:left;">Boshqalar</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--4-->
+                        <tr>
+                          <th class="orta">4</th>
+                          <th class="chap">Asosiy mahsulotlarning (ishlar, xizmatlar) energiya sig‘imliligi (3-band / 1-band)</th>
+                          <th>mln. so'm</th>
+                          <td>---</td>
+                          <td>---/</td>
+                        </tr>
+                        <!--5-->
+                        <tr>
+                            <th class="orta">5</th>
+                            <th class="chap">Asosiy mahsulotlarni (ishlar, xizmatlar) ishlab chiqarish uchun YOER shartli narxi (2-band/ 3-bandi)</th>
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>  
+                        <!--6-->                      
+                        <tr>
+                            <th class="orta">6</th>
+                            <th class="chap">Ishlab chiqarilgan mahsulotlarga nisbatan energiya sig‘imliligi (2-band / 1-band * 100)</th>
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>  
+                        <!--7--> 
+                        <tr>
+                            <th class="orta">6</th>
+                            <th class="chap">Tasdiqlangan tashkiliy-texnik chora-tadbirlar dasturlarini (TTCHT) amalga oshirish</th>
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr> 
+                        <!--7.1-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">7.1</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Tabiiy gaz</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--7.2-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">7.2</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Elektr energiyasi</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--7.3-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">7.3</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Issiqlik energiyasi</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--7.4-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.4</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Neft va neft mahsulotlari</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                            <tr>                                                     
+                                <th>mln. so'm</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr>
+                        <!--7.5-->
+                        <tr>
+                            <th rowspan="3" style="vertical-align : middle;text-align:center;">3.5</th>
+                            <th rowspan="3" style="vertical-align : middle;text-align:left;">Ko'mir va ko'mirdan ishlangan mahsulotlar</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>                                                     
+                            <th>t.sh.yo</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>                                                     
+                            <th>mln. so'm</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <!--3.6-->
+                        <tr>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">3.6</th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:left;">Boshqalar</th>                            
+                            <th>ming.kub.m</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                            <tr>                                                     
+                                <th>t.sh.yo</th>
+                                <td>---</td>
+                                <td>---/</td>
+                            </tr> 
+                        <!--8-->                      
+                        <tr>
+                            <th class="orta">6</th>
+                            <th class="chap">Tasdiqlangan TTCHT dasturlarini amalga oshirish hisobiga YOER iqtisodi (sohalar kesimida), jumladan</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>  
+                        <tr>
+                            <th class="orta">8.1</th>
+                            <th class="chap">Tasdiqlangan TTCHT dasturlarini amalga oshirish hisobiga YOER iqtisodi (sohalar kesimida), jumladan</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>  
+                        <tr>
+                            <th class="orta">8.1.1</th>
+                            <th class="chap">Tabiiy gaz</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr> 
+                        <tr>
+                            <th class="orta">8.1.2</th>
+                            <th class="chap">Elektr energiyasi</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr> 
+                        <tr>
+                            <th class="orta">8.1.3</th>
+                            <th class="chap">Issiqlik energiyasi</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr> 
+                        <tr>
+                            <th class="orta">8.1.4</th>
+                            <th class="chap">Neft va neft mahsulotlari</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr> 
+                        <tr>
+                            <th class="orta">8.1.5</th>
+                            <th class="chap">Ko'mir va ko'mirdan qayta ishlangan mahsulotlar</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <!--9--> 
+                        <tr>
+                            <th class="orta">9</th>
+                            <th class="chap">Tasdiqlangan TTCHTni amalga oshirish orqali issiqxona gazlar chiqindilarini kamayishini, jami:</th>
+                            <th>t.sh.y</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>
+                            <th class="orta">10</th>
+                            <th class="chap">Energetiya auditi o‘tkazilgan korxonalar, jumladan:</th>
+                            <th>soni</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>
+                            <th class="orta">10.1</th>
+                            <th class="chap">Majburiy energiya audit</th>
+                            <th>soni</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>
+                            <th class="orta">10.2</th>
+                            <th class="chap">Ixtiyoriy energiya audit</th>
+                            <th>soni</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>
+                            <th class="orta">11</th>
+                            <th class="chap">Elektr ta’minoti tarmoqlarida texnologik yo‘qotishlarni nisbiy foizi</th>
+                            <th>%</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                        <tr>
+                            <th class="orta">12</th>
+                            <th class="chap">Gaz ta’minoti tarmoqlarida texnologik yo‘qotishlarni nisbiy foizi</th>
+                            <th>%</th>
+                            <td>---</td>
+                            <td>---/</td>
+                        </tr>
+                    </tbody>
+                      <tfoot>  
+                        <th scope="col">T/r</th>
+                        <th scope="col" width="60%">Ko'rsatgich nomi</th>
+                        <th scope="col">O'lchov birligi</th>
+                        <th scope="col">2021 yil</th>
+                        <th scope="col">2022 yil</th>                   
+                      </tfoot>
+                    </table>
+                  </div>
+                
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

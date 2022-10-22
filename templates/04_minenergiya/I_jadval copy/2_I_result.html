@@ -1,0 +1,252 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bar2 %}active{% endblock bar2%}
+
+{% block content %}
+
+<!--<a href="{% url 'addtexniktadbir' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>-->
+
+{% csrf_token %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/tables/III.css'%}" rel="stylesheet">
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle" style="background: #1957FF;
+    background: repeating-radial-gradient(circle farthest-side at center center, #1957FF 0%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;">Mahsulotlar (ishlar, xizmatlar) ishlab chiqarishning energiya sig‘imi to‘g‘risida</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                <div id="table-scroll" class="table-scroll">
+                    <table id="main-table" class="main-table">
+                      <thead>
+                        <tr>
+                          <th scope="col" width="2%">T/r</th>
+                          <th scope="col" width="30%" style="vertical-align : middle;text-align:left;">Ko'rsatgich nomi</th>
+                          <th scope="col" width="8%" style="vertical-align : middle;text-align:center;">O'lchov birligi</th>
+                          <th scope="col" style="vertical-align : middle;text-align:left;"><B>Jami</B></th>               
+                          <th scope="col" style="vertical-align : middle;text-align:left;"><B>"Issiqlik elektr stansiyalari"</B></th>                 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!--1-->
+                        <tr>
+                          <th class="orta" rowspan="4" style="vertical-align : middle;text-align:center;">1</th>
+                          <td class="chap" style="vertical-align : middle;text-align:left;">Ishlab chiqarishning umumiy hajmi (ishlar, xizmatlar tannarxi) jami:</td>
+                          <td style="vertical-align : middle;text-align:left;">mln. so'm</td>
+                          <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>                          
+                          <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>  
+                        </tr>
+                        <tr>
+                            <td style="vertical-align : middle;text-align:left;" rowspan="2">Hajmi</td>
+                            <td style="vertical-align : middle;text-align:left;">so'm</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                        </tr>
+                        <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">Dollor</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                        </tr>
+                        <tr>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Emissiya</td>
+                            <td style="vertical-align : middle;text-align:left;">Dollor</th>
+                            <td style="vertical-align : middle;text-align:left;"><B>7,354,602,133.44</B></th>
+                            <td style="vertical-align : middle;text-align:left;"><B>7,354,602,133.44</B></th>
+                        </tr>     
+                        
+                        <!--2-->
+                        <tr>
+                            <th class="orta" style="vertical-align : middle;text-align:center;">2</th>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Mahsulotlar (ishlar, xizmatlar) ishlab chiqarish uchun yoqilg'i-energetika resurslarining umumiy qiymati</td>
+                            <td style="vertical-align : middle;text-align:left;">tshy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>8,478,774.15</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>8,478,774.15</B></td>  
+                        </tr>
+                        <!--3-->
+                        <tr>
+                            <th class="orta" style="vertical-align : middle;text-align:center;">3</th>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Mahsulotlar (ishlar, xizmatlar) ishlab chiqarish uchun yoqilg'i-energetika resurslarining umumiy qiymati</td>
+                            <td style="vertical-align : middle;text-align:left;">tshy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>8,478,774.15</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>8,478,774.15</B></td> 
+                        </tr>
+                        <!--3.1-->
+                         <tr>
+                            <th class="orta" rowspan="3" style="vertical-align : middle;text-align:center;">3.1</th>
+                            <td class="chap" rowspan="3" style="vertical-align : middle;text-align:left;">Tabiiy gaz</td>
+                            <td style="vertical-align : middle;text-align:left;">ming.kub.m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>    
+                          </tr>
+                          <tr>
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                          </tr> 
+                        <!--3.2-->
+                         <tr>
+                            <th class="orta" rowspan="3" style="vertical-align : middle;text-align:center;">3.2</th>
+                            <td class="chap" rowspan="3" style="vertical-align : middle;text-align:left;">Elektr energiya</td>
+                            <td style="vertical-align : middle;text-align:left;">ming.KW*h</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>    
+                          </tr>
+                          <tr>
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr> 
+                        <!--3.3-->
+                        <tr>
+                            <th class="orta" rowspan="3" style="vertical-align : middle;text-align:center;">3.2</th>
+                            <td class="chap" rowspan="3" style="vertical-align : middle;text-align:left;">motor yoqilg'isi (benzin, dizel yoqilg'isi suyultirilgan va / yoki siqilgan gaz va boshqalar)</td>
+                            <td style="vertical-align : middle;text-align:left;">tonna</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>       
+                          </tr>
+                          <tr>
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr> 
+                        <!--3.4-->
+                        <tr>
+                            <th class="orta" rowspan="3" style="vertical-align : middle;text-align:center;">3.4</th>
+                            <td class="chap" rowspan="3" style="vertical-align : middle;text-align:left;">Qozon va o'choq yoqilg'isi (mazut va boshqalar)</td>
+                            <td style="vertical-align : middle;text-align:left;">tonna</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>         
+                          </tr>
+                          <tr>
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr> 
+                        <!--3.5-->
+                        <tr>
+                            <th class="orta" rowspan="3" style="vertical-align : middle;text-align:center;">3.5</th>
+                            <td class="chap" rowspan="3" style="vertical-align : middle;text-align:left;">Ko`mir</td>
+                            <td style="vertical-align : middle;text-align:left;">tonna</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>       
+                          </tr>
+                          <tr>
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004.11</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr> 
+                        <!--3.6-->
+                        <tr>
+                            <th class="orta" rowspan="3" style="vertical-align : middle;text-align:center;">3.6</th>
+                            <td class="chap" rowspan="3" style="vertical-align : middle;text-align:left;">Uchinchi tomon ishlab chiqaruvchilarining issiqlik energiyasi</td>
+                            <td style="vertical-align : middle;text-align:left;">GKal</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr> 
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr> 
+                        <!--3.7-->
+                         <tr>
+                            <th class="orta" rowspan="2" style="vertical-align : middle;text-align:center;">3.7</th>
+                            <td class="chap" rowspan="2" style="vertical-align : middle;text-align:left;">Boshqalar</td>
+                            <td style="vertical-align : middle;text-align:left;">thsy</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>5,724,525.28</B></td>
+                          </tr>
+                          <tr>                            
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>83,107,004,107,887.70</B></td>
+                          </tr>
+                        <!--4-->
+                        <tr>
+                            <th class="orta" style="vertical-align : middle;text-align:center;">4</th>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Asosiy mahsulotlarning (ishlarning, xizmatlarning) texnologik energiya zichligi (3-band / 1-band)</td>
+                            <td style="vertical-align : middle;text-align:left;"></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>0.102</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>0.102</B></td>
+                        </tr>
+                        <!--5-->
+                        <tr>
+                            <th class="orta" style="vertical-align : middle;text-align:center;">5</th>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Hisoblangan asosiy mahsulotlarning (ishlarning, xizmatlarning) texnologik energiya zichligi (1000 dollarlik mahsulot birligiga to'g'ridan-to'g'ri iste'mol)</td>
+                            <td style="vertical-align : middle;text-align:left;"></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>1.153</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>1.153</B></td> 
+                        </tr>
+                        <!--6-->
+                        <tr>
+                            <th class="orta" style="vertical-align : middle;text-align:center;">6</th>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Asosiy mahsulotlarni (ishlarni, xizmatlarni) ishlab chiqarish uchun yoqilg'i-energetika resurslarining solishtirma iste'moli (2-bandning 3-bandi)</td>
+                            <td style="vertical-align : middle;text-align:left;"></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>1.055</B></td>
+                            <td style="vertical-align : middle;text-align:left;"><B>1.055</B></td>
+                                                      
+                        </tr>
+                        <!--7-->
+                        <tr>
+                            <th class="orta" style="vertical-align : middle;text-align:center;">7</th>
+                            <td class="chap" style="vertical-align : middle;text-align:left;">Ishlab chiqarilgan mahsulotlarga nisbatan energiya zichligi (p.p.2 / p.p.1) * 100</td>
+                            <td style="vertical-align : middle;text-align:left;">mln.so`m/mln so`m(foizda)</td>
+                            <td style="vertical-align : middle;text-align:left;"><B>10.77</B></td>                          
+                            <td style="vertical-align : middle;text-align:left;"><B>10.77</B></td>   
+                        </tr>
+                    </tbody>
+                      <tfoot>  
+                        <th scope="col" style="vertical-align : middle;text-align:center;">T/r</th>
+                          <th scope="col" width="30%" style="vertical-align : middle;text-align:center;">Ko'rsatgich nomi</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;">O'lchov birligi</th>
+                          <th scope="col" style="vertical-align : middle;text-align:center;"><B>Jami</B></th>       
+                          <th scope="col" style="vertical-align : middle;text-align:left;"><B>"Issiqlik elektr stansiyalari"</B></th>               
+                      </tfoot>
+                    </table>
+                  </div>
+                
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

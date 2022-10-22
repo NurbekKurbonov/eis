@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}HOME | Elektr ta'minoti asoslari{% endblock title %}
+{% block nav %}<link rel="stylesheet" href="{% static 'css/new.css' %}">{% endblock nav %}
+{% block content %}
+<main class="content">
+  <div class="container-fluid p-0">
+    
+
+    <h1 class="h3 mb-3">Bo'limlar</h1>
+
+    <div class="row">
+      <div class="col-12 book-container">
+        {% for k,v in nomi.items %}
+        <a href="{% url 'kitob' k '1' '5'%}" style="text-decoration: none;">
+          <div class="card book-card">
+            <div class="card-header book-header">
+              <h4 class="card-title mb-0" style="text-align: center;">{{v}}</h4>
+            </div>
+            <div class="card-body">
+              <img src="{{kitob.emblem.url}}" alt="Book_emblemasi" class="book-img" width=80 height=100 style="margin-top: 15px;">
+            </div>
+            <div class="card-footer book-footer">
+              <p class="card-title mb-0">Mart 23, 2022</p>
+              <p class="card-title mb-0">{{forloop.counter}}</p>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+        </a>     
+      </div>
+      
+    </div>
+  </div>
+  
+</main>
+
+{% endblock content %}

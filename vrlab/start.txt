@@ -1,0 +1,4 @@
+cd ..
+source env/bin/activate
+cd alibiystudy
+python3 manage.py runserver

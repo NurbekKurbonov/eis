@@ -1,0 +1,223 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+
+{% block bar7 %}active{% endblock bar7 %}
+
+{% block content %}
+
+{% block head %}
+    <style>
+        .highcharts-credits{
+            display: none;
+        }
+
+    </style>
+{% endblock head %}
+{% csrf_token %} 
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">    
+    <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="align-middle me-2 fas fa-fw fa-calendar-alt"></i> Vaqt oralig'ini o'zgartirish</a></button>
+
+    <div class="row">
+        <figure class="highcharts-figure">
+            <div id="container2"></div>
+        </figure>
+    </div>
+    
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">         
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>Davr</th>                            
+                            <th>XUQ (ССЗ)</th>                            
+                            <th>MT (СПП))</th> 
+                            <th style="background-color:rgba(0,255,0,0.2); border: 2px solid green">ES(ЭЭ)</th> 
+                            <th>UEE (ДЭЛ))</th> 
+                            <th>UIE (ДТ))</th> 
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        {% for k,v in list_vvp.items %}               
+                        <tr>
+                            <td>{{k}}</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>{{v}}</td>
+                            <td style="background-color:rgba(0,255,0,0.2); border: 2px solid green"> </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}  
+                    </tbody>                     
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- *****************************offcanvas boshlandi*******************************************************************-->
+<div class="offcanvas offcanvas-bottom" style="width: 20%; left: 40%; height: 80%" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+aria-labelledby="offcanvasBottomLabel" >
+<div class="offcanvas-header">
+    <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel" style="color: blue">Siz qaysi vaqt oralig'idagi holatni ko'rmoqchisiz?!</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<div class="offcanvas-body">
+    <form action="{% url 'addichresforhis' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">         
+                    <form action="{% url 'addhisobot' %}" method="post">
+                        {% csrf_token %}   
+                    <div class="card-body">
+                        
+                        <h4 style="color:blue"><B>Kerakli davrni tanlang</B></h4>             
+                        <div class="row"> 
+                            <div class="col-12 col-xl-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Davrni tanlang</label>
+                                    <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>                    
+                    </form>
+                </div>
+            </div>            
+            
+        </div>
+        <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+    </form>
+</div>
+
+
+<!-- *****************************offcanvas tugadi*******************************************************************-->
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/analyse.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<script>
+    // Create the chart
+    Highcharts.chart('container2', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Energiya sig`imliligi grafigi (oylar kesimida)'
+        },
+        subtitle: {
+            text: ''
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Energiya sig`imliligi'
+            },
+            // 3 ta Chiziq 
+            plotLines: [{
+                color: 'red',
+                width: 6,
+                value: 0.75,
+                dashStyle: 'longdashdot'
+            }, {
+                color: 'yellow',
+                width: 6,
+                value: 0.5,
+                dashStyle: 'longdashdot'
+            }, {
+                color: 'green',
+                width: 6,
+                value: 0.25,
+                dashStyle: 'longdashdot'
+            }],
+            // 3 ta chiziq
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+        },
+
+        series: [{
+            name: "Energiya sig'imliligi",
+            colorByPoint: true,
+            data: [
+            {% for k,v in list_vvp.items %}
+            {
+                name: "{{k}}",
+                y: {{v}},
+                drilldown: ""
+            },
+            {% endfor %}
+        ]
+        }]                
+    });
+</script>
+{% endblock scripts %}

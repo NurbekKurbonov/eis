@@ -1,0 +1,306 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block active2 %}active{% endblock active2 %}
+{% block bar2 %}active{% endblock bar2 %}
+
+{% block content %}
+<button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i></button>
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    
+<div class="col-12 col-lg-12">
+    <div class="tab">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab">Jarayonda</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab" role="tab">Tugatilgan</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-1" role="tabpanel">
+                <h2 class="tab-title" style="background: #121FCF; background: linear-gradient(to right, #121FCF 0%, #CF1512 38%);
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Ish jarayoni olib borilayotgan TTCHTlar</h2>
+                <div class="row">
+                <div class="col-12">
+                    <div class="card">            
+                        <div class="card-body">
+                       
+                            <table id="datatables-column-search-text-inputs" class="table table-striped " style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th style="color: Blue">T/r</th>                            
+                                        <th style="color: Blue">Kiritilgan sana</th>                            
+                                        <th style="color: Blue">TTCHT boshlanishi</th> 
+                                        <th style="color: Blue">TTCHT tugashi</th> 
+                                        <th style="color: Blue">Energiya resursi nomi</th>
+                                        <th style="color: Blue">Reja </th> 
+                                        <th style="color: Blue">Amalda </th> 
+                                        
+                                        <th style="align:center; color: Blue">Bajarish</th> 
+                                        <th style="width:2%"></th> 
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for v in t_reja %}
+                                        {% if v.bajarilishi in list_danger %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>                            
+                                            <td>{{v.sana|date:"d-m-Y"}}</td>                            
+                                            <td>{{v.dan|date:"d-m-Y"}}</td> 
+                                            <td>{{v.gacha|date:"d-m-Y"}}</td>
+                                            <td>{{v.resurs}}</td>
+                                            <td>{{v.tejaladi}}</td> 
+                                            <td>{{v.tejaldi}}</td> 
+                                            <td style="text-align: center"> <a href="{% url 'fakttadbir' v.id %}">
+                                                <div class="d-flex flex-column w-100">
+                                                    <span class="me-2 mb-1 text-muted" >{{v.bajarilishi}}%</span>
+                                                    <div class="progress progress-sm bg-{% if v.bajarilishi in list_danger%}danger{% else %}success{% endif %}-light w-100">
+                                                        <div class="progress-bar bg-{% if v.bajarilishi in list_danger%}danger{% else %}success{% endif %}" role="progressbar" style="width:{{v.bajarilishi}}%;"></div>
+                                                    </div>
+                                                </div>
+                                                </a>
+                                            </td>
+                                            <th width="2%"><a href="{% url 'addtexniktadbir' v.T_ID %}" class="btn btn-outline-secondary float-start mt-n1"><i class="fas fa-edit"></i></a></th> 
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                        
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th style="color: Blue">T/r</th>                            
+                                    <th style="color: Blue">Nomi</th>                            
+                                    <th style="color: Blue">TTCHT boshlanishi</th> 
+                                    <th style="color: Blue">TTCHT tugashi</th> 
+                                    <th style="color: Blue">Energiya resursi nomi</th>
+                                    <th style="color: Blue">Reja</th> 
+                                    <th style="color: Blue">Amalda</th> 
+                                    <th style="color: Blue"></th> 
+            
+                                </tr>
+                                </tfoot>
+                                </table>
+                           
+                            <a href="{% url 'ftadbir'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+                            
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-2" role="tabpanel">
+                <h2 class="tab-title" style="background: #121FCF; background: linear-gradient(to right, #121FCF 0%, #CF1512 38%);
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Tugatilgan TTCHTlar</h2>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">            
+                            <div class="card-body">
+                                <table id="datatables-column-search-select-inputs" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th style="color: Blue">T/r</th>                            
+                                            <th style="color: Blue">Kiritilgan sana</th>                            
+                                            <th style="color: Blue">TTCHT boshlanishi</th> 
+                                            <th style="color: Blue">TTCHT tugashi</th> 
+                                            <th style="color: Blue">Energiya resursi nomi</th>
+                                            <th style="color: Blue">Reja </th> 
+                                            <th style="color: Blue">Amalda </th> 
+                                            
+                                            <th style="align:center; color: Blue">Bajarish</th> 
+                                            <th style="width:2%"></th> 
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for v in t_reja %}
+                                            {% if not v.bajarilishi in list_danger %}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>                            
+                                                <td>{{v.sana|date:"d-m-Y"}}</td>                            
+                                                <td>{{v.dan|date:"d-m-Y"}}</td> 
+                                                <td>{{v.gacha|date:"d-m-Y"}}</td>
+                                                <td>{{v.resurs}}</td>
+                                                <td>{{v.tejaladi}}</td> 
+                                                <td>{{v.tejaldi}}</td> 
+                                                <td style="text-align: center"> <a href="{% url 'fakttadbir' v.id %}">
+                                                    <div class="d-flex flex-column w-100">
+                                                        <span class="me-2 mb-1 text-muted" >{{v.bajarilishi}}%</span>
+                                                        <div class="progress progress-sm bg-{% if v.bajarilishi in list_danger%}danger{% else %}success{% endif %}-light w-100">
+                                                            <div class="progress-bar bg-{% if v.bajarilishi in list_danger%}danger{% else %}success{% endif %}" role="progressbar" style="width:{{v.bajarilishi}}%;"></div>
+                                                        </div>
+                                                    </div>
+                                                    </a>
+                                                </td>
+                                                <th width="2%"><a href="{% url 'addtexniktadbir' v.T_ID %}" class="btn btn-outline-secondary float-start mt-n1"><i class="fas fa-edit"></i></a></th> 
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %}
+                                            
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th style="color: Blue">T/r</th>                            
+                                            <th style="color: Blue">Kiritilgan sana</th>                            
+                                            <th style="color: Blue">TTCHT boshlanishi</th> 
+                                            <th style="color: Blue">TTCHT tugashi</th> 
+                                            <th style="color: Blue">Energiya resursi nomi</th>
+                                            <th style="color: Blue">Reja </th> 
+                                            <th style="color: Blue">Amalda </th> 
+                                            
+                                            <th style="align:center; color: Blue">Bajarish</th> 
+                                            <th style="width:2%"></th> 
+                
+                                    </tr>
+                                    </tfoot>
+                                    </table>
+                               
+                                <a href="{% url 'ftadbir'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>                
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+    
+</div>
+
+<!-- *****************************offcanvas boshlandi*******************************************************************-->
+<div class="offcanvas offcanvas-top" style="width: 70%; left: 15%; height: auto; top:10%; bottom:20%; background: rgb(174,181,238);
+background: radial-gradient(circle, rgba(174,181,238,1) 0%, rgba(148,221,233,1) 100%);" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+aria-labelledby="offcanvasWithBothOptionsLabel" >
+<div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel" style="color: blue">{{titleown}}ni kiritish</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<form action="{% url 'addt_umumiy' %}" method="post">
+    {% csrf_token %}
+<div class="offcanvas-body">
+   
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle" style="background: #2B2BFA;
+        background: linear-gradient(to left, #2B2BFA 41%, #3714A8 58%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        ">Yangi rejalashtirilayotgan TTCHT qo'shish {{T_ID}}</h1>
+        <a href="{% url 'ftadbir' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+    </div>
+    
+    <div class="row">
+        <div class="col-12 col-xl-12">
+            <div class="card">            
+                <div class="card-body">
+                    
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label class="form-label">Tejaladigan energiya resursi</label>
+                                <select class="form-select flex-grow-1"                                
+                                name="resurs">                                        	                            
+                                    {% for v in res%}
+                                    <option value ="{{v.id}}">{{v.nomi}}: {{v.birlik}}</option> 									
+                                    {% endfor %}
+                                </select>
+                            </div> 
+                            <div class="mb-3 col-6">
+                                <label class="form-label">TTCHT ni bajarish davri (boshlanishi <<>> tugashi)</label>
+                                <input type="text" name="oraliq" value="{{bosh_tugash}}" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                            </div> 
+                            <div class="mb-3 col-6">
+                                <label class="form-label">Rejadagi umumiy miqdori (nomli birliklarda)</label>
+                                <input type="number"
+                                        step="0.00000001"
+                                        class="form-control" 
+                                        autofocus required="true"
+                                        name="tejaladi"
+                                        placeholder="999"
+                                        value = {{tejaladi}}>
+                            </div>  
+                            <div class="mb-3 col-6">
+                                <label class="form-label">Rejadagi umumiy miqdori (mln.so'mda)</label>
+                                <input type="number"
+                                        step="0.00000001"
+                                        class="form-control" 
+                                        autofocus required="true"
+                                        name="tejaladi_pul"
+                                        placeholder="999"
+                                        value = {{tejaladi_pul}}>
+                            </div>  
+                        </div>              
+                    
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-outline-primary float-end mt-n1"><i class="fas fa-angle-double-right"></i> Keyingi bosqich</button>
+        
+    </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+<script>
+    // DataTables with Column Search by Text Inputs
+    document.addEventListener("DOMContentLoaded", function() {
+        // Setup - add a text input to each footer cell
+        $("#datatables-column-search-text-inputs tfoot th").each(function() {
+            var title = $(this).text();
+            $(this).html("<input type=\"text\" class=\"form-control\" placeholder=\"Qidirish " + title + "\" />");
+        });
+        // DataTables
+        var table = $("#datatables-column-search-text-inputs").DataTable();
+        // Apply the search
+        table.columns().every(function() {
+            var that = this;
+            $("input", this.footer()).on("keyup change clear", function() {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    });
+    
+</script>
+{% endblock scripts %}

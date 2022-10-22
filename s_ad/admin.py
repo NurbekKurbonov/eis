@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar, Valyuta
+from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash
 
 
 
@@ -53,11 +53,13 @@ class birlikAdmin(admin.ModelAdmin):
 admin.site.register(birliklar, birlikAdmin)
 
 class resursAdmin(admin.ModelAdmin):
-    list_display = ('nomi', 'birlik')
+    list_display = ('nomi','yaxlit', 'birlik')
     ordering = ('nomi', 'birlik')
     search_files = ('nomi', 'birlik')  
     
 admin.site.register(resurslar, resursAdmin)
 
 admin.site.register(Valyuta)
+admin.site.register(Tadbir)
 
+admin.site.register(yaxlitlash)

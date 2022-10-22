@@ -1,0 +1,173 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3" id="dvtitle">
+    <h2 class="h2 d-inline align-middle" style="color:blue">{{titleown}} </h2>
+    <a href="{% url 'davr' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+    <div id="sana"><p><h5 class="h5 d-inline align-middle">Hisobot topshirilayotgan sana: <B>{{sana}}</B> </h5></p></div>
+    
+</div>
+<div class="mb-3" id="dvtitle2" style="display: none">
+    <h2 class="h2 d-inline align-middle" style="color:blue">Tarixiy hisobotlarni kiritish </h2>
+    <a href="{% url 'davr' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+    
+</div>
+
+<form action="{% url 'addreja' %}" method="post">
+<div class="row">
+   
+    
+    <div class="col-12 col-xl-4" id="tarix1">
+        <div class="col-md">
+            <div class="mb-3">
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <input type="checkbox" name="c1" value="True" id="title">
+                    </div>
+                    <a class="form-control" placeholder="Checkbox">Oldingi ma'lumotlarni kiritish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-8" id="div1" style="display:none">
+        <div class="row">
+            <div class="col-12 col-xl-6">
+                <select name="yil" class="form-select">            
+                    {% for i in yil %}
+                        <option value="{{i}}">{{i}}</option>  
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-xl-6">
+                <select name="oy" class="form-select">            
+                    {% for i in oylar %}
+                        <option value="{{i}}">{{i}}</option>  
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>    
+    {% if ich.count %}
+    
+    <div class="col-12 col-xl-12">
+        <div class="card"> 
+            <div class="card-header">
+                <h5 class="mb-0">Energetik resurs/mahsulot ishlab chiqarish ma'lumotlarini kiritish</h5>
+            </div>     
+            <div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for v in ich %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.nomi}} ({{v.resurs.birlik}})</label>
+                            <input type="number"  step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.1">                            
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <input type="number"  step="0.000000001"step="0.001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.pul1">
+                        </div>
+                        {% endfor %}
+                    </div>                
+                                      
+               
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if ist.count %}
+    <div class="col-12 col-xl-12">
+        <div class="card"> 
+            <div class="card-header">
+                <h5 class="mb-0">Energetik resurs/mahsulot iste'mol qilish ma'lumotlarini kiritish</h5>
+            </div>     
+            <div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for v in ist %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.nomi}} ({{v.resurs.birlik}})</label>
+                            <input type="number"  step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.2">
+                        </div>
+                        
+                        <div class="mb-3 col-6">
+                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <input type="number"  step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.pul2">
+                        </div>
+                        {% endfor %}
+                    </div>                
+                                      
+               
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if sot.count %}
+    <div class="col-12 col-xl-12">
+        <div class="card"> 
+            <div class="card-header">
+                <h5 class="mb-0">Energiya uzatish/sotish ma'lumotlarini kiritish</h5>
+            </div>     
+            <div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for v in sot %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.nomi}} ({{v.resurs.birlik}})</label>
+                            <input type="number"  step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.3">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">1 {{v.resurs.birlik}} {{v.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <input type="number"  step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.pul3">
+                        </div> 
+                        {% endfor %}                       
+               
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Qabul qilish</button> 
+</div>
+
+</form>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>  
+    $(function () {
+        $("#title").click(function () {
+            if ($(this).is(":checked")) {
+                $("#dvtitle").hide();
+                $("#dvtitle2").show();
+                $("#div1").show();
+
+            } else {
+                $("#dvtitle").show();  
+                $("#dvtitle2").hide();  
+                $("#div1").hide();
+            }
+        });
+    });
+</script>  
+{% endblock scripts %}

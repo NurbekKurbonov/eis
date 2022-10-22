@@ -1,0 +1,8 @@
+{% extends '02_s_ad/Monitoring/00_base_monitoring.html' %}
+{% load static %}
+{% csrf_token %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+	{% include '02_s_ad/Monitoring/passport_html/01_savolnoma.html' %}	
+{% endblock content %}

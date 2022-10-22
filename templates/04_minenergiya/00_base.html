@@ -18,7 +18,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	
 	<link rel='stylesheet' type='text/css' href="{% static 'css/light.css'%}" rel="stylesheet">
+	
 	<link href="{% static 'css/graph/belgi.css'%}" rel="stylesheet">
+
 	{% block head %}{% endblock head %}
 
 </head>
@@ -67,40 +69,80 @@
 						Sahifalar
 					</li>
 					<li class="sidebar-item {% block bar %}{% endblock bar %}">
-						<a class="sidebar-link" href="{% url 'home' %}" >
+						<a class="sidebar-link" href="{% url 'wbonehome' %}" >
 							<i class="align-middle" data-feather="home"></i> 
                             <span class="align-middle">Bosh sahifa</span>
 						</a>
 					</li>
 					<li class="sidebar-item {% block bar1 %}{% endblock bar1 %}">
-						<a class="sidebar-link" href="{% url 'ist' %}" >
+						<a class="sidebar-link" href="{% url 'korxonalar' %}" >
 							<i class="align-middle" data-feather="settings"></i> 
-                            <span class="align-middle">Sozlamalar</span>
+                            <span class="align-middle">Foydalanuvchilar</span>
 						</a>
 					</li>
 					<li class="sidebar-header">
-						Jadvallar
+						Maqsadli ko'rsatgichlar ijorosi
 					</li>
+
 					<li class="sidebar-item {% block bar2 %}{% endblock bar2 %}">
-						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Tahlil jadvallari</span>
+						<a class="sidebar-link" href="{% url 'I_jadval' %}" >
+							<i class="align-middle" data-feather="file-text"></i> 
+                            <span class="align-middle">I jadval</span>
 						</a>
-						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show %}{% endblock show %}" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block active %}{% endblock active %}"><a class="sidebar-link" href="{% url 'tahlil' %}">Umumiy tahlil jadvali</a></li>							
+					</li>
+					<li class="sidebar-item {% block bar3 %}{% endblock bar3 %}">
+						<a class="sidebar-link" href="{% url 'II_result' %}" >
+							<i class="align-middle" data-feather="file-text"></i> 
+                            <span class="align-middle">II jadval</span>
+						</a>
+					</li>
+					<li class="sidebar-item {% block bar4 %}{% endblock bar4 %}">
+						<a class="sidebar-link" href="{% url 'III_result' %}" >
+							<i class="align-middle" data-feather="file-text"></i> 
+                            <span class="align-middle">III jadval</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item {% block bar5 %}{% endblock bar5 %}">
+						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Tashkiliy texnik tadbirlar</span>
+						</a>
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block activet %}{% endblock activet%}"><a class="sidebar-link" href="{% url 't_umumiy' %}">Umumiy jadval</a></li>							
 						</ul>
 
 					</li>
 
+					<li class="sidebar-item {% block barSam %}{% endblock barSam%}">
+						<a class="sidebar-link" href="{% url 'ensamkor' %}" >
+							<i class="align-middle" style="color: green" data-feather="check-circle"></i> 
+                            <span class="align-middle">Energiya samaradorlik ko'rsatgichlari</span>
+						</a>
+					</li>
+
+
+					<!--
+					<li class="sidebar-item {% block bar@2 %}{% endblock bar@2 %}">
+						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Tahlil jadvallari</span>
+						</a>
+						
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show %}{% endblock show %}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block active %}{% endblock active %}"><a class="sidebar-link" href="{% url 'wbonehome' %}">Umumiy tahlil jadvali</a></li>							
+						</ul>-->
+
+					</li>
+					<!--
 					<li class="sidebar-header">
 						Energomenejment
 					</li>
-					<li class="sidebar-item {% block bar4 %}{% endblock bar4 %}">
+					<li class="sidebar-item {% block bar#4 %}{% endblock bar#4 %}">
 						<a class="sidebar-link" href="{% url 'prognoz' %}" >
 							<i class="align-middle" data-feather="cloud-snow"></i> 
                             <span class="align-middle">Prognozlash</span>
 						</a>
 					</li>
-					<li class="sidebar-item {% block bar5 %}{% endblock bar5 %}">
+					<li class="sidebar-item {% block bar88 %}{% endblock bar88 %}">
 						<a class="sidebar-link" href="{% url 'norm' %}" >
 							<i class="align-middle" data-feather="sliders"></i> 
                             <span class="align-middle">Me'yorlash</span>
@@ -117,7 +159,7 @@
 							<i class="align-middle" data-feather="check-circle"></i> 
                             <span class="align-middle">Energo samaradorlik</span>
 						</a>
-					</li>
+					</li>-->
 					
 				</ul>
 			</div>
@@ -189,9 +231,17 @@
 							<a class="nav-icon pe-md-0 dropdown-toggle" href="#" data-bs-toggle="dropdown">
 								<img src="{% static 'img/icons/icon-48x48.png' %}" class="avatar img-fluid rounded" alt="nk" />
 							</a>
-							<div class="dropdown-menu dropdown-menu-end">
+							<div class="dropdown-menu dropdown-menu-end">	
+
+								<a class="dropdown-item" href="{% url 'home' %}"><i class="align-middle me-1" data-feather="user"></i>Foydalanuvchi</a>								
+								<div class="dropdown-divider"></div>	
+								<a class="dropdown-item" href="{% url 'kirishP' %}"><i class="align-middle me-1" data-feather="user-check"></i> Admin</a>								
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="wbonehome"><i class="align-middle me-1" data-feather="user-plus"></i> Super admin</a>								
+								<div class="dropdown-divider"></div>	
 								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="settings"></i> Sozlamalar</a>								
-								<div class="dropdown-divider"></div>								
+								<div class="dropdown-divider"></div>		
+
 								<a class="dropdown-item" href="https://t.me/pro_fmi"><i class="align-middle me-1" data-feather="help-circle"></i>Yordam</a>
 								<div class="dropdown-divider"></div>
 								<form action="{% url  'logout' %}" method="POST">
@@ -221,7 +271,7 @@
 					<div class="row text-muted">
 						<div class="col-6 text-start">
 							<p class="mb-0">
-								<a href="https://NurbekKurbonov.io/" target="_blank" class="text-muted"><strong>NurbekKurbonov</strong></a> &copy;
+								<a href="https://NurbekKurbonov.io/" target="_blank" class="text-muted"><strong>NK</strong></a> &copy;
 							</p>
 						</div>
 						<div class="col-6 text-end">
@@ -238,8 +288,9 @@
 	</div>
 
 	<script src="{% static 'js/app.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}"></script>
-	<script src="{% static 'js/datatables.js'%}"></script>
-	
+	<script src="{% static 'js/datatables.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}"></script>
+	<script src="{% static 'js/minenergy/filtr.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}"></script>
+	<script src="{% static 'js/guruh.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}"></script>
 	{% block scripts %}{% endblock scripts %}
 	
 	

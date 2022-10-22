@@ -1,0 +1,67 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block barSam %}active{% endblock barSam%}
+
+{% block content %}
+
+<a href="{% url 'addensamkor' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>
+
+
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">ENERGIYA SAMARADORLIK KO'RSATGICHLARI{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+          
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="5%">T/r</th>                            
+                            <th width="15%">Ko'rilayotgan davr</th>                         
+                            <th width="15%">Hisobot shakllantirilgan sana</th> 
+                            <th>Hisobot nomi</th> 
+                            <th width="5%">Korxonalar soni (ta)</th> 
+                            <th width="15%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>01-2020 dan 02-2022 gacha</td>     
+                                <td>1.09.2022</td>  
+                                <td>Issiqlik elektr stansiyalari bo'yicha hisobot</td>  
+                                <td>9</td>
+                                <td><a href="{% url 'ensamkor_result' %}" class="btn btn-outline-info " style="width:100%">Hisobotni ko'rish</a></td>                                
+                            </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>Ko'rilayotgan davr</th>                         
+                            <th>Hisobot shakllantirilgan sana</th> 
+                            <th>Hisobot nomi</th> 
+                            <th>Korxonalar soni (ta)</th> 
+                            <th class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                            <!--<th width="10%"><i class="align-middle me-2 fas fa-fw fa-download"></i></th> -->
+                        </tr>
+                    </tfoot>
+                    </table>
+               
+                <a href="{% url 'ensamkor'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

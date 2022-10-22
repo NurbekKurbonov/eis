@@ -1,0 +1,67 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Tashkiliy texnik tadbirlar qo'shish</h1>
+    <a href="{% url 'addtexniktadbir' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'addtexniktadbir' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Tashkiliy texnik tadbirlar nomi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="tadbir">                                    
+                                {% for v in tad%}
+                                <option value ="{{v.id}}">{{v.kodi}}: {{v.nomi}}</option> 									
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Izoh</label>
+                            <input type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="izoh"
+                                    placeholder="Izoh"
+                                    value = {{izoh}}>
+                        </div>    
+                        <div class="mb-3 col-8">
+                            <label class="form-label">Tejalgan energiya miqdori</label>
+                            <input type="tejaldi"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tejaldi"
+                                    placeholder="999"
+                                    value = {{tejaldi}}>
+                        </div>   
+                        <div class="mb-3 col-4">
+                            <label class="form-label">Birligi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="birlik">                                    
+                                {% for v in birlik%}
+                                <option value ="{{v.id}}">{{v.birlik}}</option> 									
+                                {% endfor %}
+                            </select>
+                        </div>   
+                    </div>                
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

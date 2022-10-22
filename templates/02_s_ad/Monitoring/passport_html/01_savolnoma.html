@@ -1,0 +1,44 @@
+{% load static %}
+
+{% block asosiy_qism %}
+
+<div class="text-center mt-4" >
+	<h1 class="h2" style="
+	background: #121FCF;
+	background: -webkit-linear-gradient(to right, #121FCF 0%, #FF00D4 100%);
+	background: -moz-linear-gradient(to right, #121FCF 0%, #FF00D4 100%);
+	background: linear-gradient(to right, #121FCF 0%, #FF00D4 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;	
+	"><B>ID:{{foydalanuvchi.inn}}</B></h1>
+</div>
+<div class="text-center mt-4" >
+	<h3 class="h4" style="
+	background: #121FCF;
+	background: -webkit-linear-gradient(to right, #121FCF 0%, #FF00D4 60%);
+	background: -moz-linear-gradient(to right, #121FCF 0%, #FF00D4 50%);
+	background: linear-gradient(to right, #121FCF 0%, #FF00D4 0%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;	
+	"><B>Oxirgi aktivlik:</B> {{foydalanuvchi.owner.last_login}}</h3>
+</div>
+
+<form action="{% url 'savolnoma' %}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-8">
+			{% include '02_s_ad/Monitoring/passport_html/02_application.html' %}
+		</div>
+		<div class="col-4 text-center">
+			<p class="lead">				
+			</p>
+			{% include '02_s_ad/Monitoring/passport_html/03_savolcha.html' %}		
+	
+</form>
+
+<form action="{% url  'logout' %}" method="POST"></form>
+	{% csrf_token %}
+
+</div>	
+
+{% endblock asosiy_qism %}

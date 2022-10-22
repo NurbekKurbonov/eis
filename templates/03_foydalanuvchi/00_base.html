@@ -18,6 +18,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	
 	<link rel='stylesheet' type='text/css' href="{% static 'css/light.css'%}" rel="stylesheet">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/tadbirfont.css'%}?{% now "DATE_FORMAT" %}" rel="stylesheet"> 
 	<link href="{% static 'css/graph/belgi.css'%}" rel="stylesheet">
 	{% block head %}{% endblock head %}
 
@@ -82,9 +83,18 @@
 					<li class="sidebar-item {% block bar2 %}{% endblock bar2 %}">
 						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Ma'lumotlarni kiritish</span>
-						</a>
-						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show %}{% endblock show %}" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block active %}{% endblock active %}"><a class="sidebar-link" href="{% url 'davr' %}">Davriy ma'lumotlar</a></li>							
+						</a>	
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block active0 %}{% endblock active0%}"><a class="sidebar-link" href="{% url 'reja' %}">Shartnomaviy miqdorlar</a></li>							
+						</ul>
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block active %}{% endblock active%}"><a class="sidebar-link" href="{% url 'davr' %}">Davriy ma'lumotlar</a></li>							
+						</ul>
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block active2 %}{% endblock active2 %}"><a class="sidebar-link" href="{% url 'ftadbir' %}">Texnik tadbirlar</a></li>							
+						</ul>
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block active3 %}{% endblock active3 %}"><a class="sidebar-link" href="{% url 'vvp' %}">Ishlab chiqarilgan mahsulot miqdori</a></li>							
 						</ul>
 
 					</li>
@@ -92,13 +102,15 @@
 						<a data-bs-target="#dashboard" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="grid"></i> <span class="align-middle">Hisobotlar</span>
 						</a>
-						<ul id="dashboard" class="sidebar-dropdown list-unstyled collapse {% block show1 %}{% endblock show1 %}" data-bs-parent="#sidebar">
+						<ul id="dashboard" class="sidebar-dropdown list-unstyled collapse {{show1}}" data-bs-parent="#sidebar">
 							<li class="sidebar-item {% block active1 %}{% endblock active1 %}"><a class="sidebar-link" href="{% url 'hisobot' %}">Davriy hisobotlar</a></li>							
 						</ul>
 					</li>
+					<!--*****************************ANALITIKA*********************************************-->
 					<li class="sidebar-header">
 						Energomenejment
 					</li>
+					<!--
 					<li class="sidebar-item {% block bar4 %}{% endblock bar4 %}">
 						<a class="sidebar-link" href="{% url 'prognoz' %}" >
 							<i class="align-middle" data-feather="cloud-snow"></i> 
@@ -117,12 +129,13 @@
                             <span class="align-middle">Energo balans</span>
 						</a>
 					</li>
+
 					<li class="sidebar-item {% block bar7 %}{% endblock bar7%}">
-						<a class="sidebar-link" href="{% url 'home' %}" >
+						<a class="sidebar-link" href="{% url 'samaradorlik' %}" >
 							<i class="align-middle" data-feather="check-circle"></i> 
-                            <span class="align-middle">Energo samaradorlik</span>
+                            <span class="align-middle">Energiya sig'imliligi</span>
 						</a>
-					</li>
+					</li>-->
 					
 				</ul>
 			</div>

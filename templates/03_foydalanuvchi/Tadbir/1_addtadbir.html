@@ -1,0 +1,206 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi rejalashtirilayotgan TTCHT qo'shish</h1>
+    <a href="{% url 'deltexniktadbir' t_umumiy.id %}" class="btn btn-outline-danger float-end"><i class="fas fa-trash"></i> Rejani o'chirish</a>
+</div>
+<form action="{% url 't_umumiysave' T_ID t_umumiy.id%}" method="post">
+    {% csrf_token %}
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                
+                    <div class="row">
+                        <div class="mb-3 col-3">
+                            <label class="form-label">Tejaladigan energiya resursi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="resurs">  
+                                <option value ="{{t_umumiy.resurs.id}}">{{t_umumiy.resurs}}</option> 	                                      	                            
+                                {% for v in res%}
+                                <option value ="{{v.id}}">{{v}}</option> 									
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <div class="mb-3 col-3">
+                            <label class="form-label">Rejadagi umumiy miqdori (nomli birliklarda)</label>
+                            <input type="number"
+                                    step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tejaladi"
+                                    placeholder="999"
+                                    value = {{t_umumiy.tejaladi}}>
+                        </div>  
+                        <div class="mb-3 col-3">
+                            <label class="form-label">Rejadagi umumiy miqdori (mln.so'mda)</label>
+                            <input type="number"
+                                    step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tejaladi_pul"
+                                    placeholder="999"
+                                    value = {{t_umumiy.tejaladi_pul}}>
+                        </div>
+                        <div class="mb-3 col-3">
+                            <label class="form-label">TTCHT ni bajarish davri (boshlanishi <<>> tugashi)</label>
+                            <input type="text" name="oraliq" value="{{dangacha}}" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                        </div>             
+                    </div>  
+            </div>
+        </div>
+    </div> 
+</div>
+
+<div class="row" > 
+<div class="mb-3"  style=" border-style: solid; border-width: 2px; border-image: linear-gradient(to left, rgba(0, 0, 0, 1) 1%, rgba(0, 255, 255, 1) 50%, rgba(0, 0, 0, 1) 100%) 
+              100% 0 100% 0/3px 0 3px 0 stretch; height: 37px; line-height: 50px;">    
+    {% if ttt.count %}    
+    <button type="submit" class="btn btn-primary float-start" id="notyf-show">Qabul qilish</button>  
+    {% endif %}
+    <h3 class="h3 d-inline align-middle float-end"><I>Siz {{n}} ta rejalashtirilayotgan tadbir kiritdingiz</I></h3>
+</div>
+</form>
+
+<div class="mb-3">
+    <form action="{% url 'addttt' %}" method="post">
+        {% csrf_token %}
+        <h1 class="h3 d-inline align-middle">TTCHT</h1>
+        <input type="text" name="T_ID" value = "{{T_ID}}" hidden>
+        <button type="submit" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></button>
+    </form>
+</div>
+</div>
+
+
+    {% csrf_token %}
+{% for v in ttt %}
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body" style=" {% if v.aktiv is True %}background: rgb(173,178,207);
+            background: linear-gradient(41deg, rgba(173,178,207,1) 0%, rgba(188,232,186,1) 35%, rgba(125,162,226,1) 65%, rgba(161,201,209,1) 100%);{% endif %} ">
+                <form action="{% url 'tttsave' T_ID v.id%}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="mb-3 col-3">
+                            <label class="form-label">TTCHT guruhi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="gr">   
+                                <option value ="{{v.guruh.id}}">{{v.guruh}}</option>                                  
+                                {% for t in tad %}
+                                <option value ="{{t.id}}">{{t}}</option> 									
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <div class="mb-3 col-6">
+                            <label class="form-label">TTCHT nomi</label>
+                            <input type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="nomi"
+                                    placeholder="nomini kiriting"
+                                    value = "{{v.nomi}}">
+                        </div>  
+                        <div class="mb-3 col-3">
+                            <label class="form-label">TTCHT ni bajarish davri (boshlanishi <<>> tugashi)</label>
+                            <input type="text" name="oraliq" class="form-control flatpickr-range" value="{{dangacha}}" placeholder="Davrni tanlang..." />
+                        </div> 
+                        <div class="mb-3 col-3" id="nb">
+                            <label class="form-label">Tejaladigan energiya miqdori (nomli birliklarda)</label>
+                            <input type="number"
+                                    step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tejaladi"
+                                    placeholder="999"
+                                    value = "{{v.tejaladi}}">
+                        </div>  
+
+                        <div class="mb-3 col-3" id="pb">
+                            <label class="form-label">Tejaladigan energiya miqdori (pul birligida)</label>
+                            <input type="number"
+                                    step="0.000000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tejaladi_pul"
+                                    placeholder="999"
+                                    value = "{{v.tejaladi_pul}}">
+                        </div> 
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Izoh</label>
+                            <textarea rows="2" type="text" 
+                                class="form-control"                                
+                                autofocus required="true"
+                                placeholder = " "                              
+                                name = "izoh"
+                                value = "{{v.izoh}}">{{v.izoh}}</textarea>
+                        </div> 
+                    </div>     
+                    <a href="{% url 'delttt' v.id T_ID %}" class="btn btn-outline-danger float-start mt-n1"><i class="fas fa-trash"></i> O'chirish</a>  
+                    
+                    <button type="submit" class="btn btn-info float-end mt-n1"><i class="fas fa-save"></i> {% if v.aktiv is True %}O`ZGARISHNI{%endif%} SAQLASH</button>
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>
+{% endfor %}
+
+<script>    
+    const mu = document.getElementById('mu');
+
+    const nb = document.getElementById('nb');
+    const pb = document.getElementById('pb');
+    
+    if (mu.checked) {
+        nb.style.display = 'block';
+        pb.style.display = 'block';
+      } else {
+        nb.style.display = 'none';
+        pb.style.display = 'none';
+      }
+    mu.addEventListener('click', function handleClick() {
+      if (mu.checked) {
+        nb.style.display = 'block';
+        pb.style.display = 'block';
+      } else {
+        nb.style.display = 'none';
+        pb.style.display = 'none';
+      }
+    });
+    
+</script>
+{% endblock content %}
+{% block scripts %}
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+{% endblock scripts %}

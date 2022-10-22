@@ -1,0 +1,85 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bari2%}active{% endblock bari2%}
+
+{% block content %}
+
+
+    
+<a href="{% url 'addyaxlitlash' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi yaxlitlash</a>
+
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle"> {{titleown}} </h1>
+</div>
+
+{% include 'partials/_messages.html'%}
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                {% if val.count %}                
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>Nomi</th>
+                            <th>Qiymati</th>
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in val %}
+                        <tr>
+                            <form action="{% url 'saveyaxlitlash' v.id %}" method="post">
+                                {% csrf_token %}
+                            <td> {{forloop.counter}}</td>
+                            <td>{% if v.checker is False %}<input type="text"
+                                class="form-control" 
+                                autofocus required="true"
+                                name="nomi{{v.id}}"
+                                placeholder="Masalan: ming"
+                                value ="{{v.nomi}}"/>{% endif %}{% if v.checker is True %}{{v.nomi}}{% endif %}</td>
+                            <td>{% if v.checker is False %}<input type="number"
+                                class="form-control"
+                                autofocus required="true"
+                                name="qiymati{{v.id}}"
+                                placeholder="Masalan: 1000"  
+                                value = "{{v.qiymati}}"/>{% endif %}{% if v.checker is True %}{{v.qiymati}}{% endif %}</td>                            
+
+                            <td class="table-action text-center">
+                                {% if v.checker is False %} 
+                                <button type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="align-middle me-2 fas fa-fw fa-check"></i></button>     
+                                {% endif %}                                 
+                                
+                                {% if v.checker is True %} 
+                                    <a href="{% url 'edityaxlitlash' v.id %}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>
+                                    <a href="{% url 'delyaxlitlash' v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a>
+                                {% endif %}
+                            </td>  
+                        </form>                         
+                        </tr>                    
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th width="10%">t/r</th>
+                            <th>Nomi</th>
+                            <th>Qiymati</th>
+                            <th width="2%">harakat</th>                                                  
+                            
+                        </tr>
+                    </tfoot>
+                </table>
+                <a href="{% url 'yaxlitlashV'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

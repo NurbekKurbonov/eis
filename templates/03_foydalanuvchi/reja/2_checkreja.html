@@ -1,0 +1,118 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+<form action="{% url 'checkreja' h_item.id%}" method="post">
+<div class="mb-3">
+    <h2 class="h2 d-inline align-middle" style="color:blue">{{h_item.title}} OYI UCHUN HISOBOTNI TEKSHIRISH </h2>
+    <a href="{% url 'davr' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+    <p><h5 class="h5 d-inline align-middle">Hisobot topshirilayotgan sana: <B>{{h_item.vaqt|date:"d-m-Y"}}</B> </h5></p>
+    
+</div>
+
+<div class="row">
+    {% if h_ich.count %}
+    <div class="col-12 col-xl-12">
+        <div class="card"> 
+            <div class="card-header">
+                <h5 class="mb-0">Energetik resurs/mahsulot ishlab chiqarish bo'yicha ma'lumotlar kiritish</h5>
+            </div>     
+            <div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for v in h_ich %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <input type="number"
+                                    class="form-control"  {{disabled}}
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.1"
+                                    value="{{v.qiymat}}"/>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <input type="number"
+                                    class="form-control"  {{disabled}}
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.pul1"
+                                    value="{{v.qiymat_pul}}">
+                        </div>
+                        {% endfor %}
+                    </div>                
+                                      
+               
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if h_ist.count %}
+    <div class="col-12 col-xl-12">
+        <div class="card"> 
+            <div class="card-header">
+                <h5 class="mb-0">Energetik resurs/mahsulot iste'mol qilish bo'yicha ma'lumotlar kiritish</h5>
+            </div>     
+            <div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for v in h_ist %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <input type="number"
+                                    class="form-control"  {{disabled}}
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.2"
+                                    value="{{v.qiymat}}"/>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <input type="number"
+                                    class="form-control"  {{disabled}}
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.pul2"
+                                    value="{{v.qiymat_pul}}">
+                        </div>
+                        {% endfor %}
+                    </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if h_uzat.count %}
+    <div class="col-12 col-xl-12">
+        <div class="card"> 
+            <div class="card-header">
+                <h5 class="mb-0">Energiya uzatish bo'yicha ma'lumotlar kiritish</h5>
+            </div>     
+            <div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for v in h_uzat %}
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <input type="number"
+                                    class="form-control"  {{disabled}}
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.3"
+                                    value="{{v.qiymat}}"/>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <input type="number"
+                                    class="form-control"  {{disabled}}
+                                    autofocus required="true"
+                                    name="{{v.resurs.id}}.pul3"
+                                    value="{{v.qiymat_pul}}">
+                        </div>
+                        {% endfor %}  
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <button type="submit" {{disabled}} class="btn btn-primary float-end">Saqlas</button> 
+    
+</div>
+
+</form>
+
+{% endblock content %}

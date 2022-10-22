@@ -16,7 +16,7 @@
             <div class="card">            
                 <div class="card-body">                
                         <div class="row"> 
-                            <div class="mb-3 col-md-8">
+                            <div class="mb-3 col-md-6">
                                 <label class="form-label" for="">Nomi</label>
                                 <input type="text" 
                                     class="form-control" 
@@ -25,12 +25,21 @@
                                     name = "nomi"
                                     value = {{values.nomi}}>
                             </div>
+                            <div class="mb-3 col-md-2">
+                                <label class="form-label" for="">hajmi</label>
+                                <select class="form-select flex-grow-1"                                
+                                name="yaxlit">                                    
+                                    {% for v in yaxlit_all %}
+                                    <option name="birlik" value = {{v.id}}>{{v}}</option> 
+                                    {% endfor %}
+                                </select>  
+                            </div>
                             <div class="mb-3 col-md-4">
                                 <label class="form-label" for="">Birligi</label>
                                 <select class="form-select flex-grow-1"                                
                                 name="birlik">                                    
                                     {% for v in birlik %}
-                                    <option name="birlik" value = {{v.birlik}}>{{v.birlik}}</option> 
+                                    <option name="birlik" value = {{v.id}}>{{v}}</option> 
                                     {% endfor %}
                                 </select>  
                             </div>

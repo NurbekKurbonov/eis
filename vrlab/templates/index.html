@@ -1,0 +1,390 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Bosh sahifa| Elektr ta'minoti asoslari</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}" rel="icon">
+  <link href="{% static 'assets/img/favicon.png' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}" rel="emblem">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css'%}?{% now "DATE_FORMAT"%}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+      <h1 class="logo me-auto"><a href="index.html">ELEKTR TA'MINOTI ASOSLARI</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="active" href="#hero">Bosh sahifa</a></li>
+          <li><a href="#why-us">Biz haqimizda</a></li>
+          <li><a href="#trainers">Muallif</a></li>
+
+          <!--<li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Drop Down 1</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="#">Deep Drop Down 1</a></li>
+                  <li><a href="#">Deep Drop Down 2</a></li>
+                  <li><a href="#">Deep Drop Down 3</a></li>
+                  <li><a href="#">Deep Drop Down 4</a></li>
+                  <li><a href="#">Deep Drop Down 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Drop Down 2</a></li>
+              <li><a href="#">Drop Down 3</a></li>
+              <li><a href="#">Drop Down 4</a></li>
+            </ul>-->
+          </li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+      <a href="#" class="get-started-btn">Kirish</a>
+      <a href="#" class="get-started-btn">Registratsya</a>
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex justify-content-center align-items-center">
+    <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
+      <img width="200" height="50" src="{% static 'assets/img/favicon.png' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}" class="img-fluid" alt="...">
+      <h1>Elektr ta'minoti asoslari</h1>
+      <h2>bo'yicha virtual simulatsion, onlayn darslik</h2>
+      <a href="#asosiy" class="btn-get-started">Hoziroq boshlash</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+    
+    <!-- ======= Popular Courses Section ======= -->
+    <section id="popular-courses" class="courses">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title" id="asosiy">
+          <h2>asosiy</h2>
+          <p>bo'limlar</p>
+        </div>
+
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          {% for k in kitob %}
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="course-item">
+              <img width="400" height="300" src="{{k.emblem.url}}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>{{k.nomi}}</h4>
+                  <p class="price"> </p>
+                </div>
+
+                <h3><a href="{% url 'kitob' k.id%}">ELEKTR TA'MINOTI ASOSLARI <BR> FANI BO'YICHA {{k.nomi}}</a></h3>
+                <p> </p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
+                    <span>Holat</span>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bx bx-user"></i>&nbsp;50
+                    &nbsp;&nbsp;
+                    <i class="bx bx-heart"></i>&nbsp;65
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div> {% endfor %}
+          <!--=====================ADDITIONAL============================================-->
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="course-item">
+              <img width="400" height="300" src="{% static 'img/test.gif' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>TESTLAR</h4>
+                  <p class="price"> </p>
+                </div>
+
+                <h3><a href="#">ELEKTR TA'MINOTI ASOSLARI <BR> FANI BO'YICHA SINOV TESTLAR</a></h3>
+                <p> </p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
+                    <span>Holat</span>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bx bx-user"></i>&nbsp;50
+                    &nbsp;&nbsp;
+                    <i class="bx bx-heart"></i>&nbsp;65
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="course-item">
+              <img width="400" height="300" src="{% static 'img/GLOSSARY.gif' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>GLOSSARY</h4>
+                  <p class="price"> </p>
+                </div>
+
+                <h3><a href="course-details.html">ELEKTR TA'MINOTI ASOSLARI <BR> FANI BO'YICHA GLOSSARY</a></h3>
+                <p> </p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
+                    <span>Holat</span>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bx bx-user"></i>&nbsp;50
+                    &nbsp;&nbsp;
+                    <i class="bx bx-heart"></i>&nbsp;65
+                  </div>
+                </div>
+              </div>
+            </div>            
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="course-item">
+              <img width="400" height="300" src="{% static 'img/mustaqil ish.gif' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>MUSTAQIL ISHLAR</h4>
+                  <p class="price"> </p>
+                </div>
+
+                <h3><a href="course-details.html">ELEKTR TA'MINOTI ASOSLARI <BR> FANI BO'YICHA MUSTAQIL ISHLAR</a></h3>
+                <p> </p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
+                    <span>Holat</span>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bx bx-user"></i>&nbsp;50
+                    &nbsp;&nbsp;
+                    <i class="bx bx-heart"></i>&nbsp;65
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="course-item">
+              <img width="400" height="300" src="{% static 'img/vrlab.gif' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>VIRTUAL LABORATORIYALAR</h4>
+                  <p class="price"> </p>
+                </div>
+
+                <h3><a href=" {% url 'vrlab' %} ">ELEKTR TA'MINOTI ASOSLARI <BR> FANI BO'YICHA VIRTUAL LABRORATORIYALAR</a></h3>
+                <p> </p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
+                    <span>Holat</span>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bx bx-user"></i>&nbsp;50
+                    &nbsp;&nbsp;
+                    <i class="bx bx-heart"></i>&nbsp;65
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <!-- End Course Item-->
+        </div>
+      </section><!-- End Popular Courses Section -->
+
+    <!-- ======================== Counts Section ================================ -->
+    <section id="counts" class="counts section-bg">
+      <div class="container">
+
+        <div class="row counters">
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="1232" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Foylanuvchilar</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="64" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Mavzular</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Simulyatsiyalar</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Testlar</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+    <!-- ======= Why Us Section ======= -->
+
+    <section id="why-us" class="why-us" >
+      <div class="container" data-aos="fade-up">
+        <div class="section-title" id="biz">
+          <h2>NEGA</h2>
+          <p>BIZ</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="content">
+              <h3>Nega biz?</h3>
+              <p>
+                Elektr ta'minoti asoslari bo'yicha o'zlashtirish biz bilan oson!
+                Har bir mavzu bo'yicha testlar, yo'riqnomalar, simulyatsyalar, yuklash imkoniyati, so'rob yuborish imkoniyati faqat shu yerda!
+              </p>
+              <div class="text-center">
+                <a href="https://t.me/pro_fmi" class="more-btn">Ko'proq bilmoqchimisiz?<i class="bx bx-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="icon-boxes d-flex flex-column justify-content-center">
+              <div class="row">
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box mt-4 mt-xl-0">
+                    <i class="bx bx-receipt"></i>
+                    <h4>Interaktiv yondashuv</h4>
+                    <p>Har bir mavzu yangicha metodika asosida shakllantirilgan
+                    </p>
+                  </div>
+                </div>
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box mt-4 mt-xl-0">
+                    <i class="bx bx-cube-alt"></i>
+                    <h4>Virtual laboratoriya</h4>
+                    <p>Virtual laboratoriyalar asosida, o'rganilayotgan jarayonlarni oson va tez o'zlashtirish!</p>
+                  </div>
+                </div>
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box mt-4 mt-xl-0">
+                    <i class="bx bx-images"></i>
+                    <h4>Mustahkamlash</h4>
+                    <p>O'rganilgan ilmlarni mustahkamlash maqsadida alohida test bo'lim tashkil etilgan bo'lib, u orqali o'z darajangizni belgilashingiz mumkin</p>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End .content-->
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->    
+
+    <!-- ======= Trainers Section ======= -->
+    <section id="trainers" class="trainers">
+      <div class="container" data-aos="fade-up">   
+        <div class="section-title" id="biz">
+          <h2>Dastur</h2>
+          <p>MUALLIFI</p>
+        </div>
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          <div class="col-lg-12 col-md-12 d-flex align-items-stretch">
+
+          <div class="col-lg-8 col-md-6 d-flex align-items-stretch">
+            <div class="member">
+              <img src="{% static 'img/Avtor.jpg' %} " class="img-fluid" alt="">
+              <div class="member-content">
+                <h4>Biyjanov Alibi Qdirbayevich</h4>
+                <span>Dastur g'oyasi muallifi</span>
+                <p>
+                  Ushbu dastur 2022 yilda tayyorlandi.
+                </p>
+                <div class="social">
+                  <a href="#" class="twitter"><i class="bx bxl-telegram"></i></a>
+                  <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                  <a href="#" class="linkedin"><i class="bx bxl-facebook"></i></a>
+                  <a href="#" class="linkedin"><i class="bx bxl-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section><!-- End Trainers Section -->
+
+  </main><!-- End #main -->
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; <strong><span>Biyjanov Alibi</span></strong>
+        </div>        
+      </div>
+      <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a href="#" class="twitter"><i class="bx bxl-telegram"></i></a>
+        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-facebook"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-youtube"></i></a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+  
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/purecounter/purecounter.js' %} "></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %} "></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %} "></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %} "></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %} "></script>
+
+</body>
+
+</html>

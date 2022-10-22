@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}MAVZULAR | ALIBIYSTUDY{% endblock title %}
+{% block nav %}
+{% include '_navbar.html' %}
+<link rel="stylesheet" href="{% static 'css/new.css' %}?{% now "U" %}">
+{% endblock nav %}
+
+{% block content %}
+<main class="content">
+  <div class="row">
+    <div class="col-12 admin-container">
+        <div class="card admin-card">
+          <div class="card-header admin-header">
+            <h4 class="card-title mb-0 admin-h4" style="text-align: center;">Kitob nomi</h4>
+          </div>
+          <table class="kitob-list">
+            <tr>
+              <th>№</th>
+              <th><b>Bo'lim</b></th>
+              <th><b>Bob</b></th>
+              <th><b>Mavzu</b></th>
+              <th class="admin-icon"><b>_____</b></th>
+              <th class="admin-icon"><b>_____</b></th>
+            </tr>
+            {% for v in range %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>Grammar</td>
+              <td>Conditionals</td>
+              <td>Would verbi</td>
+              <td class="admin-icon"><a href="#" class="admin-eye"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+              <td class="admin-icon"><a href="/addbook" class="admin-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+
+              <!-- ICON larni download qilib olish kerak! POSTPONED! -->
+            </tr>
+            {% endfor %}
+          </table>
+        </div>   
+    </div>
+    
+  </div>
+</main>
+{% endblock content %}

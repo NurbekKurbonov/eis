@@ -1,5 +1,8 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 
 #Hududlarb bo'yicha ma'lumotlar**************************
 
@@ -57,7 +60,7 @@ class IFTUM(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.nomi
+        return f"{self.bolim}{self.bob}{self.guruh}{self.sinf}{self.tartib}"
     
     class Meta:
         verbose_name_plural = '04_IFTUM kodi'
@@ -70,7 +73,7 @@ class DBIBT(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.nomi
+        return f"{self.dbibt}/{self.ktut}"
     
     class Meta:
         verbose_name_plural = '05_DBIBT kodi'
@@ -83,7 +86,7 @@ class THST(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.nomi
+        return f"{self.bolim}{self.tur}"
     
     class Meta:
         verbose_name_plural = '06_THShT kodi'
@@ -101,10 +104,22 @@ class birliklar(models.Model):
     class Meta:
         verbose_name_plural = '07_Birliklar'
 
+class yaxlitlash(models.Model):    
+    nomi = models.CharField('Nomi', max_length=50)
+    qiymati = models.FloatField('Qiymati')
+    checker=models.BooleanField("Tekshirish", blank=True)
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.nomi
+    
+    class Meta:
+        verbose_name_plural = '07_Yaxlitlash qiymatlari'
+
 class resurslar(models.Model):
     nomi = models.TextField('Resurs nomi')
-    birlik = models.CharField('Resurs birligi', max_length=20)    
-    
+    birlik = models.ForeignKey(birliklar, blank=True, null=True, on_delete=models.CASCADE)  
+    yaxlit = models.ForeignKey(yaxlitlash, blank=True, null=True, on_delete=models.CASCADE)
     tshy=models.FloatField("TSHY", blank=True, default=0.0)
     tne=models.FloatField("TNE", blank=True, default=0.0)
     gj=models.FloatField("GJ", blank=True, default=0.0)
@@ -113,7 +128,7 @@ class resurslar(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.nomi} : {self.birlik}"
+        return f"{self.nomi} : {self.yaxlit}{self.birlik}"
     
     class Meta:
         verbose_name_plural = '08_Resurslar'
@@ -131,7 +146,22 @@ class Valyuta(models.Model):
         verbose_name_plural = ("09_Valyutalar")
 
     def __str__(self):
-        return f"Valyuta: {self.name}"
+        return f"{self.name}"
 
     def get_absolute_url(self):
         return reverse("Valyuta_detail", kwargs={"pk": self.pk})
+
+class Tadbir(models.Model):
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    kodi=models.IntegerField(("Tadbir kodi"))
+    nomi=models.TextField(("Tadbir nomi"))
+
+    class Meta:
+        verbose_name = ("Tadbir")
+        verbose_name_plural = ("10_Tadbirlar")
+
+    def __str__(self):
+        return f'[{self.kodi}]: {self.nomi}'
+
+    def get_absolute_url(self):
+        return reverse("Tadbirlar_detail", kwargs={"pk": self.pk})

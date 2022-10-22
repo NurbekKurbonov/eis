@@ -1,0 +1,40 @@
+body{
+			
+    padding: 0px;
+    margin: 0px;
+    background: rgb(17,227,99);
+    background: linear-gradient(146deg, rgb(178, 214, 154) 0%, rgb(55, 60, 150) 35%, rgba(0,212,255,1) 100%);
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+}
+
+canvas{
+    background:white;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:80vmin;
+    height:80vmin;
+}
+
+#overlay{ 
+    background:rgba(0,0,0,0.7);
+    position:absolute;
+    top:10%;
+    left:10%;
+    transform:translate(-10%,-10%);
+    width:100vmin;
+    height:100vmin;
+    
+    padding:1vmin;
+    margin:0px;
+    color: white;
+    border-radius:2vmin;
+    
+    text-align: center;
+    font-size:3.3vmin;
+}
+

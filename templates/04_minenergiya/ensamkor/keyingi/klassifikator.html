@@ -1,0 +1,97 @@
+<form action="{% url 'addklassifikator' %}" method="post">
+    {% csrf_token %}   
+<div class="card-body">                         
+    <div class="row"> 
+        {% if kl.count %}
+        <h4 style="color:blue"><B>Klassifikatsiya turi: </B></h4>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">                    
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="radio" name="natija" value="True" checked>
+                        </div>
+                                            
+                        <a class="form-control" placeholder="Checkbox" disabled>{% for k in list_klass %}    {{k}} / {% endfor %}</a> 
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        {%endif%}                    
+        {% if not kl.count %}
+        <h4 style="color:blue"><B>Klassifikatorlardan tanlang</B></h4>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" id="iftum" name="klass" value="iftum">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>IFTUM</a>
+                        <select name="klass" class="form-select" placeholder="Checkbox" style="display:none" id="selop">                                                
+                            <option value="">tanlang ...</option>  
+                            <option value="bob">Bob</option>  
+                            <option value="guruh">Guruh</option>  
+                            <option value="sinf">Sinf</option>                                                  
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>                            
+
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" id="DBIBT" name="klass" value="dbibt">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>DBIBT/KTUT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" id="THST" name="klass" value="thst">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>THST</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="col-12 col-xl-12">
+        {% if not kl.count %}
+        <button type="submit" class="btn btn-outline-info float-end">Keyingi  <i class="align-middle me-2" data-feather="skip-forward"></i></button> 
+        {% endif %}
+        {% if kl.count %}
+        {% for v in kl %}        
+        <a href="{% url 'delklassifikator' v.id %}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
+        {% endfor %}    
+        {% endif %}     
+
+        </div>
+    </div>                    
+    </div>            
+</div>
+</form>  
+
+<script>
+    const iftum = document.getElementById('iftum');
+    const selop = document.getElementById('selop');
+
+    iftum.addEventListener('click', function handleClick() {
+        if (iftum.checked) {
+          selop.style.display = 'block';
+         
+          
+        } else {      
+          selop.style.display = 'none';     }
+      });
+</script>

@@ -1,0 +1,49 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi values qo'shish{{update_date}}</h1>
+    <a href="{% url 'davlat' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'edittadbir' tadbir.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Tashkiliy texnik tadbirlar kodi</label>
+                            <input type="number"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tadbir_kodi"
+                                    placeholder="Masalan: 1"
+                                    value = {{tadbir.kodi}}>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label class="form-label">Tashkiliy texnik tadbirlar nomi</label>
+                            <textarea rows="1"  type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="tadbir_nomi"
+                                    placeholder="Masalan: O'zbekiston"
+                                    value = {{tadbir.nomi}}>{{tadbir.nomi}}</textarea>
+                        </div>    
+                    </div>                
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Saqlash</button>   
+                    <a href="{% url 'deltadbir' tadbir.id %}" class="btn btn-danger " id="notyf-show">O'chirish</a>
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

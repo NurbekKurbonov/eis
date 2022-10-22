@@ -24,18 +24,18 @@
                         {% for v in h_ich %}
                         <div class="mb-3 col-6">
                             <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
-                            <input type="number"
-                                    class="form-control"  disabled
+                            <input type="number" step="0.000000001"
+                                    class="form-control"  {{ruxsat}}
                                     autofocus required="true"
-                                    name="{{v.qiymat}}"
+                                    name="{{v.resurs.id}}.1"
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
-                            <input type="number"
-                                    class="form-control"  disabled
+                            <input type="number" step="0.000000001"
+                                    class="form-control"  {{ruxsat}}
                                     autofocus required="true"
-                                    name="{{v.qiymat_pul}}"
+                                    name="{{v.resurs.id}}.pul1"
                                     value="{{v.qiymat_pul}}">
                         </div>
                         {% endfor %}
@@ -58,18 +58,18 @@
                         {% for v in h_ist %}
                         <div class="mb-3 col-6">
                             <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
-                            <input type="number"
-                                    class="form-control"  disabled
+                            <input type="number" step="0.000000001"
+                                    class="form-control"  {{ruxsat}}
                                     autofocus required="true"
-                                    name="{{v.qiymat}}"
+                                    name="{{v.resurs.id}}.2"
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
-                            <input type="number"
-                                    class="form-control"  disabled
+                            <input type="number" step="0.000000001"
+                                    class="form-control"  {{ruxsat}}
                                     autofocus required="true"
-                                    name="{{v.qiymat_pul}}"
+                                    name="{{v.resurs.id}}.pul2"
                                     value="{{v.qiymat_pul}}">
                         </div>
                         {% endfor %}
@@ -90,18 +90,18 @@
                         {% for v in h_uzat %}
                         <div class="mb-3 col-6">
                             <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
-                            <input type="number"
-                                    class="form-control"  disabled
+                            <input type="number" step="0.000000001"
+                                    class="form-control"  {{ruxsat}}
                                     autofocus required="true"
-                                    name="{{v.qiymat}}"
+                                    name="{{v.resurs.id}}.3"
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
                             <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
-                            <input type="number"
-                                    class="form-control"  disabled
+                            <input type="number" step="0.000000001"
+                                    class="form-control"  {{ruxsat}}
                                     autofocus required="true"
-                                    name="{{v.qiymat_pul}}"
+                                    name="{{v.resurs.id}}.pul3"
                                     value="{{v.qiymat_pul}}">
                         </div>
                         {% endfor %}                       
@@ -110,7 +110,7 @@
         </div>
     </div>
     {% endif %}
-    <a href="{% url 'davr' %}" class="btn btn-outline-primary float-end">Qaytish</a> 
+    <button type="submit" {{ruxsat}} class="btn btn-primary float-end">Saqlas</button> 
 </div>
 
 </form>

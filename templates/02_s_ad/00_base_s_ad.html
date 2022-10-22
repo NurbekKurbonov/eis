@@ -20,7 +20,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	
 	<link href="{% static 'css/light.css'%}" rel="stylesheet">
-	<script src="{% static 'js/settings.js'%}"></script>
+	
 </head>
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
@@ -75,6 +75,12 @@
                             <span class="align-middle">Valyuta</span>
 						</a>
 					</li>
+					<li class="sidebar-item {% block bari2 %}{% endblock bari2%}">
+						<a class="sidebar-link" href="{% url 'yaxlitlashV' %}" >
+							<i class="align-middle" data-feather="briefcase"></i> 
+                            <span class="align-middle">Yaxlitlash qiymatlari</span>
+						</a>
+					</li>
 
 					<li class="sidebar-header">
 						Hududlar bo'yicha ma'lumotlar
@@ -125,8 +131,8 @@
 
 					<li class="sidebar-header">
 						Resurslar bo'yicha ma'lumotlar
-					</li>		
-					
+					</li>
+
 					<li class="sidebar-item {% block barR1 %}{% endblock barR1 %}">
 						<a class="sidebar-link" href="{% url 'birlik' %}" >
 							<i class="align-middle" data-feather="thermometer"></i> 
@@ -138,7 +144,13 @@
 							<i class="align-middle" data-feather="thermometer"></i> 
                             <span class="align-middle">Resurslar</span>
 						</a>
-					</li>				
+					</li>		
+					<li class="sidebar-item {% block barR3 %}{% endblock barR3 %}">
+						<a class="sidebar-link" href="{% url 'Tadbirlar' %}" >
+							<i class="align-middle" data-feather="cloud-rain"></i> 
+                            <span class="align-middle">Texnik Tadbirlar</span>
+						</a>
+					</li>		
 
 					<li class="sidebar-header">
 						Foydalanuvchilar bo'yicha ma'lumotlar
@@ -148,6 +160,10 @@
 						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="crosshair"></i> <span class="align-middle">III foydalanuvchilar</span>
 						</a>
+						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show0 %}{% endblock show0 %}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {% block bar3f0 %}{% endblock bar3f0 %}"><a class="sidebar-link" href="{% url 'monitoring_users' %}">Monitoring</a></li>							
+						</ul>
+
 						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {% block show %}{% endblock show %}" data-bs-parent="#sidebar">
 							<li class="sidebar-item {% block bar3f1 %}{% endblock bar3f1 %}"><a class="sidebar-link" href="{% url 'usersozlama' %}">Sozlamalar</a></li>							
 						</ul>
@@ -244,12 +260,32 @@
 								</div>
 							</a>
 						</li>
-						<form action="{% url  'logout' %}" method="POST">
-							{% csrf_token %}
-							<li class="nav-item dropdown">
-								<button type="submit" class="btn btn-outline-secondary nav-icon pe-md-0 dropdown-toggle"><i class="fas fa-door-open"></i> Chiqish </button>
-							</li>
-						  	</form>
+						<li class="nav-item dropdown">
+							<a class="nav-icon pe-md-0 dropdown-toggle" href="#" data-bs-toggle="dropdown">
+								<img src="{% static 'img/icons/icon-48x48.png' %}" class="avatar img-fluid rounded" alt="nk" />
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">	
+
+								<a class="dropdown-item" href="{% url 'home' %}"><i class="align-middle me-1" data-feather="user"></i>Foydalanuvchi</a>								
+								<div class="dropdown-divider"></div>	
+								<a class="dropdown-item" href="{% url 'kirishP' %}"><i class="align-middle me-1" data-feather="user-check"></i> Admin</a>								
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'wbonehome' %}"><i class="align-middle me-1" data-feather="user-plus"></i> Super admin</a>								
+								<div class="dropdown-divider"></div>	
+								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="settings"></i> Sozlamalar</a>								
+								<div class="dropdown-divider"></div>		
+
+								<a class="dropdown-item" href="https://t.me/pro_fmi"><i class="align-middle me-1" data-feather="help-circle"></i>Yordam</a>
+								<div class="dropdown-divider"></div>
+								<form action="{% url  'logout' %}" method="POST">
+									{% csrf_token %}
+									<button
+										class="dropdown-item"
+									  type="submit" value="Sign out">Chiqish</button>
+								  </form>
+							</div>
+						</li>
+						
 					</ul>
 				</div>
 			</nav>

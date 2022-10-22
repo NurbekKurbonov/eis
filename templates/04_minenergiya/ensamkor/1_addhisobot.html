@@ -1,0 +1,425 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block barSam %}active{% endblock barSam%}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}} {{res_for_add_show}}</h1>
+</div>
+
+<div class="row">    
+    <div class="col-6">
+        <div class="card">            
+            <div class="card-body">
+                
+                <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i>Foydalanuvchilar</a></button>
+                <table class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th class="d-none d-md-table-cell">Foydalanuvchilar</th>
+                            <th class="d-none d-md-table-cell"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for v in faqir_show %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td class="d-none d-md-table-cell">{{v.fqr}}</td>
+                                <td class="d-none d-md-table-cell"><a href="{% url 'delfaqirshow' v.id%}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                            </tr>
+                            {% endfor %}
+                    
+                    </tbody>
+                   
+                    </table>
+            <!-- *******************************offcanvas boshlandi*******************************************************************-->
+			<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+            aria-labelledby="offcanvasWithBothOptionsLabel" >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel" style="color: blue">Kodlarni biriktiring</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form action="{% url 'fqr_show' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title">Foydalanuvchilar</h5>
+									<h6 class="card-subtitle text-muted">Kerakli korxonalarni STIR kodi yoki nomi orqali topib biriktiring</h6>
+								</div>
+								<div class="card-body">
+									<div class="mb-3" hidden>
+										<select class="form-control choices-single">											
+											
+										</select>
+									</div>
+
+									<div>
+										<select class="form-control choices-multiple" multiple name="stirnom">
+											<optgroup label="Foydalanuvchilar">
+                                                {% for v in fqr %}
+												<option value="{{v.id}}">{{v.inn}}: {{v.nomi}}</option>
+                                                {% endfor %}												
+											</optgroup>
+											
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>                        
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="">Ummumiy klassifikatorlar bo'yicha</label>                            																			
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="">IFTUM(ру: ОКЕД)</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="iftum_fqr"> 
+                                <option value ="0">tanlang...</option>                      
+                                {% for v in iftum%}
+                                <option value ="{{v.id}}">{{v}}: {{v.nomi}}</option> 									
+                                {% endfor %}
+                            </select>																				
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="">DBIBT/KTUT kodi (ру: СООГУ/ОКПО)</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="dbibt_fqr">       
+                                <option value ="0">tanlang...</option>   
+                                {% for v in dbibt%}
+                                <option value ="{{v.id}}">{{v}}: {{v.nomi}}</option> 									
+                                {% endfor %}
+                            </select>																				
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="">THSHT kodi (ру: ОПФ)</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="thst_fqr">   
+                                <option value ="0">tanlang...</option>   
+                                {% for v in thst%}
+                                <option value ="{{v.id}}">{{v}}: {{v.nomi}}</option> 									
+                                {% endfor %}
+                            </select>																				
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+        </div>
+        </div>
+    <!--*********************************************Mahsulot qismi********************************************-->
+{% if faqir_show.count %}  
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+                
+                <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions2"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Energiya resurs/mahsulot qo'shish</a></button>
+                <table class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th class="d-none d-md-table-cell">Energiya resurs/mahsulot</th>
+                            <th class="d-none d-md-table-cell"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his_res%}
+                        <tr>
+                            <td> {{forloop.counter}}</td>
+                            <td class="d-none d-md-table-cell">{{v.resurs.nomi}}</td>
+                            <td class="d-none d-md-table-cell"><a href="{% url 'delfiltrres' v.id %}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                   
+                    </table>
+            <!-- *****************************offcanvas boshlandi*******************************************************************-->
+			<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions2"
+            aria-labelledby="offcanvasWithBothOptionsLabel" >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel" style="color: blue">Hisobot uchun resursni tanlang va qabul qilishni bosing!</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form action="{% url 'addfiltrres' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-12 col-xl-12">
+                            <div class="col-md">
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input type="checkbox" id="barcha" name="barcha" value="1">
+                                        </div>
+                                            <a class="form-control" placeholder="Checkbox" disabled>Barcha resurslarni biriktish</a>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>                       
+                        <div class="mb-3 col-md-12" id="box">
+                            
+                            <label class="form-label" for="">Resurs nomi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="resurs_id">                                    
+                                {% for v in resurs_list%}
+                                <option value ="{{v.id}}">{{v}}</option> 									
+                                {% endfor %}
+                            </select>																				
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
+{% endif %}
+<!--************************Mahsulot qismi tomom***********************************-->
+
+    
+{% if his_res.count %}  
+    <div class="col-6">
+        <div class="card">         
+            <form action="{% url 'addtur' %}" method="post">
+                {% csrf_token %}   
+            <div class="card-body">                         
+                <div class="row"> 
+                    {% if turi.count %}
+                    <h4 style="color:blue"><B>Filtr:</B></h4>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="natija" value="True" checked>
+                                    </div>
+                                    {% for v in turi %}
+                                    <a class="form-control" placeholder="Checkbox" disabled>{{v}}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
+                    {% if not turi.count %}
+                    <h4 style="color:blue"><B>Filtr turini tanlang</B></h4>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="turi" onclick="hide3();" value="Klassifikatorlar bo'yicha" checked>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Klassifikatorlar bo'yicha</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="turi" onclick="hide2();" value="Xususiy">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Xususiy</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="turi" onclick="hide1();" value="Ixtiyoriy guruhlash">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Ixtiyoriy guruhlash</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="turi" onclick="show2();" value="Hudud bo`yicha">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Hudud bo'yicha</a>
+                                    <select name="hudud" class="form-select" style="display:none" id="manzil">                                                
+                                        <option value="">tanlang ...</option>  
+                                        <option value="(tuman)">tuman</option>  
+                                        <option value="(viloyat)">viloyat</option>  
+                                        <option value="(Davlat)">Davlat</option>                                                  
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    {% endif %}                    
+                {% if not kl.count %}
+                    <div class="col-12 col-xl-12">
+                    {% if not turi.count %}
+                    <button type="submit" class="btn btn-outline-info float-end">Keyingi  <i class="align-middle me-2" data-feather="skip-forward"></i></button> 
+                    {% endif %}
+                    {% for v in turi %}
+                    {% if turi.count %}
+                    <a href="{% url 'deltur' v.id %}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
+                    {% endif %}
+                    {% endfor %}   
+                    </div>   
+                {% endif %}   
+
+                    
+            </div>                    
+        </div>            
+            
+            </form>  
+            <!--Klassifikator-->
+            {% for v in turi %}
+                {% if "Klassifikatorlar bo'yicha" in v.tur %}
+                <div class="col-12">
+                    <div class="card">         
+                        {% include '04_minenergiya/ensamkor/keyingi/klassifikator.html' %}  
+                    </div> 
+                </div>
+                {% endif %}
+                <!--***Ixtiyoriy guruhlash***-->
+                {% if "Ixtiyoriy guruhlash" in v.tur %}
+                <div class="col-12">
+                    <div class="card">         
+                        {% include '04_minenergiya/ensamkor/keyingi/ixtiyoriy.html' %}  
+                    </div> 
+                </div>
+                {% endif %}
+                
+                <!--Tayyorlash-->
+                {% if kl.count or "Xususiy" in v.tur %}
+                <div class="col-12">
+                    <div class="card">         
+                        {% include '04_minenergiya/ensamkor/keyingi/tayyorlash.html' %}  
+                    </div> 
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    {% endif %}  
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Choices.js
+        new Choices(document.querySelector(".choices-single"));
+        new Choices(document.querySelector(".choices-multiple"));
+        // Flatpickr
+        flatpickr(".flatpickr-minimum");
+        flatpickr(".flatpickr-datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+        flatpickr(".flatpickr-human", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
+        flatpickr(".flatpickr-multiple", {
+            mode: "multiple",
+            dateFormat: "Y-m-d"
+        });
+        flatpickr(".flatpickr-range", {
+            mode: "range",
+            dateFormat: "Y-m-d"
+        });
+        flatpickr(".flatpickr-time", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+        });
+    });
+</script>
+
+<script>    
+    const checkbox = document.getElementById('barcha');
+    const box = document.getElementById('box');
+    checkbox.addEventListener('click', function handleClick() {
+      if (checkbox.checked) {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+      }
+    });
+    
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        dragula([
+            document.querySelector("#tasks-backlog"),
+            document.querySelector("#tasks-progress"),
+            document.querySelector("#tasks-completed")
+        ]);
+    });
+</script>
+
+<script>
+    function show2(){
+        document.getElementById('manzil').style.display = 'block';
+      }
+    function hide1(){
+        document.getElementById('manzil').style.display = 'none';
+      }
+    function hide2(){
+        document.getElementById('manzil').style.display = 'none';
+      }
+    function hide3(){
+        document.getElementById('manzil').style.display = 'none';
+      }
+    
+</script>
+{% endblock scripts %}

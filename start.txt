@@ -1,4 +1,5 @@
 cd ..
-source env/bin/activate
+cd ..	
+cd eis
 cd eis
 python3 manage.py runserver

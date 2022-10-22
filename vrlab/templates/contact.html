@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact Us | ALIBIYSTUDY{% endblock title %}
+{% block nav %}
+<link rel="stylesheet" href="{% static 'css/new.css' %}">
+{% endblock nav %}
+{% block content %}
+<main class="content">
+  <div class="container-fluid p-0" style="display: flex; flex-direction: column; align-items: center;">
+    <div class="card contact-card" style="padding: 30px; width: 550px; border-radius: 20px;">
+      <h1 class="h3 mb-3">Contact Us</h1>
+
+
+{% if submitted %}
+      <p class="success">Your message was sent successfully! Thank you!</p>
+
+{% else %}
+      <form action="" method="POST" novalidate>
+        <table>
+          {{form.as_table}}
+          <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Submit"></td>
+          </tr>
+        </table>
+        {% csrf_token %}
+      </form>
+    </div>
+{% endif %}
+    <a href="/" class="return-home" style="padding: 5px 10px; border: 1px solid blue;">BOSH SAHIFA</a>
+    <p> [Error: Delete Bog'lanish, Restyle Bosh sahifa]</p>
+  </div>
+</main>
+{% endblock content %}

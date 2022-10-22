@@ -1,0 +1,107 @@
+<form action="{% url 'addklassifikator' %}" method="post">
+    {% csrf_token %}   
+<div class="card-body">   
+        <h4 style="color:blue" id="davr"><B>Hisobot oralig'ini tanlang</B></h4>   
+        <div class="col-12 col-xl-12" id="Ddavr">
+            <div class="mb-3">
+                <label class="form-label">Davrni tanlang</label>
+                <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+            </div>                        
+        </div>                    
+        
+
+        <div class="row" >
+        <h4 style="color:blue" id="birlik"><B>Zarur bo'lgan birlikni tanlang</B></h4>   
+        <div class="col-12 col-xl-6" id="Dbirlik">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" name="olchov" value="som" checked>
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>mln. so'mda</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" name="olchov" value="valyuta">
+                        </div>
+                        <select name="olchov" class="form-select" placeholder="Checkbox">
+                            <option value="">tanlang ...</option>  
+                            {% for i in valyuta %}
+                                <option value="{{i.id}}">{{i.name}}</option>  
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" name="olchov" value="tshy">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>tshy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" name="olchov" value="yne">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>tne</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" name="olchov" value="kKal">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>kKal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="col-md">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="checkbox" name="olchov" value="GJ">
+                        </div>
+                        <a class="form-control" placeholder="Checkbox" disabled>GJ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-12">
+        {% if not kl.count %}
+        <button type="submit" class="btn btn-outline-info float-end">Keyingi  <i class="align-middle me-2" data-feather="skip-forward"></i></button> 
+        {% endif %}
+        {% if kl.count %}
+        {% for v in kl %}        
+        <a href="{% url 'delklassifikator' v.id %}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
+        {% endfor %}    
+        {% endif %}     
+
+        </div>
+    </div>         
+</div>
+</form>  

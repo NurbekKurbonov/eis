@@ -1,0 +1,313 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}} {{res_for_add_show}}</h1>
+</div>
+
+<div class="row">    
+    <div class="col-6">
+        <div class="card">            
+            <div class="card-body">
+                
+                <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Energiya resurs/mahsulot qo'shish</a></button>
+                <table class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th class="d-none d-md-table-cell">Energiya resurs/mahsulot</th>
+                            <th class="d-none d-md-table-cell"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his_res%}
+                        <tr>
+                            <td> {{forloop.counter}}</td>
+                            <td class="d-none d-md-table-cell">{{v.resurs.nomi}}</td>
+                            <td class="d-none d-md-table-cell"><a href="{% url 'delhis' v.id %}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                   
+                    </table>
+            <!-- *****************************offcanvas boshlandi*******************************************************************-->
+			<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+            aria-labelledby="offcanvasWithBothOptionsLabel" >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel" style="color: blue">{{titleown}} uchun resursni tanlang va qabul qilishni bosing!</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form action="{% url 'addichresforhis' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label" for="">Resurs nomi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="resurs_id">                                    
+                                {% for k, v in res_show.items%}
+                                <option value ="{{k}}">{{v}}</option> 									
+                                {% endfor %}
+                            </select>																				
+                        </div>
+                        <div class="mb-3 col-md-12">		
+                            {{sotform.as_table}}
+                        </div>
+                        <input type="number" name="sahifanomi" value="{{pageid}}" hidden/>
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+{% if his_res.count %}  
+    <div class="col-6">
+        <div class="card">         
+            <form action="{% url 'addhisobot' %}" method="post">
+                {% csrf_token %}   
+            <div class="card-body">
+                <div class="row">
+                    <h4 style="color:blue"><B>Kerakli hisobot turini tanlang</B></h4>   
+                    {% if mich.count %}
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="his_tur" value="1">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-down"></i>Ishlab chiqarish</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="his_tur" value="2">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fab fa-fw fa-gripfire"></i>Iste'mol</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if sot.count %}
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="his_tur" value="3">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-up"></i>Uzatish/sotish</a>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <h4 style="color:blue"><B>Hisobot davrini tanlang</B></h4>             
+                <div class="row"> 
+                    <div class="col-12 col-xl-12">
+                        <div class="mb-3">
+                            <label class="form-label">Davrni tanlang</label>
+                            <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                        </div>                        
+                    </div>
+                    <h4 style="color:blue"><B>Grafik turini tanlang</B></h4>   
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="1">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Ch<i class="align-middle me-2 fas fa-fw fa-chart-line"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="2">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>V<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="3">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>G<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i></a>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="4">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>M<i class="align-middle me-2 fas fa-fw fa-chart-area"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="5">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>U<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--{% if '6' in his.cheks %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#icon-tab-6" data-bs-toggle="tab" role="tab">
+                            A<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
+                        </a>
+                    </li>{% endif %}-->
+                    <h4 style="color:blue"><B>Zarur bo'lgan birlikni tanlang</B></h4>   
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="7" checked>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>mln. so'mda</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="8">
+                                    </div>
+                                    <select name="valute" class="form-select" placeholder="Checkbox">
+                                        {% for i in valyuta %}
+                                            <option value="{{i.id}}">{{i.name}}</option>  
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="9">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>t.sh.yo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="0">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>t.n.e.</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="a">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>kKal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="chart" value="b">
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>GJ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Hisobot tayyorlash</button> 
+                </div>
+            </div>
+            
+            </form>
+        </div>
+    </div>
+    {% endif %}  
+    
+
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+{% endblock scripts %}

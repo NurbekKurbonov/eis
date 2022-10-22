@@ -1,0 +1,77 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bar2 %}active{% endblock bar2 %}
+{% block active0 %}active{% endblock active0 %}
+
+{% block content %}
+{% if not values.count %}
+<a href="{% url 'ist'%}" class="btn btn-primary float-end mt-n1" id="notyf-show" style="width:50%"> Iltimos faoliyat turini tanlang!</a>
+{%endif%}
+{% if values.count %}
+<a href="{% url 'addreja' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>
+{%endif%}
+
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+{% if values.count %}              
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>Ma'lumot berilgan davr</th>                            
+                            <th>Hisobot shakllantirilgan sana</th> 
+                            
+                            <th width="2%"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in his%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td>{{v.title}}</td>     
+                        <td>{{v.vaqt|date:"d-m-Y"}}</td>  
+                        <td class="table-action text-center">
+                            <a href="{%url 'checkreja' v.id%}"><i class="align-middle me-2 fas fa-fw fa-clipboard-check"></i></a> 
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>Resurs nomi</th>                            
+                        <th>Resurs o`lchanadigan birlik</th> 
+                    </tr>
+                    </tfoot>
+                    </table>
+               
+                <a href="{% url 'davr'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
+{%endif%}
+
+{% if not values.count %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert-message">
+        <strong>Assalomu alaykum hurmatli foydallanuvchi!</strong> 
+       Ushbu sahifani faollashtirish uchun faoliyat turini tanlang (energiya resurs/mahsulot ishlab chiqaradigan/iste'mol qiladigan/uzatadigan sotadigan)
+    </div>
+</div>
+{%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

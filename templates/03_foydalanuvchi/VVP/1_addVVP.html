@@ -1,0 +1,81 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}ni qo'shish</h1>
+    <a href="{% url 'vvp' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">
+                <form action="{% url 'addvvp' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="mb-3 col-4">
+                            <label class="form-label">Mahsulot nomi</label>
+                            <input type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="nomi"
+                                    placeholder="Izoh"
+                                    value = {{nomi}}>
+                        </div>    
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{titleown}} (nomli birliklarda)</label>
+                            <input type="number"
+                                    step="0.0000001"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="VVP"
+                                    placeholder="999"
+                                    value = {{VVP}}>
+                        </div>   
+                        <div class="mb-3 col-2">
+                            <label class="form-label">Birligi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="birlik">                                    
+                                {% for v in birlik%}
+                                <option value ="{{v.id}}">{{v.birlik}}</option> 									
+                                {% endfor %}
+                            </select>
+                        </div>   
+                    </div>    
+                    <div class="row">
+                        <div class="mb-3 col-4">                            
+                        </div>    
+                        <div class="mb-3 col-6">
+                            <label class="form-label">{{titleown}} (pul birligida)</label>
+                            <input type="number"
+                                    class="form-control" 
+                                    step="0.0000001"
+                                    autofocus required="true"
+                                    name="pul"
+                                    placeholder="999"
+                                    value = {{pul}}>
+                        </div>   
+                        <div class="mb-3 col-2">
+                            <label class="form-label">Pul birligi</label>
+                            <select class="form-select flex-grow-1"                                
+                            name="pul_birlik">                                    
+                                {% for v in valyuta%}
+                                <option value ="{{v.id}}">{{v.name}}</option> 									
+                                {% endfor %}
+                            </select>
+                        </div>   
+                    </div>             
+                    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+                </form>
+            </div>
+        </div>
+    </div>  
+    
+
+    
+</div>
+
+{% endblock content %}

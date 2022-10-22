@@ -1,0 +1,23 @@
+.yozuv_grad {
+    background: #30cf00;
+    background: -webkit-radial-gradient(ellipse farthest-corner at center center, #065f0b 0%, #6edf2d 100%);
+    background: -moz-radial-gradient(ellipse farthest-corner at center center, #10b810ce 0%, #67cf12 100%);
+    background: radial-gradient(ellipse farthest-corner at center center, #014b07 0%, #268808 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradiyent{
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,0.23431370839351362) 0%, rgba(255,255,255,0.16708681763721112) 35%, rgba(0,212,255,0.16708681763721112) 100%);
+}
+
+.text_ray {
+    background: #CF783E;
+    background: -webkit-radial-gradient(circle farthest-corner at center center, #CF783E 0%, #231421 100%);
+    background: -moz-radial-gradient(circle farthest-corner at center center, #CF783E 0%, #231421 100%);
+    background: radial-gradient(circle farthest-corner at center center, #CF783E 0%, #231421 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}

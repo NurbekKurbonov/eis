@@ -1,0 +1,27 @@
+.borderSTYLE{
+    background: radial-gradient(circle at 100% 100%, #ffffff 0, #ffffff 7px, transparent 7px) 0% 0%/11px 11px no-repeat,
+                        radial-gradient(circle at 0 100%, #ffffff 0, #ffffff 7px, transparent 7px) 100% 0%/11px 11px no-repeat,
+                        radial-gradient(circle at 100% 0, #ffffff 0, #ffffff 7px, transparent 7px) 0% 100%/11px 11px no-repeat,
+                        radial-gradient(circle at 0 0, #ffffff 0, #ffffff 7px, transparent 7px) 100% 100%/11px 11px no-repeat,
+                        linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 8px) calc(100% - 22px) no-repeat,
+                        linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 22px) calc(100% - 8px) no-repeat,
+                        linear-gradient(75deg, transparent 0%, rgba(165,172,198,0.76) 100%),
+                        linear-gradient(245deg, #6f81c9 0%, #5370e3 4.784%, #091f78 58.327%, #8197ed 66.613%, #3f4665 100%);
+            border-radius: 11px;
+            padding: 5px;
+            box-sizing: border-box;            
+}
+
+.textSTYLE{
+    background: #004DFF; background: linear-gradient(to right, #004DFF 0%, #048000 47%, #2743FF 100%);
+                            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.headerstyle{
+    background: #319101; background: repeating-radial-gradient(ellipse farthest-corner at center center, #319101 0%, #1AD92D 50%, #007D15 67%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.linestyle{
+    border-style: solid; border-width: 2px; border-image: linear-gradient(to left, rgba(0, 0, 0, 1) 1%, rgba(0, 255, 255, 1) 50%, rgba(0, 0, 0, 1) 100%) 
+    100% 0 100% 0/3px 0 3px 0 stretch; line-height: relative;
+}

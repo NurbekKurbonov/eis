@@ -1,0 +1,305 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>laboratoriya_1</title>
+
+	<style>
+		body{
+			
+			padding: 0px;
+			margin: 0px;
+			background: rgb(17,227,99);
+			background: linear-gradient(146deg, rgb(178, 214, 154) 0%, rgb(55, 60, 150) 35%, rgba(0,212,255,1) 100%);
+		
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+		
+		}
+		
+		canvas{
+			background:white;
+			position:absolute;
+			top:50%;
+			left:50%;
+			transform:translate(-50%,-50%);
+			width:80vmin;
+			height:80vmin;
+		}
+		
+		#overlay{ 
+			background:rgba(0,0,0,0.7);
+			position:absolute;
+			top:5%;
+			left:5%;			
+			width: 90% ;
+			height:90%;			
+			padding:1vmin;
+			margin:0px;
+			color: white;
+			border-radius:2vmin;
+			
+			text-align: center;
+			font-size:3.3vmin;			
+		}
+
+		pre h1{
+ 		   color: yellow; text-align:center;
+		}
+		.sarlavha{
+			position: absolute;
+			padding: 1%;
+			left: 1%;
+			margin: 3px;
+
+			text-align: center;
+			color:rgb(1, 1, 17);
+		
+		}
+		
+
+	</style>
+</head>
+
+<body onload="main()">
+	<div class="sarlavha">
+		<h1><strong>SANOAT KORXONALARINING ELEKTR YUKLAMALARI GRAFIKLARINI TADQIQ QILISH</strong>
+
+	</div>
+	
+	
+	
+	<canvas id="myCanvas" style="margin-left:-50vmin">Sizning brauzeringiz CANVAS ni ocholmaydi. Iltmos boshqa brauzerda ishlab ko'ring!!!</canvas>
+	<canvas id="hitTestCanvas" style="margin-left:45vmin; width:40vmin; height:40vmin;"></canvas>
+	
+	<pre id="overlay" onclick="removeOverlay()">
+<h1 >1-laboratoriya ishi</h1>
+<h1><BR>SANOAT KORXONALARINING ELEKTR<BR> YUKLAMALARI GRAFIKLARINI TADQIQ QILISH</h1>
+<b>Ushbu laboratoriya ishini boshlashdan oldin,</b>
+<b>iltimos, laboratoriya yo'riqnomasi bilan tanishib chiqing</b>
+
+<b ><a style="color: yellow" href="{% url 'index'%}">LABORATORIYA ISHI YO'RIQNOMASI</b>
+
+</pre>
+
+<button onclick="alert('hi it`s button')"> Butooncha</button>
+
+<script>
+	var SIZE=1000;
+	var CANVAS;
+	var HIT_TEST_CANVAS;
+
+function main(){   
+
+	removeOverlay();
+	CANVAS=initializeCanvas("myCanvas",SIZE);
+	HIT_TEST_CANVAS=initializeCanvas("hitTestCanvas",SIZE);
+	
+	ButtonHandler.hitTestCanvas=HIT_TEST_CANVAS;
+	ButtonHandler.createButton("B1", [SIZE/2, SIZE/2], 200,100,getRandomColor());
+	ButtonHandler.createButton("B2", [SIZE/4, SIZE/2], 200,100,getRandomColor());
+    
+	ButtonHandler.addEventListener(CANVAS);
+
+    var ctx = CANVAS.getContext("2d");    
+	ButtonHandler.drawButtons(ctx);
+}
+
+function initializeCanvas(canvasName,size){
+	var canvas=document.getElementById(canvasName)
+	canvas.width=size ;
+    canvas.height=size;
+
+	return canvas;
+}
+
+class ButtonHandler{
+
+	static buttons=[];	
+	static hitTestCanvas;
+
+	static createButton(name,location, width, height, color){
+		ButtonHandler.buttons.push(new Button(name,location, width, height, color));
+	}
+
+	static drawButtons(ctx){
+		for(var i=0; i<ButtonHandler.buttons.length; i++){
+        	ButtonHandler.buttons[i].draw(ctx);
+    	}
+
+		for(var i=0; i<ButtonHandler.buttons.length; i++){
+        	ButtonHandler.buttons[i].drawHitArea(hitTestCanvas.getContext("2d"));
+    	}
+	}
+	static addEventListener(canvas){		
+		canvas.addEventListener("mousemove", ButtonHandler.onMouseMove);
+		canvas.addEventListener("mousedown", ButtonHandler.onMouseDown);
+	}
+
+	static onMouseDown(event){    
+		var location=getMouseLocation(event);
+		var color = getColor(ButtonHandler.hitTestCanvas.getContext("2d"), location);
+		
+		var button=ButtonHandler.isHovering(color);
+		if(button){
+			alert(button.name+" bosildi")
+		}		
+	}
+
+	static onMouseMove(event){    
+		var location=getMouseLocation(event);
+		var color = getColor(ButtonHandler.hitTestCanvas.getContext("2d"), location);
+
+		for(var i=0; i<ButtonHandler.buttons.length; i++){
+			if(ButtonHandler.isHovering(color)){
+				CANVAS.style.cursor="pointer";
+				return;
+			}
+			CANVAS.style.cursor="auto";
+		}
+	}
+
+	static isHovering(color){
+		for(var i=0;i<ButtonHandler.buttons.length; i++){
+			if(ButtonHandler.buttons[i].color==color){			
+				return true;			
+			}    
+		}
+		return false;
+	}
+
+
+}
+
+class Button{
+    constructor(name, location, width, height,color){
+        this.location=location;
+        this.width=width;
+        this.height=height;
+        this.color=color;
+		this.name=name
+    }
+
+    draw(ctx){
+        ctx.save();
+        ctx.beginPath();
+		ctx.strokeStyle="black";
+		ctx.lineWidth=10;
+        ctx.fillStyle="white";
+        ctx.translate(this.location[0], this.location[1]);
+        ctx.rect(-this.width/2, -this.height/2, this.width, this.height);
+        ctx.stroke();
+		ctx.fill();
+		ctx.beginPath();
+		ctx.fillStyle="black";
+		ctx.font=(this.height*0.5)+"px Arial"
+		ctx.textAlign="center"
+		ctx.textBaseline="middle"
+		ctx.fillText(this.name,0,0);
+        ctx.restore();
+    }
+
+	drawHitArea(ctx){
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle=this.color;
+        ctx.translate(this.location[0], this.location[1]);
+        ctx.rect(-this.width/2, -this.height/2, this.width, this.height);
+        ctx.fill();
+		ctx.beginPath();
+		
+        ctx.restore();
+    }
+}
+
+//utility function
+function getColor(ctx, location){
+    var data=ctx.getImageData(location[0],location[1],1,1);
+    return "rgb("+data.data[0]+","
+            +data.data[1]+","
+            +data.data[2]+")"
+}
+
+function getMouseLocation(event){
+    var rect=event.target.getBoundingClientRect();
+    var loc = [
+        Math.floor(SIZE*(event.clientX-rect.left)/(rect.right-rect.left)),
+        Math.floor(SIZE*(event.clientY-rect.top)/(rect.bottom-rect.top))
+    ]
+
+    return loc;
+}
+
+function drawScene(){
+    var
+        canvas = document.getElementById("myCanvas"),
+        ctx=canvas.getContext("2d");
+
+    canvas.width=SIZE;
+    canvas.height=SIZE;
+    
+    //ctx.beginPath();
+    //ctx.fillStyle="green";
+    //ctx.fillRect(0,0,SIZE,SIZE)
+    //ctx.fill();
+
+    drawHouse(ctx, [SIZE*0.34, SIZE*0.8], SIZE*0.5);
+    drawHouse(ctx, [SIZE*0.7, SIZE*0.7], SIZE*0.3);
+}
+
+function getRandomColor(){    
+    return "rgb("+Math.floor(Math.random()*255)+","
+            +Math.floor(Math.random()*255)+","
+            +Math.floor(Math.random()*255)+")"
+}
+
+function drawHouse(ctx, location, scale){
+
+    ctx.beginPath();
+
+    ctx.save();
+    ctx.translate(location[0], location[1]);
+    ctx.scale(scale,scale);
+    ctx.lineWidth=0.04;
+
+    ctx.beginPath();
+    ctx.moveTo(-0.5,-0.6);
+    ctx.lineTo(+0.5,-0.6);
+    ctx.lineTo(+0.0,-1.0);
+    ctx.lineTo(-0.5,-0.6);    
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath()
+    ctx.rect(-0.5,-0.6,1.0,0.6)
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+function removeOverlay(){
+    let element = document.getElementById("overlay")
+    element.style.display="none";
+    }
+    
+
+</script>
+
+</body>
+</html>
+
+			
+
+	
+
+
+
+
+
+
+
+

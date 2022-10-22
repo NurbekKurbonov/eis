@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}MAVZULAR | ALIBIYSTUDY{% endblock title %}
+{% block nav %}
+{% include '_navbar.html' %}
+<link rel="stylesheet" href="{% static 'css/new.css' %}?{% now "U" %}">
+{% endblock nav %}
+
+{% block content %}
+<main class="content">
+    <div class="row">
+        <div class="col-12 admin-container">
+            <div class="card admin-card addbook-card">
+              <div class="card-header admin-header">
+                <h4 class="card-title mb-0 admin-h4" style="text-align: center;">Kitob nomi</h4>
+              </div>
+              <div class="addbooks">
+                  <div class="addbook-select">
+                    <label for="section">Bo'lim</label>
+                    <select name="section" id="section"></select>
+                  </div>
+                  <div class="addbook-select">
+                    <label for="chapter">Bob</label>
+                    <select name="chapter" id="chapter"></select>
+                  </div>
+                  <div class="addbook-select">
+                    <label for="subject">Mavzu</label>
+                    <select name="subject" id="subject"></select>
+                  </div>
+                  <input type="file" class="upload-file">
+              </div>
+            </div>   
+        </div>
+        
+    </div>
+</main>
+
+{% endblock content %}

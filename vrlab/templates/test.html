@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}MAVZULAR | ALIBIYSTUDY{% endblock title %}
+{% block nav %}
+<link rel="stylesheet" href="{% static 'css/new.css' %}?{% now "U" %}">
+{% endblock nav %}
+
+{% block content %}
+<main class="content">
+  <div class="container-fluid p-0" style="margin-left: 15%;">
+
+    <h1 class="h3 mb-3">{{nomi}}Test</h1>
+
+    <div class="row">
+      <div class="col-12 mavzu-container">
+        <div class="test-container">
+          {% for v in range %}
+          <div class="card test-card">
+            <div class="card-header mavzu-header" style="border-bottom: 1px solid rgb(168, 168, 168);">
+              <h5 class="card-title mb-0"  style="padding-bottom: 5px;">{{v}}. {{savol}}</h5>
+            </div>
+            <div class="answer">
+              <div class="variant" onclick="myFunction()">
+                <input type="radio" name="v1" style="margin-right: 10px;">
+                <label>Javob1</label>
+              </div>
+              <div class="variant" onclick="myFunction()">
+                <input type="radio" name="v1" style="margin-right: 10px;">
+                <label>Javob2</label>
+              </div>
+              <div class="variant" onclick="myFunction()">
+                <input type="radio" name="v1" style="margin-right: 10px;">
+                <label>Javob 3</label>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="card javoblar-container">
+          <div class="javob-box">
+            <div class="card-header mavzu-header" style="border-bottom: 1px solid rgb(168, 168, 168); padding-bottom: 10px;">
+              <h5 class="card-title mb-0">Javoblar</h5>
+            </div>
+            <div class="javoblar-box">
+              {% for i in range %}
+              <div class="javob-active" id="j1">{{i}}</div>
+              {% endfor %}
+              <div class="javob-inactive" id="j1">10</div>
+            </div>
+          </div>
+          <a href="#" class="end-test">Yakunlash</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function myFunction() {
+      const btn = document.querySelector('.variant'); 
+      const radioButtons = document.querySelectorAll('input[type="radio"]');
+        btn.addEventListener("click", () => {
+            let selectedSize;
+            for (const radioButton of radioButtons) {
+                if (radioButton.checked=False) {
+                    radioButton.checked=True
+                    break;
+                }
+            }
+    }
+  </script>
+
+</main>
+{% endblock content %}
