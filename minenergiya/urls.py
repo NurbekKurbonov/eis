@@ -33,6 +33,11 @@ urlpatterns = [
     path('delfiltrres/<int:id>', views.delfiltrres, name='delfiltrres'),
     
     path('addguruh', views.addguruh, name='addguruh'), 
+    path('savenameguruh/<int:id>', views.savenameguruh, name='savenameguruh'), 
+    path('addfqrtoguruh/<int:id1>/<int:id2>', views.addfqrtoguruh, name='addfqrtoguruh'), 
+    path('delfqrtoguruh/<int:id1>/<int:id2>', views.delfqrtoguruh, name='delfqrtoguruh'), 
+    path('delgr/<int:id>', views.delgr, name='delgr'),
+    
     path('addtur', views.addtur, name='addtur'), 
     path('deltur/<int:id>', views.deltur, name='deltur'), 
     path('addklassifikator', views.addklassifikator, name='addklassifikator'), 

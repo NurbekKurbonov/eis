@@ -173,6 +173,7 @@ def ensamkor(request):
 
     }    
     return render(request, '04_minenergiya/ensamkor/0_ensamkor.html', context)
+
 @group_required('whitebone')	
 def addensamkor(request):
 
@@ -187,6 +188,7 @@ def addensamkor(request):
     faqir_show=filtr_faqir.objects.filter(owner=request.user)  
     turi=tur.objects.filter(owner=request.user) 
     kl=klassifikator.objects.filter(owner=request.user)    
+    gr=guruh.objects.filter(owner=request.user)  
     
     list_klss=[]
     for k in kl:
@@ -222,6 +224,7 @@ def addensamkor(request):
         'turi':turi,
         'kl':kl,
         'list_klass':list_klss,
+        'gr':gr,
     }
 
     if request.method == 'GET':
@@ -323,7 +326,7 @@ def fqr_show(request):
                 filtr_faqir.objects.create(owner=request.user, 
                                             fqr=allfaqir.objects.get(pk=i))
 
-        messages.success(request, "Muvofaqqiyatli biriktirildi!")
+        messages.success(request, "muvafaqqiyatli biriktirildi!")
 
         return redirect('addensamkor')
 @group_required('whitebone')	
@@ -331,7 +334,7 @@ def delfaqirshow(request, id):
 
     d = filtr_faqir.objects.get(pk=id)
     d.delete()
-    messages.success(request, 'Muvofaqqiyatli o`chirildi')
+    messages.success(request, 'muvafaqqiyatli o`chirildi')
     return redirect('addensamkor')
 
 @group_required('whitebone')	
@@ -405,12 +408,62 @@ def delfiltrres(request, id):
 #*************GURUH******************************
 @group_required('whitebone')	
 def addguruh(request):
-    n=1
-    for i in guruh.objects.filter(owner=request.user):
-        n=n+1
+    if request.method == 'POST':
+        nomi=request.POST['nomi']
+
+        if nomi=="":
+            messages.warning(request, 'guruh nomini kiriting!')
+            return redirect('addensamkor')
+        
+        for i in guruh.objects.filter(owner=request.user):
+            if i.nomi==nomi:
+                messages.warning(request, 'Ushbu nomdagi guruh mavjud!')
+                return redirect('addensamkor')
+        
+        messages.success(request, 'Yangi guruh muvafaqqiyatli tayyorlandi')
+        guruh.objects.create(owner=request.user, nomi=nomi)
+        
+        return redirect('addensamkor')
+
+@group_required('whitebone')	
+def savenameguruh(request, id):
+    if request.method == 'POST':
+        nomi=request.POST['nomi']
+
+        if nomi=="":
+            messages.warning(request, 'guruh nomini kiriting!')
+            return redirect('addensamkor')
+        
+        for i in guruh.objects.filter(owner=request.user):
+            if i.nomi==nomi:
+                messages.warning(request, 'Ushbu nomdagi guruh mavjud!')
+                return redirect('addensamkor')
+
+        gr=guruh.objects.get(pk=id)
+        gr.nomi=nomi
+        gr.save()
+        messages.success(request, 'Guruh nomi muvafaqqiyatli o`zgartirildi')
+        return redirect('addensamkor')
+
+@group_required('whitebone')	
+def addfqrtoguruh(request, id1, id2):
+    gr=guruh.objects.get(pk=id1)
     
-    guruh.objects.create(owner=request.user, nomi=str(n)+"-guruh")
-    
+    if gr.fqr.filter(owner=request.user, pk = id2).first():
+        messages.warning(request, 'ushbu foydalanuvchi allaqachon qo`shilgan')
+        return redirect('addensamkor')
+
+    gr.fqr.add(id2)
+    gr.save()
+    messages.success(request, 'foydalanuvchi guruhga muvafaqqiyatli qo`shildi')
+    return redirect('addensamkor')
+
+@group_required('whitebone')	
+def delfqrtoguruh(request, id1, id2):
+    gr=guruh.objects.get(pk=id1)
+    nom=gr.fqr.all().get(pk=id2)
+    gr.fqr.remove(id2)
+    messages.success(request, str(nom)+' foydalanuvchi guruhdan movofaqqiyatli o`chirildi')
     return redirect('addensamkor')
 
 @group_required('whitebone')	
@@ -421,7 +474,7 @@ def addtur(request):
 
         if turi=="Hudud bo`yicha":
            if hudud=="":
-            messages.success(request, 'Hududni tanlang')
+            messages.warning(request, 'Hududni tanlang')
             return redirect('addensamkor')
            else:
             pass
@@ -438,6 +491,13 @@ def deltur(request, id):
     turi = tur.objects.get(pk=id)
     turi.delete()
     messages.success(request, 'Qayta hisobot turini belgilang')
+    return redirect('addensamkor')
+
+@group_required('whitebone')	
+def delgr(request, id):
+    gr = guruh.objects.get(pk=id)    
+    gr.delete()
+    messages.success(request, str(gr)+' guruhi muvafaqqiyatli o`chirildi')
     return redirect('addensamkor')
 
 @group_required('whitebone')	
