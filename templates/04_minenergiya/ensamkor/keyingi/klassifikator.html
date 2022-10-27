@@ -1,4 +1,4 @@
-<form action="{% url 'addklassifikator' %}" method="post">
+<form action="{% url 'addklassifikator' E_ID%}" method="post">
     {% csrf_token %}   
 <div class="card-body">                         
     <div class="row"> 
@@ -72,7 +72,7 @@
         {% endif %}
         {% if kl.count %}
         {% for v in kl %}        
-        <a href="{% url 'delklassifikator' v.id %}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
+        <a href="{% url 'delklassifikator' v.id E_ID%}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
         {% endfor %}    
         {% endif %}     
 

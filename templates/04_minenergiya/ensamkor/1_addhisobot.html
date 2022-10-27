@@ -30,7 +30,7 @@
                             <tr>
                                 <td>{{forloop.counter}}</td>
                                 <td class="d-none d-md-table-cell">{{v.fqr}}</td>
-                                <td class="d-none d-md-table-cell"><a href="{% url 'delfaqirshow' v.id%}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                                <td class="d-none d-md-table-cell"><a href="{% url 'delfaqirshow' v.id E_ID%}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
                             </tr>
                             {% endfor %}
                     
@@ -45,7 +45,7 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <form action="{% url 'fqr_show' %}" method="post">
+                <form action="{% url 'fqr_show' E_ID %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-12">
@@ -138,7 +138,7 @@
                         <tr>
                             <td> {{forloop.counter}}</td>
                             <td class="d-none d-md-table-cell">{{v.resurs.nomi}}</td>
-                            <td class="d-none d-md-table-cell"><a href="{% url 'delfiltrres' v.id %}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
+                            <td class="d-none d-md-table-cell"><a href="{% url 'delfiltrres' v.id E_ID%}"><i class="align-middle me-1" data-feather="trash-2"></i></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -152,7 +152,7 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <form action="{% url 'addfiltrres' %}" method="post">
+                <form action="{% url 'addfiltrres' E_ID%}" method="post">
                     {% csrf_token %}
                     <div class="row">
 
@@ -188,13 +188,11 @@
     </div>
     </div>
 {% endif %}
-<!--************************Mahsulot qismi tomom***********************************-->
-
-    
+<!--************************Mahsulot qismi tomom***********************************-->    
 {% if his_res.count %}  
     <div class="col-6">
         <div class="card">         
-            <form action="{% url 'addtur' %}" method="post">
+            <form action="{% url 'addtur' E_ID %}" method="post">
                 {% csrf_token %}   
             <div class="card-body">                         
                 <div class="row"> 
@@ -280,7 +278,7 @@
                     {% endif %}
                     {% for v in turi %}
                     {% if turi.count %}
-                    <a href="{% url 'deltur' v.id %}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
+                    <a href="{% url 'deltur' v.id E_ID%}" class="btn btn-outline-warning float-end"><i class="align-middle me-2" data-feather="skip-back"></i>O'zgartirish</a> 
                     {% endif %}
                     {% endfor %}   
                     </div>   
@@ -308,9 +306,8 @@
                     </div> 
                 </div>
                 {% endif %}
-                
                 <!--Tayyorlash-->
-                {% if kl.count or "Xususiy" in v.tur or "Hudud bo`yicha" in v.tur %}
+                {% if kl.count or "Xususiy" in v.tur or "Hudud bo`yicha" in v.tur or gr.count %}
                 <div class="col-12">
                     <div class="card">         
                         {% include '04_minenergiya/ensamkor/keyingi/tayyorlash.html' %}  

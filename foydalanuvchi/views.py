@@ -566,7 +566,7 @@ def adddavr(request):
             his.ist.add(i.id)    
         for i in hisobot_uzat.objects.filter(owner=request.user, title=title):
             his.uzat.add(i.id) 
-            
+        his.save()        
         messages.success(request, 'Hisobot muvafaqqiyatli yuborildi! ')
         return redirect('davr')
 @group_required('Faqirlar')
@@ -1300,7 +1300,7 @@ def result_his(request, id, tur, birl):
                                 koef2=j.qiymat
                             if birl == 'valut':
                                 koef2=1000*j.qiymat*his.valyuta.qiymati/his.valyuta.somda
-                            q=j.qiymat_pul*koef2/(k)
+                            q=j.qiymat_pul*koef2/yaxlit.qiymati
                         
                         obj[r].append(float('{0:.2f}'.format(float(q))))
                         

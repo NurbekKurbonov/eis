@@ -6,40 +6,10 @@ from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar, yaxlitlash
 from django.urls import reverse
 
 from s_ad.models import resurslar, Valyuta, davlatlar, viloyatlar, tumanlar
+from kirish.models import savolnoma
 
-# user*******************
-class allfaqir(models.Model): 
-    owner=models.OneToOneField(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
-    inn = models.CharField("STIR", max_length=50)
-    
-    nomi=models.CharField("Korxona nomi", max_length=250, blank=True)    
-    iftum=models.ForeignKey(IFTUM, verbose_name=("IFTUM"), on_delete=models.CASCADE, default="",blank=True, null=True)
-    dbibt=models.ForeignKey(DBIBT, verbose_name=("DBIBT"), on_delete=models.CASCADE, default="",blank=True, null=True)    
-    thst=models.ForeignKey(THST, verbose_name=("THST"), on_delete=models.CASCADE, default="",blank=True, null=True)    
-    
-    mobil=models.CharField("Ish boshqaruvchi raqami", max_length=12, blank=True)
-    tel=models.CharField("Korxona raqami", max_length=12, blank=True)
-    
-    dav=models.ForeignKey(davlatlar, verbose_name=("Davlat"), on_delete=models.CASCADE, default="",blank=True, null=True)
-    vil=models.ForeignKey(viloyatlar, verbose_name=("Viloyat"), on_delete=models.CASCADE, default="",blank=True, null=True)
-    tum=models.ForeignKey(tumanlar, verbose_name=("Tuman"), on_delete=models.CASCADE, default="",blank=True, null=True)
-    manzil=models.TextField("Manzil", blank=True)
-
-    about=models.TextField("Korxona haqida qisqacha", blank=True)
-    emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=True, max_length=255, default='profile_emb/login_emb.jpg')
-    
-    class Meta:
-        verbose_name = ("Foydalanuvchi")
-        verbose_name_plural = ("00_Foydalanuvchilar")
-
-    def __str__(self):
-        return f"{self.nomi} - {self.inn}"
-
-    def get_absolute_url(self):
-        return reverse("allfaqir_detail", kwargs={"pk": self.pk})
-    
+   
 #******************************************************
-
 class ichres(models.Model):
     resurs=models.ForeignKey(resurslar, on_delete=models.CASCADE)  
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -364,3 +334,40 @@ class VVP(models.Model):
     def get_absolute_url(self):
         return reverse("VVP_detail", kwargs={"pk": self.pk})
 
+# user*******************
+class allfaqir(models.Model): 
+    owner=models.ManyToManyField(to=User, verbose_name=("Xodimlar"), blank=True)
+    inn = models.CharField("STIR", max_length=50)
+    funksiya=models.ForeignKey(savolnoma, verbose_name=("Funksiyalari"), on_delete=models.CASCADE, blank=True, null=True)
+    nomi=models.CharField("Korxona nomi", max_length=250, blank=True)    
+    iftum=models.ForeignKey(IFTUM, verbose_name=("IFTUM"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    dbibt=models.ForeignKey(DBIBT, verbose_name=("DBIBT"), on_delete=models.CASCADE, default="",blank=True, null=True)    
+    thst=models.ForeignKey(THST, verbose_name=("THST"), on_delete=models.CASCADE, default="",blank=True, null=True)    
+    
+    mobil=models.CharField("Ish boshqaruvchi raqami", max_length=12, blank=True)
+    tel=models.CharField("Korxona raqami", max_length=12, blank=True)
+    
+    dav=models.ForeignKey(davlatlar, verbose_name=("Davlat"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    vil=models.ForeignKey(viloyatlar, verbose_name=("Viloyat"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    tum=models.ForeignKey(tumanlar, verbose_name=("Tuman"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    manzil=models.TextField("Manzil", blank=True)
+
+    about=models.TextField("Korxona haqida qisqacha", blank=True)
+    emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=True, max_length=255, default='profile_emb/login_emb.jpg')
+    
+    reja=models.ManyToManyField(plan_umumiy, verbose_name=("Reja hisobotlari"), blank=True)
+    fakt=models.ManyToManyField(hisobot_item, verbose_name=("Fakt hisobotlari"), blank=True)
+    TexnikTadbir=models.ManyToManyField(TTT_umumiy_reja, verbose_name=("Texnik tadbirlar"), blank=True)
+    VVP=models.ManyToManyField(VVP, verbose_name=("Ishlab chiqarilgan mahsulotlar"), blank=True)
+    hisobot=models.ManyToManyField(hisobot_full, verbose_name=("Ishlab chiqarilgan mahsulotlar"), blank=True)
+
+
+    class Meta:
+        verbose_name = ("Foydalanuvchi")
+        verbose_name_plural = ("00_Foydalanuvchilar")
+
+    def __str__(self):
+        return f"{self.nomi} - {self.inn}"
+
+    def get_absolute_url(self):
+        return reverse("allfaqir_detail", kwargs={"pk": self.pk})

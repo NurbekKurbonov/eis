@@ -19,8 +19,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash
 
-from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich
-
+from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, plan_umumiy
+from foydalanuvchi.models import TTT_umumiy_reja, VVP
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
         if isinstance(group, six.string_types):
@@ -828,10 +828,10 @@ def monitoring_users(request):
 @group_required('admin2')
 def passport(request,id):
 
-    fqir=allfaqir.objects.all()
+    
     foydalanuvchi = allfaqir.objects.get(pk=id)
     
-    savol=savolnoma.objects.get(owner=foydalanuvchi.owner.id)
+    savol=foydalanuvchi.funksiya
 
     savol1=""
     savol2=""
@@ -1201,3 +1201,54 @@ def delyaxlitlash(request, id):
     val.delete()
     messages.success(request, 'Yaxlitlanuvchi qiymat muvafaqqiyatli o`chirildi')
     return redirect('yaxlitlashV')
+
+@group_required('admin2')
+def updatefqr(request):
+    fqr=allfaqir.objects.all()
+    
+    fya=savolnoma.objects.all() #+
+    fakt=hisobot_item.objects.all()
+    pu=plan_umumiy.objects.all()
+    TexnikTadbir=TTT_umumiy_reja.objects.all()
+    VP=VVP.objects.all()
+    hisobot=hisobot_full.objects.all()
+    for v in fqr:
+        for own in v.owner.all():
+            #funksiya************************************
+            for i in fya:
+                if own==i.owner:
+                    v.funksiya=savolnoma(i.id)
+                    v.save()                    
+        
+            #fakt****************************************
+            for i in fakt:                
+                if own==i.owner:
+                    v.fakt.add(i.id)
+                    v.save()
+
+            #rejalar****************************************
+            for i in pu:                
+                if own==i.owner:
+                    v.reja.add(i.id)
+                    v.save()
+            
+            #TTCHT****************************************
+            for i in TexnikTadbir:                
+                if own==i.owner:
+                    v.TexnikTadbir.add(i.id)
+                    v.save()
+
+            #VP****************************************
+            for i in VP:                
+                if own==i.owner:
+                    v.VVP.add(i.id)
+                    v.save()
+            
+            #hisobotlari****************************************
+            for i in hisobot:                
+                if own==i.owner:
+                    v.hisobot.add(i.id)
+                    v.save()
+
+    messages.success(request, 'Muvafaqqiyatli Yangilandi')
+    return redirect('monitoring_users')

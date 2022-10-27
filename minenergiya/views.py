@@ -1,4 +1,5 @@
 import re
+from time import strptime
 from django.shortcuts import render, redirect
 
 from django.utils import timezone
@@ -14,10 +15,13 @@ import six
 
 from django.contrib.auth.models import User
 from dateutil.relativedelta import relativedelta
-from foydalanuvchi.models import allfaqir, TexnikTadbir, his_ich, ichres, istres, sotres
+
+from foydalanuvchi.models import allfaqir, TexnikTadbir, ichres, istres, sotres
 from s_ad.models import IFTUM, THST, DBIBT, resurslar, Valyuta
 from django.core.exceptions import PermissionDenied
-from .models import filtr_faqir, guruh, ensamfiltr, tur, klassifikator
+from .models import filtr_faqir, guruh, ensamfiltr, tur, klassifikator, his_res
+from django.http import HttpResponseRedirect, JsonResponse
+import operator
 
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
@@ -54,7 +58,7 @@ def korxonalar(request):
 
 #************Baxrom aka jadvallari********************************
 #************I jadval********************************
-@group_required('whitebone')	
+@group_required('whitebone')
 def I_jadval(request):
 
     fqir=allfaqir.objects.all()
@@ -168,28 +172,56 @@ def tejash(request):
 #********************Yoqilg'i sarfi*************************
 @group_required('whitebone')	
 def ensamkor(request):
-    
-    context={
+    esf=ensamfiltr.objects.filter(owner=request.user)
 
-    }    
+    context={
+        'esf':esf,
+
+    }     
     return render(request, '04_minenergiya/ensamkor/0_ensamkor.html', context)
 
 @group_required('whitebone')	
-def addensamkor(request):
+def addbyshablon(request, bolim):    
+    context={
+        'bolim':bolim,
+    }    
+    if request.method == 'GET':
+        return render(request, '04_minenergiya/ensamkor/1_0_addhisobot.html', context)
+    if request.method == 'POST':
+        nomi=request.POST['nomi']
 
-    his_tur=tur.objects.filter(owner=request.user)
+        for i in ensamfiltr.objects.filter(owner=request.user):
+            if nomi==i.nomi:
+                messages.error(request, "Sizda "+str(nomi)+" nomli hisobot mavjud!")
+                url='addbyshablon/'+str(bolim)
+                next = request.POST.get('next', '/minenergiya/'+url)            
+                return HttpResponseRedirect(next)
+
+        E_ID = bolim+"_"+timezone.now().strftime("%Y%m%d%H%M%S")        
+        ensamfiltr.objects.create(
+            owner=request.user, E_ID=E_ID, nomi=nomi, vaqt=timezone.now(),
+        )
+        url='addensamkor/'+str(E_ID)
+        next = request.POST.get('next', '/minenergiya/'+url)            
+        return HttpResponseRedirect(next)
+
+@group_required('whitebone')	
+def addensamkor(request, E_ID):
+
+    his_tur=tur.objects.filter(owner=request.user, E_ID=E_ID)
 
     iftum=IFTUM.objects.all()
     dbibt=DBIBT.objects.all()
     thst=THST.objects.all()
     fqr=allfaqir.objects.all()
-    rsrs=resurslar.objects.filter(owner=request.user)
-    filtr=filtr_faqir.objects.filter(owner=request.user)
-    faqir_show=filtr_faqir.objects.filter(owner=request.user)  
-    turi=tur.objects.filter(owner=request.user) 
-    kl=klassifikator.objects.filter(owner=request.user)    
-    gr=guruh.objects.filter(owner=request.user)  
+
+    faqir_show=filtr_faqir.objects.filter(owner=request.user, E_ID=E_ID)  
+    turi=tur.objects.filter(owner=request.user, E_ID=E_ID) 
+    kl=klassifikator.objects.filter(owner=request.user, E_ID=E_ID)    
+    gr=guruh.objects.filter(owner=request.user, E_ID=E_ID)  
     
+    esf=ensamfiltr.objects.get(owner=request.user, E_ID=E_ID)
+
     list_klss=[]
     for k in kl:
         lk=k.klass.split(", ")
@@ -197,66 +229,70 @@ def addensamkor(request):
         list_klss=lk
 
     #***Resurslarni ko'rsatish
-    resurs_list=[]
-    for i in faqir_show:            
-        for r in ichres.objects.filter(owner=i.fqr.owner):
-            resurs_list.append(r.resurs)
-        for r in istres.objects.filter(owner=i.fqr.owner):
-            resurs_list.append(r.resurs)
-        for r in sotres.objects.filter(owner=i.fqr.owner):
-            resurs_list.append(r.resurs)
-        
-    resurs_list=list(set(resurs_list))       
-    #**************************************************************************************************    
-    
+    resurs_list=resurslar.objects.all   
+    #**************************************************************************************************
     
     context={
+        'E_ID':E_ID,
         'iftum':iftum,
         'dbibt': dbibt,
         'thst':thst,
         'faqir_show':faqir_show,
         'fqr':fqr,
-        'rsrs': rsrs,
         'resurs_list':resurs_list,
-        'his_res':his_ich.objects.filter(owner=request.user),
+        'his_res':his_res.objects.filter(owner=request.user, E_ID=E_ID),
         'valyuta':Valyuta.objects.all(),
         'his_tur':his_tur,
         'turi':turi,
         'kl':kl,
         'list_klass':list_klss,
         'gr':gr,
+        'esf':esf,
     }
 
     if request.method == 'GET':
         return render(request, '04_minenergiya/ensamkor/1_addhisobot.html', context)
     if request.method == 'POST':
-        oraliq=request.POST['oraliq']        
-        
+        oraliq=request.POST['oraliq']
         olchov=request.POST.getlist('olchov')
-
+        
         if not oraliq:
-            messages.error(request, 'Iltimos oraliqni kiriting?! ')           
-            return redirect('addensamkor')
+            messages.error(request, 'Hisobot oralig`ini kiriting?! ')           
+            url='addensamkor/'+str(E_ID)
+            next = request.POST.get('next', '/minenergiya/'+url)            
+            return HttpResponseRedirect(next)
+
         oraliq=oraliq.split(" <<>> ")
-        dan=oraliq[0]
+        dan=datetime.datetime.strptime(oraliq[0],"%Y-%m-%d")
         if len(oraliq)==1:
             gacha=dan
         else:
-            gacha=oraliq[1]
+            gacha=datetime.datetime.strptime(oraliq[1],"%Y-%m-%d")
+        
+        esf=ensamfiltr.objects.get(owner=request.user, E_ID=E_ID)
+        esf.shakl=request.POST.getlist('shakl')
+        esf.dan=dan
+        esf.gacha=gacha
+        esf.olchov=olchov
+        
+        for i in filtr_faqir.objects.filter(owner=request.user, E_ID=E_ID):
+            esf.filtr_faqir.add(i.id)
+        for i in guruh.objects.filter(owner=request.user, E_ID=E_ID):
+            esf.guruh.add(i.id)
+        for i in klassifikator.objects.filter(owner=request.user, E_ID=E_ID):
+            esf.klassifikator.add(i.id)    
+        for i in tur.objects.filter(owner=request.user, E_ID=E_ID):
+                    esf.tur.add(i.id)
+        for i in his_res.objects.filter(owner=request.user, E_ID=E_ID):
+                    esf.his_res.add(i.id)
 
-        vaqt=timezone.now()
-        
-        
-        ensamfiltr.objects.create(
-                                    owner=request.user, 
-                                    nomi="hisobotcha", 
-                                vaqt=vaqt, 
-                                dan=dan, gacha=gacha)
-        messages.success(request, 'Hisobot muvafaqqiyatli tayyorlandi! ')
+        esf.save()
+        messages.success(request, 'Hisobot muvafaqqiyatli biriktirildi! ')  
         return redirect('ensamkor')
+
 #kodlar bo'yicha chiqarish:
 @group_required('whitebone')	
-def fqr_show(request):    
+def fqr_show(request, E_ID):    
     fqr=allfaqir.objects.all()
     
     if request.method == 'POST':
@@ -271,21 +307,21 @@ def fqr_show(request):
                 if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                     pass
                 else:
-                    filtr_faqir.objects.create(owner=request.user, 
+                    filtr_faqir.objects.create(owner=request.user, E_ID=E_ID,
                                             fqr=allfaqir.objects.get(pk=i.id))
         if dbibt_fqr=="0":
             for i in fqr.filter(iftum=iftum_fqr, thst=THST(thst_fqr)):
                 if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                     pass
                 else:
-                    filtr_faqir.objects.create(owner=request.user, 
+                    filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i.id))
         if thst_fqr=="0":
             for i in fqr.filter(iftum=iftum_fqr, dbibt=DBIBT(dbibt_fqr)):
                 if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                     pass
                 else:
-                    filtr_faqir.objects.create(owner=request.user, 
+                    filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i.id))
         
         if iftum_fqr!="0" and dbibt_fqr=="0" and thst_fqr=="0":
@@ -293,21 +329,21 @@ def fqr_show(request):
                 if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                     pass
                 else:
-                    filtr_faqir.objects.create(owner=request.user, 
+                    filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i.id))
         if iftum_fqr=="0" and dbibt_fqr!="0" and thst_fqr=="0":
             for i in fqr.filter(dbibt=DBIBT(dbibt_fqr)):
                 if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                     pass
                 else:
-                    filtr_faqir.objects.create(owner=request.user, 
+                    filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i.id))
         if iftum_fqr=="0" and dbibt_fqr=="0" and thst_fqr!="0":
             for i in fqr.filter(thst=THST(thst_fqr)):
                 if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                     pass
                 else:
-                    filtr_faqir.objects.create(owner=request.user, 
+                    filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i.id))
         if iftum_fqr=="0" and dbibt_fqr=="0" and thst_fqr=="0" and len(stirnom)==0:
             messages.warning(request, "Hech bir kod belgilanmadi!")    
@@ -316,117 +352,173 @@ def fqr_show(request):
             if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i.id)).first():        
                 pass
             else:
-                filtr_faqir.objects.create(owner=request.user, 
+                filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i.id))
         
         for i in stirnom:            
             if filtr_faqir.objects.filter(owner=request.user, fqr=allfaqir(i)).first():        
                 pass
             else:
-                filtr_faqir.objects.create(owner=request.user, 
+                filtr_faqir.objects.create(owner=request.user, E_ID=E_ID, 
                                             fqr=allfaqir.objects.get(pk=i))
 
         messages.success(request, "muvafaqqiyatli biriktirildi!")
 
-        return redirect('addensamkor')
+        url='addensamkor/'+str(E_ID)
+        next = request.POST.get('next', '/minenergiya/'+url)            
+        return HttpResponseRedirect(next)
+        
 @group_required('whitebone')	
-def delfaqirshow(request, id):
+def delfaqirshow(request, id, E_ID):
 
     d = filtr_faqir.objects.get(pk=id)
     d.delete()
     messages.success(request, 'muvafaqqiyatli o`chirildi')
-    return redirect('addensamkor')
+    
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def ensamkor_result(request):
+def ensamkor_result(request, id):
+    esf=ensamfiltr.objects.get(pk=id)
     
+    delta = relativedelta(esf.gacha, esf.dan)
+    
+    #OY LAR BO"YICHA
+    #******** Mahsulot ishlab chiqarish ****************************
+    resurs=esf.his_res.all()     
+
+    farq_oylar=delta.months+delta.years*12
+    
+    oylar=[]
+    keyingi_oy=esf.dan    
+    for i in range(int(farq_oylar)+1):        
+        keyingi_oy=keyingi_oy+relativedelta(months=1)
+        oylar.append(keyingi_oy.strftime("%m-%Y"))
+    
+    #mich**********************************************************
+    
+    oy_list = ['YANVAR', 'FEVRAL', 'MART', 'APREL', 'MAY', 'IYUN', 'IYUL', 'AVGUST','SENTYABR', 'OKTYABR', 'NOYABR', 'DEKABR']
+    
+    mich={}
+    
+    for f in esf.filtr_faqir.all():
+        for oy in oylar:
+            lst=[]
+            oycha=oy_list[int(oy.split("-")[0])-1]
+            yilcha=int(oy.split("-")[1])
+            if f.fqr.fakt.all().filter(title=str(oycha)+"-"+str(yilcha)).exists():
+                pass
+                
+                
+        mich[f]=lst
+
+    #******** Mahsulot ishlab chiqarish TAMOM **********************
 
     context={
-        
-
+        'esf':esf,
+        'resurs':resurs,
+        'keyingi_oy':mich
     }    
     return render(request, '04_minenergiya/ensamkor/2_result.html', context)
 
 #****************FILTR**************************************************
 @group_required('whitebone')
-def addfiltrres(request):
+def addfiltrres(request, E_ID):
     
     faqir_show=filtr_faqir.objects.filter(owner=request.user)       
     
    
     if request.method=="POST":        
         resurs=request.POST.getlist('resurs_id')
-        barcha=request.POST.getlist('barcha')
+        barcha=request.POST.getlist('barcha')        
 
         if "1" in barcha:
             for v in faqir_show:
                 for r in ichres.objects.filter(owner_id=v.fqr.owner_id):
-                    if his_ich.objects.filter(owner=request.user, resurs = r.resurs_id).first():
+                    if his_res.objects.filter(owner=request.user, E_ID=E_ID, resurs = r.resurs_id).first():
                         pass                        
                     else:
-                        his_ich.objects.create(
+                        his_res.objects.create(E_ID=E_ID,
                             owner=request.user,
                             resurs=resurslar(pk=r.resurs_id))     
 
                 for r in istres.objects.filter(owner_id=v.fqr.owner_id):
-                    if his_ich.objects.filter(owner=request.user, resurs = r.resurs_id).first():
+                    if his_res.objects.filter(owner=request.user, E_ID=E_ID, resurs = r.resurs_id).first():
                         pass                        
                     else:
-                        his_ich.objects.create(
-                            owner=request.user,
+                        his_res.objects.create(
+                            owner=request.user,E_ID=E_ID,
                             resurs=resurslar(pk=r.resurs_id))    
 
                 for r in sotres.objects.filter(owner_id=v.fqr.owner_id):
-                    if his_ich.objects.filter(owner=request.user, resurs = r.resurs_id).first():
+                    if his_res.objects.filter(owner=request.user, E_ID=E_ID, resurs = r.resurs_id).first():
                         pass                        
                     else:
-                        his_ich.objects.create(
-                            owner=request.user,
+                        his_res.objects.create(
+                            owner=request.user,E_ID=E_ID,
                             resurs=resurslar(pk=r.resurs_id))                  
             
-            return redirect('addensamkor')
+            url='addensamkor/'+str(E_ID)
+            next = request.POST.get('next', '/minenergiya/'+url)            
+            return HttpResponseRedirect(next)
         else:
             for i in resurs:
-                if his_ich.objects.filter(owner=request.user, resurs = i).first():
+                if his_res.objects.filter(owner=request.user, E_ID=E_ID,resurs = i).first():
                     messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
-                    return redirect('addhisobot')
+                    url='addensamkor/'+str(E_ID)
+                    next = request.POST.get('next', '/minenergiya/'+url)            
+                    return HttpResponseRedirect(next)
                     
-                his_ich.objects.create(
-                    owner=request.user,
+                his_res.objects.create(
+                    owner=request.user,E_ID=E_ID,
                     resurs=resurslar(pk=i)
                 )
                 messages.success(request, 'Resurs muvafaqqiyatli qo`shildi')
-            return redirect('addensamkor')
+            
+            url='addensamkor/'+str(E_ID)
+            next = request.POST.get('next', '/minenergiya/'+url)            
+            return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def delfiltrres(request, id):
-    davlat = his_ich.objects.get(pk=id)
+def delfiltrres(request, id, E_ID):
+    davlat = his_res.objects.get(pk=id)
     davlat.delete()
     messages.success(request, 'Resurs muvafaqqiyatli o`chirildi')
-    return redirect('addensamkor')
+    
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 #*************GURUH******************************
 @group_required('whitebone')	
-def addguruh(request):
+def addguruh(request, E_ID):
     if request.method == 'POST':
         nomi=request.POST['nomi']
 
         if nomi=="":
             messages.warning(request, 'guruh nomini kiriting!')
-            return redirect('addensamkor')
+            url='addensamkor/'+str(E_ID)
+            next = request.POST.get('next', '/minenergiya/'+url)            
+            return HttpResponseRedirect(next)
         
         for i in guruh.objects.filter(owner=request.user):
             if i.nomi==nomi:
                 messages.warning(request, 'Ushbu nomdagi guruh mavjud!')
-                return redirect('addensamkor')
+                url='addensamkor/'+str(E_ID)
+                next = request.POST.get('next', '/minenergiya/'+url)            
+                return HttpResponseRedirect(next)
         
         messages.success(request, 'Yangi guruh muvafaqqiyatli tayyorlandi')
-        guruh.objects.create(owner=request.user, nomi=nomi)
+        guruh.objects.create(owner=request.user, E_ID=E_ID, nomi=nomi)
         
-        return redirect('addensamkor')
+        url='addensamkor/'+str(E_ID)
+        next = request.POST.get('next', '/minenergiya/'+url)            
+        return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def savenameguruh(request, id):
+def savenameguruh(request, id, E_ID):
     if request.method == 'POST':
         nomi=request.POST['nomi']
 
@@ -443,10 +535,13 @@ def savenameguruh(request, id):
         gr.nomi=nomi
         gr.save()
         messages.success(request, 'Guruh nomi muvafaqqiyatli o`zgartirildi')
-        return redirect('addensamkor')
+        
+        url='addensamkor/'+str(E_ID)
+        next = request.POST.get('next', '/minenergiya/'+url)            
+        return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def addfqrtoguruh(request, id1, id2):
+def addfqrtoguruh(request, id1, id2, E_ID):
     gr=guruh.objects.get(pk=id1)
     
     if gr.fqr.filter(owner=request.user, pk = id2).first():
@@ -456,18 +551,24 @@ def addfqrtoguruh(request, id1, id2):
     gr.fqr.add(id2)
     gr.save()
     messages.success(request, 'foydalanuvchi guruhga muvafaqqiyatli qo`shildi')
-    return redirect('addensamkor')
+        
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def delfqrtoguruh(request, id1, id2):
+def delfqrtoguruh(request, id1, id2, E_ID):
     gr=guruh.objects.get(pk=id1)
     nom=gr.fqr.all().get(pk=id2)
     gr.fqr.remove(id2)
     messages.success(request, str(nom)+' foydalanuvchi guruhdan movofaqqiyatli o`chirildi')
-    return redirect('addensamkor')
+    
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def addtur(request):
+def addtur(request, E_ID):
     if request.method=="POST": 
         turi=request.POST.get('turi') 
         hudud=request.POST.get('hudud') 
@@ -475,33 +576,47 @@ def addtur(request):
         if turi=="Hudud bo`yicha":
            if hudud=="":
             messages.warning(request, 'Hududni tanlang')
-            return redirect('addensamkor')
+            url='addensamkor/'+str(E_ID)
+            next = request.POST.get('next', '/minenergiya/'+url)            
+            return HttpResponseRedirect(next)
            else:
             pass
 
         tur.objects.create(
-            owner=request.user,            
+            owner=request.user, E_ID=E_ID,            
             tur=turi+" "+hudud,            
         )
-    
-    return redirect('addensamkor')
+    messages.success(request, 'filtr turi '+str(turi)+' muvafaqqiyatli biriktirildi')        
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def deltur(request, id):
+def deltur(request, id, E_ID):
     turi = tur.objects.get(pk=id)
+
+    if turi.tur=="Ixtiyoriy guruhlash ":
+        for i in guruh.objects.filter(owner=request.user, E_ID=E_ID):
+            i.delete()
+         
     turi.delete()
     messages.success(request, 'Qayta hisobot turini belgilang')
-    return redirect('addensamkor')
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def delgr(request, id):
+def delgr(request, id, E_ID):
     gr = guruh.objects.get(pk=id)    
     gr.delete()
     messages.success(request, str(gr)+' guruhi muvafaqqiyatli o`chirildi')
-    return redirect('addensamkor')
+    
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def addklassifikator(request):
+def addklassifikator(request, E_ID):
     if request.method=="POST": 
         klass=request.POST.getlist('klass') 
         
@@ -510,7 +625,9 @@ def addklassifikator(request):
                 pass
             else:
                 messages.success(request, 'IFTUM parametrini tanlang')
-                return redirect('addensamkor')
+                url='addensamkor/'+str(E_ID)
+                next = request.POST.get('next', '/minenergiya/'+url)            
+                return HttpResponseRedirect(next)
 
         kl=""
         for i in klass:
@@ -518,17 +635,45 @@ def addklassifikator(request):
 
         if len(klass)==1:
             messages.success(request, 'Klassifikatorlarni tanlang')
-            return redirect('addensamkor')
-        klassifikator.objects.create(
+            url='addensamkor/'+str(E_ID)
+            next = request.POST.get('next', '/minenergiya/'+url)            
+            return HttpResponseRedirect(next)
+        
+        klassifikator.objects.create( E_ID=E_ID,
             owner=request.user,            
             klass=kl,            
         )
     
-    return redirect('addensamkor')
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
 
 @group_required('whitebone')	
-def delklassifikator(request, id):
+def delklassifikator(request, id, E_ID):
     turi = klassifikator.objects.get(pk=id)
     turi.delete()
     messages.success(request, 'Klassifikatorni belgilang')
-    return redirect('addensamkor')
+
+    url='addensamkor/'+str(E_ID)
+    next = request.POST.get('next', '/minenergiya/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('whitebone')	
+def delensamfilter(request, id, E_ID):
+    esf=ensamfiltr.objects.get(pk=id)
+    for i in filtr_faqir.objects.filter(owner=request.user, E_ID=E_ID):
+        i.delete()
+    for i in guruh.objects.filter(owner=request.user, E_ID=E_ID):
+        i.delete()
+    for i in klassifikator.objects.filter(owner=request.user, E_ID=E_ID):
+        i.delete()
+    for i in tur.objects.filter(owner=request.user, E_ID=E_ID):
+        i.delete()
+    for i in his_res.objects.filter(owner=request.user, E_ID=E_ID):
+        i.delete()
+    
+    
+    esf.delete()
+
+    messages.success(request, 'Hisobot muvofaqqiyatli o`chirildi')           
+    return redirect('ensamkor')

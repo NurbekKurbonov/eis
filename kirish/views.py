@@ -397,9 +397,6 @@ def savol(request):
         allf.tum=tumanlar(tuman)
         
         allf.manzil=manzil
-          
-        allf.save()
-        
         usr=User.objects.get(pk=request.user.id)   
         usr.first_name=ism
         usr.last_name=fam
@@ -411,7 +408,9 @@ def savol(request):
             savol1=savol1,
             savol2=savol2,
         )
-        messages.success(request, 'EIS sistemasiga xush kelibsiz! :)')
+        allf.funksiya.add(savolnoma.objects.get(owner=request.user))
+        allf.save()
+        messages.success(request, 'EIS sistemasiga xush kelibsiz!')
         return redirect('home')
     
 def view404(request):

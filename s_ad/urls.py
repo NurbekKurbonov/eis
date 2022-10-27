@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('updatefqr', views.updatefqr, name='updatefqr'),
     path('icons', views.icons, name='icons'),
     
     path('', views.kirishP, name='kirishP'), 

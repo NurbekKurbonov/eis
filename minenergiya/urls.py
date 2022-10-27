@@ -22,25 +22,27 @@ urlpatterns = [
 
     #****************Texnik tadbirlar*******************************
     path('ensamkor', views.ensamkor, name='ensamkor'), 
-    path('addensamkor', views.addensamkor, name='addensamkor'), 
+    path('addbyshablon/<str:bolim>', views.addbyshablon, name='addbyshablon'), 
+    path('addensamkor/<str:E_ID>', views.addensamkor, name='addensamkor'), 
     
-    path('fqr_show', views.fqr_show, name='fqr_show'), 
-    path('delfaqirshow/<int:id>', views.delfaqirshow, name='delfaqirshow'), 
+    path('fqr_show/<str:E_ID>', views.fqr_show, name='fqr_show'), 
+    path('delfaqirshow/<int:id>/<str:E_ID>', views.delfaqirshow, name='delfaqirshow'), 
     
-    path('ensamkor_result', views.ensamkor_result, name='ensamkor_result'), 
+    path('ensamkor_result/<int:id>', views.ensamkor_result, name='ensamkor_result'), 
 
-    path('addfiltrres', views.addfiltrres, name='addfiltrres'), 
-    path('delfiltrres/<int:id>', views.delfiltrres, name='delfiltrres'),
+    path('addfiltrres/<str:E_ID>', views.addfiltrres, name='addfiltrres'), 
+    path('delfiltrres/<int:id>/<str:E_ID>', views.delfiltrres, name='delfiltrres'),
     
-    path('addguruh', views.addguruh, name='addguruh'), 
-    path('savenameguruh/<int:id>', views.savenameguruh, name='savenameguruh'), 
-    path('addfqrtoguruh/<int:id1>/<int:id2>', views.addfqrtoguruh, name='addfqrtoguruh'), 
-    path('delfqrtoguruh/<int:id1>/<int:id2>', views.delfqrtoguruh, name='delfqrtoguruh'), 
-    path('delgr/<int:id>', views.delgr, name='delgr'),
+    path('addguruh/<str:E_ID>', views.addguruh, name='addguruh'), 
+    path('savenameguruh/<int:id>/<str:E_ID>', views.savenameguruh, name='savenameguruh'), 
+    path('addfqrtoguruh/<int:id1>/<int:id2>/<str:E_ID>', views.addfqrtoguruh, name='addfqrtoguruh'), 
+    path('delfqrtoguruh/<int:id1>/<int:id2>/<str:E_ID>', views.delfqrtoguruh, name='delfqrtoguruh'), 
+    path('delgr/<int:id>/<str:E_ID>', views.delgr, name='delgr'),
     
-    path('addtur', views.addtur, name='addtur'), 
-    path('deltur/<int:id>', views.deltur, name='deltur'), 
-    path('addklassifikator', views.addklassifikator, name='addklassifikator'), 
-    path('delklassifikator/<int:id>', views.delklassifikator, name='delklassifikator'),
-
+    path('addtur/<str:E_ID>', views.addtur, name='addtur'), 
+    path('deltur/<int:id>/<str:E_ID>', views.deltur, name='deltur'), 
+    path('addklassifikator/<str:E_ID>', views.addklassifikator, name='addklassifikator'), 
+    path('delklassifikator/<int:id>/<str:E_ID>', views.delklassifikator, name='delklassifikator'),
+    
+    path('delensamfilter/<int:id>/<str:E_ID>', views.delensamfilter, name='delensamfilter'),
 ] 
