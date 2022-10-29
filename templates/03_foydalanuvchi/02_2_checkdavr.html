@@ -23,7 +23,7 @@
                     <div class="row">
                         {% for v in h_ich %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.yaxlit}}  {{v.resurs.resurs.birlik}})</label>
                             <input type="number" step="0.000000001"
                                     class="form-control"  {{ruxsat}}
                                     autofocus required="true"
@@ -57,7 +57,7 @@
                     <div class="row">
                         {% for v in h_ist %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.yaxlit}} {{v.resurs.resurs.birlik}})</label>
                             <input type="number" step="0.000000001"
                                     class="form-control"  {{ruxsat}}
                                     autofocus required="true"
@@ -89,7 +89,7 @@
                     <div class="row">
                         {% for v in h_uzat %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.yaxlit}} {{v.resurs.resurs.birlik}})</label>
                             <input type="number" step="0.000000001"
                                     class="form-control"  {{ruxsat}}
                                     autofocus required="true"

@@ -931,15 +931,16 @@ def delhisobot(request, id, own_id):
 def tayyorlangan_hisobot(request, id):      
     fqir=allfaqir.objects.get(pk=id)
 
-    his = hisobot_full.objects.filter(owner=fqir.owner_id)
-    ist = istres.objects.filter(owner=fqir.owner_id)  
+    his = fqir.fakt.all()
+
+    #ist = istres.objects.filter(owner=fqir.owner_id)  
 
     context ={
     "id":id,
     "titleown": "Tayyorlangan hisobotlar",
     "active2": "active", 
 
-    'values':ist,
+    #'values':ist,
     'his':his,   
     
     }
