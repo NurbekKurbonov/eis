@@ -1,8 +1,8 @@
 from calendar import month
-import re
+
 from django.shortcuts import render, redirect
 import random
-
+from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -12,7 +12,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 #modelsdan chaqirish******************
-from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash
+from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP
 from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja
 from kirish.models import savolnoma
@@ -20,6 +20,8 @@ import six
 from django.core.exceptions import PermissionDenied
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponseRedirect, JsonResponse
+from django.core.files.storage import FileSystemStorage
+from django.views import View
 
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
@@ -113,26 +115,41 @@ def asosiyset(request):
             uzat=1
     #Korxona ma'lumotlarini o'zgartirish
     
-    h = allfaqir.objects.get(pk=id)
+    akkaunt = allfaqir.objects.get(owner=request.user)
     
+    iftum=IFTUM.objects.all()
+    thst=THST.objects.all()
+    dbibt=DBIBT.objects.all()
+
+    dav=davlatlar.objects.all()
+    vil=viloyatlar.objects.all()
+    tum=tumanlar.objects.all()
+
     context ={
         'active0':'active',
         'mich':mich,
         'uzat':uzat,
-        'hammasi':h
+        'hammasi':akkaunt,
+        'iftum':iftum,
+        'thst':thst,
+        'dbibt':dbibt,
+        'dav': dav,
+        'vil':vil,
+        'tum':tum,
+        
     }
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/01_0_asosiy_setting.html', context)
     if request.method=="POST":
-        h.nomi=request.POST['nomi']
-        h.about=request.POST['about']
+        akkaunt.nomi=request.POST['nomi']
+        akkaunt.about=request.POST['about']
         
-        if not request.POST['emblem']:
-            h.save()
-        else:
-            h.emblem=request.POST['emblem']
-            h.save()
-            
+        akkaunt.save()
+        if request.FILES.get('myfile', False):                       
+            myfile = request.FILES['myfile']
+            akkaunt.emblem=myfile
+            akkaunt.save()
+        messages.success(request, 'Amaliyot muvofaqqiyatli bajarildi')    
         return render(request, '03_foydalanuvchi/01_0_asosiy_setting.html', context)
         
 
@@ -1422,3 +1439,80 @@ def hisoblagichlar(request):
         't':"text"
     }
     return render(request, '03_foydalanuvchi/nosim/0_hisoblagichlar.html', context)
+
+def tahrir(request,id):    
+    if request.method=="POST":   
+            
+        allf=allfaqir.objects.get(pk=id)
+        allf.inn=request.POST["stir"]
+
+        sl=savolnoma.objects.get(pk=allf.funksiya_id)
+        sl.savol1=request.POST.get('savol1', False)
+        sl.savol2=request.POST.get('savol2', False)  
+        sl.save()
+        allf.funksiya=savolnoma(allf.funksiya_id)
+
+        allf.iftum=IFTUM(request.POST["iftum"])
+        allf.dbibt=DBIBT(request.POST["dbibt"])
+        allf.thst=THST(request.POST["thst"])
+        allf.mobil=request.POST["mobil"]
+        allf.tel=request.POST["telefon"]
+        allf.dav=davlatlar(request.POST["dav"])
+        allf.vil=viloyatlar(request.POST["vil"])
+        allf.tum=tumanlar(request.POST["tuman"])
+        allf.manzil=request.POST["manzil"]
+        allf.save()
+        
+        messages.success(request, 'Pasport muvafaqqiyatli yangilandi')
+        return redirect('asosiyset')
+
+class editpas(View):
+
+    def post(self, request): 
+        
+        password=request.POST["password"]
+                
+        u=User.objects.get(pk=request.user.id)
+        email=u.email
+        u.set_password(password)        
+        u.save()
+        email_subject='Parolni tiklash'
+        email=EmailMessage(
+            email_subject,
+            'Hurmatli '+u.username+'!\n\n Sizning parolingiz yangilandi: Parol:'+password,
+
+            'noreply.nurbek.kurbonov@nur.uz',                                
+            [email],
+                            )
+        email.send(fail_silently=False)
+        messages.success(request, 'Parol muvafaqqiyatli yangilandi!')        
+        return redirect('loginP')
+
+class editmail(View):
+    def post(self, request): 
+        usr=User.objects.all()               
+        u=User.objects.get(pk=request.user.id)
+        email=request.POST["email"]
+
+        emails=[]
+        
+        for v in usr:
+            emails.append(v.email)
+        if email in emails:
+            messages.error(request, 'ushbu pochta ro`yxatdan o`tkazilgan')
+            return redirect('asosiyset')    
+
+        u.email=email
+        u.save()
+
+        email_subject='Pochtani yangilash'
+        email=EmailMessage(
+            email_subject,
+            'Hurmatli '+u.username+'!\n\n Sizning pochtangiz muvofaqqiyatli yangilandi',
+
+            'noreply.nurbek.kurbonov@nur.uz',                                
+            [email],
+                            )
+        email.send(fail_silently=False)
+        messages.success(request, 'Pochta muvafaqqiyatli yangilandi!')        
+        return redirect('loginP')

@@ -346,13 +346,16 @@ def contact(request):
 def savol(request):
     if request.method=="GET":
         
+        allf=allfaqir.objects.get(owner=request.user)
+
         iftum=IFTUM.objects.all()
         thst=THST.objects.all()
         dbibt=DBIBT.objects.all()
+
         dav=davlatlar.objects.all()
         vil=viloyatlar.objects.all()
         tum=tumanlar.objects.all()
-        
+
         context={
             'iftum':iftum,
             'thst':thst,
@@ -408,10 +411,36 @@ def savol(request):
             savol1=savol1,
             savol2=savol2,
         )
-        allf.funksiya.add(savolnoma.objects.get(owner=request.user))
+        allf.funksiya=savolnoma.objects.get(owner=request.user)
+
         allf.save()
         messages.success(request, 'EIS sistemasiga xush kelibsiz!')
         return redirect('home')
     
 def view404(request):
     return render(request, '404.html')
+
+def davlatadd(request):
+    data = json.loads(request.body)
+    dav_id = data['val']
+    allf=allfaqir.objects.get(owner=request.user)
+    allf.dav=davlatlar(dav_id)
+    allf.save()  
+    
+    viloyat=viloyatlar.objects.filter(viloyat_davlati_id=dav_id)
+    return JsonResponse(list(viloyat.values("id", "viloyat_nomi")), safe=False)
+
+def viladd(request):
+    data = json.loads(request.body)
+    dav_id = data['val']
+
+    allf=allfaqir.objects.get(owner=request.user)
+    allf.vil=viloyatlar(dav_id)
+    allf.save()  
+    
+    tuman = tumanlar.objects.filter(tuman_viloyati_id=dav_id)
+
+    return JsonResponse(list(tuman.values("id", "tuman_nomi")), safe=False)
+    
+        
+

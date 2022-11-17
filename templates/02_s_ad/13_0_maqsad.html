@@ -1,0 +1,101 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block barR4 %}active{% endblock barR4 %}
+
+{% block content %}
+
+
+    
+<a href="{% url 'addmaqsad' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>
+
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle"> {{titleown}} </h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">             
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="5%">t/r</th>
+                            <th width="30%">Nomi</th>
+                            <th>Ishlab chiqarish</th>
+                            <th>Iste'mol qilish</th>
+                            <th>Uzatish/sotish</th>
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in val %}                        
+                        <tr>{% if v.checker is True %}
+                            <td>{{forloop.counter}}</td>
+                            <td>{{v.nomi}}</td>
+                            <td>{% if v.ich is True %}1{% else %}0{% endif %}</td>
+                            <td>{% if v.ist is True %}1{% else %}0{% endif %}</td>
+                            <td>{% if v.sot is True %}1{% else %}0{% endif %}</td>
+                            <td width="2%"><a href="{% url 'editmaqsad' v.id%}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>
+                                <a href=" {% url 'delmaqsad' v.id%} "><i class="align-middle me-2 fas fa-fw fa-trash"></i></a></td>     
+                            {% else %}
+                            <form action="{% url 'savemaqsad' v.id %}" method="post">
+                                {% csrf_token %}
+                                <td width="10%">{{forloop.counter}}</td>
+                                <td><input type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="nomi{{v.id}}"
+                                    placeholder="Masalan: Texnologik ehtiyoj uchun"
+                                    value ="{{v.nomi}}"/></td>
+                                <td>
+                                    <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="ich{{v.id}}" value="True" {% if v.ich is True %}checked{% endif %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>I.chiq/xiz.ko'r</a>
+                                    </div>
+                                </td>
+                                <td><div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="ist{{v.id}}" value="True" {% if v.ist is True %}checked{% endif %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>iste'mol</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input type="checkbox" name="sot{{v.id}}" value="True" {% if v.ist is True %}checked{% endif %}>
+                                        </div>
+                                        <a class="form-control" placeholder="Checkbox" disabled>uzat/sot</a>
+                                        </div>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="align-middle me-2 fas fa-fw fa-check"></i></button>
+                                </td>  
+                            </form>   
+                            {% endif %}
+                            </tr>  
+                        {% endfor %}     
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>t/r</th>
+                            <th>Nomi</th>
+                            <th>Ishlab chiqarish</th>
+                            <th>Iste'mol qilish</th>
+                            <th>Uzatish/sotish</th>
+                            <th>harakat</th>  
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

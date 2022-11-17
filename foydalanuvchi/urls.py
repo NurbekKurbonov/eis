@@ -1,6 +1,7 @@
 
 from django.urls import path
 from . import views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [    
     path('', views.home,  name='home'), 
@@ -68,5 +69,9 @@ urlpatterns = [
 
     #**************SIFAT**************************************************
     path('hisoblagichlar', views.hisoblagichlar, name='hisoblagichlar'),
-    
+    path('tahrir/<int:id>', views.tahrir, name='tahrir'),
+    path('editpas', csrf_exempt(views.editpas.as_view()),
+         name='editpas'), 
+    path('editmail', csrf_exempt(views.editmail.as_view()),
+         name='editmail'), 
 ]

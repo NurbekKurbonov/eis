@@ -20,6 +20,7 @@
 	<link rel='stylesheet' type='text/css' href="{% static 'css/light.css'%}" rel="stylesheet">
 	<link rel='stylesheet' type='text/css' href="{% static 'css/tadbirfont.css'%}?{% now "DATE_FORMAT" %}" rel="stylesheet"> 
 	<link href="{% static 'css/graph/belgi.css'%}" rel="stylesheet">
+	<link href="{% static 'css/toggle.css'%}" rel="stylesheet">
 	{% block head %}{% endblock head %}
 
 </head>
@@ -74,7 +75,7 @@
 						</a>
 					</li>
 					<li class="sidebar-item {% block bar1 %}{% endblock bar1 %}">
-						<a class="sidebar-link" href="{% url 'ist' %}" >
+						<a class="sidebar-link" href="{% url 'asosiyset' %}" >
 							<i class="align-middle" data-feather="settings"></i> 
                             <span class="align-middle">Sozlamalar</span>
 						</a>
@@ -257,7 +258,8 @@
 
 	<script src="{% static 'js/app.js' now  "DATE_FORMAT"%}?{% now "DATE_FORMAT" %}"></script>
 	<script src="{% static 'js/datatables.js'%}"></script>
-	
+	<script src="{% static 'js/manzil.js' now "DATE_FORMAT" %}?{% now "DATE_FORMAT" %}"></script>
+	<script src="{% static 'js/login.js' now "DATE_FORMAT" %}?{% now "DATE_FORMAT" %}"></script>	
 	{% block scripts %}{% endblock scripts %}
 	
 	

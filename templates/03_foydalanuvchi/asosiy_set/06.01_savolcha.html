@@ -1,0 +1,59 @@
+{% load static %}
+<div class="card">
+    <div class="card-body">
+        <div class="m-sm-4">           
+                <div class="mb-3">
+                    <label class="form-label text_ray">Funksiyalar</label>                    
+                    <div class="row">
+                        <div class="col-xl-12 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <input type="checkbox" name="savol1"  value="True" {% if hammasi.funksiya.savol1 is True%}checked{% endif %} disabled>
+                                </div>
+                                <texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" disabled> Ishlab chiqarish/xizmat ko'rsatish</texteare>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <input type="checkbox" name="savol2"  value="True" {% if hammasi.funksiya.savol2 is True%}checked{% endif %} disabled>
+                                </div>
+                                <texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" disabled>Uzatish/sotish</texteare>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+                <div class="mb-3" hidden>
+                    <label class="form-label" style="color:red"><I>Taqdim etilgan ma'lumotlar to'g'ri ekanligini tasdiqlayman va xatolik bo'lsa javobgarlik borligi haqida ogohlantirildim</I></label>                    
+                        <div class="row">
+                            <div class="col-xl-12 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" autofocus required="true">
+                                    </div>
+                                    <texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" style="color:blue" disabled>TASDIQLAYMAN</texteare>
+                                </div>
+                            </div>                                             
+                        </div>
+                </div>
+                <!--<div class="mb-3">
+                    <label class="form-label text_ray">Tasdiqlash kodi</label>                    
+                    <div class="row">                        
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">Tasdiqlash kodi :</label>
+                            <input type="text" 
+                                data-inputmask-mask="9-9-9-9-9-9"
+                                class="form-control" 
+                                autofocus required="true"                                                             
+                                name="dbibt"
+                                value = {{values.dbibt}}>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="text-center mt-3" hidden>					
+                    <button type="submit" class="btn btn-lg btn-primary">Saqlash</button>
+                </div>
+        </div>
+    </div>
+</div>
+

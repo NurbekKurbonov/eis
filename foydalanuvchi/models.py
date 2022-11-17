@@ -2,7 +2,7 @@ from email.policy import default
 from xmlrpc.client import boolean
 from django.db import models
 from django.contrib.auth.models import User
-from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar, yaxlitlash
+from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar, yaxlitlash, res_maqsad, yaxlitlash
 from django.urls import reverse
 
 from s_ad.models import resurslar, Valyuta, davlatlar, viloyatlar, tumanlar
@@ -11,17 +11,21 @@ from kirish.models import savolnoma
    
 #******************************************************
 class ichres(models.Model):
-    resurs=models.ForeignKey(resurslar, on_delete=models.CASCADE)  
+    resurs=models.ForeignKey(resurslar, on_delete=models.CASCADE)
+    maqsad=models.ForeignKey(res_maqsad, verbose_name=("Ishlatish yo'nalishi"), on_delete=models.CASCADE, blank=True, null=True)
+    hajm=models.ForeignKey(yaxlitlash, verbose_name=("hajm"), on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.resurs}-{self.owner}"
+        return f"{self.resurs}-{self.owner.id}"
     
     class Meta:
         verbose_name_plural = '01_0_Ishlab chiqarish resurslari'
 
 class istres(models.Model):
     resurs=models.ForeignKey(resurslar, on_delete=models.CASCADE)  
+    maqsad=models.ForeignKey(res_maqsad, verbose_name=("Ishlatish yo'nalishi"), on_delete=models.CASCADE, blank=True, null=True)
+    hajm=models.ForeignKey(yaxlitlash, verbose_name=("hajm"), on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -32,7 +36,9 @@ class istres(models.Model):
         
 class sotres(models.Model):
     resurs=models.ForeignKey(resurslar, on_delete=models.CASCADE)  
-    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    maqsad=models.ForeignKey(res_maqsad, verbose_name=("Ishlatish yo'nalishi"), on_delete=models.CASCADE, blank=True, null=True)
+    hajm=models.ForeignKey(yaxlitlash, verbose_name=("hajm"), on_delete=models.CASCADE, blank=True, null=True)
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
         return f"{self.resurs}-{self.owner}"
@@ -335,8 +341,9 @@ class VVP(models.Model):
         return reverse("VVP_detail", kwargs={"pk": self.pk})
 
 # user*******************
+    
 class allfaqir(models.Model): 
-    owner=models.ManyToManyField(to=User, verbose_name=("Xodimlar"), blank=True)
+    owner=models.OneToOneField(to=User, verbose_name=("Xodimlar"), on_delete=models.CASCADE, null=True, blank=True)
     inn = models.CharField("STIR", max_length=50)
     funksiya=models.ForeignKey(savolnoma, verbose_name=("Funksiyalari"), on_delete=models.CASCADE, blank=True, null=True)
     nomi=models.CharField("Korxona nomi", max_length=250, blank=True)    
@@ -367,7 +374,8 @@ class allfaqir(models.Model):
         verbose_name_plural = ("00_Foydalanuvchilar")
 
     def __str__(self):
-        return f"{self.nomi} - {self.inn}"
+        return f"{self.nomi} - {self.inn}//{self.owner.id}"
 
     def get_absolute_url(self):
         return reverse("allfaqir_detail", kwargs={"pk": self.pk})
+

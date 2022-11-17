@@ -118,8 +118,7 @@ class yaxlitlash(models.Model):
 
 class resurslar(models.Model):
     nomi = models.TextField('Resurs nomi')
-    birlik = models.ForeignKey(birliklar, blank=True, null=True, on_delete=models.CASCADE)  
-    yaxlit = models.ForeignKey(yaxlitlash, blank=True, null=True, on_delete=models.CASCADE)
+    birlik = models.ForeignKey(birliklar, blank=True, null=True, on_delete=models.CASCADE)    
     tshy=models.FloatField("TSHY", blank=True, default=0.0)
     tne=models.FloatField("TNE", blank=True, default=0.0)
     gj=models.FloatField("GJ", blank=True, default=0.0)
@@ -128,7 +127,7 @@ class resurslar(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.nomi} : {self.yaxlit}{self.birlik}"
+        return f"{self.nomi} :{self.birlik}"
     
     class Meta:
         verbose_name_plural = '08_Resurslar'
@@ -165,3 +164,23 @@ class Tadbir(models.Model):
 
     def get_absolute_url(self):
         return reverse("Tadbirlar_detail", kwargs={"pk": self.pk})
+
+class res_maqsad(models.Model):
+    nomi=models.TextField("Nomi")
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    checker=models.BooleanField("Checker", null=True)
+
+    ich=models.BooleanField("Ishlab chiqarish", default=False)
+    ist=models.BooleanField("Iste'mol", default=False)
+    sot=models.BooleanField("Sotish/uzat", default=False)
+
+    class Meta:
+        verbose_name = ("Resurs maqsad")
+        verbose_name_plural = ("11_Resursni ishlatish maqsadlari")
+
+    def __str__(self):
+        return self.nomi
+
+    def get_absolute_url(self):
+        return reverse("res_maqsad_detail", kwargs={"pk": self.pk})
+

@@ -94,5 +94,12 @@ urlpatterns = [
     path('edityaxlitlash/<int:id>', views.edityaxlitlash, name='edityaxlitlash'),
     path('saveyaxlitlash/<int:id>', views.saveyaxlitlash, name='saveyaxlitlash'),
     path('delyaxlitlash/<int:id>', views.delyaxlitlash, name='delyaxlitlash'),
+
+    #*******Res maqsad*********************************************
+    path('maqsad', views.maqsad, name='maqsad'),
+    path('addmaqsad', views.addmaqsad, name='addmaqsad'),
+    path('editmaqsad/<int:id>', views.editmaqsad, name='editmaqsad'),
+    path('savemaqsad/<int:id>', views.savemaqsad, name='savemaqsad'),
+    path('delmaqsad/<int:id>', views.delmaqsad, name='delmaqsad'),
     
 ]

@@ -18,7 +18,10 @@ urlpatterns = [
     path('validate-password', csrf_exempt(passwordValidationView.as_view()),
          name='validate-password'), 
     path('activate/<uidb64>/<token>', VerificationView.as_view(), name="activate"),    
-    
+     
+     path('davlatadd', views.davlatadd, name='davlatadd'),
+     path('viladd', views.viladd, name='viladd'),
+     
     path('logout', LogoutView.as_view(), name="logout"),
     
     path('reset', resetpas.as_view(), name='reset'),
@@ -30,5 +33,7 @@ urlpatterns = [
     path('<str:pagename>', views.kirish, name='index'),   
     
     path('404', views.view404, name='view404'),
+
+   
     
 ]

@@ -27,18 +27,18 @@
 			<h5 class="card-title mb-0">Korxona haqida ma'lumotlar</h5>
 		</div>
 		<div class="card-body">
-			<form action="{% url 'asosiyset' hammasi.id%}" method="post">
+			<form action="{% url 'asosiyset'%}" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				
 				<div class="row">
 					<div class="col-md-7">
 						<div class="mb-3">
 							<label class="form-label" for="inputUsername">Korxonaning to'liq nomi</label>
-							<input type="text" name="nomi" class="form-control" id="inputUsername" placeholder="Korxona nomi" value="{{hammasi.nomi}}">
+							<input type="text" autofocus required="true" name="nomi" class="form-control" id="inputUsername" placeholder="Korxona nomi" value="{{hammasi.nomi}}">
 						</div>
 						<div class="mb-3">
 							<label class="form-label" for="inputUsername">Korxona haqida qisqacha</label>
-							<textarea rows="2" name="about" class="form-control" id="inputBio"
+							<textarea rows="2" autofocus required="true" name="about" class="form-control" id="inputBio"
 								placeholder="Korxona haqida qisqacha tavsilot yozing" value="{{hammasi.about}}">{{hammasi.about}}</textarea>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 								width="128" height="128" />
 							<div class="mt-2">
 								<label for="id_emblem" class="btn btn-primary"> <i class="fas fa-upload">Emblemani yuklash</i></label>
-								<input type="file" id="id_emblem" name="emblem" accept="image/*" hidden>
+								<input type="file" name="myfile" id="id_emblem" accept="image/*" hidden>
 							</div>
 							<small>128px x 128px .jpg formatdagi emblemani yuklang</small>
 						</div>
@@ -59,64 +59,327 @@
 			</form>
 			
 		</div>
-	</div>
-<!--
-	<div class="card">
-		<div class="card-header">
+	</div>	
 
-			<h5 class="card-title mb-0">Private info</h5>
-		</div>
-		<div class="card-body">
-			<form>
-				<div class="row">
-					<div class="mb-3 col-md-6">
-						<label class="form-label" for="inputFirstName">First name</label>
-						<input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+	<div class="row">			
+			<div class="col-1 text-center">
+				<h5 class="card-title mb-0">Pasportni </h5>
+				<input type="checkbox" id="pasport" class="toggle-button">				
+				<label for="toggle-button" class="text card-title">tahrirlash</label>
+				<h5 class="card-title mb-0" style="color:yellow">----</h5>
+				<h5 class="card-title mb-0">Parolni yoki pochtani </h5>
+				<input type="checkbox" id="parol" class="toggle-button">				
+				<label for="toggle-button" class="text card-title">yangilash</label>
+			</div>		
+			<div class="col-11" id="newparol" style="display:none">
+				<div class="card">
+					<div class="card-header">	
+						<h5 class="card-title mb-0">Parol yoki emailni yangilash</h5>
 					</div>
-					<div class="mb-3 col-md-6">
-						<label class="form-label" for="inputLastName">Last name</label>
-						<input type="text" class="form-control" id="inputLastName" placeholder="Last name">
-					</div>
-				</div>
-				<div class="mb-3">
-					<label class="form-label" for="inputEmail4">Email</label>
-					<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-				</div>
-				<div class="mb-3">
-					<label class="form-label" for="inputAddress">Address</label>
-					<input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-				</div>
-				<div class="mb-3">
-					<label class="form-label" for="inputAddress2">Address 2</label>
-					<input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-				</div>
-				<div class="row">
-					<div class="mb-3 col-md-6">
-						<label class="form-label" for="inputCity">City</label>
-						<input type="text" class="form-control" id="inputCity">
-					</div>
-					<div class="mb-3 col-md-4">
-						<label class="form-label" for="inputState">State</label>
-						<select id="inputState" class="form-control">
-							<option selected>Choose...</option>
-							<option>...</option>
-						</select>
-					</div>
-					<div class="mb-3 col-md-2">
-						<label class="form-label" for="inputZip">Zip</label>
-						<input type="text" class="form-control" id="inputZip">
-					</div>
-				</div>
-				<button type="submit" class="btn btn-primary">Save changes</button>
-			</form>
+					<div class="card-body">
+						<div class="row"> 
+							<div class="col-4 mb-3 ">
+								<form action="{% url 'editpas' %}" method="post">
+									{% csrf_token %}
+									<div class="input-group">
+										<input class="form-control form-control-lg"						
+												autofocus required="true"
+												type="password" 
+												id="passwordField"
+												name="password" 
+												placeholder="Parolingizni kiriting"/>										
+										<button type="submit" value="Register" class="btn btn-lg btn-primary submit-btn" disabled>Parolni o'rnatish</button> 																
+										<div class="passwordFeedBackArea invalid-feedback" style="display:none">
+										</div>
+									</div>
+									<div class="text-center mt-3">		
+										<i class="far fa-eye" id="togglePassword" style="cursor: pointer; position:absolute; top:60%; left:18%; color:blue;" ></i>	
+									</div>	
+								</form>
+							</div>
 
-		</div>
+							<div class="col-8 mb-3 ">
+								<form action="{% url 'editmail' %}" method="post">
+									<div class="input-group">
+										<input class="form-control form-control-lg" 
+										type="email" 
+										name="email" 
+										autofocus required="true"
+										id="emailField"
+										placeholder="Emailingizni kiriting"
+										value="{{fieldValues.email}}" />
+										<button type="submit" value="Register" class="btn btn-lg btn-primary submit-btn">Emailni o'rnatish</button>
+									</div>
+									<div class="text-center mt-3">		
+										
+									</div>	
+								</form>
+							</div>						
+						
+						</div> 
+					</div>
+				</div>
+			</div>
+			<div class="col-11" id="pasporthide">			
+				<form action="{% url 'tahrir' hammasi.id %}" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="row">
+						<div class="col-8">
+							<div class="card">
+								
+								<div class="card-body">
+									<div class="m-sm-4">  
+											<div class="mb-3">
+												<div class="row"> 
+													<div class="mb-3 col-md-12">
+														<label class="form-label text_ray" for="">STIR</label>
+														<input type="text"
+															class="form-control" 
+															autofocus required="true"
+															placeholder="Ismingizni kiriting"                              
+															name="stir"
+															id="stir"
+															value = "{{hammasi.inn}}" disabled>
+													</div>   
+													<div class="mb-3 col-md-3">
+														<label class="form-label text_ray" for="">Ish yurituvchi ismi</label>
+														<input type="text"
+															class="form-control" 
+															autofocus required="true"
+															placeholder="Ismingizni kiriting"                              
+															name="ism"
+															id="ism"
+															value = "{{hammasi.owner.first_name}}" disabled>
+													</div>  
+													<div class="mb-3 col-md-4">
+														<label class="form-label text_ray" for="">Ish yurituvchi familiyasi</label>
+														<input type="text" 
+															class="form-control"
+															autofocus required="true"
+															placeholder="Familyangizni kiriting"                              
+															name="fam"
+															id="fam"
+															value = "{{hammasi.owner.last_name}}" disabled>
+													</div>
+													<div class="mb-3 col-md-5">
+														<label class="form-label text_ray" for="">Ish yurituvchi telefon raqami</label>
+														<div class="mb-3 col-md-4 input-group">
+															<button class="btn btn-outline-secondary" type="button" disabled>+998</button>
+															<input type="text" 
+																data-inputmask-mask="99-999-99-99"
+																class="form-control" 
+																autofocus required="true"                                                             
+																name="mobil"
+																id="mobil"
+																value = "{{hammasi.mobil}}" disabled>
+																<button class="btn btn-outline-success" type="button" disabled><i class="align-middle me-2 fas fa-fw fa-phone"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
+														</div>
+													</div>
+													
+													<div class="mb-3 col-md-12">
+														<label class="form-label text_ray" for="">IFTUM kodi (ру: ОКЭД)</label>
+														<select class="form-select flex-grow-1" disabled
+															name="iftum" id="iftum">
+															<option value = "{{hammasi.iftum.id}}">{{hammasi.dbibt}}</option>    
+															{% for v in iftum %}
+																<option value = {{v.id}}>{{v.bolim}}{{v.bob}}{{v.guruh}}{{v.sinf}}{{v.tartib}}: {{v.nomi}}</option>    
+															{% endfor %}
+														</select>  
+													</div> 
+													<div class="mb-3 col-md-12">
+														<label class="form-label text_ray" for="">DBIBT/KTUT kodi (ру: СООГУ/ОКПО)</label>
+														<select class="form-select flex-grow-1" disabled
+															name="dbibt" id="dbibt">
+															<option value = "{{hammasi.dbibt.id}}">{{hammasi.dbibt}}</option>    
+															{% for v in dbibt %}
+																<option value = {{v.id}}>{{v.dbibt}}/{{v.ktut}}: {{v.nomi}}</option>    
+															{% endfor %}
+														</select>                                   
+														</select>  
+													</div> 
+													<div class="mb-3 col-md-12">
+														<label class="form-label text_ray" for="">THSHT kodi (ру: ОПФ)</label>
+														<select class="form-select flex-grow-1" disabled
+															name="thst" id="thst">  
+															<option value = "{{hammasi.thst.id}}">{{hammasi.thst}}</option>                                
+															{% for v in thst %}
+															<option value = {{v.id}}>{{v.bolim}}{{v.tur}}: {{v.nomi}}</option>    
+															{% endfor %}                                 
+														</select>  
+													</div> 
+													<div class="mb-3 col-md-5">
+														<label class="form-label text_ray" for="">Korxona admini telefon raqami</label>
+														<div class="mb-3 col-md-4 input-group">
+															<button class="btn btn-outline-secondary" type="button" disabled>+998</button>
+															<input type="text" disabled
+																data-inputmask-mask="99-999-99-99"
+																class="form-control" 
+																autofocus required="true"                                                             
+																name="telefon" id="telefon" 
+																value = "{{hammasi.tel}}">
+															<button class="btn btn-outline-success" type="button" disabled><i class="align-middle me-2 fas fa-fw fa-phone"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
+														</div>
+													</div>           
+												</div>					
+											</div>                
+											<div class="mb-3">
+												<label class="form-label text_ray">Korxonaning joylashgan o'rni bo'yicha ma'lumotlar:</label>                    
+												<div class="row">
+													<div class="mb-3 col-md-4">
+														<label class="form-label text_ray" for="">Davlat :</label>
+														<select class="form-select flex-grow-1" id="manzil" name="dav">  
+															<option value = "{{hammasi.dav.id}}">{{hammasi.dav}}</option>  
+															{% for v in dav %}
+															<option value = {{v.id}}>{{v.davlat_nomi}}</option> 
+															{% endfor %}                                  
+														</select> 
+													</div> 
+							
+													<div class="mb-3 col-md-4">
+														<label class="form-label text_ray" for="">Viloyat/shahar :</label>
+														<select class="form-select flex-grow-1" id="viloyat"
+															name="vil"> 
+															<option value = "{{hammasi.vil.id}}">{{hammasi.vil}}</option>                                   
+																							
+														</select>                             
+													</div> 
+													<div class="mb-3 col-md-4">
+														<label class="form-label text_ray" for="">tuman/shahar :</label>
+														<select class="form-select flex-grow-1" id="tuman"
+															name="tuman">   
+															<option value = "{{hammasi.tum.id}}">{{hammasi.tum}}</option> 																		  
+														</select>                              
+													</div> 
+													<div class="mb-3 col-md-4">
+														<label class="form-label text_ray" for="" >Manzil :</label>
+														<textarea rows="1" type="text" id="adres" disabled
+															class="form-control" 
+															autofocus required="true"                                                             
+															name="manzil"
+															value = "{{hammasi.manzil}}">{{hammasi.manzil}}</textarea>
+													</div>                   
+												</div>
+											</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-4 text-center">			
+							<div class="card">
+								<div class="card-body">
+									<div class="m-sm-4">           
+											<div class="mb-3">
+												<label class="form-label text_ray">Funksiyalar</label>                    
+												<div class="row">
+													<div class="col-xl-12 mb-3">
+														<div class="input-group">
+															<div class="input-group-text">
+																<input type="checkbox" name="savol1"  value="True" {% if hammasi.funksiya.savol1 is True%}checked{% endif %} id="savol1" disabled>
+															</div>
+															<texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" id="savol2" disabled> Ishlab chiqarish/xizmat ko'rsatish</texteare>
+														</div>
+													</div>
+													<div class="col-xl-12 mb-3">
+														<div class="input-group">
+															<div class="input-group-text">
+																<input type="checkbox" name="savol2"  value="True" {% if hammasi.funksiya.savol2 is True%}checked{% endif %} id="s2" disabled>
+															</div>
+															<texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" disabled>Uzatish/sotish</texteare>
+														</div>
+													</div>
+												</div>
+											</div>    
+											<div class="mb-3"  id="saqla" style="display:none">
+												<label class="form-label" style="color:red"><I>Taqdim etilgan ma'lumotlar to'g'ri ekanligini tasdiqlayman va xatolik bo'lsa javobgarlik borligi haqida ogohlantirildim</I></label>                    
+													<div class="row">
+														<div class="col-xl-12 mb-3">
+															<div class="input-group">
+																<div class="input-group-text">
+																	<input type="checkbox" autofocus required="true">
+																</div>
+																<texteare row="1" type="text" class="form-control" placeholder="Ishlab chiqarish/xizmat ko'rsatish" style="color:blue" disabled>TASDIQLAYMAN</texteare>
+															</div>
+														</div>                                             
+													</div>
+											</div>
+											<div class="text-center mt-3" id="saqla2" style="display:none">					
+												<button type="submit" class="btn btn-lg btn-primary">Saqlash</button>
+											</div>
+									</div>
+								</div>
+							</div>							
+				</form>	
+
+			</div>	
 	</div>
-	-->
 </div>
 </div>
 {% endblock content %}
 
 {% block scripts %}
+<script>
+	const pasport=document.getElementById('pasport');
+	const ism=document.getElementById('ism');
+	const fam=document.getElementById('fam');
+	const tel=document.getElementById('telefon');
+	const iftum=document.getElementById('iftum');
+	const dbibt=document.getElementById('dbibt');
+	const thst=document.getElementById('thst');
+	const mobil=document.getElementById('mobil');
+	const adres=document.getElementById('adres');
+	const savol1=document.getElementById('savol1');
+	const savol2=document.getElementById('s2');
+	const saqla = document.getElementById('saqla');
+	const saqla2 = document.getElementById('saqla2');
+	const stir = document.getElementById('stir');
+	
+	pasport.addEventListener('click', function handleClick() {
+		if (pasport.checked) {		  
+		  ism.disabled=false;	 
+		  fam.disabled=false;
+		  tel.disabled=false;
+		  iftum.disabled=false;
+		  dbibt.disabled=false;
+		  thst.disabled=false;
+		  mobil.disabled=false;
+		  adres.disabled=false;
+		  savol1.disabled=false;
+		  savol2.disabled=false;
+		  stir.disabled=false;
+		  saqla.style.display = 'block';
+		  saqla2.style.display = 'block';
+		} else {
+		   ism.disabled=true;
+		   fam.disabled=true;
+		   tel.disabled=true;
+		   iftum.disabled=true;
+		   dbibt.disabled=true;
+		   thst.disabled=true;
+		   mobil.disabled=true;
+		   adres.disabled=true;
+		   savol1.disabled=true;
+		   savol2.disabled=true;
+		   stir.disabled=true;
+		   saqla.style.display = 'none';
+		   saqla2.style.display = 'none';
+		}
+	  });
+</script>
+<script>
+	const newparol=document.getElementById('newparol');
+	const parol=document.getElementById('parol');
+	const pasporthide=document.getElementById('pasporthide');
+	parol.addEventListener('click', function handleClick() {
+		if (parol.checked) {		  		  
+			newparol.style.display = 'block';
+			pasporthide.style.display = 'none';
+		} else {
+			newparol.style.display = 'none';
+			pasporthide.style.display = 'block';
+		}
+	  });
+	
+</script>
 
+	
 {% endblock scripts %}

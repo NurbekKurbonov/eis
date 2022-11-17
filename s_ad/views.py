@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import user_passes_test
 import six
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash
+from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash, res_maqsad
 
 from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, plan_umumiy
 from foydalanuvchi.models import TTT_umumiy_reja, VVP
@@ -692,9 +692,8 @@ def addresurs(request):
         tne = request.POST['tne']
         gj = request.POST['gj']
         gkal = request.POST['gkal']
-        yaxlit = request.POST['yaxlit']
 
-        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birliklar(birlik),yaxlit=yaxlitlash(yaxlit),
+        resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birliklar(birlik),
                                  tshy=tshy,tne=tne,gj=gj, gkal=gkal)
         messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! ')
         return redirect('resurs') 
@@ -726,7 +725,6 @@ def editresurs(request, id):
         tne = request.POST['tne']
         gj = request.POST['gj']
         gkal = request.POST['gkal']
-        yaxlit = request.POST['yaxlit']
         
         r.nomi =nomi 
         r.birlik =birliklar(birlik)
@@ -734,7 +732,6 @@ def editresurs(request, id):
         r.tne=tne
         r.gj=gj
         r.gkal=gkal
-        r.yaxlit=yaxlitlash(yaxlit)
         r.owner=request.user
         
         r.save()
@@ -761,7 +758,7 @@ def usersozlama(request):
 @group_required('admin2')
 def valyuta(request):
     titleown='Valyuta'
-    val = Valyuta.objects.filter(owner=request.user)
+    val = Valyuta.objects.all()
     
     context = {
         'val': val,
@@ -1253,3 +1250,91 @@ def updatefqr(request):
 
     messages.success(request, 'Muvafaqqiyatli Yangilandi')
     return redirect('monitoring_users')
+
+def delichres(request):
+    for i in ichres.objects.all():
+        if i.owner.id==75:
+            i.delete()
+
+    return redirect('monitoring_users')
+
+#****************Resurs maqsadi**************************
+
+@group_required('admin2')
+def maqsad(request):
+    titleown='Resurs qo`shish maqsadi'
+    val = res_maqsad.objects.all()
+    
+    context = {
+        'val': val,
+        'titleown':titleown
+        }
+    
+    if request.method == 'GET':
+        
+        return render(request, '02_s_ad/13_0_maqsad.html', context)
+    
+    if request.method == 'POST':       
+        
+        return redirect('maqsad')
+
+@group_required('admin2')
+def addmaqsad(request):
+    m=res_maqsad.objects.all()
+    lst=[]
+    for i in m:
+        if i.checker==False:
+            lst.append(i)
+    
+    if len(lst)>2:
+        messages.warning(request, '3 tagacha ruxsat etiladi!')  
+        return redirect('maqsad')  
+
+    res_maqsad.objects.create(owner=request.user, nomi='', checker=False)
+    return redirect('maqsad')
+
+@group_required('admin2')
+def editmaqsad(request, id):   
+    m=res_maqsad.objects.all()
+    lst=[]
+    for i in m:
+        if i.checker==False:
+            lst.append(i)
+    
+    if len(lst)>2:
+        messages.warning(request, 'O`zgartirish bir vaqtda 3 tagacha ruxsat etiladi!')  
+        return redirect('maqsad') 
+
+    val = res_maqsad.objects.get(pk=id)    
+    val.checker=False           
+    val.save()    
+    messages.success(request, 'O`zgartirishingiz mumkin!')        
+    return redirect('maqsad')
+
+@group_required('admin2')
+def savemaqsad(request, id):
+    val = res_maqsad.objects.get(pk=id)
+    
+    if request.method=="POST": 
+        nomi='nomi'+str(id)
+        ich='ich'+str(id)
+        ist='ist'+str(id)
+        sot='sot'+str(id)
+        
+        val.nomi = request.POST[nomi]
+        val.ich = request.POST.get(ich,False)
+        val.ist = request.POST.get(ist,False)
+        val.sot = request.POST.get(sot,False)
+
+        val.checker=True
+        val.save()
+        messages.success(request, 'Muvafaqqiyatli yangilandi!')       
+    
+    return redirect('maqsad')
+
+@group_required('admin2')
+def delmaqsad(request, id):
+    davlat = res_maqsad.objects.get(pk=id)    
+    davlat.delete()
+    messages.success(request, 'Muvafaqqiyatli o`chirildi')
+    return redirect('maqsad')
