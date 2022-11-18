@@ -24,18 +24,15 @@
 	<div class="card">
 		<div class="card-header">
 			<h5 class="card-title">{{titleown}}</h5>			
-			<!-- <h6 class="card-subtitle text-muted"><a href="#">Foydalanish tartibi </a></h6> -->
-			<button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Yangi resurs</a></button>
+			<a href="{% url 'addichres' %}" type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="fas fa-plus"></i></a>
 		</div>
 		<div class="card-body text-center">
 				<table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
                     <thead>
                         <tr>
                             <th>t/r</th> 
-                            <th>Energiya resursi turi</th>                            
-                            <th>O'lchov birligi</th> 
-                            
+                            <th>Energiya resursi turi (birlik)</th>                            
+                            <th>Maqsadi</th> 
                             <th width="2%"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
                         </tr>
                         </thead>
@@ -43,8 +40,8 @@
                     {% for v in ich %}
                     <tr>
                         <td> {{forloop.counter}}</td>
-                        <td>{{v.resurs.nomi}}</td>     
-                        <td>{{v.resurs.birlik}}</td>  
+                        <td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+                        <td>{{v.maqsad}}</td>  
                         <td class="table-action text-center">
                             <a href="#"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a> 
                         </td> 

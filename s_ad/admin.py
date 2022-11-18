@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash, res_maqsad
+from .models import davlatlar, viloyatlar, tumanlar,IFTUM, DBIBT, THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash, res_maqsad, elon
 
 
 
@@ -64,3 +64,4 @@ admin.site.register(Tadbir)
 
 admin.site.register(yaxlitlash)
 admin.site.register(res_maqsad)
+admin.site.register(elon)

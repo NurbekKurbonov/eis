@@ -11,6 +11,8 @@ urlpatterns = [
     path('ist', views.ist, name='ist'),
     path('sot', views.sot, name='sot'),  
     
+    path('addichres', views.addichres, name='addichres'),  
+    
     path('add', views.add, name='add'),
     
     #**********shartnomaviy miqdorlar*******************

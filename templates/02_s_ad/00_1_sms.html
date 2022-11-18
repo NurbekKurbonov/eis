@@ -1,0 +1,80 @@
+{% extends '02_s_ad/00_0_xabarlar.html' %}
+{% load static %}
+{% block sms %}
+<div class="col-12 col-lg-7 col-xl-9">
+    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+        <div class="d-flex align-items-center py-1">
+            <div class="position-relative">
+                <img src="{% static 'img/avatars/logo_icon.png'%}" class="rounded-circle me-1" alt="Sharon Lessman" width="40" height="40">
+            </div>
+            <div class="flex-grow-1 ps-3">
+                <strong>Korxona</strong>
+                <div class="text-muted small"><em>...</em></div>
+            </div>
+            <div>
+                <!--<button class="btn btn-primary btn-lg me-1 px-3"><i class="feather-lg" data-feather="phone"></i></button>
+                <button class="btn btn-info btn-lg me-1 px-3 d-none d-md-inline-block"><i class="feather-lg"
+                        data-feather="video"></i></button>-->
+                <button class="btn btn-light border btn-lg px-3"><i class="feather-lg" data-feather="more-horizontal"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="position-relative">
+        <div class="chat-messages p-4">
+            {% for i in all_elon %}
+            <div class="chat-message-left pb-4">
+                <div>
+                    <img src="{{fq.emblem.url}}" class="rounded-circle me-1" alt="Sharon Lessman" width="40" height="40">
+                    <div class="text-muted small text-nowrap mt-2">{{i.vaqt.time}}</div>
+                </div>
+                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
+                    {{i.vaqt|date:"d.m.Y"}} 
+                    <div class="font-weight-bold mb-1">{{fq.nomi}}</div>
+                    <h4>{{i.mavzu}}</h4>
+                    {% if 'birlik' in i.mavzu%}                    
+                    <p style="color:blue">{% for r in res %}{% if r.id is i.masala%}{% for b in birl %}{% if b.id is r.birlik.id%}{{b.birlik}}/{{b.asos}}/{{b.farq}}{% endif %}{% endfor %}{% endif %}{% endfor %}
+                    <a href="{% url 'reskorish' i.masala i.id%}" class="btn mb-1 btn-info">birlikni o'zgartirib qabul qilish</a>
+
+                    <a href="{% url 'restasdiq' i.masala i.id fq.id%}" class="btn mb-1 btn-success"><i class="align-middle fas fa-check"></i> </a>
+                    <a href="{% url 'bekorqilindi' i.masala i.id fq.id%}" class="btn mb-1 btn-danger"><i class="align-middle fas fa-times"></i> </a>
+                    {% endif %}
+                    {% if 'resurs' in i.mavzu%}
+                    <p style="color:blue">{% for r in res %}{% if r.id is i.masala%}{{r.nomi}}({{r.birlik}})//tshy={{r.tshy}}//tne={{r.tne}}//GJ={{r.gj}}//GKAL={{r.gkal}}//{% endif %}{% endfor %}</p>
+                    {% if not 'rad etildi' in i.javob %}                    
+                    <a href="{% url 'reskorish' i.masala i.id%}" class="btn mb-1 btn-info">resursni o'zgartirib qabul qilish</a>
+                    {% endif %}
+                    {% endif %}
+                    {% if i.oqildi is False %}
+                    <a href="{% url 'restasdiq' i.masala i.id fq.id%}" class="btn mb-1 btn-success"><i class="align-middle fas fa-check"></i> </a>
+                    <a href="{% url 'bekorqilindi' i.masala i.id fq.id%}" class="btn mb-1 btn-danger"><i class="align-middle fas fa-times"></i> </a>
+                    {% else %}<a href="{% url 'delxabar' i.id fq.id%}" class="btn mb-1 btn-youtube"><i class="align-middle fas fa-trash"></i> </a>{% endif %}                
+                </div>                    
+                   
+                </div>   
+                {% if i.jb is True%}               
+                    <div class="chat-message-right pb-4">
+                        <div>
+                            <img src="{% static 'img/avatars/logo_icon.png'%}" class="rounded-circle me-1" alt="men" width="40" height="40">
+                            <div class="text-muted small text-nowrap mt-2">{{i.jbvaqt.time}}</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
+                            {{i.vaqt|date:"d.m.Y"}} 
+                            <div class="font-weight-bold mb-1">Siz {% for alfq in allfq %}{% if alfq.id is i.ga %}({{alfq.username}}){% endif %}{% endfor %}</div>                            
+                            <B>{{i.javob}}</B>
+                        </div>
+                    </div>
+                    {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!--<div class="flex-grow-0 py-3 px-4 border-top">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Type your message">
+            <button class="btn btn-primary">Send</button>
+        </div>
+    </div>    -->                
+</div>
+{% endblock sms %}

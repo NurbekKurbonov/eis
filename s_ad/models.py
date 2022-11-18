@@ -97,6 +97,7 @@ class birliklar(models.Model):
     farq = models.FloatField('Farq')
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    aktiv=models.BooleanField("Aktiv")
     
     def __str__(self):
         return self.birlik
@@ -125,6 +126,8 @@ class resurslar(models.Model):
     gkal=models.FloatField("GKAL",blank=True, default=0.0)
     
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+
+    aktiv=models.BooleanField("Aktiv")
     
     def __str__(self):
         return f"{self.nomi} :{self.birlik}"
@@ -184,3 +187,30 @@ class res_maqsad(models.Model):
     def get_absolute_url(self):
         return reverse("res_maqsad_detail", kwargs={"pk": self.pk})
 
+class elon(models.Model):
+    dan=models.IntegerField(("dan"))
+    ga=models.IntegerField(("ga"))
+    
+    mavzu=models.TextField("Nomi")
+    masala=models.IntegerField("masala", blank=True, null=True)
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False)
+    icon=models.TextField("icons")
+    url=models.TextField("url", max_length=200)
+
+    oqildi=models.BooleanField("O'qildi")
+
+    jb_oqildi=models.BooleanField("Javob o'qildi")
+    jb=models.BooleanField("Javob bor")
+    jbvaqt=models.DateTimeField("Javob vaqti", auto_now_add=False, null=True)
+    javob=models.TextField("Javob", blank=True)
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = ("elon")
+        verbose_name_plural = ("elonlar")
+
+    def __str__(self):
+        return self.mavzu
+
+    def get_absolute_url(self):
+        return reverse("elon_detail", kwargs={"pk": self.pk})

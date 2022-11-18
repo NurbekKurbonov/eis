@@ -17,10 +17,11 @@ from django.contrib.auth.decorators import user_passes_test
 import six
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash, res_maqsad
+from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birliklar, resurslar, Valyuta, Tadbir, yaxlitlash, res_maqsad,elon
 
 from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, plan_umumiy
 from foydalanuvchi.models import TTT_umumiy_reja, VVP
+
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
         if isinstance(group, six.string_types):
@@ -41,6 +42,13 @@ def icons(request):
     return render(request, 'partials/01_icons.html')
 #kirish qismini to'ldirish *********************************
 
+el=elon.objects.filter(oqildi=False, ga=0)
+c=0
+
+for i in el:
+    c+=1
+oqilmagan=c
+
 @group_required('admin2')
 def kirishP(request):    
     title='Kirish bo`limi'
@@ -50,7 +58,7 @@ def kirishP(request):
     page_number=request.GET.get('page')
     page_obj=Paginator.get_page(paginator, page_number)
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'title':title,
         'sah':sah,
         'page_obj':page_obj
@@ -61,14 +69,12 @@ def kirishP(request):
 @group_required('admin2')
 def addkir(request):
     titleown='Yangi sahifa qo`shish'
-    
-   
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         
     }    
     if request.method == 'GET':
-        return render(request, '02_s_ad/01_1_addkirishP.html', context)
+        return render(request, '02_s_ad/01_1_addkirishP.html', context)                
     
     if request.method =='POST':
         dt=timezone.now()
@@ -89,7 +95,7 @@ def editkir(request, id):
     titleown='O`zgartirish'
     sah = sahifa.objects.get(pk=id)
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'sah': sah,
         'values': sah,
         'titleown':titleown
@@ -147,7 +153,7 @@ def davlat(request):
     titleown='Davlatlar'
     dav = davlatlar.objects.all()
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'dav': dav,
         'titleown':titleown
         }
@@ -164,7 +170,7 @@ def adddavlat(request):
     #******************************
     
     titleown='Davlatlar'
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown
     }
     if request.method == 'GET':
@@ -190,7 +196,7 @@ def editdavlat(request, id):
        
     davlat = davlatlar.objects.get(pk=id)
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'davlat': davlat,
         'values': davlat,
     } 
@@ -224,7 +230,7 @@ def deldavlat(request, id):
 def viloyat(request):
     vil = viloyatlar.objects.all()
     titleown = 'Viloyatlar'
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'vil': vil,
         'titleown':titleown
     }
@@ -234,7 +240,7 @@ def viloyat(request):
 def addviloyat(request):
     davlat = davlatlar.objects.all()
     
-    context = {          
+    context = { 'oqilmagan':oqilmagan, 'el':el,          
         'davlat': davlat,  
         'values': request.POST,
         'titleown':'viloyat qo`shish'
@@ -257,7 +263,7 @@ def editviloyat(request, id):
     davlat = davlatlar.objects.all()   
     vil = viloyatlar.objects.get(pk=id)
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'davlat': davlat, 
         'vil': vil,
         'values': vil,
@@ -296,7 +302,7 @@ def tuman(request):
     
     tum = tumanlar.objects.all()
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'tum': tum,
         'titleown':'Tumanlar'
     }
@@ -313,7 +319,7 @@ def addtuman(request):
         
         #return JsonResponse(vil, safe=False)
     
-    context = {    
+    context = { 'oqilmagan':oqilmagan, 'el':el,    
         'dav': dav,           
         'vil': vil,
         'values': request.POST   ,        
@@ -340,7 +346,7 @@ def edittuman(request, id):
     vil = viloyatlar.objects.all()
     dav = davlatlar.objects.all()       
     tuman = tumanlar.objects.get(pk=id)
-    context = {        
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
         'dav': dav,
         'vil': vil,
         'tuman': tuman,
@@ -379,7 +385,7 @@ def deltuman(request, id):
 @group_required('admin2')
 def iftums(request):
     iftum = IFTUM.objects.all()
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'iftum': iftum,
         'titleown':'IFTUM'
     }
@@ -388,7 +394,7 @@ def iftums(request):
 @group_required('admin2')
 def addiftums(request):    
     bolimlist = ["A", "B", "C", "D","E", "F","G", "H","I", "J","K", "L","M", "N","O", "P",]    
-    context = {    
+    context = { 'oqilmagan':oqilmagan, 'el':el,    
         'values': request.POST,
         'bolimlist': bolimlist,
         'titleown':'IFTUM kodini qo`shish'               
@@ -413,7 +419,7 @@ def addiftums(request):
 def editiftums(request, id): 
     bolimlist = ["A", "B", "C", "D","E", "F","G", "H","I", "J","K", "L","M", "N","O", "P",]    
     iftum = IFTUM.objects.get(pk=id)
-    context = {  
+    context = { 'oqilmagan':oqilmagan, 'el':el,  
         'bolimlist':bolimlist,
         'iftum': iftum,        
         'values': iftum,
@@ -467,7 +473,7 @@ def dbibt(request):
 @group_required('admin2')
 def adddbibt(request):    
     
-    context = { 
+    context = { 'oqilmagan':oqilmagan, 'el':el, 
         'titleown':'DBIBT kodini qo`shish'               
     }
     
@@ -487,7 +493,7 @@ def adddbibt(request):
 def editdbibt(request, id):
     dbibts=DBIBT.objects.get(pk=id)  
     
-    context = {          
+    context = { 'oqilmagan':oqilmagan, 'el':el,          
         'dbibts': dbibts,        
         'values': dbibts,
         'titleown':'DBIBT kodini yangilash'
@@ -535,7 +541,7 @@ def thst(request):
 @group_required('admin2')
 def addthst(request):    
     
-    context = { 
+    context = { 'oqilmagan':oqilmagan, 'el':el, 
         'titleown':'THSHT kodini qo`shish'               
     }
     
@@ -555,7 +561,7 @@ def addthst(request):
 def editthst(request, id):
     ths=THST.objects.get(pk=id)  
     
-    context = {          
+    context = { 'oqilmagan':oqilmagan, 'el':el,          
         'ths': ths,        
         'values': ths,
         'titleown':'THSHT kodini yangilash'
@@ -593,7 +599,7 @@ def delthst(request, id):
 @group_required('admin2')
 def birlik(request):
     values = birliklar.objects.all()
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'values': values,
         'titleown': 'Birliklar kiritish'
     }
@@ -603,7 +609,7 @@ def birlik(request):
 
 def addbirlik(request):    
     
-    context = { 
+    context = { 'oqilmagan':oqilmagan, 'el':el, 
         'values': request.POST,
         
         'titleown':'Birlik qo`shish'               
@@ -625,7 +631,7 @@ def addbirlik(request):
 @group_required('admin2')
 def editbirlik(request, id):
     b = birliklar.objects.get(pk=id)
-    context = {          
+    context = { 'oqilmagan':oqilmagan, 'el':el,          
         'b': b,        
         'values': b
     }    
@@ -661,7 +667,7 @@ def delbirlik(request, id):
 @group_required('admin2')
 def resurs(request):
     values = resurslar.objects.all()
-    context = {        
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
         'values': values,
         'titleown': 'Resurslar'
     }
@@ -673,7 +679,7 @@ def addresurs(request):
     birlik=birliklar.objects.all()
     yaxlit_all=yaxlitlash.objects.all()
 
-    context = {             
+    context = { 'oqilmagan':oqilmagan, 'el':el,             
         'birlik':birlik,
         'values': request.POST,
         
@@ -694,7 +700,7 @@ def addresurs(request):
         gkal = request.POST['gkal']
 
         resurslar.objects.create(owner=request.user,nomi=nomi, birlik=birliklar(birlik),
-                                 tshy=tshy,tne=tne,gj=gj, gkal=gkal)
+                                 tshy=tshy,tne=tne,gj=gj, gkal=gkal, aktiv=True)
         messages.success(request, 'Yangi resurs muvofaqqiyatli qo`shildi! ')
         return redirect('resurs') 
     
@@ -705,7 +711,7 @@ def editresurs(request, id):
     birlik=birliklar.objects.all()
     yaxlit_all=yaxlitlash.objects.all()
 
-    context = {          
+    context = { 'oqilmagan':oqilmagan, 'el':el,          
         'birlik': birlik,
         'r': r,        
         'values': r,
@@ -732,7 +738,7 @@ def editresurs(request, id):
         r.tne=tne
         r.gj=gj
         r.gkal=gkal
-        r.owner=request.user
+        r.aktiv=True
         
         r.save()
         messages.success(request, 'Kattalik muvofaqqiyatli yangilandi!')
@@ -760,7 +766,7 @@ def valyuta(request):
     titleown='Valyuta'
     val = Valyuta.objects.all()
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'val': val,
         'titleown':titleown
         }
@@ -1085,7 +1091,7 @@ def deltayyorlangan_hisobot(request, id, own_id):
 def Tadbirlar(request):
     titleown='Texnik tadbirlar'
     tadbir=Tadbir.objects.all()
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,
         'tadbir':tadbir
     }
@@ -1095,7 +1101,7 @@ def Tadbirlar(request):
 @group_required('admin2')
 def addtadbir(request):
     titleown='Texnik tadbirlar qo`shish'
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown
     }
     if request.method == 'GET':
@@ -1115,7 +1121,7 @@ def edittadbir(request, id):
     titleown='O`zgartirish'
     tadbir = Tadbir.objects.get(pk=id)
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'tadbir': tadbir,
         'titleown':titleown
     } 
@@ -1150,7 +1156,7 @@ def yaxlitlashV(request):
     titleown='Yaxlitlash birliklari'
     val = yaxlitlash.objects.all()
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'val': val,
         'titleown':titleown
         }
@@ -1210,43 +1216,63 @@ def updatefqr(request):
     TexnikTadbir=TTT_umumiy_reja.objects.all()
     VP=VVP.objects.all()
     hisobot=hisobot_full.objects.all()
+
+    ich=ichres.objects.all()
+    ist=istres.objects.all()
+    sot=sotres.objects.all()
+
     for v in fqr:
-        for own in v.owner.all():
-            #funksiya************************************
-            for i in fya:
-                if own==i.owner:
-                    v.funksiya=savolnoma(i.id)
-                    v.save()                    
+        own=v.owner
+        #ichres************************************
+        for i in ich:
+            if own==i.owner:
+                v.ichres.add(i.id)
+                v.save()  
+        #istres************************************
+        for i in ist:
+            if own==i.owner:
+                v.istres.add(i.id)
+                v.save()                 
+        #sotres************************************
+        for i in sot:
+            if own==i.owner:
+                v.sotres.add(i.id)
+                v.save()
+        #funksiya************************************
+        for i in fya:
+            if own==i.owner:
+                v.funksiya=savolnoma(i.id)
+                v.save()                    
         
-            #fakt****************************************
-            for i in fakt:                
-                if own==i.owner:
-                    v.fakt.add(i.id)
-                    v.save()
+        #fakt****************************************
+        for i in fakt:                
+            if own==i.owner:
+                v.fakt.add(i.id)
+                v.save()
 
-            #rejalar****************************************
-            for i in pu:                
-                if own==i.owner:
-                    v.reja.add(i.id)
-                    v.save()
+        #rejalar****************************************
+        for i in pu:                
+            if own==i.owner:
+                v.reja.add(i.id)
+                v.save()
             
-            #TTCHT****************************************
-            for i in TexnikTadbir:                
-                if own==i.owner:
-                    v.TexnikTadbir.add(i.id)
-                    v.save()
+        #TTCHT****************************************
+        for i in TexnikTadbir:                
+            if own==i.owner:
+                v.TexnikTadbir.add(i.id)
+                v.save()
 
-            #VP****************************************
-            for i in VP:                
-                if own==i.owner:
-                    v.VVP.add(i.id)
-                    v.save()
+        #VP****************************************
+        for i in VP:                
+            if own==i.owner:
+                v.VVP.add(i.id)
+                v.save()
             
-            #hisobotlari****************************************
-            for i in hisobot:                
-                if own==i.owner:
-                    v.hisobot.add(i.id)
-                    v.save()
+        #hisobotlari****************************************
+        for i in hisobot:                
+            if own==i.owner:
+                v.hisobot.add(i.id)
+                v.save()
 
     messages.success(request, 'Muvafaqqiyatli Yangilandi')
     return redirect('monitoring_users')
@@ -1265,7 +1291,7 @@ def maqsad(request):
     titleown='Resurs qo`shish maqsadi'
     val = res_maqsad.objects.all()
     
-    context = {
+    context = { 'oqilmagan':oqilmagan, 'el':el,
         'val': val,
         'titleown':titleown
         }
@@ -1338,3 +1364,141 @@ def delmaqsad(request, id):
     davlat.delete()
     messages.success(request, 'Muvafaqqiyatli o`chirildi')
     return redirect('maqsad')
+
+@group_required('admin2')
+def xabarlar(request):
+    el=elon.objects.filter(oqildi=False, ga=0)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+
+    title="xabarlar"
+    allf=allfaqir.objects.filter(elon=None)
+    bosh=[]
+    for i in allf:
+        bosh.append(i)
+        
+    elonlar=[]
+    for i in allfaqir.objects.all():        
+        if not i in bosh:
+            elonlar.append(i)
+    
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':title,
+        'allf':allf,
+        'elonlar':elonlar
+        }
+    
+
+    return render(request, '02_s_ad/00_0_xabarlar.html', context)
+
+@group_required('admin2')
+def xabaropen(request,id):
+
+    el=elon.objects.filter(oqildi=False, ga=0)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+    title="xabarlar"
+    fq=allfaqir.objects.get(pk=id)
+    all_elon=allfaqir.objects.get(pk=id).elon.all()
+    
+    allf=allfaqir.objects.filter(elon=None)
+    bosh=[]
+    for i in allf:
+        bosh.append(i)
+        
+    elonlar=[]
+    for i in allfaqir.objects.all():        
+        if not i in bosh:
+            elonlar.append(i)
+
+    res=resurslar.objects.all()
+    allfq=User.objects.all()
+    birl=birliklar.objects.all()
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':title,
+        'allf':allf,
+        'all_elon':all_elon,
+        'elonlar':elonlar,
+        'fq':fq,
+        'res':res,
+        'allfq':allfq,
+        'birl':birl
+        }    
+
+    return render(request, '02_s_ad/00_1_sms.html', context)
+
+@group_required('admin2')
+def delxabar(request, id, oldid):    
+
+    eloncha=elon.objects.get(pk=id)
+    eloncha.delete()
+    
+    messages.success(request, 'xabar muvofaqqiyatli o`chirildi! ')
+    
+    if len(allfaqir.objects.get(pk=oldid).elon.all())==0:
+        return redirect('xabarlar')
+    
+    url='xabaropen/'+str(oldid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def reskorish(request, id, elonid):
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob="Tuzatish asosida qabul qilindi"
+    eloncha.ga=request.user.id
+    eloncha.oqildi=True
+    eloncha.jb=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    url='editresurs/'+str(id)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def restasdiq(request, id, elonid, fqid):
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob="Qabul qilindi"
+    eloncha.ga=request.user.id
+    eloncha.oqildi=True
+    eloncha.jb=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    res=resurslar.objects.get(pk=id)
+    res.aktiv=True
+    res.save()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def bekorqilindi(request, id, elonid, fqid):
+    res=resurslar.objects.get(pk=id)
+    r=res
+    res.delete()
+
+    text=str(r.nomi)+' ('+str(r.birlik)+')'+'//'+'tshy='+str(r.tshy)+'//'+'tne)+='+str(r.tne)+'//'+'GJ='+str(r.gj)+'//'+'GKAL='+str(r.gkal)
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=text+" ga so'rov rad etildi!"
+    eloncha.ga=request.user.id
+    eloncha.oqildi=True
+    eloncha.jb=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)

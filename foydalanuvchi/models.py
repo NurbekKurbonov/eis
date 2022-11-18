@@ -2,7 +2,7 @@ from email.policy import default
 from xmlrpc.client import boolean
 from django.db import models
 from django.contrib.auth.models import User
-from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar, yaxlitlash, res_maqsad, yaxlitlash
+from s_ad.models import IFTUM, DBIBT, THST, Tadbir, birliklar, yaxlitlash, res_maqsad, yaxlitlash,elon
 from django.urls import reverse
 
 from s_ad.models import resurslar, Valyuta, davlatlar, viloyatlar, tumanlar
@@ -362,12 +362,16 @@ class allfaqir(models.Model):
     about=models.TextField("Korxona haqida qisqacha", blank=True)
     emblem=models.ImageField("Emblemasi",upload_to='profile_emb', blank=True, max_length=255, default='profile_emb/login_emb.jpg')
     
+    ichres=models.ManyToManyField(ichres, verbose_name=("Ish chiq/xizmat ko'rsatish resurslari"), blank=True)
+    istres=models.ManyToManyField(istres, verbose_name=("Iste'mol resurslari"), blank=True)
+    sotres=models.ManyToManyField(sotres, verbose_name=("Uzat/sot resurslari"), blank=True)
+
     reja=models.ManyToManyField(plan_umumiy, verbose_name=("Reja hisobotlari"), blank=True)
     fakt=models.ManyToManyField(hisobot_item, verbose_name=("Fakt hisobotlari"), blank=True)
     TexnikTadbir=models.ManyToManyField(TTT_umumiy_reja, verbose_name=("Texnik tadbirlar"), blank=True)
     VVP=models.ManyToManyField(VVP, verbose_name=("Ishlab chiqarilgan mahsulotlar"), blank=True)
     hisobot=models.ManyToManyField(hisobot_full, verbose_name=("Ishlab chiqarilgan mahsulotlar"), blank=True)
-
+    elon=models.ManyToManyField(elon, verbose_name=("Xabarlar"), blank=True)
 
     class Meta:
         verbose_name = ("Foydalanuvchi")

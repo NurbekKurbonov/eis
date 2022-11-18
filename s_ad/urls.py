@@ -1,6 +1,7 @@
 
 from django.urls import path
 from . import views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('updatefqr', views.updatefqr, name='updatefqr'),
@@ -102,4 +103,11 @@ urlpatterns = [
     path('savemaqsad/<int:id>', views.savemaqsad, name='savemaqsad'),
     path('delmaqsad/<int:id>', views.delmaqsad, name='delmaqsad'),
     
+    path('xabarlar', views.xabarlar, name='xabarlar'),
+    path('xabaropen/<int:id>', views.xabaropen, name='xabaropen'),    
+    path('delxabar/<int:id>/<int:oldid>', views.delxabar, name='delxabar'), 
+    path('reskorish/<int:id>/<int:elonid>', views.reskorish, name='reskorish'), 
+    path('restasdiq/<int:id>/<int:elonid>/<int:fqid>', views.restasdiq, name='restasdiq'),
+    path('bekorqilindi/<int:id>/<int:elonid>/<int:fqid>', views.bekorqilindi, name='bekorqilindi'),
+
 ]

@@ -45,4 +45,5 @@ urlpatterns = [
     path('delklassifikator/<int:id>/<str:E_ID>', views.delklassifikator, name='delklassifikator'),
     
     path('delensamfilter/<int:id>/<str:E_ID>', views.delensamfilter, name='delensamfilter'),
+    
 ] 

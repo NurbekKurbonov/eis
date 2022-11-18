@@ -1,0 +1,88 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+{% load static %}
+
+{% block title %} {{title}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block barx %}active{% endblock barx%}
+
+{% block content %}
+        <div class="mb-3">
+            <h1 class="h3 d-inline align-middle">XABARLAR</h1>
+        </div>
+
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-12 col-lg-5 col-xl-3 border-end">
+
+                    <div class="px-4 d-none d-md-block">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control my-3" placeholder="Xabarlar" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    {% for k in elonlar %}                    
+                    <a href="{% url 'xabaropen' k.id %}" class="list-group-item list-group-item-action border-0">                       
+                        <div class="d-flex align-items-start">
+                            <img src="{{k.emblem.url}}" class="rounded-circle me-1" alt="Vanessa Tucker" width="40" height="40">
+                            <div class="flex-grow-1 ms-3">
+                                {{k.nomi}}
+                                <div class="input-group">   
+                                {% for i in k.elon.all %} 
+                                    {% if i.oqildi is False %}
+                                        <div class="small"><span class="fas fa-circle chat-offline"></span></div>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>    
+                    {% endfor %}
+
+                    <hr class="d-block d-lg-none mt-1 mb-0" />
+                </div>    
+                {% block sms %}
+                <div class="col-12 col-lg-7 col-xl-9">
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
+                                <img src="{% static 'img/icons/icon-48x48.png' %}" class="rounded-circle me-1" alt="Sharon Lessman" width="40" height="40">
+                            </div>
+                            <div class="flex-grow-1 ps-3">
+                                <strong>EIS xabarlar bo'limi</strong>
+                                <div class="text-muted small"><em>...</em></div>
+                            </div>
+                            <div>
+                                <!--<button class="btn btn-primary btn-lg me-1 px-3"><i class="feather-lg" data-feather="phone"></i></button>
+                                <button class="btn btn-info btn-lg me-1 px-3 d-none d-md-inline-block"><i class="feather-lg"
+                                        data-feather="video"></i></button>-->
+                                <button class="btn btn-light border btn-lg px-3"><i class="feather-lg" data-feather="more-horizontal"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-relative">
+                        {% if oqilmagan is 0 %}
+                        <h3 style="margin: auto; width: 50%; padding: 20px; color:blue"> yangi xabar yo'q<xabar></h3>
+                        {% endif %}
+                        {% if oqilmagan is 1%}
+                        <h3 style="margin: auto; width: 50%; padding: 20px; color:brown"> sizda <B style="color:red">{{oqilmagan}}</B> ta o'qilmagan xabar mavjud<xabar></h3>
+                        {% endif %}
+                        {% if oqilmagan > 1 %}
+                        <h3 style="margin: auto; width: 50%; padding: 20px; color:brown"> sizda <B style="color:red">{{oqilmagan}}</B> ta o'qilmagan xabarlar mavjud<xabar></h3>
+                        {% endif %}
+                    </div>
+                                      
+                </div>
+                {% endblock sms %}
+            </div>
+        </div>
+   
+<script>
+    // Chat
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatMessagesElement = document.querySelector(".chat-messages");
+        chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+    });
+</script>
+{% endblock content %}

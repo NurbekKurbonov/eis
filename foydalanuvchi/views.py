@@ -12,7 +12,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 #modelsdan chaqirish******************
-from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar
+from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP
 from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja
 from kirish.models import savolnoma
@@ -158,25 +158,22 @@ def asosiyset(request):
 @application_req()
 def mich(request):
     titleown = 'Energiya resurs/mahsulot ishlab chiqarish bo`yicha ma`lumotlar'
-    resurs=resurslar.objects.all()
-    ich = ichres.objects.filter(owner=request.user)
     
-    check=savolnoma.objects.filter(owner=request.user)
+    
+    ich = allfaqir.objects.get(owner=request.user).ichres.all()
+    
+    check=allfaqir.objects.get(owner=request.user).funksiya
     
     mich=0
-    uzat=0
-    
-    for v in check:
-        if v.savol1==True:
-            mich=1
-        if v.savol2==True:
-            uzat=1
-    
-    #hammasi = allfaqir.objects.all()
+    uzat=0   
+    if check.savol1==True:
+        mich=1
+    if check.savol2==True:
+        uzat=1
     
     context={
         'titleown':titleown,
-        'resurs':resurs,
+        
         'ich':ich,
         'active1': 'active',
         'pageid':'1',
@@ -204,7 +201,6 @@ def ist(request):
         if v.savol2==True:
             uzat=1     
             
-    hammasi = allfaqir.objects.all()
     context={
         'titleown':titleown,
         'resurs':resurs,
@@ -247,6 +243,117 @@ def sot(request):
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
+def addichres(request):  
+     
+    context={
+
+        "titleown":"yangi mahsulot ishlab chiqarish/xizmat ko'rsatish" ,
+        'rs': resurslar.objects.all(),
+        'hj': yaxlitlash.objects.all(),
+        'mq': res_maqsad.objects.all(),
+        'br': birliklar.objects.all(),
+    }
+    
+    if request.method=="GET":
+        return render(request, '03_foydalanuvchi/01_1_addresurs.html', context)
+        
+    if request.method=="POST":  
+        resselect = request.POST['resselect'] 
+        hajmselect = request.POST['hajmselect'] 
+        maqsadselect = request.POST['maqsadselect'] 
+        
+        resurschange = request.POST.get('resurschange', False)
+
+        if resurschange==False:
+            ich=allfaqir.objects.get(owner=request.user).ichres.all().filter(resurs=resurslar(resselect))
+            
+            if ich.first():
+                messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
+                return redirect('addichres') 
+
+            ichres.objects.create(owner=request.user, 
+                                        resurs=resurslar(resselect), 
+                                        hajm=yaxlitlash(hajmselect),
+                                        maqsad=res_maqsad(maqsadselect))    
+                
+            ich=ichres.objects.get(owner=request.user, 
+                                        resurs=resurslar(resselect), 
+                                        hajm=yaxlitlash(hajmselect),
+                                        maqsad=res_maqsad(maqsadselect)) 
+            allfaqir.objects.get(owner=request.user).ichres.add(ich.id)
+            
+            messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! ')
+            return redirect('mich')
+            
+        elif resurschange=="True":
+
+            nomi = request.POST['nomi']            
+            birlik = request.POST['birlik']
+            tshy = request.POST['tshy']
+            tne = request.POST['tne']
+            gj = request.POST['gj']
+            gkal = request.POST['gkal']     
+            birlikchange = request.POST.get('bchange', False)
+
+            text=''
+
+            if birlikchange=="True":
+                brl=request.POST['birlik_nomi']
+                asos=request.POST['birlik_asosi']
+                farq=request.POST['farq']
+                text=' va yangi birlik uchun'
+                br=birliklar.objects.create(
+                    birlik=brl,
+                    asos=asos,
+                    farq=farq,
+                    owner=request.user,
+                    aktiv=False)                
+                birlik=br.id
+
+            if tshy=='':
+                tshy=0
+            elif tne=='':
+                tne=0
+            elif gj=='':
+                gj=0
+            elif gkal=='':
+                gkal=0
+            
+            rs=resurslar.objects.create(
+                nomi=nomi,
+                birlik=birliklar(birlik),
+                tshy=tshy,
+                tne=tne,
+                gj=gj,
+                gkal=gkal,
+                owner=request.user,
+                aktiv=False,
+            )
+
+            owner=request.user
+           
+            el=elon.objects.create(
+                owner=owner,
+                dan=owner.id,
+                ga=0,
+
+                mavzu='Yangi resurs'+text+' uchun so`rov!',
+                masala=str(rs.id),
+                vaqt=timezone.now(),
+                icon='bell',
+                url='resurs',
+                oqildi=False,
+                jb=False,
+                jb_oqildi=False,
+            )
+            allfaqir.objects.get(owner=request.user).elon.add(el.id)
+            
+            messages.success(request, 'Yangi resursga so`rov muvafaqqoyatli yuborildi!')
+        
+        return redirect('mich')
+         
+       
+
 @group_required('Faqirlar')
 @application_req()
 def add(request):
@@ -1514,5 +1621,7 @@ class editmail(View):
             [email],
                             )
         email.send(fail_silently=False)
+
+
         messages.success(request, 'Pochta muvafaqqiyatli yangilandi!')        
         return redirect('loginP')

@@ -1,0 +1,316 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi ishlab chiqarish resursi/xizmat turi qo`shish</h1>
+    <a href="{% url 'mich' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<div class="row">
+
+    <form action="{% url 'addichres' %}" method="post">
+        {% csrf_token %}
+        <div class="col-12 col-xl-12">
+            <div class="card">            
+                <div class="card-body">                
+                    <div class="row">
+                        <div class="mb-3 col-md-4">                                
+                            <label class="form-label" for="">Resurs</label>
+                            <div class="input-group">                                    
+                                <select class="form-select flex-grow-1"                                
+                                name="resselect" id="nomiselect">                                    
+                                    {% for v in rs %}
+                                    <option value = {{v.id}}>{{v}}</option> 
+                                    {% endfor %}
+                                </select>                                
+                                <div class="input-group-text">
+                                    <input type="checkbox" name="resurschange" value="True" id="nomichange">
+                                </div>
+                                <label class="form-control" placeholder="Checkbox" disabled>topilmadi</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 col-md-4">                                
+                            <label class="form-label" for="">Hajmi</label>
+                            <div class="input-group">                                    
+                                <select class="form-select flex-grow-1"                                
+                                name="hajmselect" id="birlselect">                                    
+                                    {% for v in hj %}
+                                    <option value = {{v.id}}>{{v}}</option> 
+                                    {% endfor %}
+                                </select>
+                                <div class="input-group-text">
+                                    <input type="checkbox" name="c1" value="True" id="hajmchange">
+                                </div>
+                                <label class="form-control" placeholder="Checkbox" disabled>topilmadi</label>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-4">                                
+                            <label class="form-label" for="">Resursdan foydalanish maqsadi</label>
+                            <div class="input-group">                                    
+                                <select class="form-select flex-grow-1"                                
+                                name="maqsadselect" id="mqselect">                                    
+                                    {% for v in mq %}
+                                    <option value = {{v.id}}>{{v}}</option> 
+                                    {% endfor %}
+                                </select>
+
+                                <input type="text" style="display:none"
+                                    class="form-control"
+                                    placeholder = "maqsadni kiriting"                              
+                                    name = "birinput"
+                                    id="mqinput"
+                                    value = "{{values.nomi}}">
+                                    
+                                <div class="input-group-text">
+                                    <input type="checkbox" name="c1" value="True" id="mqchange">
+                                </div>
+                                <label class="form-control" placeholder="Checkbox" disabled>topilmadi</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>                   
+        </div>        
+</div>
+
+<div id="newmich" style="display:none">
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Yangi resurs qo`shish</h1>        
+    </div>
+    
+    <div class="row">
+            <div class="col-12 col-xl-12">
+                <div class="card">            
+                    <div class="card-body">                
+                            <div class="row"> 
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label" for="">Nomi</label>
+                                    <input type="text" 
+                                        class="form-control" 
+                                        
+                                        placeholder = " "                              
+                                        name = "nomi"
+                                        value = {{values.nomi}}>
+                                </div>                            
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label" for="">Birligi</label>
+                                    <div class="input-group">                                    
+                                        <select class="form-select flex-grow-1"                                
+                                         name="birlik" id="brselect">                                    
+                                        {% for v in br %}
+                                        <option value = {{v.id}}>{{v}}</option> 
+                                        {% endfor %}
+                                        </select> 
+                                        <div class="input-group-text">
+                                            <input type="checkbox" id="birlchange" name="bchange" value="True">
+                                        </div>
+
+                                        <label class="form-control" placeholder="Checkbox" disabled>topilmadi</label>
+                                    </div>                                     
+                                </div>
+                            </div>
+                    </div>
+                </div>                   
+            </div>
+        <div id="brinput" style="display:none">
+            <div class="mb-3">
+                <h1 class="h3 d-inline align-middle">Yangi birlik qo`shish</h1>        
+            </div>
+            <div class="col-12 col-xl-12" >
+                <div class="row">
+                    <div class="col-12 col-xl-12">
+                        <div class="card">            
+                            <div class="card-body">                                
+                                    <div class="row">                                                 
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label" for="">Birlik nomi</label>
+                                            <input type="text" 
+                                                class="form-control" 
+                                                placeholder="birlikning nomini kiriting"                              
+                                                name="birlik_nomi"
+                                                value = "{{values.birlik}}">
+                                        </div>                        
+                
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label" for="">Birlik asosi(XBS)</label>
+                                            <input type="text" 
+                                                class="form-control" 
+                                                placeholder="birlikning asosini kiriting"                              
+                                                name="birlik_asosi"
+                                                value = "{{values.asos}}">
+                                        </div>                                    
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label" for="">Birlik va uning asosi orasidagi farq</label>
+                                            <input type="number" 
+                                                class="form-control" 
+                                                placeholder = " "                              
+                                                name = "farq"
+                                                value = "{{values.farq}}">
+                                        </div>
+                                    </div>  
+                            </div>
+                        </div>
+                    </div>                 
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <h1 class="h3 d-inline align-middle">Universal birlikdagi qiymatni biriktirish</h1>        
+        </div>
+        <div class="col-12 col-xl-12">
+            <div class="card">            
+                <div class="card-body">                
+                        <div class="row"> 
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label" for="">TSHY</label>
+                                <input type="number" 
+                                    class="form-control"                                    
+                                    placeholder = "resurs birligini tshy dagi qiymatini kiriting"                              
+                                    name = "tshy"
+                                    value = "{{values.nomi}}">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label" for="">TNE</label>
+                                <input type="number" 
+                                    class="form-control"                                    
+                                    placeholder = "resurs birligini tne dagi qiymatini kiriting"                              
+                                    name = "tne"
+                                    value = "{{values.nomi}}">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label" for="">GJ</label>
+                                <input type="number" 
+                                    class="form-control" 
+                                    
+                                    placeholder = "resurs birligini GJ dagi qiymatini kiriting"                              
+                                    name = "gj"
+                                    value = "{{values.nomi}}">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label" for="">GKal</label>
+                                <input type="number" 
+                                    class="form-control"                                    
+                                    placeholder = "resurs birligini GKaldagi qiymatini kiriting"                              
+                                    name = "gkal"
+                                    value = "{{values.nomi}}">
+                            </div>
+                        </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hajminput" style="display:none">
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Yangi hajm qo`shish</h1>        
+    </div>
+    <div class="col-12 col-xl-12" >
+        <div class="row">
+            <div class="col-12 col-xl-12">
+                <div class="card">            
+                    <div class="card-body">                                
+                            <div class="row">                                                 
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label" for="">nomi</label>
+                                    <input type="text" 
+                                        class="form-control" 
+                                        placeholder=" "                              
+                                        
+                                        value = {{values.birlik}}>
+                                </div>
+        
+                                <div class="mb-3 col-md-6">
+                                    <label class="form-label" for="">qiymati</label>
+                                    <input type="text" 
+                                        class="form-control" 
+                                        placeholder=" "                              
+                                        name="asos"
+                                        value = {{values.asos}}>
+                                </div>   
+                            </div>  
+                    </div>
+                </div>
+            </div>                 
+        </div>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-primary float-end">Qabul qilish</button> 
+</form>
+
+<script>
+    const nomichange = document.getElementById('nomichange');
+    const newmich = document.getElementById('newmich');
+    const nomiselect = document.getElementById('nomiselect');
+    
+    
+    nomichange.addEventListener('click', function handleClick() {
+        if (nomichange.checked) {
+
+          newmich.style.display = 'block';          
+          nomiselect.style.display = 'none'; 
+        } else {
+            newmich.style.display = 'none';          
+            nomiselect.style.display = 'block'; 
+        }
+      });
+    
+</script>
+<script>   
+    const birlchange = document.getElementById('birlchange');     
+    const brselect = document.getElementById('brselect');
+    const brinput = document.getElementById('brinput');   
+   
+    birlchange.addEventListener('click', function handleClick() {
+        if (birlchange.checked) {
+            brinput.style.display = 'block';          
+            brselect.style.display = 'none'; 
+        } else {
+            brinput.style.display = 'none';          
+            brselect.style.display = 'block'; 
+        }
+      });
+    
+</script>
+
+<script>   
+    const hajmchange = document.getElementById('hajmchange');     
+    const hajmselect = document.getElementById('hajmselect');
+    const hajminput = document.getElementById('hajminput');   
+   
+    hajmchange.addEventListener('click', function handleClick() {
+        if (hajmchange.checked) {
+            hajminput.style.display = 'block';          
+            hajmselect.style.display = 'none'; 
+        } else {
+            hajminput.style.display = 'none';          
+            hajmselect.style.display = 'block'; 
+        }
+      });
+    
+</script>
+
+<script>   
+    const mqchange = document.getElementById('mqchange');     
+    const mqselect = document.getElementById('mqselect');
+    const mqinput = document.getElementById('mqinput');   
+   
+    mqchange.addEventListener('click', function handleClick() {
+        if (mqchange.checked) {
+            mqinput.style.display = 'block';          
+            mqselect.style.display = 'none'; 
+        } else {
+            mqinput.style.display = 'none';          
+            mqselect.style.display = 'block'; 
+        }
+      });
+    
+</script>
+
+{% endblock content %}
