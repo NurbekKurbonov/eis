@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-
 #Hududlarb bo'yicha ma'lumotlar**************************
 
 class davlatlar(models.Model):
@@ -105,7 +104,7 @@ class birliklar(models.Model):
     class Meta:
         verbose_name_plural = '07_Birliklar'
 
-class yaxlitlash(models.Model):    
+class yaxlitlash(models.Model):
     nomi = models.CharField('Nomi', max_length=50)
     qiymati = models.FloatField('Qiymati')
     checker=models.BooleanField("Tekshirish", blank=True)
@@ -192,7 +191,12 @@ class elon(models.Model):
     ga=models.IntegerField(("ga"))
     
     mavzu=models.TextField("Nomi")
-    masala=models.IntegerField("masala", blank=True, null=True)
+
+    resurs=models.ForeignKey(resurslar, verbose_name=("Resurslar"), on_delete=models.CASCADE, blank=True, null=True)
+    birlik=models.ForeignKey(birliklar, verbose_name=("Birilik"), on_delete=models.CASCADE, blank=True, null=True)
+    hajm=models.ForeignKey(yaxlitlash, verbose_name=("Hajm"), on_delete=models.CASCADE, blank=True, null=True)
+    maqsad=models.ForeignKey(res_maqsad, verbose_name=("Maqsad"), on_delete=models.CASCADE, blank=True, null=True)
+
     vaqt=models.DateTimeField("Vaqti", auto_now_add=False)
     icon=models.TextField("icons")
     url=models.TextField("url", max_length=200)

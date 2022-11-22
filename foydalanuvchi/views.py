@@ -12,8 +12,8 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 #modelsdan chaqirish******************
-from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon
-from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP
+from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon, birliklar
+from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP, oraliq
 from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja
 from kirish.models import savolnoma
 import six
@@ -46,6 +46,7 @@ def application_req( login_url=None, raise_exception=False):
             raise PermissionDenied
         return False
     return user_passes_test(check_perms, login_url='/savolnoma')
+
 
 #____***_____Bosh sahifa_____***_____________________
 @group_required('Faqirlar')
@@ -83,7 +84,12 @@ def home(request):
        
     titleown="Bosh menyu"
     
-    context ={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'hammasi':hammasi,
         'h_item':h_item,
         'ich':ich,
@@ -124,8 +130,13 @@ def asosiyset(request):
     dav=davlatlar.objects.all()
     vil=viloyatlar.objects.all()
     tum=tumanlar.objects.all()
-
-    context ={
+    
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'active0':'active',
         'mich':mich,
         'uzat':uzat,
@@ -171,14 +182,19 @@ def mich(request):
     if check.savol2==True:
         uzat=1
     
-    context={
-        'titleown':titleown,
-        
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
+        'titleown':titleown,        
         'ich':ich,
         'active1': 'active',
         'pageid':'1',
         'mich':mich,
-        'uzat':uzat
+        'uzat':uzat,
+        'bol':'mich'
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
@@ -200,8 +216,13 @@ def ist(request):
             mich=1
         if v.savol2==True:
             uzat=1     
-            
-    context={
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c        
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,
         'resurs':resurs,
         'ich':ich,
@@ -209,6 +230,7 @@ def ist(request):
         'pageid':'2',
         'mich':mich,
         'uzat':uzat,
+        'bol':'ist',
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
@@ -232,60 +254,121 @@ def sot(request):
             uzat=1
    
     #hammasi = allfaqir.objects.get(pk=1)
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,
         'resurs':resurs,
         'ich':ich,
         'active3': 'active',
         'pageid':'3',
         'mich':mich,
-        'uzat':uzat
+        'uzat':uzat,
+        'bol':'sot'
     }
     
     return render(request, '03_foydalanuvchi/01_setting.html', context)
-def addichres(request):  
-     
-    context={
+def addichres(request, bol):  
 
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c 
+    context ={'oqilmagan':oqilmagan, 'el':el,
         "titleown":"yangi mahsulot ishlab chiqarish/xizmat ko'rsatish" ,
-        'rs': resurslar.objects.all(),
-        'hj': yaxlitlash.objects.all(),
-        'mq': res_maqsad.objects.all(),
-        'br': birliklar.objects.all(),
+        'rs': resurslar.objects.filter(aktiv=True),
+        'hj': yaxlitlash.objects.filter(checker=True),
+        'mq': res_maqsad.objects.filter(checker=True),
+        'br': birliklar.objects.filter(aktiv=True),
+        'bol':bol,
     }
     
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/01_1_addresurs.html', context)
         
     if request.method=="POST":  
+        mes='Ishlab chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! '
+
         resselect = request.POST['resselect'] 
         hajmselect = request.POST['hajmselect'] 
         maqsadselect = request.POST['maqsadselect'] 
         
         resurschange = request.POST.get('resurschange', False)
+        hajmchange = request.POST.get('hajmchange', False)
+        maqsadchange = request.POST.get('maqsadchange', False)
+        aktivlik=True
+        
+        if hajmchange=="True":
+            mes='Resursni Resursni so`rovga javob olganingizdan so`ng qo`shishingiz mumkin'
 
-        if resurschange==False:
-            ich=allfaqir.objects.get(owner=request.user).ichres.all().filter(resurs=resurslar(resselect))
+            aktivlik=False
+            hajnomi=request.POST['hajnomi'] 
+            hajmqiy=request.POST['hajmqiy'] 
             
-            if ich.first():
-                messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
-                return redirect('addichres') 
+            if hajmqiy=='':
+                hajmqiy=0
 
-            ichres.objects.create(owner=request.user, 
-                                        resurs=resurslar(resselect), 
-                                        hajm=yaxlitlash(hajmselect),
-                                        maqsad=res_maqsad(maqsadselect))    
-                
-            ich=ichres.objects.get(owner=request.user, 
-                                        resurs=resurslar(resselect), 
-                                        hajm=yaxlitlash(hajmselect),
-                                        maqsad=res_maqsad(maqsadselect)) 
-            allfaqir.objects.get(owner=request.user).ichres.add(ich.id)
+            hj=yaxlitlash.objects.create(owner=request.user, 
+                                        nomi=hajnomi, 
+                                        qiymati=hajmqiy, 
+                                        checker=False)
             
-            messages.success(request, 'Siz yangi ishlab chiqarish resurs/mahsulotni muvafaqqiyatli qo`shdingiz! ')
-            return redirect('mich')
+            owner=request.user
+           
+            el=elon.objects.create(
+                owner=owner,
+                dan=owner.id,
+                ga=0,
+                hajm=yaxlitlash(hj.id),             
+                mavzu='Yangi hajmni kiritish uchun so`rov!',                
+                vaqt=timezone.now(),
+                icon='bell',
+                url='resurs',
+                oqildi=False,
+                jb=False,
+                jb_oqildi=False,
+            )
+            allfaqir.objects.get(owner=request.user).elon.add(el.id)
+            hajmselect=hj.id
+
+        if maqsadchange=="True":
+            mes='Resursni so`rovga javob olganingizdan so`ng qo`shishingiz mumkin'
+            aktivlik=False
+            maqsadinput=request.POST['maqsadinput']             
             
-        elif resurschange=="True":
+            mq=res_maqsad.objects.create(owner=request.user, 
+                                    nomi=maqsadinput, 
+                                    ich=True,
+                                    checker=False)
+            
+            owner=request.user
+           
+            el=elon.objects.create(
+                owner=owner,
+                dan=owner.id,
+                ga=0,
+                maqsad=res_maqsad(mq.id),             
+                mavzu='Yangi Rerurs ishlatish maqsadini kiritish uchun so`rov!',                
+                vaqt=timezone.now(),
+                icon='bell',
+                url='resurs',
+                oqildi=False,
+                jb=False,
+                jb_oqildi=False,
+            )
+            allfaqir.objects.get(owner=request.user).elon.add(el.id)
+            
+            maqsadselect=mq.id
+            
+
+        if resurschange=="True":
+            mes='Resursni so`rovga javob olganingizdan so`ng qo`shishingiz mumkin'
+            aktivlik=False
 
             nomi = request.POST['nomi']            
             birlik = request.POST['birlik']
@@ -336,9 +419,10 @@ def addichres(request):
                 owner=owner,
                 dan=owner.id,
                 ga=0,
-
+                resurs=resurslar(rs.id),
+                birlik=birliklar(birlik),                
                 mavzu='Yangi resurs'+text+' uchun so`rov!',
-                masala=str(rs.id),
+                
                 vaqt=timezone.now(),
                 icon='bell',
                 url='resurs',
@@ -347,12 +431,46 @@ def addichres(request):
                 jb_oqildi=False,
             )
             allfaqir.objects.get(owner=request.user).elon.add(el.id)
-            
-            messages.success(request, 'Yangi resursga so`rov muvafaqqoyatli yuborildi!')
+            resselect=rs.id
         
-        return redirect('mich')
-         
-       
+        if bol=='mich':
+            ich=allfaqir.objects.get(owner=request.user).ichres.all().filter(resurs=resurslar(resselect), maqsad=res_maqsad(maqsadselect),)
+            if ich.first():
+                messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
+                return redirect('addichres')
+            ich=ichres.objects.create(owner=request.user, 
+                                        resurs=resurslar(resselect), 
+                                        hajm=yaxlitlash(hajmselect),
+                                        maqsad=res_maqsad(maqsadselect),
+                                        aktiv=aktivlik)            
+            allfaqir.objects.get(owner=request.user).ichres.add(ich.id)
+
+        if bol=='ist':
+            ich=allfaqir.objects.get(owner=request.user).istres.all().filter(resurs=resurslar(resselect), maqsad=res_maqsad(maqsadselect),)        
+            if ich.first():
+                messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
+                return redirect('addichres')
+            ich=istres.objects.create(owner=request.user, 
+                                        resurs=resurslar(resselect), 
+                                        hajm=yaxlitlash(hajmselect),
+                                        maqsad=res_maqsad(maqsadselect),
+                                        aktiv=aktivlik)                
+            allfaqir.objects.get(owner=request.user).istres.add(ich.id)
+
+        if bol=='sot':
+            ich=allfaqir.objects.get(owner=request.user).sotres.all().filter(resurs=resurslar(resselect), maqsad=res_maqsad(maqsadselect),)        
+            if ich.first():
+                messages.error(request, "Hurmatli foydalanuvchi ushbu resurs allaqachon qo'shilgan!")
+                return redirect('addichres')
+            ich=sotres.objects.create(owner=request.user, 
+                                        resurs=resurslar(resselect), 
+                                        hajm=yaxlitlash(hajmselect),
+                                        maqsad=res_maqsad(maqsadselect),
+                                        aktiv=aktivlik)
+            allfaqir.objects.get(owner=request.user).sotres.add(ich.id)
+            
+        messages.success(request, mes)
+        return redirect(bol)
 
 @group_required('Faqirlar')
 @application_req()
@@ -402,7 +520,13 @@ def reja(request):
     his = plan_umumiy.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
 
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,
         'values':ist,
         'his':his
@@ -412,9 +536,9 @@ def reja(request):
 @group_required('Faqirlar')
 @application_req()
 def addreja(request):
-    ich = ichres.objects.filter(owner=request.user)
-    ist = istres.objects.filter(owner=request.user)
-    sot = sotres.objects.filter(owner=request.user)
+    ich = ichres.objects.filter(owner=request.user, aktiv=True)
+    ist = istres.objects.filter(owner=request.user, aktiv=True)
+    sot = sotres.objects.filter(owner=request.user, aktiv=True)
     
     vaqt=timezone.now()
     sana = vaqt.strftime("%d-%m-%Y")
@@ -432,8 +556,14 @@ def addreja(request):
     yil=[]
     for i in range(boshi, oxiri):
         yil.append(i)
-        
-    context={
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
             'titleown':titleown,        
             'ich':ich,
             'ist':ist,
@@ -535,14 +665,19 @@ def checkreja(request, id):
     if int(h_item.vaqt.strftime("%m"))==int(oy) and int(h_item.vaqt.strftime("%Y"))==int(yil):
         ruxsat="" 
 
-    context ={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'h_item':h_item,
         'h_ich':h_ich,
         'h_ist':h_ist,
         'h_uzat':h_uzat,
         'titleown':titleown,
         'val':h_item,
-        'disabled': ruxsat
+        'disabled': 'enabled'
     }
     
     if request.method=="GET":
@@ -588,7 +723,13 @@ def davr(request):
     his = hisobot_item.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
 
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'values':ist,
         'his':his
@@ -615,8 +756,13 @@ def adddavr(request):
     yil=[]
     for i in range(2010,2023):
         yil.append(i)
-        
-    context={
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c    
+    context ={'oqilmagan':oqilmagan, 'el':el,
             'titleown':titleown,        
             'ich':ich,
             'ist':ist,
@@ -711,7 +857,12 @@ def checkdavr(request, id):
     #if int(h_item.vaqt.strftime("%m"))==int(oy) and int(h_item.vaqt.strftime("%Y"))==int(yil):
     ruxsat="" 
 
-    context ={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'h_item':h_item,
         'h_ich':h_ich,
         'h_ist':h_ist,
@@ -767,11 +918,11 @@ def tadbir(request):
 
     #***Resurslarni ko'rsatish
     res=[]
-    for r in ichres.objects.filter(owner=request.user):
+    for r in ichres.objects.filter(owner=request.user, aktiv=True):
         res.append(r.resurs)
-    for r in istres.objects.filter(owner=request.user):
+    for r in istres.objects.filter(owner=request.user, aktiv=True):
         res.append(r.resurs)
-    for r in sotres.objects.filter(owner=request.user):
+    for r in sotres.objects.filter(owner=request.user, aktiv=True):
         res.append(r.resurs)    
     res=list(set(res))
     T_ID = timezone.now().strftime("%Y%m%d%H%M%S")
@@ -782,7 +933,13 @@ def tadbir(request):
     for i in range(50):
         list_danger.append(i)
 
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'res':res,
         'titleown':titleown,        
         'show':'show',
@@ -859,7 +1016,7 @@ def delttt(request, id, T_ID):
     ttt = TTT_reja.objects.get(pk=id)
     
 
-    messages.success(request, ttt.nomi+' nomli tashkiliy texnik tadbir muvafaqqiyatli o`chirildi')    
+    messages.success(request, str(ttt.nomi)+' nomli tashkiliy texnik tadbir muvafaqqiyatli o`chirildi')    
     
     ttt.delete()
     url='addtexniktadbir/'+str(T_ID)
@@ -1036,8 +1193,13 @@ def fakttadbir(request, id):
     for i in range(50):
         list_danger.append(i)
 
-    
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't_reja':t_reja,
         'qoldi':qoldi,
         'rejalar':rejalar,
@@ -1118,7 +1280,12 @@ def faktedit(request, id1, id2):
 def vvp(request):
     titleown = 'Ishlab chiqarilgan mahsulot miqdori'
     
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'show':'show',    
         'vvp':VVP.objects.filter(owner=request.user)
@@ -1166,8 +1333,12 @@ def hisobot(request):
     
     his = hisobot_full.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
-    
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'values':ist,
         'his':his,
@@ -1211,8 +1382,13 @@ def addhisobot(request):
     
     mich=ichres.objects.filter(owner=request.user)
     sot=sotres.objects.filter(owner=request.user)
-    
-    context={
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'values':ist,
         'his_res':his_res,
@@ -1414,11 +1590,10 @@ def result_his(request, id, tur, birl):
                                     'gj':j.resurs.resurs.gj,
                                     'gkal':j.resurs.resurs.gkal,                                    
                                 }
-                                return switcher.get(i, "xato")    
-                            
+                                return switcher.get(i, "xato")  
                             koef1=birlik(birl)
 
-                            q=j.qiymat*koef1*j.resurs.resurs.yaxlit.qiymati/yaxlit.qiymati
+                            q=j.qiymat*koef1*j.resurs.hajm.qiymati/yaxlit.qiymati
                         if birl=='som' or birl=='valut':
                             if birl == 'som':
                                 koef2=j.qiymat
@@ -1431,8 +1606,13 @@ def result_his(request, id, tur, birl):
             else:
                 obj[r].append(0)
     
-    
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':his.nomi,
        'his':his,
        'obj':obj,
@@ -1461,59 +1641,102 @@ def zoom_plus(request, id, tur, birl):
 
 #_________________________________*************Prognozlash*********************__________________________________________________________________
 def prognoz(request):
-    
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/04_prognoz.html', context)
 
 def addprognoz(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/04_1_addprognoz.html', context)
 
 def resultprognoz(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/04_2_result.html', context)
 
 #_________________________________*************Me'yorlash*********************__________________________________________________________________
 def norm(request):
-    
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/05_norm.html', context)
 
 def addnorm(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/05_1_addnorm.html', context)
 
 def resultnorm(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/05_2_resnorm.html', context)
 
 #_________________________________*************Energobalans*********************__________________________________________________________________
 def balans(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/06_balans.html', context)
 
 def addbalans(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/06_1_addbalans.html', context)
 
 def resultbalans(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/06_2_result.html', context)
@@ -1522,27 +1745,105 @@ def resultbalans(request):
 #_________________________________*************ENERGO SAMARADORLIK*********************__________________________________________________________________
 
 def ensam(request):
-    vvp=VVP.objects.filter(owner=request.user)
 
-    list_vvp={}
-    for i in vvp:
-        list_vvp[i.sana]=i.VVP/(i.VVP+random.randint(1,9)*10**(len(str(i.VVP))-3))
+    plan=plan_umumiy.objects.filter(owner=request.user)
+    fakt=hisobot_item.objects.filter(owner=request.user)
+    if oraliq.objects.filter(owner=request.user).first():
+        ora=oraliq.objects.get(owner=request.user)
+        pass
 
-    context={
+    
+    
+    pl={}
+    for p in plan:
+        ichiq=0
+        ist=0        
+        for ich in p.ich.all():
+            ichiq=ichiq+ ich.qiymat*ich.resurs.hajm.qiymati*ich.resurs.resurs.tne
+        for ich in p.ist.all():
+            ist=ist+ ich.qiymat*ich.resurs.hajm.qiymati*ich.resurs.resurs.tne        
+        d=ichiq/ist
+
+        pl[p.title]=d
+    fk={}
+    for p in fakt:
+        ichiq=0
+        ist=0        
+        for ich in p.ich.all():
+            ichiq=ichiq+ ich.qiymat*ich.resurs.hajm.qiymati*ich.resurs.resurs.tne
+        for ich in p.ist.all():
+            ist=ist+ ich.qiymat*ich.resurs.hajm.qiymati*ich.resurs.resurs.tne        
+        d=ichiq/ist
+        fk[p.title]=d
+    d={}
+    for kp,vp in pl.items():
+        for kf,vf in fk.items():
+            if kp==kf:
+                samara=((float(vp)-float(vf))/float(vp))
+                d[kf]=samara
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         "titleown": "Energiya sig'imliligi",
-        'list_vvp':list_vvp
+        'pl':pl,
+        'fk':fk,
+        'pl':pl,
+        'd':d
+        
     }
     return render(request, '03_foydalanuvchi/samaradorlik/0_sam.html', context)
 
 def changesam(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         "titleown": "Energiya samaradorlik"
     }
-    return render(request, '03_foydalanuvchi/samaradorlik/1_addsam.html', context)
+    if request.method=="GET": 
+        return render(request, '03_foydalanuvchi/samaradorlik/1_addsam.html', context)
+    
+    if request.method=="POST": 
+        oliq=request.POST['oraliq']
+        oliq=oliq.split(" <<>> ")
+
+        if oraliq.objects.filter(owner=request.user).first():
+            oralilar=oraliq.objects.get(owner=request.user)
+            oralilar.dan=oliq[0]
+            if len(oraliq)==1:
+                messages.success(request, 'Boshlanish va tugash vaqtlarini to`liq kiriting')    
+                url='samaradorlik'
+                next = request.POST.get('next', '/foydalanuvchi/'+url)            
+                return HttpResponseRedirect(next)
+            else:
+                oralilar.gacha=oliq[1]                
+        else:
+            dan=oliq[0]
+            if len(oraliq)==1:
+                messages.success(request, 'Boshlanish va tugash vaqtlarini to`liq kiriting')    
+                url='samaradorlik'
+                next = request.POST.get('next', '/foydalanuvchi/'+url)            
+                return HttpResponseRedirect(next)
+            else:
+                gacha=oliq[1]                
+            oraliq.objects.create(owner=request.user, 
+                            dan=dan, gacha=gacha)
+        return redirect('ensam')
 
 #*******************************SIFAT*****************************************************
 def hisoblagichlar(request):
-    context={
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
         't':"text"
     }
     return render(request, '03_foydalanuvchi/nosim/0_hisoblagichlar.html', context)
@@ -1625,3 +1926,109 @@ class editmail(View):
 
         messages.success(request, 'Pochta muvafaqqiyatli yangilandi!')        
         return redirect('loginP')
+
+@group_required('admin2')
+def fxabarlar(request):
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+
+    title="xabarlar"
+    allf=allfaqir.objects.get(owner=request.user)    
+    
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':title,
+        'allf':allf,
+        'elonlar':el
+        }
+    
+
+    return render(request, '03_foydalanuvchi/00_0_xabarlar.html', context)
+
+@group_required('admin2')
+def fxabaropen(request):
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+    title="xabarlar"
+    allf=allfaqir.objects.get(owner=request.user)  
+
+    res=resurslar.objects.all()
+    allfq=User.objects.all()
+    birl=birliklar.objects.all()
+    ich=ichres.objects.filter(owner=request.user)
+
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':title,
+        'allf':allf,
+        'all_elon':el,
+        'elonlar':el,
+        'res':res,
+        'allfq':allfq,
+        'birl':birl,
+        'ich':ich
+        }    
+
+    return render(request, '03_foydalanuvchi/00_1_sms.html', context)
+
+@group_required('admin2')
+def addressor(request, id):
+
+    eloncha=elon.objects.get(pk=id)
+    
+    text=''
+    if not eloncha.resurs==None:
+        ic=ichres.objects.get(resurs_id=eloncha.resurs_id)
+        ic.aktiv = True            
+
+        text=str(ic)+' ( '+str(ic.birlik)+' ) '
+    
+    if not eloncha.maqsad==None:
+        rs=eloncha.maqsad_id
+
+        ic=ichres.objects.get(maqsad=res_maqsad(rs))
+        ic.aktiv = True
+        text=str(ic.resurs)+' ( '+str(ic.resurs.birlik)+' ) '
+
+    
+    if not eloncha.hajm==None:
+        rs=eloncha.hajm_id
+
+        ic=ichres.objects.get(hajm=yaxlitlash(rs))
+        ic.aktiv=True
+        text=str(ic.resurs)+' ( '+str(ic.resurs.birlik)+' ) '
+    
+    
+
+    eloncha.jb_oqildi=True
+    eloncha.save()
+    messages.success(request, 'yangi '+text+' muvofaqqiyatli qo`shildi')               
+    return redirect('fxabaropen')
+
+@group_required('Faqirlar')
+@application_req()
+def delres(request, bol, id):    
+    ttt=''
+    if bol=='mich':
+        ttt = ichres.objects.get(pk=id)
+    if bol=='ist':
+        ttt = istres.objects.get(pk=id)
+    if bol=='sot':
+        ttt = sotres.objects.get(pk=id)
+    
+    ttt.delete()
+    messages.success(request, str(ttt.resurs)+' nomli resurs/xizmat muvafaqqiyatli o`chirildi')   
+    url=str(bol)
+    next = request.POST.get('next', '/foydalanuvchi/'+url)
+    
+    return HttpResponseRedirect(next)

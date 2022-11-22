@@ -8,7 +8,7 @@
                 <img src="{% static 'img/avatars/logo_icon.png'%}" class="rounded-circle me-1" alt="Sharon Lessman" width="40" height="40">
             </div>
             <div class="flex-grow-1 ps-3">
-                <strong>Korxona</strong>
+                <strong>Sistema admini</strong>
                 <div class="text-muted small"><em>...</em></div>
             </div>
             <div>
@@ -32,27 +32,57 @@
                     {{i.vaqt|date:"d.m.Y"}} 
                     <div class="font-weight-bold mb-1">{{fq.nomi}}</div>
                     <h4>{{i.mavzu}}</h4>
-                    {% if 'birlik' in i.mavzu%}                    
-                    <p style="color:blue">{% for r in res %}{% if r.id is i.masala%}{% for b in birl %}{% if b.id is r.birlik.id%}{{b.birlik}}/{{b.asos}}/{{b.farq}}{% endif %}{% endfor %}{% endif %}{% endfor %}
-                    <a href="{% url 'reskorish' i.masala i.id%}" class="btn mb-1 btn-info">birlikni o'zgartirib qabul qilish</a>
+                    
+                    {% if i.birlik is not None%}
+                        <p style="color:blue">Birlik = {{i.birlik.birlik}}//Asosi = {{i.birlik.asos}}// Asosga nisbatan farqi = {{i.birlik.farq}}</p>
+                        {% if i.birlik.aktiv is False and i.oqildi is False %}
+                            <a href="{% url 'birlkor' i.birlik.id i.id fq.id%}" class="btn mb-1 btn-info">birlikga tuzatish kiritib qabul qilish</a>
 
-                    <a href="{% url 'restasdiq' i.masala i.id fq.id%}" class="btn mb-1 btn-success"><i class="align-middle fas fa-check"></i> </a>
-                    <a href="{% url 'bekorqilindi' i.masala i.id fq.id%}" class="btn mb-1 btn-danger"><i class="align-middle fas fa-times"></i> </a>
+                            <a href="{% url 'birltasdiq' i.birlik.id i.id fq.id%}" class="btn mb-1 btn-success"><i class="align-middle fas fa-check"></i> </a>
+                            <a href="{% url 'birlbekor' i.birlik.id i.id fq.id%}" class="btn mb-1 btn-danger"><i class="align-middle fas fa-times"></i></a>                        
+                        {% endif %}
                     {% endif %}
-                    {% if 'resurs' in i.mavzu%}
-                    <p style="color:blue">{% for r in res %}{% if r.id is i.masala%}{{r.nomi}}({{r.birlik}})//tshy={{r.tshy}}//tne={{r.tne}}//GJ={{r.gj}}//GKAL={{r.gkal}}//{% endif %}{% endfor %}</p>
-                    {% if not 'rad etildi' in i.javob %}                    
-                    <a href="{% url 'reskorish' i.masala i.id%}" class="btn mb-1 btn-info">resursni o'zgartirib qabul qilish</a>
+
+                    {% if i.resurs is not None%}
+                        <p style="color:blue">{{i.resurs.nomi}}({{i.resurs.birlik}})//tshy={{i.resurs.tshy}}//tne={{i.resurs.tne}}//GJ={{i.resurs.gj}}//GKAL={{i.resurs.gkal}}</p>
+                        
+                        {% if i.resurs.aktiv is False and i.oqildi is False%}
+                        <a href="{% url 'reskorish' i.resurs.id i.id fq.id%}" class="btn mb-1 btn-info"{% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}>resursga tuzatish kiritib qabul qilish</a>                    
+                        
+                        <a href="{% url 'restasdiq' i.resurs.id i.id fq.id%}" class="btn mb-1 btn-success" {% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}><i class="align-middle fas fa-check"></i> </a>
+                        <a href="{% url 'bekorqilindi' i.resurs.id i.id fq.id%}" class="btn mb-1 btn-danger"{% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}><i class="align-middle fas fa-times"></i> </a>
+                        {% endif %}
                     {% endif %}
+
+                    {% if i.hajm is not None%}
+                        <p style="color:blue">{{i.hajm.nomi}} // qiymati = {{i.hajm.qiymati}}</p>
+                        
+                        {% if i.hajm.checker is not True%}
+                        <a href="{% url 'hajmkor' i.hajm.id i.id fq.id%}" class="btn mb-1 btn-info"{% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}>hajmga tuzatish kiritib qabul qilish</a>                    
+                        
+                        <a href="{% url 'hajmtasdiq' i.hajm.id i.id fq.id%}" class="btn mb-1 btn-success" {% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}><i class="align-middle fas fa-check"></i> </a>
+                        <a href="{% url 'hajmbekor' i.hajm.id i.id fq.id%}" class="btn mb-1 btn-danger"{% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}><i class="align-middle fas fa-times"></i> </a>
+                        {% endif %}                        
                     {% endif %}
-                    {% if i.oqildi is False %}
-                    <a href="{% url 'restasdiq' i.masala i.id fq.id%}" class="btn mb-1 btn-success"><i class="align-middle fas fa-check"></i> </a>
-                    <a href="{% url 'bekorqilindi' i.masala i.id fq.id%}" class="btn mb-1 btn-danger"><i class="align-middle fas fa-times"></i> </a>
-                    {% else %}<a href="{% url 'delxabar' i.id fq.id%}" class="btn mb-1 btn-youtube"><i class="align-middle fas fa-trash"></i> </a>{% endif %}                
+
+                    {% if i.maqsad is not None%}
+                        <p style="color:blue">{{i.hajm.nomi}} // qiymati = {{i.hajm.qiymati}}</p>
+                        
+                        {% if i.hajm.checker is not True%}
+                        <a href="{% url 'mqkor' i.maqsad.id i.id fq.id%}" class="btn mb-1 btn-info"{% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}>maqsadga tuzatish kiritib qabul qilish</a>                    
+                        
+                        <a href="{% url 'mqtasdiq' i.maqsad.id i.id fq.id%}" class="btn mb-1 btn-success" {% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}><i class="align-middle fas fa-check"></i> </a>
+                        <a href="{% url 'mqbekor' i.maqsad.id i.id fq.id%}" class="btn mb-1 btn-danger"{% if i.birlik.aktiv is False%}style=" pointer-events: none; color:black"{% endif %}><i class="align-middle fas fa-times"></i> </a>
+                        {% endif %}                        
+                    {% endif %}
+
+                    {% if i.oqildi is True%}
+                    <a href="{% url 'delxabar' i.id fq.id%}" class="btn mb-1 btn-youtube"><i class="align-middle fas fa-trash"></i> </a>              
+                    {% endif %}
                 </div>                    
                    
                 </div>   
-                {% if i.jb is True%}               
+                    {% if i.jb is True%}               
                     <div class="chat-message-right pb-4">
                         <div>
                             <img src="{% static 'img/avatars/logo_icon.png'%}" class="rounded-circle me-1" alt="men" width="40" height="40">

@@ -15,6 +15,7 @@ class ichres(models.Model):
     maqsad=models.ForeignKey(res_maqsad, verbose_name=("Ishlatish yo'nalishi"), on_delete=models.CASCADE, blank=True, null=True)
     hajm=models.ForeignKey(yaxlitlash, verbose_name=("hajm"), on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    aktiv=models.BooleanField("Aktivlik")
     
     def __str__(self):
         return f"{self.resurs}-{self.owner.id}"
@@ -27,6 +28,7 @@ class istres(models.Model):
     maqsad=models.ForeignKey(res_maqsad, verbose_name=("Ishlatish yo'nalishi"), on_delete=models.CASCADE, blank=True, null=True)
     hajm=models.ForeignKey(yaxlitlash, verbose_name=("hajm"), on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    aktiv=models.BooleanField("Aktivlik")
     
     def __str__(self):
         return f"{self.resurs}-{self.owner}"
@@ -39,6 +41,7 @@ class sotres(models.Model):
     maqsad=models.ForeignKey(res_maqsad, verbose_name=("Ishlatish yo'nalishi"), on_delete=models.CASCADE, blank=True, null=True)
     hajm=models.ForeignKey(yaxlitlash, verbose_name=("hajm"), on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
+    aktiv=models.BooleanField("Aktivlik")
     
     def __str__(self):
         return f"{self.resurs}-{self.owner}"
@@ -283,6 +286,21 @@ class TTT_reja(models.Model):
 
     def get_absolute_url(self):
         return reverse("TexnikTadbir_detail", kwargs={"pk": self.pk})
+
+class oraliq(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    dan=models.DateField(("dan"), auto_now=True, auto_now_add=False, blank=True)
+    gacha=models.DateField(("dan"), auto_now=True, auto_now_add=False, blank=True)
+
+    class Meta:
+        verbose_name = ("oraliq")
+        verbose_name_plural = ("oraliqlar")
+
+    def __str__(self):
+        return self.owner
+
+    def get_absolute_url(self):
+        return reverse("oraliq_detail", kwargs={"pk": self.pk})
 
 class TTT_umumiy_reja(models.Model):
     owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)

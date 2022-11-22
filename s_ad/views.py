@@ -631,6 +631,7 @@ def addbirlik(request):
 @group_required('admin2')
 def editbirlik(request, id):
     b = birliklar.objects.get(pk=id)
+    aktivlik=b.aktiv
     context = { 'oqilmagan':oqilmagan, 'el':el,          
         'b': b,        
         'values': b
@@ -639,7 +640,8 @@ def editbirlik(request, id):
     if request.method == 'GET':  
         return render(request, '02_s_ad/08_2_editbirlik.html', context)
     
-    if request.method == 'POST':  
+    if request.method == 'POST':   
+
         birlik = request.POST['birlik']
         asos = request.POST['asos']
         farq = request.POST['farq'] 
@@ -647,12 +649,19 @@ def editbirlik(request, id):
         b.birlik =birlik 
         b.asos =asos 
         b.farq =farq
+        b.aktiv=True
         
         b.owner=request.user
         
         b.save()
         messages.success(request, 'Birlik muvofaqqiyatli yangilandi!')
         
+        if aktivlik==False:
+            allf=allfaqir.objects.get(owner=b.owner)
+            url='xabaropen/'+str(allf.id)
+            next = request.POST.get('next', '/s_ad/'+url)            
+            return HttpResponseRedirect(next)
+
         return redirect('birlik')
 
 @group_required('admin2')
@@ -710,7 +719,7 @@ def editresurs(request, id):
     r = resurslar.objects.get(pk=id)
     birlik=birliklar.objects.all()
     yaxlit_all=yaxlitlash.objects.all()
-
+    aktivlik=r.aktiv
     context = { 'oqilmagan':oqilmagan, 'el':el,          
         'birlik': birlik,
         'r': r,        
@@ -742,7 +751,11 @@ def editresurs(request, id):
         
         r.save()
         messages.success(request, 'Kattalik muvofaqqiyatli yangilandi!')
-        
+        if aktivlik==False:
+            fqid=allfaqir.objects.get(owner=request.user).id
+            url='xabaropen/'+str(fqid)
+            next = request.POST.get('next', '/s_ad/'+url)            
+            return HttpResponseRedirect(next)
         return redirect('resurs')
 
 
@@ -1451,17 +1464,22 @@ def delxabar(request, id, oldid):
     return HttpResponseRedirect(next)
 
 @group_required('admin2')
-def reskorish(request, id, elonid):
+def reskorish(request, id, elonid, fqid):
 
     eloncha=elon.objects.get(pk=elonid)
-    eloncha.javob="Tuzatish asosida qabul qilindi"
+    eloncha.javob=eloncha.javob+"Resurs tuzatish asosida qabul qilindi. "
     eloncha.ga=request.user.id
     eloncha.oqildi=True
     eloncha.jb=True
     eloncha.jbvaqt=timezone.now()
     eloncha.save()
+    
+    if resurslar.objects.get(pk=id).aktiv==False:
+        url='editresurs/'+str(id)
+        next = request.POST.get('next', '/s_ad/'+url)            
+        return HttpResponseRedirect(next)
 
-    url='editresurs/'+str(id)
+    url='xabaropen/'+str(fqid)
     next = request.POST.get('next', '/s_ad/'+url)            
     return HttpResponseRedirect(next)
 
@@ -1488,16 +1506,216 @@ def restasdiq(request, id, elonid, fqid):
 def bekorqilindi(request, id, elonid, fqid):
     res=resurslar.objects.get(pk=id)
     r=res
-    res.delete()
+    
 
     text=str(r.nomi)+' ('+str(r.birlik)+')'+'//'+'tshy='+str(r.tshy)+'//'+'tne)+='+str(r.tne)+'//'+'GJ='+str(r.gj)+'//'+'GKAL='+str(r.gkal)
     eloncha=elon.objects.get(pk=elonid)
     eloncha.javob=text+" ga so'rov rad etildi!"
     eloncha.ga=request.user.id
     eloncha.oqildi=True
+    eloncha.resurs_id=''
     eloncha.jb=True
     eloncha.jbvaqt=timezone.now()
     eloncha.save()
+
+    #res.delete()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def birlkor(request, id, elonid, fqid):
+    
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+"Birlik Tuzatish asosida qabul qilindi. "
+    eloncha.ga=request.user.id
+    eloncha.jb=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    if birliklar.objects.get(pk=id).aktiv==False:
+        url='editbirlik/'+str(id)
+        next = request.POST.get('next', '/s_ad/'+url)    
+        return HttpResponseRedirect(next)
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def birltasdiq(request, id, elonid, fqid):
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+" Birlik qabul qilindi."
+    eloncha.ga=request.user.id    
+    eloncha.jb=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    br=birliklar.objects.get(pk=id)
+    br.aktiv=True
+    br.save()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def birlbekor(request, id, elonid, fqid):
+    br=birliklar.objects.get(pk=id)
+    r=br
+
+    text=str(r.birlik)+'=>'+str(r.asos)+')'+'//'+'farq='+str(r.farq)
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+text+" birligiga so'rov rad etildi!"
+    eloncha.ga=request.user.id  
+    eloncha.resurs.birlik_id=''
+    eloncha.birlik_id=''
+    
+    eloncha.jb=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()  
+    
+
+    res=resurslar.objects.filter(birlik=br)
+    for i in res:
+        i.birlik_id=''
+
+    #br.delete()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url) 
+            
+    
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def hajmkor(request, id, elonid, fqid):
+    
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+"Hajm tuzatish asosida qabul qilindi. "
+    eloncha.ga=request.user.id
+    eloncha.jb=True
+    eloncha.oqildi=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    if yaxlitlash.objects.get(pk=id).checker==False:
+        url='yaxlitlashV'
+        next = request.POST.get('next', '/s_ad/'+url)    
+        return HttpResponseRedirect(next)
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def hajmtasdiq(request, id, elonid, fqid):
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+" Hajm qabul qilindi."
+    eloncha.ga=request.user.id    
+    eloncha.jb=True
+    eloncha.oqildi=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    br=yaxlitlash.objects.get(pk=id)
+    br.checker=True
+    br.save()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def hajmbekor(request, id, elonid, fqid):
+    br=yaxlitlash.objects.get(pk=id)
+    r=br
+
+    text=str(r.nomi)+'=>'+str(r.qiymati)
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+text+" nomli hajm uchun so'rov rad etildi!"
+    eloncha.ga=request.user.id  
+    eloncha.hajm_id=''
+    eloncha.jb=True
+    eloncha.oqildi=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+    
+    ich=ichres.objects.filter(hajm=br)
+    for i in ich:
+        i.hajm_id=''
+        
+    #br.delete()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def mqkor(request, id, elonid, fqid):
+    
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+"Ishlatilish maqsad tuzatish asosida qabul qilindi. "
+    eloncha.ga=request.user.id
+    eloncha.jb=True
+    eloncha.oqildi=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    if res_maqsad.objects.get(pk=id).checker==False:
+        url='addmaqsad'
+        next = request.POST.get('next', '/s_ad/'+url)    
+        return HttpResponseRedirect(next)
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def mqtasdiq(request, id, elonid, fqid):
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+" Maqsad qabul qilindi."
+    eloncha.ga=request.user.id    
+    eloncha.jb=True
+    eloncha.oqildi=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+
+    br=res_maqsad.objects.get(pk=id)
+    br.checker=True
+    br.save()
+
+    url='xabaropen/'+str(fqid)
+    next = request.POST.get('next', '/s_ad/'+url)            
+    return HttpResponseRedirect(next)
+
+@group_required('admin2')
+def mqbekor(request, id, elonid, fqid):
+    br=res_maqsad.objects.get(pk=id)
+    r=br
+
+    text=str(r.nomi)+'=>'+str(r.qiymati)
+
+    eloncha=elon.objects.get(pk=elonid)
+    eloncha.javob=eloncha.javob+text+" nomli maqsad uchun so'rov rad etildi!"
+    eloncha.ga=request.user.id  
+    eloncha.hajm_id=''
+    eloncha.jb=True
+    eloncha.oqildi=True
+    eloncha.jbvaqt=timezone.now()
+    eloncha.save()
+    
+    ich=ichres.objects.filter(hajm=br)
+    for i in ich:
+        i.hajm_id=''
+        
+    #br.delete()
 
     url='xabaropen/'+str(fqid)
     next = request.POST.get('next', '/s_ad/'+url)            

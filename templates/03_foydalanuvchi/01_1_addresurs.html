@@ -11,7 +11,7 @@
 
 <div class="row">
 
-    <form action="{% url 'addichres' %}" method="post">
+    <form action="{% url 'addichres' bol %}" method="post">
         {% csrf_token %}
         <div class="col-12 col-xl-12">
             <div class="card">            
@@ -43,7 +43,7 @@
                                     {% endfor %}
                                 </select>
                                 <div class="input-group-text">
-                                    <input type="checkbox" name="c1" value="True" id="hajmchange">
+                                    <input type="checkbox" name="hajmchange" value="True" id="hajmchange">
                                 </div>
                                 <label class="form-control" placeholder="Checkbox" disabled>topilmadi</label>
                             </div>
@@ -61,12 +61,12 @@
                                 <input type="text" style="display:none"
                                     class="form-control"
                                     placeholder = "maqsadni kiriting"                              
-                                    name = "birinput"
+                                    name = "maqsadinput"
                                     id="mqinput"
                                     value = "{{values.nomi}}">
                                     
                                 <div class="input-group-text">
-                                    <input type="checkbox" name="c1" value="True" id="mqchange">
+                                    <input type="checkbox" name="maqsadchange" value="True" id="mqchange">
                                 </div>
                                 <label class="form-control" placeholder="Checkbox" disabled>topilmadi</label>
                             </div>
@@ -221,17 +221,17 @@
                                     <input type="text" 
                                         class="form-control" 
                                         placeholder=" "                              
-                                        
-                                        value = {{values.birlik}}>
+                                        name="hajnomi"
+                                        value = "{{values.birlik}}">
                                 </div>
         
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label" for="">qiymati</label>
-                                    <input type="text" 
+                                    <input type="number" 
                                         class="form-control" 
                                         placeholder=" "                              
-                                        name="asos"
-                                        value = {{values.asos}}>
+                                        name="hajmqiy"
+                                        value = "{{values.asos}}">
                                 </div>   
                             </div>  
                     </div>

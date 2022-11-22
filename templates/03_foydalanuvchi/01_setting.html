@@ -24,7 +24,7 @@
 	<div class="card">
 		<div class="card-header">
 			<h5 class="card-title">{{titleown}}</h5>			
-			<a href="{% url 'addichres' %}" type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="fas fa-plus"></i></a>
+			<a href="{% url 'addichres' bol%}" type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="fas fa-plus"></i></a>
 		</div>
 		<div class="card-body text-center">
 				<table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
@@ -38,14 +38,28 @@
                         </thead>
                         <tbody>
                     {% for v in ich %}
-                    <tr>
-                        <td> {{forloop.counter}}</td>
-                        <td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
-                        <td>{{v.maqsad}}</td>  
-                        <td class="table-action text-center">
-                            <a href="#"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a> 
-                        </td> 
-                    </tr>
+					{% if v.aktiv is False %}
+						<tr style="color:red">
+							<td> {{forloop.counter}}</td>
+							<td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+							<td>{{v.maqsad}}</td>
+							<td class="table-action text-center">
+								<a href="{% url 'delres' bol v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a> 
+							</td> 
+						</tr>
+					{% endif %}
+                    {% endfor %}
+					{% for v in ich %}
+					{% if v.aktiv is True %}
+						<tr>
+							<td> {{forloop.counter}}</td>
+							<td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+							<td>{{v.maqsad}}</td>  
+							<td class="table-action text-center">
+								<a href="{% url 'delres' bol v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a> 
+							</td> 
+						</tr>
+					{% endif %}
                     {% endfor %}
                     </tbody>
                     <tfoot>
@@ -56,9 +70,7 @@
                     </tr>
                     </tfoot>
                     </table>
-					<a href="{% url 'mich'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
 					
-				
 			<!-- *****************************offcanvas boshlandi*******************************************************************-->
 			<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
 				aria-labelledby="offcanvasWithBothOptionsLabel" >

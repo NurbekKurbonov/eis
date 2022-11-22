@@ -11,7 +11,7 @@ urlpatterns = [
     path('ist', views.ist, name='ist'),
     path('sot', views.sot, name='sot'),  
     
-    path('addichres', views.addichres, name='addichres'),  
+    path('addichres/<str:bol>', views.addichres, name='addichres'),  
     
     path('add', views.add, name='add'),
     
@@ -75,5 +75,11 @@ urlpatterns = [
     path('editpas', csrf_exempt(views.editpas.as_view()),
          name='editpas'), 
     path('editmail', csrf_exempt(views.editmail.as_view()),
-         name='editmail'), 
+         name='editmail'),
+         
+     path('fxabarlar', views.fxabarlar, name='fxabarlar'),
+     path('fxabaropen', views.fxabaropen, name='fxabaropen'),
+     path('addressor/<int:id>', views.addressor, name='addressor'),
+
+     path('delres/<str:bol>/<int:id>', views.delres, name='delres'),
 ]

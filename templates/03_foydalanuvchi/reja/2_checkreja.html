@@ -23,7 +23,7 @@
                     <div class="row">
                         {% for v in h_ich %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.hajm}} {{v.resurs.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control"  {{disabled}}
                                     autofocus required="true"
@@ -31,7 +31,7 @@
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <label class="form-label">1 {{v.resurs.hajm}} {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
                             <input type="number"
                                     class="form-control"  {{disabled}}
                                     autofocus required="true"
@@ -57,7 +57,7 @@
                     <div class="row">
                         {% for v in h_ist %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.hajm}} {{v.resurs.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control"  {{disabled}}
                                     autofocus required="true"
@@ -65,7 +65,7 @@
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <label class="form-label">1 {{v.resurs.hajm}} {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
                             <input type="number"
                                     class="form-control"  {{disabled}}
                                     autofocus required="true"
@@ -89,7 +89,7 @@
                     <div class="row">
                         {% for v in h_uzat %}
                         <div class="mb-3 col-6">
-                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.resurs.birlik}})</label>
+                            <label class="form-label">{{forloop.counter}}. {{v.resurs.resurs.nomi}} ({{v.resurs.hajm}} {{v.resurs.resurs.birlik}})</label>
                             <input type="number"
                                     class="form-control"  {{disabled}}
                                     autofocus required="true"
@@ -97,7 +97,7 @@
                                     value="{{v.qiymat}}"/>
                         </div>
                         <div class="mb-3 col-6">
-                            <label class="form-label">1 {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
+                            <label class="form-label">1 {{v.resurs.hajm}} {{v.resurs.resurs.birlik}} {{v.resurs.resurs.nomi}} tarif bo'yicha qiymati (so'm)</label>
                             <input type="number"
                                     class="form-control"  {{disabled}}
                                     autofocus required="true"
@@ -109,7 +109,7 @@
         </div>
     </div>
     {% endif %}
-    <button type="submit" {{disabled}} class="btn btn-primary float-end">Saqlas</button> 
+    <button type="submit" {{disabled}} class="btn btn-primary float-end">Saqlash</button> 
     
 </div>
 

@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="col-8">  
+    <div class="col-6">  
         <h1 class="h3 d-inline align-middle yozuv_grad">{{his.oraliq_min}} << >> {{his.oraliq_max}} </h1>   
         <div class="row">
             <div class="col-12" >
@@ -60,16 +60,16 @@
             </div>                   
         </div>
     </div>    
-   
+    <div class="col-xl-2">
+        <button width="100%"  class="btn float-end my-1" color="blue" id="button" onclick="showhide()"> 
+            <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
+            <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
+        </button>
+    </div>
     <div class="col-xl-2">
         <form action="{% url 'zoom_plus' id tur birl%}" method="post">
             {% csrf_token %}     
-            <div class="input-group mb-3">
-                <button width="100%"  class="btn float-end my-1" color="blue" id="button" onclick="showhide()"> 
-                    <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
-                    <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
-                </button>
-
+            <div class="input-group mb-3">                
                 <select name="yaxlit" class="form-select flex-grow-1">
                     <option value="{{his.koef.id}}">{{his.koef}}</option>
                     {% for i in yaxlit_all %}
@@ -190,7 +190,7 @@
                             <th>sana</th>
                             {% for v in sana %}                          
                             <th>{{v}}</th>
-                            {% endfor %}                              
+                            {% endfor %}                            
 
                         </tr>
                         </thead>

@@ -102,11 +102,24 @@ urlpatterns = [
     path('editmaqsad/<int:id>', views.editmaqsad, name='editmaqsad'),
     path('savemaqsad/<int:id>', views.savemaqsad, name='savemaqsad'),
     path('delmaqsad/<int:id>', views.delmaqsad, name='delmaqsad'),
-    
+        
     path('xabarlar', views.xabarlar, name='xabarlar'),
     path('xabaropen/<int:id>', views.xabaropen, name='xabaropen'),    
+
+    path('birlkor/<int:id>/<int:elonid>/<int:fqid>', views.birlkor, name='birlkor'), 
+    path('birltasdiq/<int:id>/<int:elonid>/<int:fqid>', views.birltasdiq, name='birltasdiq'), 
+    path('birlbekor/<int:id>/<int:elonid>/<int:fqid>', views.birlbekor, name='birlbekor'),
+
+    path('hajmkor/<int:id>/<int:elonid>/<int:fqid>', views.hajmkor, name='hajmkor'), 
+    path('hajmtasdiq/<int:id>/<int:elonid>/<int:fqid>', views.hajmtasdiq, name='hajmtasdiq'), 
+    path('hajmbekor/<int:id>/<int:elonid>/<int:fqid>', views.hajmbekor, name='hajmbekor'),
+
+    path('mqkor/<int:id>/<int:elonid>/<int:fqid>', views.mqkor, name='mqkor'), 
+    path('mqtasdiq/<int:id>/<int:elonid>/<int:fqid>', views.mqtasdiq, name='mqtasdiq'), 
+    path('mqbekor/<int:id>/<int:elonid>/<int:fqid>', views.mqbekor, name='mqbekor'),
+
     path('delxabar/<int:id>/<int:oldid>', views.delxabar, name='delxabar'), 
-    path('reskorish/<int:id>/<int:elonid>', views.reskorish, name='reskorish'), 
+    path('reskorish/<int:id>/<int:elonid>/<int:fqid>', views.reskorish, name='reskorish'), 
     path('restasdiq/<int:id>/<int:elonid>/<int:fqid>', views.restasdiq, name='restasdiq'),
     path('bekorqilindi/<int:id>/<int:elonid>/<int:fqid>', views.bekorqilindi, name='bekorqilindi'),
 
