@@ -82,4 +82,6 @@ urlpatterns = [
      path('addressor/<int:id>', views.addressor, name='addressor'),
 
      path('delres/<str:bol>/<int:id>', views.delres, name='delres'),
+
+     path('opros', views.opros, name='opros'),
 ]

@@ -1743,7 +1743,8 @@ def resultbalans(request):
 
 
 #_________________________________*************ENERGO SAMARADORLIK*********************__________________________________________________________________
-
+@group_required('Faqirlar')
+@application_req()
 def ensam(request):
 
     plan=plan_umumiy.objects.filter(owner=request.user)
@@ -1797,6 +1798,8 @@ def ensam(request):
     }
     return render(request, '03_foydalanuvchi/samaradorlik/0_sam.html', context)
 
+@group_required('Faqirlar')
+@application_req()
 def changesam(request):
     el=elon.objects.filter(owner=request.user, jb=True)
     c=0
@@ -1848,6 +1851,8 @@ def hisoblagichlar(request):
     }
     return render(request, '03_foydalanuvchi/nosim/0_hisoblagichlar.html', context)
 
+@group_required('Faqirlar')
+@application_req()
 def tahrir(request,id):    
     if request.method=="POST":   
             
@@ -1927,7 +1932,8 @@ class editmail(View):
         messages.success(request, 'Pochta muvafaqqiyatli yangilandi!')        
         return redirect('loginP')
 
-@group_required('admin2')
+@group_required('Faqirlar')
+@application_req()
 def fxabarlar(request):
 
     el=elon.objects.filter(owner=request.user, jb=True)
@@ -1950,7 +1956,8 @@ def fxabarlar(request):
 
     return render(request, '03_foydalanuvchi/00_0_xabarlar.html', context)
 
-@group_required('admin2')
+@group_required('Faqirlar')
+@application_req()
 def fxabaropen(request):
 
     el=elon.objects.filter(owner=request.user, jb=True)
@@ -1981,7 +1988,8 @@ def fxabaropen(request):
 
     return render(request, '03_foydalanuvchi/00_1_sms.html', context)
 
-@group_required('admin2')
+@group_required('Faqirlar')
+@application_req()
 def addressor(request, id):
 
     eloncha=elon.objects.get(pk=id)
@@ -2032,3 +2040,27 @@ def delres(request, bol, id):
     next = request.POST.get('next', '/foydalanuvchi/'+url)
     
     return HttpResponseRedirect(next)
+
+@group_required('Faqirlar')
+@application_req()
+def opros(request):
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+
+    title="So'rovnoma"
+    allf=allfaqir.objects.get(owner=request.user)    
+    
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':title,
+        'allf':allf,
+        'elonlar':el
+        }
+    
+
+    return render(request, '03_foydalanuvchi/opros/06_savolnoma.html', context)

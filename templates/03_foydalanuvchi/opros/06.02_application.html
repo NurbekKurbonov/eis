@@ -1,0 +1,162 @@
+{% load static %}
+<div class="card">
+    <div class="card-body">
+        <div class="m-sm-4">  
+                <div class="mb-3">
+                    <div class="row">  
+                        <div class="mb-3 col-md-10">
+                            <label class="form-label text_ray" for="">Yuridik shaxs nomi</label>
+                            <input type="text"
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder="Korxonangizni nomini kiriting"                              
+                                name="nomi"
+                                value = {{values.nomi}}>
+                        </div>
+                         
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label text_ray" for="">Ish yurituvchi ismi</label>
+                            <input type="text" 
+                                class="form-control" 
+                                autofocus required="true"
+                                placeholder="Ismingizni kiriting"                              
+                                name="ism"
+                                value = {{values.dbibt}}>
+                        </div>  
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="">Ish yurituvchi familiyasi</label>
+                            <input type="text" 
+                                class="form-control"
+                                autofocus required="true"
+                                placeholder="Familyangizni kiriting"                              
+                                name="fam"
+                                value = {{values.dbibt}}>
+                        </div>
+                        <div class="mb-3 col-md-5">
+                            <label class="form-label text_ray" for="">Ish yurituvchi telefon raqami</label>
+                            <div class="mb-3 col-md-4 input-group">
+                                <button class="btn btn-outline-secondary" type="button" disabled>+998</button>
+                                <input type="text" 
+                                    data-inputmask-mask="99-999-99-99"
+                                    class="form-control" 
+                                    autofocus required="true"                                                             
+                                    name="tel"
+                                    value = {{values.dbibt}}>
+                                    <button class="btn btn-outline-success" type="button" disabled><i class="align-middle me-2 fas fa-fw fa-phone"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">IFTUM kodi (ру: ОКЭД)</label>
+                            <select class="form-select flex-grow-1"
+                                name="iftum">
+                                {% for v in iftum %}
+                                    <option value = {{v.id}}>{{v.bolim}}{{v.bob}}{{v.guruh}}{{v.sinf}}{{v.tartib}}: {{v.nomi}}</option>    
+                                {% endfor %}
+                            </select>  
+                        </div> 
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">DBIBT/KTUT kodi (ру: СООГУ/ОКПО)</label>
+                            <select class="form-select flex-grow-1" 
+                                name="dbibt">
+                                {% for v in dbibt %}
+                                    <option value = {{v.id}}>{{v.dbibt}}/{{v.ktut}}: {{v.nomi}}</option>    
+                                {% endfor %}
+                            </select>                                   
+                            </select>  
+                        </div> 
+                        <div class="mb-3 col-md-12">
+                            <label class="form-label text_ray" for="">THSHT kodi (ру: ОПФ)</label>
+                            <select class="form-select flex-grow-1"
+                                name="thst">                                  
+                                {% for v in thst %}
+                                <option value = {{v.id}}>{{v.bolim}}{{v.tur}}: {{v.nomi}}</option>    
+                                {% endfor %}                                 
+                            </select>  
+                        </div> 
+                        <div class="mb-3 col-md-5">
+                            <label class="form-label text_ray" for="">Korxona admini telefon raqami</label>
+                            <div class="mb-3 col-md-4 input-group">
+                                <button class="btn btn-outline-secondary" type="button" disabled>+998</button>
+                                <input type="text" 
+                                    data-inputmask-mask="99-999-99-99"
+                                    class="form-control" 
+                                    autofocus required="true"                                                             
+                                    name="mobil"
+                                    value = {{values.dbibt}}>
+                                <button class="btn btn-outline-success" type="button" disabled><i class="align-middle me-2 fas fa-fw fa-phone"class="align-middle me-2 fas fa-fw fa-comment-alt"></i></button>
+                            </div>
+                        </div>           
+                    </div>					
+                </div>                
+                <div class="mb-3">
+                    <label class="form-label text_ray">Korxonaning joylashgan o'rni bo'yicha ma'lumotlar:</label>                    
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="">Davlat :</label>
+                            <select class="form-select flex-grow-1" id="manzil" name="dav">                                  
+                                <option value = "">----</option> 
+                                {% for v in dav %}
+                                <option value = {{v.id}}>{{v.davlat_nomi}}</option> 
+                                {% endfor %}                                  
+                            </select> 
+                        </div> 
+
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="">Viloyat/shahar :</label>
+                            <select class="form-select flex-grow-1" id="viloyat"
+                                name="vil"> 
+                                <option value = "">{{v.viloyat_nomi}}</option>                                   
+                                                                
+                            </select>                             
+                        </div> 
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="">tuman/shahar :</label>
+                            <select class="form-select flex-grow-1" id="tuman"
+                                name="tuman">       
+                                <option>--------</option>     
+                            </select>                              
+                        </div> 
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label text_ray" for="" >Manzil :</label>
+                            <textarea rows="1" type="text"
+                                class="form-control" 
+                                autofocus required="true"                                                             
+                                name="manzil"
+                                value = {{values.dbibt}}></textarea>
+                        </div>                   
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>		
+    // DataTables with Column Search by Select Inputs
+    document.addEventListener("DOMContentLoaded", function() {
+        $("#datatables-column-search-select-inputs").DataTable({
+            initComplete: function() {
+                this.api().columns().every(function() {
+                    var column = this;
+                    var select = $("<select class=\"form-control\"><option value=\"\"></option></select>")
+                        .appendTo($(column.footer()).empty())
+                        .on("change", function() {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search(val ? "^" + val + "$" : "", true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append("<option value=\"" + d + "\">" + d + "</option>")
+                    });
+                });
+            }
+        });
+    });
+</script>
+
+
+
+	

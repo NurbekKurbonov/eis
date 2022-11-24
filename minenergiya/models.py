@@ -139,3 +139,58 @@ class michpar(models.Model):
         return reverse("ensamfiltr_detail", kwargs={"pk": self.pk})
 
 
+#*****************IQTISODIY SAMARA*********************
+class ver(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    nomi= models.TextField("Savol")
+    MB= models.FloatField("Bajarilish bosqichlari", blank=True, null=True)
+    TS= models.FloatField("Takrorlanishlar soni", blank=True, null=True)
+    TO= models.FloatField("Takrorlanishlar oralig'i", blank=True, null=True)
+    tj= models.FloatField("Bajarish uchun joriy ketgan vaqt", blank=True, null=True)
+    tk= models.FloatField("Dastur bajarish vaqti", blank=True, null=True)
+    i0= models.FloatField("Bajaruvchining kunlik ish haqqi", blank=True, null=True)
+
+    class Meta:
+        verbose_name = ("variant")
+        verbose_name_plural = ("variantlar")
+
+    def __str__(self):
+        return self.nomi
+
+    def get_absolute_url(self):
+        return reverse("kriteriya_detail", kwargs={"pk": self.pk})
+
+
+class kriteriya(models.Model):
+    nomi= models.TextField("Savol")
+    ver=models.ManyToManyField(ver, verbose_name=("Variantlar"), blank=True)
+    kp=models.FloatField("Dasturga inson aralashuvi koeffitsiyenti", blank=True, null=True)
+    class Meta:
+        verbose_name = ("kriteriya")
+        verbose_name_plural = ("kriteriyalar")
+
+    def __str__(self):
+        return self.nomi
+
+    def get_absolute_url(self):
+        return reverse("kriteriya_detail", kwargs={"pk": self.pk})
+
+class miqdorlar(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
+
+    ichres= models.TextField("Ishlab chiqarish resurslari miqdori", blank=True, null=True)
+    istres= models.TextField("Ishlab chiqarish resurslari miqdori", blank=True, null=True)
+    sotres= models.TextField("Ishlab chiqarish resurslari miqdori", blank=True, null=True)
+    his= models.TextField("Hisobotlar miqdori", blank=True, null=True)
+    
+    ver=models.ManyToManyField(ver, verbose_name=("Variantlar"), blank=True)
+    kp=models.FloatField("Dasturga inson aralashuvi koeffitsiyenti", blank=True, null=True)
+    class Meta:
+        verbose_name = ("kriteriya")
+        verbose_name_plural = ("kriteriyalar")
+
+    def __str__(self):
+        return self.nomi
+
+    def get_absolute_url(self):
+        return reverse("kriteriya_detail", kwargs={"pk": self.pk})
