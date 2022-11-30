@@ -410,8 +410,6 @@ def ensamkor_result(request, id):
             yilcha=int(oy.split("-")[1])
             if f.fqr.fakt.all().filter(title=str(oycha)+"-"+str(yilcha)).exists():
                 pass
-                
-                
         mich[f]=lst
 
     #******** Mahsulot ishlab chiqarish TAMOM **********************

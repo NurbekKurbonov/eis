@@ -1505,8 +1505,7 @@ def restasdiq(request, id, elonid, fqid):
 @group_required('admin2')
 def bekorqilindi(request, id, elonid, fqid):
     res=resurslar.objects.get(pk=id)
-    r=res
-    
+    r=res       
 
     text=str(r.nomi)+' ('+str(r.birlik)+')'+'//'+'tshy='+str(r.tshy)+'//'+'tne)+='+str(r.tne)+'//'+'GJ='+str(r.gj)+'//'+'GKAL='+str(r.gkal)
     eloncha=elon.objects.get(pk=elonid)
