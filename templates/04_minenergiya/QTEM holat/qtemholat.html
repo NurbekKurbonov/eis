@@ -1,0 +1,74 @@
+{% extends '04_minenergiya/00_base.html' %}
+{% load static %}
+{% csrf_token %}
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block show %}show{% endblock show %}
+{% block active %}active{% endblock active %}
+{% block barqt %}active{% endblock barqt %}
+
+{% block content %}
+<!--
+<a href="{% url 'adddavr' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Hisobot qo'shish</a>
+-->
+
+
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+         
+                <table id="datatables-column-search-select-inputs" class="table table-striped bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">T/r</th>    
+                            <th rowspan="2">Korxona nomi</th>      
+                            <th rowspan="2">Sana</th>      
+                            <th colspan="2">Kafolat xatiga ko'ra bugungi kungacha o'rnatilgan</th>  
+                            <th colspan="2">Kafolat xatiga ko'ra yil oxirigacha o'rnatiladigan</th>
+                            <th colspan="2">Kafolat xatiga ko'ra 2023 yilgacha o'rnatilagan</th>           
+                                                       
+                        </tr>
+                        <tr>         
+                            <th>Panel (kW)</th>                            
+                            <th>Kollektor (Litr)</th>        
+                            <th>Panel (kW)</th>                            
+                            <th>Kollektor (Litr)</th>         
+                            <th>Panel (kW)</th>                            
+                            <th>Kollektor (Litr)</th>                            
+                        </tr>
+                        </thead>
+                        <tbody> 
+                            {% for v in qtem %}
+                                <th>T/r</th>    
+                                <th>{{v.owner}}</th>      
+                                <th>{{v.sana|date:"d-m-Y"}}</th>  
+                                <th>{{v.panel}}</th>                            
+                                <th>{{v.kollektor}}</th>     
+                                <th>{{v.yypanel}}</th>                            
+                                <th>{{v.yykollektor}}</th>
+                                <th>{{v.panel23}}</th>                            
+                                <th>{{v.kollektor23}}</th>   
+                               
+                            {% endfor %}
+                        </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>Korxona nomi</th>      
+                        <th>Sana</th>  
+                    </tr>
+                    </tfoot>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

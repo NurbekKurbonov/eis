@@ -16,7 +16,7 @@ import six
 from django.contrib.auth.models import User
 from dateutil.relativedelta import relativedelta
 
-from foydalanuvchi.models import allfaqir, TexnikTadbir, ichres, istres, sotres
+from foydalanuvchi.models import allfaqir, TexnikTadbir, ichres, istres, sotres, qtemholat
 from s_ad.models import IFTUM, THST, DBIBT, resurslar, Valyuta
 from django.core.exceptions import PermissionDenied
 from .models import filtr_faqir, guruh, ensamfiltr, tur, klassifikator, his_res
@@ -675,3 +675,13 @@ def delensamfilter(request, id, E_ID):
 
     messages.success(request, 'Hisobot muvofaqqiyatli o`chirildi')           
     return redirect('ensamkor')
+
+@group_required('whitebone')	
+def qtemholatmin(request):
+    
+    qtem=qtemholat.objects.all()
+
+    context={
+        'qtem':qtem,
+    }    
+    return render(request, '04_minenergiya/QTEM holat/qtemholat.html', context)

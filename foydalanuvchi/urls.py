@@ -84,4 +84,11 @@ urlpatterns = [
      path('delres/<str:bol>/<int:id>', views.delres, name='delres'),
 
      path('opros', views.opros, name='opros'),
+
+     path('qtemqurilma', views.qtemqurilma, name='qtemqurilma'),
+     path('qtemholats', views.qtemholats, name='qtemholats'),
+     path('addqtemholat', views.addqtemholat, name='addqtemholat'),
+     path('saveqtemholat/<int:id>', views.saveqtemholat, name='saveqtemholat'),
+     path('editqtemholat/<int:id>', views.editqtemholat, name='editqtemholat'),
+     path('delqtemholat/<int:id>', views.delqtemholat, name='delqtemholat'),
 ]

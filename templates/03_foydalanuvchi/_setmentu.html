@@ -1,4 +1,7 @@
 
+<div class="card-header">
+    <h5 class="card-title mb-0">Sozlamalar menyusi</h5>
+</div>
 <a class="list-group-item list-group-item-action {{active0}}" href="{% url 'asosiyset' %}">
     Asosiy
 </a>
@@ -16,6 +19,15 @@
     Uzatish/sotish
 </a>
 {% endif %}
-<a class="list-group-item list-group-item-action {{active4}}" href="{% url 'sot' %}" >
-    So'rovlar
+
+<div class="card-header">
+    <h5 class="card-title mb-0">Qurilmalar</h5>
+</div>
+
+<a style="background: #FF0000;
+background: linear-gradient(to left, #FF0000 0%, #ffff00 50%, #FF0000 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;"
+    class="list-group-item list-group-item-action {{active4}}" href="{% url 'qtemqurilma' %}" >
+    QTEM qurilmalari
 </a>

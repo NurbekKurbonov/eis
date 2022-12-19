@@ -1,0 +1,124 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block barqt %}active{% endblock barqt %}
+
+{% block content %}
+
+
+    
+<a href="{% url 'addqtemholat' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i></a>
+
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle"> {{titleown}} </h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">             
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="5%">t/r</th>
+                            <th width="10%">sana</th>
+                            <th>O'rnatilgan panel (kW)</th>
+                            <th>O'rnatilgan kollektor(litr)</th>
+                            <th>Yil yakunigacha o'rnatiladigan panel (kW)</th>
+                            <th>Yil yakunigacha o'rnatiladigan kollektor(litr)</th>
+                            <th>2023 yilda o'rnatiladigan panel (kW)</th>
+                            <th>2023 yilda o'rnatiladigan kollektor(litr)</th>                          
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in qtem %}
+                        {% if v.aktiv is True %}
+                    <tr>
+                        <td widtd="5%">{{forloop.counter}}</td>
+                        <td widtd="10%">{{v.sana|date:"d-m-Y"}}</td>
+                        <td>{{v.panel}}</td>
+                        <td>{{v.kollektor}}</td>
+                        <td>{{v.yypanel}}</td>
+                        <td>{{v.yykollektor}}</td>
+                        <td>{{v.panel23}}</td>
+                        <td>{{v.kollektor23}}</td> 
+                        <td width="2%"><a href="{% url 'editqtemholat' v.id%}"><i class="align-middle me-2 fas fa-fw fa-edit"></i></a>
+                            <a href=" {% url 'delqtemholat' v.id%} "><i class="align-middle me-2 fas fa-fw fa-trash"></i></a></td>
+                    </tr>
+                        {% endif %}
+
+                        {% if v.aktiv is False %}
+                    <tr>
+                    <form action="{% url 'saveqtemholat' v.id %}" method="post">
+                        {% csrf_token %}
+                        <td widtd="5%">{{forloop.counter}}</td>
+                        <td widtd="10%">{{v.sana|date:"d-m-Y"}}</td>
+                        <td><input type="number"
+                            class="form-control" 
+                            autofocus required="true"
+                            name="panel"
+                            placeholder="(kW) "
+                            value ="{{v.panel}}"/></td>
+                        <td><input type="number"
+                            class="form-control" 
+                            autofocus required="true"
+                            name="kollektor"
+                            placeholder="(litr) "
+                            value ="{{v.kollektor}}"/></td>
+                        <td><input type="number"
+                            class="form-control" 
+                            autofocus required="true"
+                            name="yypanel"
+                            placeholder="(kW) "
+                            value ="{{v.yypanel}}"/></td>
+                        <td><input type="number"
+                            class="form-control" 
+                            autofocus required="true"
+                            name="yykollektor"
+                            placeholder="(litr) "
+                            value ="{{v.yykollektor}}"/></td>
+                        <td><input type="number"
+                            class="form-control" 
+                            autofocus required="true"
+                            name="panel23"
+                            placeholder="(kW) "
+                            value ="{{v.panel23}}"/></td>
+                        <td><input type="number"
+                            class="form-control" 
+                            autofocus required="true"
+                            name="kollektor23"
+                            placeholder="(litr) "
+                            value ="{{v.kollektor23}}"/></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="align-middle me-2 fas fa-fw fa-check"></i></button>
+                        </td>
+                    </form>
+                    </tr>
+                        {% endif %}
+
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th width="5%">t/r</th>
+                            <th width="10%">sana</th>
+                            <th>O'rnatilgan panel (kW)</th>
+                            <th>O'rnatilgan kollektor(litr)</th>
+                            <th>Yil yakunigacha o'rnatiladigan panel (kW)</th>
+                            <th>Yil yakunigacha o'rnatiladigan kollektor(litr)</th>
+                            <th>2023 yilda o'rnatiladigan panel (kW)</th>
+                            <th>2023 yilda o'rnatiladigan kollektor(litr)</th>
+                            <th width="2%">harakat</th> 
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

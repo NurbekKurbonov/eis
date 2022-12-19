@@ -358,6 +358,34 @@ class VVP(models.Model):
     def get_absolute_url(self):
         return reverse("VVP_detail", kwargs={"pk": self.pk})
 
+class qtemholat(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    sana=models.DateField(("Sana"), auto_now_add=True )
+
+    aktiv=models.BooleanField("Aktivlik")
+    
+    panel=models.FloatField(("O'rnatilgan panel"), blank=True, null=True)
+    kollektor=models.FloatField(("O'rnatilgan kollektor"), blank=True, null=True)
+
+    yypanel=models.FloatField(("Yil yakunigacha o'rnatiladigan panel"), blank=True, null=True)
+    yykollektor=models.FloatField(("Yil yakunigacha o'rnatiladigan kollektor"), blank=True, null=True)
+
+    panel23=models.FloatField(("2023 yilda o'rnatiladigan panel"), blank=True, null=True)
+    kollektor23=models.FloatField(("2023 yilda o'rnatiladigan kollektor"), blank=True, null=True)    
+
+    class Meta:
+        verbose_name = ("qtemholat")
+        verbose_name_plural = ("qtemholatlar")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("qtemholat_detail", kwargs={"pk": self.pk})
+
+
+
+
 # user*******************
     
 class allfaqir(models.Model): 

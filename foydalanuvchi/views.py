@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import user_passes_test
 #modelsdan chaqirish******************
 from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon, birliklar
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP, oraliq
-from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja
+from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja, qtemholat
 from kirish.models import savolnoma
 import six
 from django.core.exceptions import PermissionDenied
@@ -2064,3 +2064,123 @@ def opros(request):
     
 
     return render(request, '03_foydalanuvchi/opros/06_savolnoma.html', context)
+
+@group_required('Faqirlar')
+@application_req()
+def qtemqurilma(request):
+    check=savolnoma.objects.filter(owner=request.user)
+    
+    mich=0
+    uzat=0
+    
+    for v in check:
+        if v.savol1==True:
+            mich=1
+        if v.savol2==True:
+            uzat=1
+    #Korxona ma'lumotlarini o'zgartirish
+    
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+
+    allf=allfaqir.objects.get(owner=request.user)   
+
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':"QTEM qurilmalari",
+        'allf':allf,
+        'elonlar':el,
+        'mich':mich,
+        'uzat':uzat,
+        }
+    return render(request, '03_foydalanuvchi/01_2_QTEM_qurilma.html', context)
+
+@group_required('Faqirlar')
+@application_req()
+def qtemholats(request):
+    check=savolnoma.objects.filter(owner=request.user)
+    
+    mich=0
+    uzat=0
+    
+    for v in check:
+        if v.savol1==True:
+            mich=1
+        if v.savol2==True:
+            uzat=1
+    #Korxona ma'lumotlarini o'zgartirish
+    
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #****************************
+
+    qtem=qtemholat.objects.filter(owner=request.user) 
+
+    context = { 'oqilmagan':oqilmagan, 'el':el,        
+        'title':"QTEM qurilmalari",
+        'qtem':qtem,
+        'elonlar':el,
+        'mich':mich,
+        'uzat':uzat,
+        'titleown':'QTEM o`rnatilganli bo`yicha hisobot topshirish',
+        }
+    return render(request, '03_foydalanuvchi/7_0_QTEM_holat.html', context)
+
+@group_required('Faqirlar')
+@application_req()
+def addqtemholat(request):    
+    qtem=qtemholat.objects.filter(owner=request.user) 
+    for i in qtem:
+        if i.aktiv==False:
+            messages.warning(request, ' Sizda bo`sh o`rin mavjud')    
+            return redirect('qtemholats')
+
+    qtemholat.objects.create(owner=request.user, aktiv=False)                     
+
+    messages.success(request, ' Yangi o`rin muvafaqqiyatli ochildi')    
+    return redirect('qtemholats')
+
+@group_required('Faqirlar')
+@application_req()
+def saveqtemholat(request, id):    
+
+    if request.method=="POST":
+        qtem=qtemholat.objects.get(pk=id)
+        qtem.aktiv=True
+        qtem.panel=request.POST["panel"]
+        qtem.kollektor=request.POST["kollektor"]
+        qtem.yypanel=request.POST["yypanel"]
+        qtem.yykollektor=request.POST["yykollektor"]
+
+        qtem.panel23=request.POST["panel23"]
+        qtem.kollektor23=request.POST["kollektor23"]
+        qtem.save()
+
+    messages.success(request, ' Muvafaqqiyatli saqlandi')    
+    return redirect('qtemholats')
+
+@group_required('Faqirlar')
+@application_req()
+def editqtemholat(request, id):    
+    qtem=qtemholat.objects.get(pk=id)
+    qtem.aktiv=False
+    qtem.save()        
+
+    messages.success(request, 'O`zgartirishingiz mumkin')    
+    return redirect('qtemholats')
+
+@group_required('Faqirlar')
+@application_req()
+def delqtemholat(request, id):    
+    qtem=qtemholat.objects.get(pk=id)    
+    qtem.delete()
+    messages.success(request, 'Muvafaqqiyatli o`chirildi')    
+    return redirect('qtemholats')
