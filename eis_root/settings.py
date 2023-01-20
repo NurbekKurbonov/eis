@@ -28,7 +28,7 @@ RECAPTCHA_PRIVATE_KEY = '6LekXV8eAAAAAMVGefbbbhzU0e7Jm1yTJlq9d92f'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ["https://8c47-82-215-100-197.eu.ngrok.io"]
+CSRF_TRUSTED_ORIGINS = ["https://88f2-82-215-100-197.eu.ngrok.io"]
 
 # Application definition
 MONTH = [
@@ -159,8 +159,8 @@ MESSAGE_TAGS = {
 # email stuff *************************************************************
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'nurbek.kurbonov.96@gmail.com'
-EMAIL_HOST_PASSWORD = 'zdkkebohyiulpzrn'
+EMAIL_HOST_USER = 'essystem.uz@gmail.com'
+EMAIL_HOST_PASSWORD = 'ptoqkgpfnakrsmhp' 
 EMAIL_PORT = 587
 
 #additional -***************************************************************
