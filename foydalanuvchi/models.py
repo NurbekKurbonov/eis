@@ -382,9 +382,24 @@ class qtemholat(models.Model):
 
     def get_absolute_url(self):
         return reverse("qtemholat_detail", kwargs={"pk": self.pk})
+#takliflar berish:
+class taklif(models.Model):    
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)    
+    resurs=models.ForeignKey(resurslar, verbose_name=("Tejalgan resurs"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    guruh=models.ForeignKey(Tadbir, verbose_name=("Tadbir guruhi"), on_delete=models.CASCADE, default="",blank=True, null=True)
+    ish=models.TextField("Bajariladigan ish", blank=True)    
+    tejalgan=models.FloatField(("Tejaladigan energiya miqdori"), blank=True)        
+    izoh=models.TextField("Izoh", blank=True)
 
+    class Meta:
+        verbose_name = ("taklif")
+        verbose_name_plural = ("takliflar")
 
+    def __str__(self):
+        return self.ish
 
+    def get_absolute_url(self):
+        return reverse("taklif_detail", kwargs={"pk": self.pk})
 
 # user*******************
     

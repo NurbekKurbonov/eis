@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import user_passes_test
 #modelsdan chaqirish******************
 from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon, birliklar
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP, oraliq
-from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja, qtemholat
+from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja, qtemholat, taklif
 from kirish.models import savolnoma
 import six
 from django.core.exceptions import PermissionDenied
@@ -89,6 +89,35 @@ def home(request):
     for i in el:
         c+=1
     oqilmagan=c
+
+    #resurslarni chiqarish:
+    res={}
+    for r in istres.objects.filter(owner=request.user, aktiv=True):
+        gr=random.choice(range(-8,7))  
+        lst=[]
+        lst.append(gr)
+
+        if gr>0 :
+            st="trending-up"            
+        elif gr==0:
+            st="minus"
+        else:
+            st="thumbs-up"
+        
+        lst.append(st)
+        res[r.resurs]=lst
+
+        
+    istemol=0
+    #TTT taklif qilish:
+    ranglar=["FF0000", "ffff00"]
+    rang=random.choice(ranglar)
+
+    sah = taklif.objects.all()
+    paginator = Paginator(sah, 4)    
+    page_number=request.GET.get('page')
+    page_obj=Paginator.get_page(paginator, page_number)
+
     context ={'oqilmagan':oqilmagan, 'el':el,
         'hammasi':hammasi,
         'h_item':h_item,
@@ -96,12 +125,15 @@ def home(request):
         'ist':ist,
         'sot':sot,
         'sanalar':sanalar,
-        
+               
         'titleown':titleown,        
         'obj_ich':obj_ich,
         'obj_ist':obj_uzat,
         'obj_uzat':obj_uzat,
-        'value':request.user
+        'value':request.user,
+        'page_obj':page_obj,
+        "rang":rang,
+        'res':res,
     }
     return render(request, '03_foydalanuvchi/00_0_home.html', context)
 
@@ -918,12 +950,8 @@ def tadbir(request):
 
     #***Resurslarni ko'rsatish
     res=[]
-    for r in ichres.objects.filter(owner=request.user, aktiv=True):
-        res.append(r.resurs)
     for r in istres.objects.filter(owner=request.user, aktiv=True):
         res.append(r.resurs)
-    for r in sotres.objects.filter(owner=request.user, aktiv=True):
-        res.append(r.resurs)    
     res=list(set(res))
     T_ID = timezone.now().strftime("%Y%m%d%H%M%S")
     #/////////////****************************/////////////////////////
@@ -1027,6 +1055,7 @@ def delttt(request, id, T_ID):
 @group_required('Faqirlar')
 @application_req()
 def addt_umumiy(request):
+      
     if request.method=="POST":
 
         T_ID = timezone.now().strftime("%Y%m%d%H%M%S")
@@ -1066,12 +1095,8 @@ def addtexniktadbir(request,id):
 
     #***Resurslarni ko'rsatish
     res=[]
-    for r in ichres.objects.filter(owner=request.user):
-        res.append(r.resurs)
     for r in istres.objects.filter(owner=request.user):
-        res.append(r.resurs)
-    for r in sotres.objects.filter(owner=request.user):
-        res.append(r.resurs)    
+        res.append(r.resurs)     
     res=list(set(res))
 
     dangacha=str(t_umumiy.dan)+" <<>> "+str(t_umumiy.gacha)
@@ -1087,9 +1112,6 @@ def addtexniktadbir(request,id):
         't_umumiy':t_umumiy,
         'res':res,
         'dangacha':dangacha,
-        
-
-
     }
     if request.method == 'GET':
         return render(request, '03_foydalanuvchi/Tadbir/1_addtadbir.html', context)
@@ -2184,3 +2206,6 @@ def delqtemholat(request, id):
     qtem.delete()
     messages.success(request, 'Muvafaqqiyatli o`chirildi')    
     return redirect('qtemholats')
+    
+def taklif(request):
+    pass
