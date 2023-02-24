@@ -28,7 +28,7 @@ RECAPTCHA_PRIVATE_KEY = '6LekXV8eAAAAAMVGefbbbhzU0e7Jm1yTJlq9d92f'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ["https://2281-82-215-100-197.jp.ngrok.io"]
+CSRF_TRUSTED_ORIGINS = ["https://371a-82-215-100-197.eu.ngrok.io"]
 
 # Application definition
 MONTH = [

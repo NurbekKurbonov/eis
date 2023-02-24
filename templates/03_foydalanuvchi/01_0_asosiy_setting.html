@@ -21,7 +21,7 @@
 	<div class="card">
 		<div class="card-header">
 
-			<h5 class="card-title mb-0">Korxona haqida ma'lumotlar</h5>
+			<h5 class="card-title mb-0">Korxona haqida ma'lumotlar {{sexlar}}</h5>
 		</div>
 		<div class="card-body">
 			<form action="{% url 'asosiyset'%}" method="post" enctype="multipart/form-data">
@@ -38,6 +38,10 @@
 							<textarea rows="2" autofocus required="true" name="about" class="form-control" id="inputBio"
 								placeholder="Korxona haqida qisqacha tavsilot yozing" value="{{hammasi.about}}">{{hammasi.about}}</textarea>
 						</div>
+						<div class="mb-3">
+							<label class="form-label" for="inputUsername">Bo'limlar soni</label>
+							<input type="number" autofocus required="true" name="bolimlar_soni" class="form-control" placeholder="sexlar yoki agregatlar, binolar soni" value="{{bolimlar_soni}}">
+						</div>						
 					</div>
 					<div class="col-md-5">
 						<div class="text-center">

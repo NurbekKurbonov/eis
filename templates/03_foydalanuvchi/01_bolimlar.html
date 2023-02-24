@@ -1,0 +1,216 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+<button class="btn btn-secondary" type="button">Go!</button>
+{% block title %}{{titleown}}{% endblock title %}
+{% block bar1 %}active{% endblock bar1 %}
+
+{% block content %}
+<h1 class="h3 mb-3">Sozlamalar</h1>
+<div class="row">
+<div class="col-md-3 col-xl-2">
+
+	<div class="card">		
+		<!--Settinng's navbar-->	
+		<div class="list-group list-group-flush" role="tablist">			
+			{% include '03_foydalanuvchi/_setmentu.html' %}								
+		</div>
+	</div>
+</div>	
+<div class="col-12 col-lg-10">		
+	<span class="sidebar-brand-text align-middle h2" style="color:rgb(0,0,139)">
+		{{titleown}}<sup><small class="badge text-uppercase"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#centeredModalPrimary">
+			<i class="align-middle me-2" data-feather="edit"></i>
+		</button></small></sup>		
+		<!-- BEGIN primary modal -->				
+		<div class="modal fade" id="centeredModalPrimary" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Bo'lim nomini yozing</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form action="{% url 'editsexlar' bolim.id %}" method="post" enctype="multipart/form-data">
+						<div class="modal-body m-3">
+							
+								{% csrf_token %}				
+								<div class="row">
+									<div class="col-md-12">
+										<div class="mb-3">
+											<label class="form-label" for="inputUsername">Bo'lim nomi</label>
+											<input type="text" autofocus required="true" name="nomi" class="form-control" placeholder="Sexning nomi" value="{{titleown}}">
+										</div>																	
+									</div>										
+								</div>			
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">O'zgarishlarni saqlash</button>								
+						</div>
+					</form>	
+				</div>
+			</div>
+		</div>
+		<!-- END primary modal -->		
+	</span>
+	<div class="">		
+		<div class="card-body text-center">
+			<div class="row">
+				<div class="col-12 col-lg-2">
+					<a class="btn btn-{{button1}}primary" href="{% url 'sexlar' bolim.id 1%}">F bo'lim</a>
+				
+					<a class="btn btn-{{button2}}primary"  href="{% url 'sexlar' bolim.id 2%}">Qurilmalar</a>
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+<div class="col-12 col-lg-12">
+	<div class="card">
+		<div class="card-header">
+			<h3 class="" style="color:blue">{{titleown}} {% if qism is 2 %}: >>asosiy<<{% endif %}</h3>			
+			<a href="#" type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="fas fa-plus"></i></a>
+		</div>
+		<div class="card-body text-center">	
+				<table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>t/r</th> 
+                            <th>{{titleown}}</th>                            
+                            <th>Maqsadi</th> 
+                            <th width="2%"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in ich %}
+					{% if v.aktiv is False %}
+						<tr style="color:red">
+							<td> {{forloop.counter}}</td>
+							<td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+							<td>{{v.maqsad}}</td>
+							<td class="table-action text-center">
+								<a href="{% url 'delres' bol v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a> 
+							</td> 
+						</tr>
+					{% endif %}
+                    {% endfor %}
+					{% for v in ich %}
+					{% if v.aktiv is True %}
+						<tr>
+							<td> {{forloop.counter}}</td>
+							<td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+							<td>{{v.maqsad}}</td>  
+							<td class="table-action text-center">
+								<a href="{% url 'delres' bol v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a> 
+							</td> 
+						</tr>
+					{% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>Energiya resursi turi</th>                            
+                        <th>O'lchov birligi</th> 
+                    </tr>
+                    </tfoot>
+                    </table>				
+			
+		</div>
+	</div>
+	{% if qism is 2 %}
+	<div class="card">
+		<div class="card-header">
+			<h3 class="" style="color:blue">{{titleown}} >>yordamchi<<</h3>			
+			<a href="#" type="submit" class="btn btn-primary float-end" id="notyf-show"><i class="fas fa-plus"></i></a>
+		</div>
+		<div class="card-body text-center">
+			<table id="datatables-column-search-text-inputs" class="table table-striped" style="width:100%">
+					<thead>
+                        <tr>
+                            <th>t/r</th> 
+                            <th>{{titleown}} >>yordamchi<<</th>                            
+                            <th>Maqsadi</th>
+                            <th width="2%"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for v in ich %}
+					{% if v.aktiv is False %}
+						<tr style="color:red">
+							<td> {{forloop.counter}}</td>
+							<td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+							<td>{{v.maqsad}}</td>
+							<td class="table-action text-center">
+								<a href="{% url 'delres' bol v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a> 
+							</td> 
+						</tr>
+					{% endif %}
+                    {% endfor %}
+					{% for v in ich %}
+					{% if v.aktiv is True %}
+						<tr>
+							<td> {{forloop.counter}}</td>
+							<td>{{v.resurs.nomi}} ({{v.hajm}} {{v.resurs.birlik}})</td>     
+							<td>{{v.maqsad}}</td>  
+							<td class="table-action text-center">
+								<a href="{% url 'delres' bol v.id %}"><i class="align-middle me-2 fas fa-fw fa-trash"></i></a> 
+							</td> 
+						</tr>
+					{% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>t/r</th> 
+                        <th>Energiya resursi turi</th>                            
+                        <th>O'lchov birligi</th> 
+                    </tr>
+                    </tfoot>
+                    </table>
+
+		</div>
+	</div>
+	{% endif %}
+</div>
+<div class="row">
+	<div class="col-12 col-lg-12 text-end">
+		<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#coloredModalDanger">
+			O'chirish
+		</button>			
+	</div>
+</div>
+<div class="col-12 col-lg-6">
+	<div class="card">
+			<!-- BEGIN danger modal -->			
+			<div class="modal modal-colored modal-danger fade" id="coloredModalDanger" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Ogohlantirish</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body m-3">
+							<p class="mb-0" style="color:yellow">Siz {{titleown}} sexini o'chirishga ishonchingiz komilmi?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">yo'q</button>
+							<a class="btn btn-light" style="color: red" href="{% url 'delsex' bolim.id%}">ha! o'chiraman</a>	
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END danger modal -->
+			
+		</div>
+	</div>
+</div>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+					
+{% endblock scripts %}

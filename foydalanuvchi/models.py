@@ -444,3 +444,32 @@ class allfaqir(models.Model):
     def get_absolute_url(self):
         return reverse("allfaqir_detail", kwargs={"pk": self.pk})
 
+#bo'limlar bo'yicha ma'lumotlarni to'plash
+class sex(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)    
+    zavod=models.ForeignKey(allfaqir, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    nomi=models.TextField("Mahsulot nomi", blank=True)
+    class Meta:
+        verbose_name = ("sex")
+        verbose_name_plural = ("sexlar")
+
+    def __str__(self):
+        return self.nomi
+
+    def get_absolute_url(self):
+        return reverse("sex_detail", kwargs={"pk": self.pk})
+
+#bo'limlar bo'yicha ma'lumotlarni to'plash
+class bolim(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)    
+    zavod=models.ForeignKey(allfaqir, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    nomi=models.TextField("Mahsulot nomi", blank=True)
+    class Meta:
+        verbose_name = ("sex")
+        verbose_name_plural = ("sexlar")
+
+    def __str__(self):
+        return self.nomi
+
+    def get_absolute_url(self):
+        return reverse("sex_detail", kwargs={"pk": self.pk})

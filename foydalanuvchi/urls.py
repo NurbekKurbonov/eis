@@ -91,4 +91,10 @@ urlpatterns = [
      path('saveqtemholat/<int:id>', views.saveqtemholat, name='saveqtemholat'),
      path('editqtemholat/<int:id>', views.editqtemholat, name='editqtemholat'),
      path('delqtemholat/<int:id>', views.delqtemholat, name='delqtemholat'),
+     
+     path('sexlar/<int:id>/<int:qism>', views.sexlar, name='sexlar'),
+     path('editsexlar/<int:id>', views.editsexlar, name='editsexlar'),
+     path('delsex/<int:id>', views.delsex, name='delsex'),
+
+     path('bolimf123/<int:id>/<int:qism>', views.bolimf123, name='bolimf123'),
 ]

@@ -26,7 +26,7 @@
     background: linear-gradient(to bottom right, #128024 25%, #000000 33%, #00FF00 62%, #2212FF 83%, #032070 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    " >MAQSADLI KO'RSATGICHLARI {{keyingi_oy}}</h1>
+    " >MAQSADLI KO'RSATGICHLARI</h1>
 </div>
 
 <div class="row">
@@ -83,7 +83,7 @@
     <div class="col-12 col-lg-12">
       <div class="card flex-fill w-100">
         <div class="card-header" align="center">
-          <h2 class="h2 d-inline align-middle" style="color:blue">Energiya isrofi</h2>
+          <h2 class="h2 d-inline align-middle" style="color:blue">Energiya isrofi (o'rtacha)</h2>
           <h6 class="card-subtitle text-muted"><a href="{% url 'davr' %}" class="btn btn-outline-warning float-end">Jadvalda ko'rish</a></h6>
         </div>
         <div class="card-body">
@@ -1013,13 +1013,18 @@ aria-labelledby="offcanvasBottomLabel" >
             colorByPoint: true,
             data: [
             {
-                name: "birinchi",
-                y: 0.7,
+                name: "Sirdaryo IES",
+                y: 0.21,
                 drilldown: ""
             },
             {
-              name: "ikkinchi",
-              y: 0.5,
+              name: "Talimarjon IES",
+              y: 0.55,
+              drilldown: ""
+          },
+            {
+              name: "Navoiy IES",
+              y: 0.59,
               drilldown: ""
           },
         ]
