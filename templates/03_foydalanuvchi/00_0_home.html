@@ -6,26 +6,34 @@
 
 {% block content %}
 {% csrf_token %}
+
 <div class="col-auto d-none d-sm-block">	
 	<div class="row mb-3">
-		{% for v in hammasi %}
+		
 			<div class="col-sm-1">		
-				<img alt="EMBLEMA" src="{{v.emblem.url}}" class=" img-responsive mt-2" width="65" height="65" />
-			</div>		
-			<div class="col-sm-11">		
-				<div class="col-sm-12" style="color:#{{rang}};"><strong>{% for i in v.nomi %}--{% endfor %}</strong></div>
-				<div class="col-sm-12"><h1><strong>{{v.nomi}}</strong></h1></div>				 
-				<div class="col-sm-12">{{v.about}}</div>
+				<img alt="EMBLEMA" src="{{hammasi.emblem.url}}" class=" img-responsive mt-2" width="65" height="65" />
 			</div>
-		{% endfor %}
+			
+            <div class="col-sm-11">
+				<div class="col-sm-12" style="color:#{{rang}};"><strong>{% for i in hammasi.nomi %}--{% endfor %}</strong></div>
+				<div class="col-sm-12"><h1><strong>{{hammasi.nomi}}</strong></h1></div>				 
+				<!--
+                <div class="col-sm-12"> <audio controls autoplay>
+                    <source autoplay src="{{ttc_xabar}}" type="audio/ogg">                    
+                    Sizning brauzeringiz audioni ochmaydi! Boshqa brauzerda urinib ko'ring!
+                  </audio> </div>-->
+                <div class="col-sm-12">{{hammasi.about}}</div>
+			</div>
+		
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-sm-6 col-xl-4" >
 		<div class="card" style="background: rgb(0,0,0);
 		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
 			<div class="card-body text-center">
-			<a class="" href="#"  width="100%" style="color:white"><i class="align-middle" data-feather="settings"></i>Sozlamalar</a>	
+			<a class="" href="{% url 'asosiyset' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="settings"></i>Sozlamalar</a>	
 			</div>
 		</div>
 	</div>
@@ -46,7 +54,9 @@
 		</div>
 	</div>
 </div>
+
 <div class="row justify-content-center" >
+    <!--
 	<div class="col-sm-6 col-xl-2">
 		<div class="card">
 			<div class="card-body">
@@ -63,22 +73,20 @@
 				<h1 class="mt-1 mb-3"><B>{{ish_holati}}</B> <sup style="color:green">%</sup></h1>				
 			</div>
 		</div>
-	</div>	
-	{% for k, v in res.items %}
-	<div class="col-sm-6 col-xl-2">
+	</div>	-->
+	{% for i in oxirgi_malumot.ist.all %}
+	<div class="col-sm-6 col-xl-3">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col mt-0">
-						<h5 class="card-title">{{k}}</h5>
+						<h5 class="card-title">{{i.resurs}} iste'moli</h5>
 					</div>
-					<div class="col-auto">
-						<div class="stat text-primary">
-							<i class="align-middle" data-feather="{{v.1}}"></i>
-						</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        {{i.vaqt|date:"m.Y"}}				
 					</div>
 				</div>
-				<h1 class="mt-1 mb-3"><B>{{full_ist}}</B> <sup style="color:green">{{v.0}} %</sup></h1>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{i.qiymat}}</B></h1>
 				<!--<div class="mb-0">
 					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
 					<span class="text-muted">Oldingi yilga nisbatan</span>
@@ -87,7 +95,128 @@
 		</div>
 	</div>
 	{% endfor %}	
+    
+    {% for i in oxirgi_malumot.uzat.all %}
+	<div class="col-sm-6 col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Ishlab chiqarilgan: {{i.resurs}}</h5>
+					</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        {{i.vaqt|date:"m.Y"}}				
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{i.qiymat}}</B></h1>
+				<!--<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+					<span class="text-muted">Oldingi yilga nisbatan</span>
+				</div>-->
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+    <div class="col-sm-6 col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
+					</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        I chorak (2022)			
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4295.5</B></h1>
+				<!--<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+					<span class="text-muted">Oldingi yilga nisbatan</span>
+				</div>-->
+			</div>
+		</div>
+	</div>
+
+    <div class="col-sm-6 col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
+					</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        II chorak (2022)			
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4427.8</B></h1>
+				<!--<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+					<span class="text-muted">Oldingi yilga nisbatan</span>
+				</div>-->
+			</div>
+		</div>
+	</div>
+
+    <div class="col-sm-6 col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
+					</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        III chorak (2022)			
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4354.1</B></h1>
+				<!--<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+					<span class="text-muted">Oldingi yilga nisbatan</span>
+				</div>-->
+			</div>
+		</div>
+	</div>
+    <div class="col-sm-6 col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
+					</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        IV chorak (2022)			
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4293.9</B></h1>
+				<!--<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+					<span class="text-muted">Oldingi yilga nisbatan</span>
+				</div>-->
+			</div>
+		</div>
+	</div>
+
+    <div class="col-sm-6 col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
+					</div>
+					<div class="col-auto" style="color: rgb(0,100,250)">
+                        Yillik (2022)			
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>17371.3</B></h1>
+				<!--<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+					<span class="text-muted">Oldingi yilga nisbatan</span>
+				</div>-->
+			</div>
+		</div>
+	</div>
 <!--Amalga oshirilishi rejalashtirilayotgan TTT-->
+
 <div class="col-sm-6 col-xl-12" >
 	<div class="col-auto d-none d-sm-block">	
 		<div class="row mb-3">			
@@ -122,7 +251,7 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item px-4 pb-4">
                     <div class="text-center">
-                        <a href="#" class="btn btn-outline-success float-center" id="notyf-show">Rejaga qo'shish</a>
+                        <a href="{% url 'ftadbir' %}" class="btn btn-outline-success float-center" id="notyf-show">Rejaga qo'shish</a>
                     </div>
                 </li>
             </ul>
@@ -142,7 +271,7 @@
             {% endif %}
         </ul>      
     </div>
-
+    <!--
 	<div class="col-sm-12 col-xl-12">
 		<div class="card">
 			<div class="card-body">
@@ -156,9 +285,10 @@
                 </div>			
 			</div>
 		</div>
-	</div>
+	</div>-->
 	<!--TTT tamom-->				
 </div>
+
 
 {% endblock content %}
 

@@ -19,11 +19,13 @@ urlpatterns = [
     path('reja', views.reja, name='reja'),
     path('addreja', views.addreja, name='addreja'),
     path('checkreja/<int:id>', views.checkreja, name='checkreja'),
+    path('table_reja/<int:id>', views.table_reja, name='table_reja'),
     
     #**********davriy ma'lumotlar**********************
     path('davr', views.davr, name='davr'),
     path('adddavr', views.adddavr, name='adddavr'),
     path('checkdavr/<int:id>', views.checkdavr, name='checkdavr'),
+    path('table_davr/<int:id>', views.table_davr, name='table_davr'),
     
     path('vvp', views.vvp, name='vvp'),
     path('addvvp', views.addvvp, name='addvvp'),
@@ -66,6 +68,7 @@ urlpatterns = [
 
     #_____________Samaradorlik______________________
     path('samaradorlik', views.ensam, name='samaradorlik'),
+    path('result_ensam/<int:id>', views.result_ensam, name='result_ensam'),
     path('changesam', views.changesam, name='changesam'),
     #path('resultbalans', views.resultbalans, name='resultbalans'),
 
@@ -97,4 +100,7 @@ urlpatterns = [
      path('delsex/<int:id>', views.delsex, name='delsex'),
 
      path('bolimf123/<int:id>/<int:qism>', views.bolimf123, name='bolimf123'),
+     #filtr uchun
+     path('h_tur', views.h_tur, name='h_tur'),     
+     path('h_tur_del/<int:id>', views.h_tur_del, name='h_tur_del'),
 ]

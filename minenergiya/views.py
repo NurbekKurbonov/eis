@@ -37,13 +37,44 @@ def group_required(group, login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url='/login')
 
+def home_xabar(request, korxona, mteh, comment):
+    xabar="Assalomu alaykum hurmatli"+request.user.first_name+"Bugungi holat bo'yicha ma'lumotlarni taqdim etish holati"+str(mteh)+"foiz."+comment
+    return "https://tts.nutq.uz/api/v1/cabinet/gen/?t="+str(xabar)
+
 @group_required('whitebone')	
 def home(request):
+    korxona = allfaqir.objects.get(pk=99)
+    res_f1=korxona.ichres.all()
+    res_f2=korxona.istres.all()
+    res_f3=korxona.sotres.all()
+    
+    fakt=korxona.fakt.all()
+    
+    #Ma'lumot taqdim etilgan davr
+    for i in fakt:
+        pass
+    
+    miqdor=len(fakt)
+
+    m1="Taqdim etilgan ma'lumotlar miqdori"
+    m2="Ma'lumotning ishonchliligi"
+    m3="O'zgarish darajasi"
+    mteh=92
+    comment="no comment"
+    ttc_xabar=home_xabar(request, korxona,mteh, comment)
 
     context={
-        
+    'korxona':korxona,
+    'm1':m1,
+    'm2':m2,
+    'm3':m3,
+    'res_f1':res_f1,
+    'res_f2':res_f2,
+    'res_f3':res_f3,
+    'miqdor1':miqdor,
+    'ttc_xabar':ttc_xabar
     }
-    return render(request, '04_minenergiya/tahlil/01_0_korxonalar.html', context)
+    return render(request, '04_minenergiya/00_0_home.html', context)
 
 @group_required('whitebone')	
 def korxonalar(request):

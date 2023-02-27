@@ -18,7 +18,7 @@ class ichres(models.Model):
     aktiv=models.BooleanField("Aktivlik")
     
     def __str__(self):
-        return f"{self.resurs}-{self.owner.id}"
+        return f"{self.resurs.nomi} ({self.hajm} {self.resurs.birlik})"
     
     class Meta:
         verbose_name_plural = '01_0_Ishlab chiqarish resurslari'
@@ -31,7 +31,7 @@ class istres(models.Model):
     aktiv=models.BooleanField("Aktivlik")
     
     def __str__(self):
-        return f"{self.resurs}-{self.owner}"
+        return f"{self.resurs.nomi} ({self.hajm} {self.resurs.birlik})"
     
     class Meta:
         verbose_name_plural = '01_1_Iste`mol resurslari'
@@ -44,7 +44,7 @@ class sotres(models.Model):
     aktiv=models.BooleanField("Aktivlik")
     
     def __str__(self):
-        return f"{self.resurs}-{self.owner}"
+        return f"{self.resurs.nomi} ({self.hajm} {self.resurs.birlik})"
     
     class Meta:
         verbose_name_plural = '01_2_Uzatiladigan resurslar'
@@ -184,10 +184,11 @@ class hisobot_item(models.Model):
         verbose_name = ("hisobot_shakli")
         verbose_name_plural = ("03_0_Hisobot shakllari")
         
+
 #filtrlash
 class his_ich(models.Model):
     resurs=models.ForeignKey(resurslar, verbose_name=("Resurslar"), on_delete=models.CASCADE) 
-        
+    
     owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)    
 
     class Meta:
@@ -206,6 +207,8 @@ class hisobot_full(models.Model):
     oraliq_min=models.CharField("Maksimal oraliq", max_length=50)
     oraliq_max=models.CharField("Minimal oraliq", max_length=50)
     
+    qanday=models.TextField("Qanday turdagi", blank=True)
+
     ich=models.ManyToManyField(hisobot_ich, verbose_name=("Ishlab chiqarish hisobotlari"))
     ist=models.ManyToManyField(hisobot_ist, verbose_name=("Iste'mol hisobotlari"))
     sot=models.ManyToManyField(hisobot_uzat, verbose_name=("Sotish hisobotlari"))
@@ -224,6 +227,33 @@ class hisobot_full(models.Model):
     class Meta:
         verbose_name = ("hisobot_full")
         verbose_name_plural = ("04_1_hisobot_full")
+
+    def __str__(self):
+        return f"{self.nomi}: {self.oraliq_min} dan {self.oraliq_max} gacha ====>>>> {self.owner}"
+
+    def get_absolute_url(self):
+        return reverse("hisobot_full_detail", kwargs={"pk": self.pk})
+
+class hisobot_samaradorlik(models.Model):
+    nomi=models.CharField("Hisobot nomi", max_length=50)
+    vaqt=models.DateTimeField("Vaqti", auto_now_add=False) 
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)
+
+    oraliq_min=models.CharField("Maksimal oraliq", max_length=50)
+    oraliq_max=models.CharField("Minimal oraliq", max_length=50)
+    
+    qanday=models.TextField("Qanday turdagi", blank=True)
+      
+    h_item=models.ManyToManyField(hisobot_item, verbose_name=("Umumiy hisobot"))
+    h_itemp=models.ManyToManyField(plan_umumiy, verbose_name=("Plan hisobot")) 
+
+    resurs=models.ManyToManyField(resurslar, verbose_name=("Resurslar"))
+    tur=models.CharField("Hisobot turi",blank=True, max_length=255)
+    
+    koef=models.ForeignKey(yaxlitlash, verbose_name=("Koeffitsient"), on_delete=models.CASCADE, blank=True, null=True)
+    class Meta:
+        verbose_name = ("hisobot_samaradorlik")
+        verbose_name_plural = ("04_0_hisobot_samaradorlik")
 
     def __str__(self):
         return f"{self.nomi}: {self.oraliq_min} dan {self.oraliq_max} gacha ====>>>> {self.owner}"
@@ -473,3 +503,26 @@ class bolim(models.Model):
 
     def get_absolute_url(self):
         return reverse("sex_detail", kwargs={"pk": self.pk})
+
+#filtrlash
+class hisobot_turi(models.Model):
+    owner=models.ForeignKey(to=User, verbose_name=("Egasi"), on_delete=models.CASCADE)    
+    korxona=models.ForeignKey(allfaqir, verbose_name=("Egasi"), on_delete=models.CASCADE)
+    
+    statistik=models.BooleanField(("statistik"), default=False)
+    samaradorlik=models.BooleanField(("samaradorlik"), default=False)
+    sex=models.BooleanField(("sex"), default=False)
+    zavod=models.BooleanField(("zavod"), default=False)
+    oy=models.BooleanField(("oy"), default=False)
+    chorak=models.BooleanField(("chorak"), default=False)
+    yil=models.BooleanField(("yil"), default=False)
+    
+    class Meta:
+        verbose_name = ("hisobot_turi")
+        verbose_name_plural = ("hisobot_turlari")
+
+    def __str__(self):
+        return self.korxona.nomi
+
+    def get_absolute_url(self):
+        return reverse("hisobot_turi_detail", kwargs={"pk": self.pk})

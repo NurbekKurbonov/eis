@@ -75,8 +75,21 @@
                 </table>
                
                 <a href="{% url 'davr'%}" class="btn btn-outline-secondary " id="notyf-show" style="width:100%">Filtrni tozalash</a>
-{%endif%}
 
+{% else %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert-message">
+        <strong>Assalomu aleykum hurmatli foydallanuvchi!</strong> 
+        Sizda tayyorlangan hisobotlar mavjud emas. Yangi hisobot tayyorlash uchun <a href={% url 'adddavr' %}>+Hisobot tayyorlash</a> bo'limiga o'ting
+            <p><audio controls autoplay>
+                <source autoplay src="{{ttc_xabar}}" type="audio/ogg">                    
+                Sizning brauzeringiz audioni ochmaydi! Boshqa brauzerda urinib ko'ring!
+              </audio> 
+
+    </div>
+</div>
+{%endif%}
 {% if not values.count %}
 <div class="alert alert-warning alert-dismissible" role="alert">
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

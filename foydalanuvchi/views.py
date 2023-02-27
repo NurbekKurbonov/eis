@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon, birliklar
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP, oraliq
 from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja, qtemholat, taklif, sex
+from .models import hisobot_turi, hisobot_samaradorlik
 from kirish.models import savolnoma
 import six
 from django.core.exceptions import PermissionDenied
@@ -22,6 +23,8 @@ from dateutil.relativedelta import relativedelta
 from django.http import HttpResponseRedirect, JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.views import View
+from .formulas import nisbiy_meyor
+import statistics
 
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
@@ -47,12 +50,20 @@ def application_req( login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url='/savolnoma')
 
+def home_xabar(request, korxona, mteh, comment):
+    xabar="Assalomu alaykum hurmatli"+request.user.first_name+"Bugungi holat bo'yicha ma'lumotlarni taqdim etish holati"+str(mteh)+"foiz."+comment
+    return "https://tts.nutq.uz/api/v1/cabinet/gen/?t="+str(xabar)
+
+def ttc(request, comment):
+    xabar="Assalomu alaykum hurmatli"+request.user.first_name+comment
+    return "https://tts.nutq.uz/api/v1/cabinet/gen/?t="+str(xabar)
 
 #____***_____Bosh sahifa_____***_____________________
+
 @group_required('Faqirlar')
 @application_req()
-def home(request):    
-    hammasi = allfaqir.objects.filter(owner=request.user)    
+def home(request):  
+    hammasi = allfaqir.objects.get(owner=request.user)    
     vaqt=timezone.now()
     
     h_item=hisobot_item.objects.filter(owner=request.user)
@@ -112,12 +123,12 @@ def home(request):
     istemol=0
     #TTT taklif qilish:
    
-    #sah = taklif.objects.all()
-    #paginator = Paginator(sah, 4)    
-    #page_number=request.GET.get('page')
-    #page_obj=Paginator.get_page(paginator, page_number)
+    sah = taklif.objects.all()
+    paginator = Paginator(sah, 4)    
+    page_number=request.GET.get('page')
+    page_obj=Paginator.get_page(paginator, page_number)
 
-    
+    #Ma'lumotlarni taqdim etish
     oylar = ['YANVAR', 'FEVRAL', 'MART', 'APREL', 'MAY', 'IYUN', 'IYUL', 'AVGUST','SENTYABR', 'OKTYABR', 'NOYABR', 'DEKABR']    
     davriy_malumot=hisobot_item.objects.filter(owner=request.user)
     vaqt=timezone.now()
@@ -134,15 +145,27 @@ def home(request):
             for j in range(oy):
                 if oylar[j] in nomi:
                     his_fakt+=1
-    ish_holati='%.2f'%(his_fakt*100/hisobot_plan)
+    ish_holati=int(his_fakt*100/hisobot_plan)
     #rang    
     rang=''
+    mteh=int(ish_holati)
     if float(ish_holati)<=33.33:
         rang="rgb(255,0,0)"
-    elif 66.66>=float(ish_holati)>33.33:
+        comment="Iltimos ma'lumotlarni o'z vaqtida taqdim eting!"+" Kuningiz xayrli bo'lsin!"
+    elif 90>=float(ish_holati)>33.33:
         rang="rgb(255,255,0)"
+        comment="Ma'lumotlar yetarli emas, tizim siz uchun eng yaxshi ko'makchi bo'lishini istasangiz iltimos ma'lumotlarni to'liq taqdim eting"
     else:
+        comment="Kuningiz xayrli bo'lsin!"
         rang="rgb(0,255,150)"
+    
+    ttc_xabar=home_xabar(request, hammasi, mteh, comment)
+    
+    #oxirgi ma'lumotlar:
+    dm=[]
+    for i in davriy_malumot.all():
+        dm.append(i)    
+
     context ={'oqilmagan':oqilmagan, 'el':el,
         'hammasi':hammasi,
         'h_item':h_item,
@@ -156,14 +179,15 @@ def home(request):
         'obj_ist':obj_uzat,
         'obj_uzat':obj_uzat,
         'value':request.user,
-        #'page_obj':page_obj,
+        'page_obj':page_obj,
         "rang":rang,
         'res':res,
         'ish_holati':ish_holati,
         'his_fakt':his_fakt,
         'yil':yil,
         'oy':oy,
-      
+        'ttc_xabar':ttc_xabar,
+        'oxirgi_malumot':dm[-1]      
     }
     return render(request, '03_foydalanuvchi/00_0_home.html', context)
 
@@ -610,7 +634,7 @@ def add(request):
 @group_required('Faqirlar')
 @application_req()
 def reja(request):
-    titleown = 'Shartnomaviy miqdorlar'
+    titleown = "Reja"
     his = plan_umumiy.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
 
@@ -808,12 +832,50 @@ def checkreja(request, id):
         messages.success(request, 'Shartnomaviy miqdorlardan '+h_item.title+' muvofaqqiyatli yangilandi!')            
         
         return redirect('reja')
+@group_required('Faqirlar')
+@application_req()
+def table_reja(request, id):
+    ich = ichres.objects.filter(owner=request.user)
+    ist = istres.objects.filter(owner=request.user)
+    sot = sotres.objects.filter(owner=request.user)
+    
+    h_item=plan_umumiy.objects.get(pk=id)
+    
+    h_ich=plan_ich.objects.filter(owner=request.user, title=h_item.title)
+    h_ist=plan_ist.objects.filter(owner=request.user, title=h_item.title)
+    h_uzat=plan_uzat.objects.filter(owner=request.user, title=h_item.title)
+    
+    titleown=h_item.title
+    
+    vaqt=timezone.now()
+    oy = vaqt.strftime("%m")
+    yil = vaqt.strftime("%Y")
 
+    ruxsat="disabled"
+    if int(h_item.vaqt.strftime("%m"))==int(oy) and int(h_item.vaqt.strftime("%Y"))==int(yil):
+        ruxsat="" 
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
+        'h_item':h_item,
+        'h_ich':h_ich,
+        'h_ist':h_ist,
+        'h_uzat':h_uzat,
+        'titleown':titleown,
+        'val':h_item,
+        'disabled': 'enabled',
+        'id':id,
+    }
+    return render(request, '03_foydalanuvchi/reja/3_table.html', context)
 #****************************Davriy ma'lumotlar**************************
 @group_required('Faqirlar')
 @application_req()
 def davr(request):
-    titleown = 'Davriy ma`lumotlarni yuborish'
+    titleown = 'Davriy ma`lumotlar'
     his = hisobot_item.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
 
@@ -822,11 +884,11 @@ def davr(request):
     for i in el:
         c+=1
     oqilmagan=c
-
+    
     context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'values':ist,
-        'his':his
+        'his':his,        
     }
     return render(request, '03_foydalanuvchi/02_0_davr.html', context)
 
@@ -855,7 +917,8 @@ def adddavr(request):
     c=0
     for i in el:
         c+=1
-    oqilmagan=c    
+    oqilmagan=c  
+    
     context ={'oqilmagan':oqilmagan, 'el':el,
             'titleown':titleown,        
             'ich':ich,
@@ -863,7 +926,8 @@ def adddavr(request):
             'sot':sot,
             'sana':sana,
             'oylar':oylar,
-            'yil':yil
+            'yil':yil,
+            
         }
     
     if request.method=="GET":
@@ -1000,7 +1064,42 @@ def checkdavr(request, id):
         messages.success(request, 'Davriy hisobotlardan '+h_item.title+' muvofaqqiyatli yangilandi!')            
         
         return redirect('davr')
+@group_required('Faqirlar')
+@application_req()
+def table_davr(request, id):
+    h_item=hisobot_item.objects.get(pk=id)    
+    h_ich=hisobot_ich.objects.filter(owner=request.user, title=h_item.title)
+    h_ist=hisobot_ist.objects.filter(owner=request.user, title=h_item.title)
+    h_uzat=hisobot_uzat.objects.filter(owner=request.user, title=h_item.title)
+    
+    titleown=h_item.title+' oyi uchun ma`lumotlarni tekshirish'
+    vaqt=timezone.now()
+    oy = vaqt.strftime("%m")
+    yil = vaqt.strftime("%Y")
 
+    #ruxsat="disabled"
+    #if int(h_item.vaqt.strftime("%m"))==int(oy) and int(h_item.vaqt.strftime("%Y"))==int(yil):
+    ruxsat="" 
+
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    context ={'oqilmagan':oqilmagan, 'el':el,
+        'h_item':h_item,
+        'h_ich':h_ich,
+        'h_ist':h_ist,
+        'h_uzat':h_uzat,
+        'titleown':titleown,
+        'val':h_item,
+        'ruxsat':ruxsat,
+        'id':id      
+    }
+    
+    if request.method=="GET":
+        return render(request, '03_foydalanuvchi/02_3_table.html', context)
+    
 #********************Tashkiliy tadbirlar kiritish*****************************************
 @group_required('Faqirlar')
 @application_req()
@@ -1417,16 +1516,30 @@ def hisobot(request):
     
     his = hisobot_full.objects.filter(owner=request.user)
     ist = istres.objects.filter(owner=request.user)    
+    
     el=elon.objects.filter(owner=request.user, jb=True)
     c=0
     for i in el:
         c+=1
     oqilmagan=c
+    comment= "Sizda tayyorlangan hisobotlar mavjud emas. Yangi hisobot tayyorlash uchun +Hisobot tayyorlash bo'limiga o'ting "
+    qanday=[]
+    for i in hisobot_turi.objects.all():
+        qanday.append(i.statistik)
+        qanday.append(i.samaradorlik)
+        qanday.append(i.sex)
+        qanday.append(i.zavod)
+        qanday.append(i.oy)
+        qanday.append(i.chorak)
+        qanday.append(i.yil)
+
     context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'values':ist,
         'his':his,
-        'show1':'show'
+        'show1':'show',
+        'ttc_xabar':ttc(request, comment),
+        'qanday':qanday,
     }
     
     return render(request, '03_foydalanuvchi/03_0_hisobot.html', context)
@@ -1472,6 +1585,9 @@ def addhisobot(request):
     for i in el:
         c+=1
     oqilmagan=c
+
+    ht=hisobot_turi.objects.filter(owner=request.user)
+
     context ={'oqilmagan':oqilmagan, 'el':el,
         'titleown':titleown,        
         'values':ist,
@@ -1480,7 +1596,8 @@ def addhisobot(request):
         'valyuta':valyuta,
         'mich':mich,
         'sot':sot,
-        'res_show':res_show
+        'res_show':res_show,
+        'ht':ht,
     }
     if request.method=="GET":
         return render(request, '03_foydalanuvchi/03_1_addhisobot.html', context)
@@ -1515,53 +1632,93 @@ def addhisobot(request):
         vaqt=timezone.now()
         sana = vaqt.strftime("%d-%m-%Y")
         yil = vaqt.strftime("%Y")
-        
-        nomi='Hisobot: '+sana
-        
-        if hisobot_full.objects.filter(owner=request.user, nomi = nomi).first():
-            messages.error(request, "Siz bugungi so'rov limitini bajargansiz, keyinroq urinib ko'ring!")
-            return redirect('hisobot') 
-        
+
         #diagramma va qo'shimcha birliklarni qo'shish
         
         cheks = request.POST.getlist('chart')
+        qanday=[]
+        for i in hisobot_turi.objects.all():
+            qanday.append(i.statistik)
+            qanday.append(i.samaradorlik)
+            qanday.append(i.sex)
+            qanday.append(i.zavod)
+            qanday.append(i.oy)
+            qanday.append(i.chorak)
+            qanday.append(i.yil)
         
-        hisobot_full.objects.create(
-           owner=request.user,
-           nomi=nomi,
-           oraliq_min=oraliq_min,
-           oraliq_max=oraliq_max,           
-           vaqt=vaqt,
-           cheks=cheks,
-           valyuta=Valyuta(valute),
-           tur=tur,
-           koef=yaxlitlash(id=11),
-        )
+        kesim=''
+        qanday1=[]
+        if qanday[2]==True:
+            kesim='sexlar kesimidagi'     
+            qanday1.append('sex')       
+        elif qanday[3]==True:
+            kesim='zavod miqyosidagi'
+            qanday1.append('zavod')  
+        lik=''
+        if qanday[4]==True:
+            lik='oylik'
+            qanday1.append('oy')  
+        elif qanday[5]==True:
+            lik='choraklik'
+            qanday1.append('chorak')  
+        elif qanday[6]==True:
+            lik='yillik'
+            qanday1.append('yil')
+                
+        nomi=str(oraliq_min)+'<<>>'+str(oraliq_max)+' oraliqda, '+str(kesim)+' '+str(lik)+' hisobot'
+        if qanday[1]==True:
+            his=hisobot_full.objects.create(
+            owner=request.user,
+            nomi=nomi,
+            qanday=qanday1,
+
+            oraliq_min=oraliq_min,
+            oraliq_max=oraliq_max,           
+            vaqt=vaqt,
+            cheks=cheks,
+            valyuta=Valyuta(valute),
+            tur=tur,
+            koef=yaxlitlash(id=11),
+            )   
+             #hisobot shakllantirish uchun resurslarni qo'shish:
+            for i in his_res:
+                his.resurs.add(i.resurs.id)
+                
+            #oraliqqa ko'ra davriy hisobotlar qo'shish:             
+            for v in hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):            
+                his.h_item.add(v.id)
+                for r in v.ich.all():                
+                    for i in his_res:
+                        if r.resurs.resurs.id==i.resurs.id:
+                            his.ich.add(r.id)
+                for r in v.ist.all():                
+                    for i in his_res:
+                        if r.resurs.resurs.id==i.resurs.id:
+                            his.ist.add(r.id)
+                for r in v.uzat.all():                
+                    for i in his_res:
+                        if r.resurs.resurs.id==i.resurs.id:
+                            his.sot.add(r.id)              
+            
+        if qanday[1]==True:
+            his=hisobot_samaradorlik.objects.create(
+            owner=request.user,
+            nomi=nomi,
+            vaqt=vaqt,
+
+            qanday=qanday1,
+            oraliq_min=oraliq_min,
+            oraliq_max=oraliq_max,
+            
+            tur=tur,
+            koef=yaxlitlash(id=11),
+            )
+            for v in hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):            
+                his.h_item.add(v.id)
+            for v in plan_umumiy.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):            
+                his.h_itemp.add(v.id)
         
-        for h in hisobot_full.objects.filter(owner=request.user, nomi=nomi):
-            h_id=h.id
-        his=hisobot_full.objects.get(pk=h_id)
-        
-        #hisobot shakllantirish uchun resurslarni qo'shish:
-        for i in his_res:
-            his.resurs.add(i.resurs.id)
-        
-        #oraliqqa ko'ra davriy hisobotlar qo'shish:             
-        for v in hisobot_item.objects.filter(owner=request.user, vaqt__range=[str(his.oraliq_min), str(his.oraliq_max)]):            
-            his.h_item.add(v.id)
-            for r in v.ich.all():                
-                for i in his_res:
-                    if r.resurs.resurs.id==i.resurs.id:
-                        his.ich.add(r.id)
-            for r in v.ist.all():                
-                for i in his_res:
-                    if r.resurs.resurs.id==i.resurs.id:
-                        his.ist.add(r.id)
-            for r in v.uzat.all():                
-                for i in his_res:
-                    if r.resurs.resurs.id==i.resurs.id:
-                        his.sot.add(r.id)
-        
+       
         messages.success(request, 'Hisobot muvafaqqiyatli tayyorlandi! ')
         return redirect('hisobot')
 
@@ -1600,8 +1757,8 @@ def result_his(request, id, tur, birl):
     his=hisobot_full.objects.get(pk=id)
     yaxlit=his.koef
 
-    valyuta=his.valyuta
-    
+    valyuta=his.valyuta  
+
     active1=''
     active2=''
     active3=''
@@ -1830,6 +1987,116 @@ def resultbalans(request):
 @group_required('Faqirlar')
 @application_req()
 def ensam(request):
+    titleown = 'Energiya samaradorlilik'
+    
+    his = hisobot_samaradorlik.objects.filter(owner=request.user)
+    ist = istres.objects.filter(owner=request.user)    
+    
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    comment= "Sizda tayyorlangan hisobotlar mavjud emas. Yangi hisobot tayyorlash uchun +Hisobot tayyorlash bo'limiga o'ting "
+    context ={'oqilmagan':oqilmagan, 'el':el,
+        'titleown':titleown,        
+        'values':ist,
+        'his':his,
+        'show1':'show',
+        'ttc_xabar':ttc(request, comment)
+    }
+    return render(request, '03_foydalanuvchi/samaradorlik/0_sam.html', context)
+
+@group_required('Faqirlar')
+@application_req()
+def result_ensam(request, id):    
+    his=hisobot_samaradorlik.objects.get(pk=id)    
+    fakt_nisbiy_meyor=nisbiy_meyor.nisbiy_meyor(his,'tne')
+    plan_nisbiy_meyor=nisbiy_meyor.plan_nisbiy_meyor(his,'tne')
+    birlik="tne/Tonna"
+
+    lst=[]
+    for v in fakt_nisbiy_meyor.values():
+        lst.append(float(v))
+    eng_katta_meyor=max(lst)  
+    eng_kichik_meyor=min(lst)    
+    hisobiy_meyor=('{0:.2f}'.format(float(statistics.mean(lst))))
+    
+    sana_max=0
+    sana_min=0
+    for k, v in fakt_nisbiy_meyor.items():
+        if eng_katta_meyor==float(v):
+            sana_max=k
+        if eng_kichik_meyor==float(v):
+            sana_min=k
+    
+    #mahsulot
+    davr=[]
+    sana=[]
+    for i in his.h_item.all():
+        davr.append(i.vaqt)
+        sana.append(i.vaqt.strftime("%m/%Y"))
+    davr=sorted(set(davr))
+    sana=sorted(set(sana))
+
+    mahsulot=[]
+    for i in his.h_item.all():
+        for j in i.uzat.all():
+            mahsulot.append(j.qiymat*j.resurs.hajm.qiymati)    
+
+    sigimlilik={}
+    c=0
+    for i in fakt_nisbiy_meyor.values():
+        if c==0:
+            sigimlilik[sana[c]]=float(i)/520
+        elif c==1:
+            sigimlilik[sana[c]]=float(i)/800
+        elif c==2:
+            sigimlilik[sana[c]]=float(i)/700
+        elif c==3:
+            sigimlilik[sana[c]]=float(i)/658
+        elif c==4:
+            sigimlilik[sana[c]]=float(i)/562
+        elif c==5:
+            sigimlilik[sana[c]]=float(i)/595
+        elif c==6:
+            sigimlilik[sana[c]]=float(i)/650
+        elif c==7:
+            sigimlilik[sana[c]]=float(i)/565
+        elif c==8:
+            sigimlilik[sana[c]]=float(i)/580
+        else:
+            sigimlilik[sana[c]]=float(i)/550
+        c+=1
+
+    #xabarlar----------
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+    #xabarlar-----------
+    context ={'oqilmagan':oqilmagan, 'el':el,
+        'titleown':'Energiya samaradorlik',
+        'show1':'show',
+        'fakt_nisbiy_meyor':fakt_nisbiy_meyor,
+        'plan_nisbiy_meyor':plan_nisbiy_meyor,
+        'birlik':birlik,
+        'eng_katta_meyor':eng_katta_meyor,
+        'sana_max':sana_max,
+        'eng_kichik_meyor':eng_kichik_meyor,
+        'sana_min':sana_min,
+        'hisobiy_meyor':hisobiy_meyor,
+        'mahsulot':mahsulot,
+        'davr':sana,
+        'sigimlilik':sigimlilik,
+    }
+    return render(request, '03_foydalanuvchi/samaradorlik/2_result.html', context)
+
+
+@group_required('Faqirlar')
+@application_req()
+def ensam2(request):
 
     plan=plan_umumiy.objects.filter(owner=request.user)
     fakt=hisobot_item.objects.filter(owner=request.user)
@@ -1967,7 +2234,6 @@ def tahrir(request,id):
         return redirect('asosiyset')
 
 class editpas(View):
-
     def post(self, request): 
         
         password=request.POST["password"]
@@ -2046,7 +2312,6 @@ def fxabarlar(request):
 @group_required('Faqirlar')
 @application_req()
 def fxabaropen(request):
-
     el=elon.objects.filter(owner=request.user, jb=True)
     c=0
 
@@ -2337,8 +2602,7 @@ def delsex(request, id):
 
 @group_required('Faqirlar')
 @application_req()
-def bolimf123(request, bol):  
-
+def bolimf123(request, bol): 
     el=elon.objects.filter(owner=request.user, jb=True)
 
     c=0
@@ -2537,3 +2801,181 @@ def bolimf123(request, bol):
             
         messages.success(request, mes)
         return redirect(bol)
+
+def h_tur(request):    
+    if request.method=="POST":
+        if hisobot_turi.objects.filter(owner=request.user).first():
+            for i in hisobot_turi.objects.filter(owner=request.user):
+                i.delete()
+
+        hisobot_korinishi=request.POST.get('hisobot_korinishi', False) 
+        if hisobot_korinishi!='1' and hisobot_korinishi!='2':
+            messages.warning(request, 'Qanday turdagi hisobot tayyorlamoqchisiz to`liqroq ma`lumot bering!')
+            return redirect('addhisobot')
+        statistik=False  
+        samaradorlik=False 
+        if hisobot_korinishi=='1':
+            statistik=True
+        elif hisobot_korinishi=='2':
+            samaradorlik=True  
+
+        kesim=request.POST.get('kesim', False) 
+        if kesim!='1' and kesim!='2':
+            messages.warning(request, 'Qanday turdagi hisobot tayyorlamoqchisiz to`liqroq ma`lumot bering!')
+            return redirect('addhisobot')
+        sex1=False  
+        zavod2=False 
+        if kesim=='1':
+            sex1=True
+        elif kesim=='2':
+            zavod2=True 
+        
+        oy=False
+        chorak=False
+        yil=False
+        yigish=request.POST.get('yigish', False)
+        lst=['oy', 'chorak', 'yil'] 
+        if yigish in lst:
+            if yigish=='oy':
+                oy=True
+            if yigish=='chorak':
+                chorak=True
+            if yigish=='yil':
+                yil=True
+        else:
+            messages.warning(request, 'Qanday turdagi hisobot tayyorlamoqchisiz to`liqroq ma`lumot bering!')
+            return redirect('addhisobot')
+
+            
+                    
+        ht=hisobot_turi.objects.create(
+            owner=request.user, korxona=allfaqir.objects.get(owner=request.user),
+            statistik=statistik, samaradorlik=samaradorlik,
+            sex=sex1, zavod=zavod2,oy=oy, chorak=chorak, yil=yil)
+
+        return redirect('addhisobot')
+    
+def h_tur_del(request,id):
+    hisobot_turi.objects.get(pk=id).delete()
+    return redirect('addhisobot')
+
+@group_required('Faqirlar')
+@application_req()
+def result_his2(request, id, tur, birl):   
+    yaxlit_all=yaxlitlash.objects.all()
+   
+    his=hisobot_full.objects.get(pk=id)
+    yaxlit=his.koef
+
+    valyuta=his.valyuta  
+
+    active1=''
+    active2=''
+    active3=''
+    
+    if tur=="A":
+        active1='active'
+        res=his.ich.all()
+    
+    if tur=="B":
+        active2='active'
+        res=his.ist.all()
+        
+    if tur=="C":
+        active3='active'
+        res=his.sot.all()
+    
+    # Nomli Birliklarda
+    sana=[]
+    resurs=[]
+    res_id=[]
+    for i in res:
+        s = i.vaqt.strftime("%Y-%m")
+        sana.append(s) 
+               
+        res_id.append(i.resurs.resurs.id)
+        
+        r=i.resurs.resurs.nomi
+        resurs.append(r)
+    
+    sana=set(sana)
+    sana=sorted(sana)
+    resurs=set(resurs)
+    res_id=set(res_id)
+    
+    obj={}
+    for i in res_id: 
+        if birl=="nomli":
+            b=' ('+str(yaxlit.nomi)+' '+str(resurslar.objects.get(pk=i).birlik)+' )'               
+        if birl=="tshy":
+            b=' ( tshy )'
+        if birl=="tne":
+            b=' ( tne )'
+        if birl=="gj":
+            b=' ( GJ )'
+        if birl=="gkal":
+            b=' ( GKal )'
+        if birl=="som":
+            b=' ( mln.so`m )'
+        if birl=="valut":
+            b=' ( ming.'+his.valyuta.name+' )'
+        r=resurslar.objects.get(pk=i).nomi+b
+        obj[r]=[]
+        
+        lst=[]
+        for j in res.filter(resurs__resurs__id=i):
+            s = j.vaqt.strftime("%Y-%m")
+            lst.append(s)            
+        
+        for k in sana:
+            if k in lst:
+                for j in res.filter(resurs__resurs__id=i):
+                    s = j.vaqt.strftime("%Y-%m")            
+                    if k==s:
+                        if birl=='nomli' or birl=='tshy' or birl=='tne' or birl=='gj' or birl=='gkal':
+                            def birlik(i):
+                                switcher={
+                                    'nomli':1,
+                                    'tshy':j.resurs.resurs.tshy,
+                                    'tne':j.resurs.resurs.tne,
+                                    'gj':j.resurs.resurs.gj,
+                                    'gkal':j.resurs.resurs.gkal,                                    
+                                }
+                                return switcher.get(i, "xato")  
+                            koef1=birlik(birl)
+
+                            q=j.qiymat*koef1*j.resurs.hajm.qiymati/yaxlit.qiymati
+                        if birl=='som' or birl=='valut':
+                            if birl == 'som':
+                                koef2=j.qiymat
+                            if birl == 'valut':
+                                koef2=1000*j.qiymat*his.valyuta.qiymati/his.valyuta.somda
+                            q=j.qiymat_pul*koef2/yaxlit.qiymati
+                        
+                        obj[r].append(float('{0:.2f}'.format(float(q))))
+                        
+            else:
+                obj[r].append(0)
+    
+    el=elon.objects.filter(owner=request.user, jb=True)
+    c=0
+    for i in el:
+        c+=1
+    oqilmagan=c
+
+    context ={'oqilmagan':oqilmagan, 'el':el,
+        'titleown':his.nomi,
+       'his':his,
+       'obj':obj,
+       'sana':sana,
+       'res_id':res_id,
+       'birl':birl,
+       'tur1':tur,
+       'yaxlit_all':yaxlit_all,
+       'active1':active1,
+       'active2':active2,
+       'active3':active3,
+       'id':id, 'tur':tur, 'birl':birl,
+       
+    }   
+    return render(request, '03_foydalanuvchi/03_1_result.html', context)

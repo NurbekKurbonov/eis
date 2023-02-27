@@ -36,7 +36,6 @@ def group_required(group, login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url='/login')
 
-
 @group_required('admin2')
 def icons(request):
     return render(request, 'partials/01_icons.html')

@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import ichres, istres, sotres,  hisobot_ich, hisobot_ist, hisobot_uzat, hisobot_item, allfaqir, his_ich,hisobot_full, TexnikTadbir, VVP
 from .models import plan_umumiy, plan_ich, plan_ist, plan_uzat, TTT_reja, TTT_umumiy_reja, qtemholat, taklif,sex
+from .models import hisobot_turi, hisobot_samaradorlik
+
+
 admin.site.register(ichres)
 admin.site.register(istres)
 admin.site.register(sotres)
@@ -35,3 +38,7 @@ admin.site.register(TTT_umumiy_reja)
 admin.site.register(qtemholat)
 admin.site.register(taklif)
 admin.site.register(sex)
+
+#filtr uchun
+admin.site.register(hisobot_turi)
+admin.site.register(hisobot_samaradorlik)

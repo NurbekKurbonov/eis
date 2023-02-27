@@ -1,0 +1,105 @@
+{% extends '03_foydalanuvchi/00_base.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+<form action="#" method="post">
+<div class="mb-3">
+    <h2 class="h2 d-inline align-middle" style="color:blue">{{h_item.title}}</h2>
+    <a href="{% url 'reja' %}" class="btn btn-outline-warning float-end">orqaga</a>
+    <p><h5 class="h5 d-inline align-middle">Hisobot topshirilayotgan sana: <B>{{h_item.vaqt|date:"d-m-Y"}}</B> </h5></p>
+    
+</div>
+<div class="row">
+    {% if h_ich.count %}
+        <div class="col-12">
+            <div class="card">                               
+                <div class="card-body">          
+                    <table class="table table-striped " style="width:100%">                        
+                        <thead>
+                            <tr>
+                                <th>T/r</th>                            
+                                <th>Qabul qilingan xom ashyo</th>                            
+                                <th>birlikdagi qiymati</th> 
+                                <th>pul birligida</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            {% for v in h_ich %}                      
+                            <tr>
+                                <td> {{forloop.counter}}</td>
+                                <td>{{v.resurs}}</td>     
+                                <td width="30%">{{v.qiymat}}</td>  
+                                <td width="30%">{{v.qiymat_pul}}</td> 
+                            </tr>   
+                            {% endfor %}                                   
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>  
+    {% endif %}
+    {% if h_ist.count %}
+        <div class="col-12">
+            <div class="card">                               
+                <div class="card-body">     
+                    <table class="table table-striped " style="width:100%"> 
+                        <thead>
+                            <tr>
+                                <th>T/r</th>                            
+                                <th>Iste'mol qilingan energiya</th>                            
+                                <th>birlikdagi qiymati</th> 
+                                <th>pul birligida</th>
+                            </tr>
+                        </thead>
+                        <tbody>     
+                            {% for v in h_ist %}              
+                            <tr>
+                                <td> {{forloop.counter}}</td>
+                                <td>{{v.resurs}}</td>     
+                                <td width="30%">{{v.qiymat}}</td>  
+                                <td width="30%">{{v.qiymat_pul}}</td> 
+                            </tr>  
+                            {% endfor %}                                                  
+                        </tbody>
+                    </table>  
+                </div>
+            </div>
+        </div> 
+    {% endif %}
+    {% if h_uzat.count %}
+        <div class="col-12">
+            <div class="card">                               
+                <div class="card-body">     
+                    <table class="table table-striped " style="width:100%"> 
+                        <thead>
+                            <tr>
+                                <th>T/r</th>                            
+                                <th>Iste'mol qilingan energiya</th>                            
+                                <th>birlikdagi qiymati</th> 
+                                <th>pul birligida</th>
+                            </tr>
+                        </thead>
+                        <tbody>     
+                            {% for v in h_uzat %}              
+                            <tr>
+                                <td> {{forloop.counter}}</td>
+                                <td>{{v.resurs}}</td>     
+                                <td width="30%">{{v.qiymat}}</td>  
+                                <td width="30%">{{v.qiymat_pul}}</td> 
+                            </tr>  
+                            {% endfor %}                                                  
+                        </tbody>
+                    </table>  
+                </div>
+            </div>
+        </div> 
+    {% endif %}
+   
+    <a class="btn btn-primary float-end" href="{%url 'checkreja' id%}"><i class="align-middle me-2 fas fa-fw fa-clipboard-check"></i></a>     
+    
+</div>
+
+</form>
+
+{% endblock content %}

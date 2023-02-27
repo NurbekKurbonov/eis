@@ -12,17 +12,17 @@
             <div class="list-group list-group-flush gradiyent" role="tablist">
                 {% if '1' in his.tur %}	
                 <a class="list-group-item list-group-item-action gradiyent {{active1}}" href="{% url 'result_his' his.id 'A' 'nomli' %}" >
-                    Ishlab chiqarish
+                    F1(Xom ashyo)
                 </a>
                 {% endif %}
                 {% if '2' in his.tur %}
                 <a class="list-group-item list-group-item-action gradiyent {{active2}}" href="{% url 'result_his' his.id 'B' 'nomli' %}" >
-                    Iste'mol qilish
+                    Energiya iste'moli
                 </a>
                 {% endif %}         
                 {% if '3' in his.tur %}       
                 <a class="list-group-item list-group-item-action gradiyent {{active3}}" href="{% url 'result_his' his.id 'C' 'nomli' %}" >
-                    Uzatish/sotish
+                    Ishlab chiqarilgan mahsulot
                 </a>	
                 {% endif %} 					
             </div>
@@ -30,10 +30,10 @@
     </div>
 
     <div class="col-6">  
-        <h1 class="h3 d-inline align-middle yozuv_grad">{{his.oraliq_min}} << >> {{his.oraliq_max}} </h1>   
+        <h1 class="h3 d-inline align-middle yozuv_grad">{{titleown}} </h1>   
         <div class="row">
             <div class="col-12" >
-                <h6 class="card-subtitle mb-2 text-muted">{{titleown}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Hisobot tayyorlangan vaqt: {{his.vaqt|date:"d-m-Y"}} </h6>
                 <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
                     
                     <a href="{% url 'result_his' his.id tur1 'nomli' %}" type="button" class="btn btn-outline-info 

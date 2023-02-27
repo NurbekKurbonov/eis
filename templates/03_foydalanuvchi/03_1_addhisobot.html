@@ -11,8 +11,105 @@
 <div class="row">    
     <div class="col-6">
         <div class="card">            
-            <div class="card-body">
-                
+            <div class="card-body">  
+                <form action="{% url 'h_tur' %}" method="post">
+                    {% csrf_token %}
+                <div class="row">                    
+                    <h4 style="color:blue"><B>Qanday turdagi hisobot tayyorlamochisiz?</B></h4>   
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="hisobot_korinishi" value="1" {% for i in ht %}{% if i.statistik is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Statistik hisobotlar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="hisobot_korinishi" value="2" {% for i in ht %}{% if i.samaradorlik is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Energiya samaradorligi bo'yicha</a>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 style="color:blue"><B>* * *</B></h4>   
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="kesim" value="1" {% for i in ht %}{% if i.sex is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Sexlar kesimi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="kesim" value="2" {% for i in ht %}{% if i.zavod is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Zavod miqyosida</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 style="color:blue"><B>* * *</B></h4>   
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="yigish" value="oy" {% for i in ht %}{% if i.oy is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>Oylik</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="yigish" value="chorak" {% for i in ht %}{% if i.chorak is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>choraklik</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-4">
+                        <div class="col-md">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="yigish" value="yil" {% for i in ht %}{% if i.yil is True %}checked{% endif %}{% endfor %}>
+                                    </div>
+                                    <a class="form-control" placeholder="Checkbox" disabled>yillik</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-12">
+                        {% if not ht.count %}<button class="btn btn-outline-primary float-end my-1" type="submit">keyingi >></a></button>{% else %}
+                        {% for i in ht %}<a href="{% url 'h_tur_del' i.id%}" class="btn btn-outline-warning float-end my-1" type="submit">orqaga</a>{% endfor %}{% endif %}
+                    </div>                    
+                </div>  
+            </form>     
+            
+            {% if ht.count %}
                 <button class="btn btn-primary float-end my-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
 				aria-controls="offcanvasWithBothOptions"> <i class="fas fa-plus"></i> Energiya resurs/mahsulot qo'shish</a></button>
                 <table class="table table-striped " style="width:100%">
@@ -64,6 +161,7 @@
                     <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
                 </form>
             </div>
+            
         </div>
         </div>
         </div>
@@ -72,10 +170,10 @@
     <div class="col-6">
         <div class="card">         
             <form action="{% url 'addhisobot' %}" method="post">
-                {% csrf_token %}   
+                {% csrf_token %}  
             <div class="card-body">
                 <div class="row">
-                    <h4 style="color:blue"><B>Kerakli hisobot turini tanlang</B></h4>   
+                    <h4 style="color:blue"><B>Hisobot bo'limini tanlang</B></h4>   
                     {% if mich.count %}
                     <div class="col-12 col-xl-4">
                         <div class="col-md">
@@ -84,7 +182,7 @@
                                     <div class="input-group-text">
                                         <input type="checkbox" name="his_tur" value="1">
                                     </div>
-                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-down"></i>Ishlab chiqarish</a>
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-down"></i>Xom ashyo</a>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +208,7 @@
                                     <div class="input-group-text">
                                         <input type="checkbox" name="his_tur" value="3">
                                     </div>
-                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-up"></i>Uzatish/sotish</a>                                
+                                    <a class="form-control" placeholder="Checkbox" disabled><i class="align-middle me-2 fas fa-fw fa-angle-double-up"></i>Ishlab chiqarish</a>                                
                                 </div>
                             </div>
                         </div>
@@ -125,7 +223,7 @@
                             <label class="form-label">Davrni tanlang</label>
                             <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
                         </div>                        
-                    </div>
+                    </div>                    
                     <h4 style="color:blue"><B>Grafik turini tanlang</B></h4>   
                     <div class="col-12 col-xl-4">
                         <div class="col-md">
@@ -278,7 +376,7 @@
         </div>
     </div>
     {% endif %}  
-    
+    {% endif %}
 
 </div>
 

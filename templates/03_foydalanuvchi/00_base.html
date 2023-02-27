@@ -32,7 +32,7 @@
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="#">
 					<span class="sidebar-brand-text align-middle">
-						{{page_nomi}} sahifasi
+						{{page_nomi}}
 						<sup><small class="badge bg-primary text-uppercase">{{belgi}}</small></sup>
 					</span>
 					<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
@@ -65,13 +65,13 @@
                             <span class="align-middle">Xabarlar</span>
 						</a>
 					</li>
-
+					<!--
 					<li class="sidebar-item {% block barqt %}{% endblock barqt %}">
 						<a class="sidebar-link" href="{% url 'qtemholats' %}" >
 							<i class="align-middle" data-feather="triangle"></i> 
                             <span class="align-middle">QTEM o'rnatilganligi bo'yicha hisobot</span>
 						</a>
-					</li>
+					</li>-->
 
 					<li class="sidebar-header">
 						Sahifalar
@@ -91,10 +91,10 @@
 
 					<li class="sidebar-item {% block bar2 %}{% endblock bar2 %}">
 						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Ma'lumotlarni kiritish</span>
+							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Ma'lumotlar</span>
 						</a>	
 						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block active0 %}{% endblock active0%}"><a class="sidebar-link" href="{% url 'reja' %}">Shartnomaviy miqdorlar</a></li>							
+							<li class="sidebar-item {% block active0 %}{% endblock active0%}"><a class="sidebar-link" href="{% url 'reja' %}">Reja</a></li>							
 						</ul>
 						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
 							<li class="sidebar-item {% block active %}{% endblock active%}"><a class="sidebar-link" href="{% url 'davr' %}">Davriy ma'lumotlar</a></li>							
@@ -102,9 +102,9 @@
 						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
 							<li class="sidebar-item {% block active2 %}{% endblock active2 %}"><a class="sidebar-link" href="{% url 'ftadbir' %}">Texnik tadbirlar</a></li>							
 						</ul>
-						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
+						<!--<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
 							<li class="sidebar-item {% block active3 %}{% endblock active3 %}"><a class="sidebar-link" href="{% url 'vvp' %}">Ishlab chiqarilgan mahsulot miqdori</a></li>							
-						</ul>
+						</ul>-->
 
 					</li>
 					<li class="sidebar-item {% block bar3 %}{% endblock bar3 %}">
@@ -141,7 +141,7 @@
 					<li class="sidebar-item {% block bar7 %}{% endblock bar7%}">
 						<a class="sidebar-link" href="{% url 'samaradorlik' %}" >
 							<i class="align-middle" data-feather="check-circle"></i> 
-                            <span class="align-middle">Energiya sig'imliligi</span>
+                            <span class="align-middle">Energiya samaradorlilik</span>
 						</a>
 					</li>
 					
@@ -278,7 +278,7 @@
 					<div class="row text-muted">
 						<div class="col-6 text-start">
 							<p class="mb-0">
-								<a href="https://NurbekKurbonov.io/" target="_blank" class="text-muted"><strong>Murojaat</strong></a> &copy;
+								<a href="https://NurbekKurbonov.io/" target="_blank" class="text-muted"><strong></strong></a> &copy;
 							</p>
 						</div>
 						<div class="col-6 text-end">
@@ -287,7 +287,7 @@
 									<a class="text-muted" href="#" style="background: #00CF75;
 									background: linear-gradient(to right, #00CF75 0%, #3711CF 100%);
 									-webkit-background-clip: text;
-									-webkit-text-fill-color: transparent;"><B>SO'ROVNOMA</B></a>
+									-webkit-text-fill-color: transparent;"><B>EIS</B></a>
 								</li>
 							</ul>
 						</div>

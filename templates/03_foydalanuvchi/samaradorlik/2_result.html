@@ -1,299 +1,273 @@
 {% extends '03_foydalanuvchi/00_base.html' %}
+{% load static %}
+
 {% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+
+{% block bar7 %}active{% endblock bar7 %}
 
 {% block content %}
-{% csrf_token %}
 
-<div class="row">
-    <div class="col-md-3 col-xl-2">
-    
+{% block head %}
+    <style>
+        .highcharts-credits{
+            display: none;
+        }
+
+    </style>
+{% endblock head %}
+{% csrf_token %} 
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{titleown}}</h1>
+</div>
+
+<div class="row"> 
+    <div class="col-12 col-lg-6">
         <div class="card">
-            <!--Settinng's navbar-->	
-            <div class="list-group list-group-flush gradiyent" role="tablist">
-                {% if '1' in his.tur %}	
-                <a class="list-group-item list-group-item-action gradiyent {{active1}}" href="{% url 'result_his' his.id 'A' 'nomli' %}" >
-                    Ishlab chiqarish
-                </a>
-                {% endif %}
-
-                {% if '2' in his.tur %}
-                <a class="list-group-item list-group-item-action gradiyent {{active2}}" href="{% url 'result_his' his.id 'B' 'nomli' %}" >
-                    Iste'mol qilish
-                </a>
-                {% endif %}         
-                {% if '3' in his.tur %}       
-                <a class="list-group-item list-group-item-action gradiyent {{active3}}" href="{% url 'result_his' his.id 'C' 'nomli' %}" >
-                    Uzatish/sotish
-                </a>	
-                {% endif %} 					
+            <div class="card-header">
+                <h5 class="card-title">Elektr energiyasining solishtirma sarfi ko'rsatkichi</h5>
+            </div>
+            <div class="card-body text-center">
+                <div class="chart w-100">
+                    <div id="apexcharts-pie" style="max-width: 440px;margin:auto;"></div>
+                </div>
             </div>
         </div>
     </div>
 
-<div class="col-md-3 col-xl-10">  
-    <h1 class="h3 d-inline align-middle yozuv_grad">{{titleown}}</h1>   
-    <div class="row">
-        <div class="col-10 " >
-            <h6 class="card-subtitle mb-2 text-muted">Hisobot oralig'i: </h6>
-            <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
-                
-                <a href="{% url 'result_his' his.id tur1 'nomli' %}" type="button" class="btn btn-outline-info 
-                    {% if birl == 'nomli' %} yozuv_grad{% endif %}">Nomli birliklarda</a>
-
-                {% if '7' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'som' %}" type="button" class="btn btn-outline-info 
-                    {% if birl == 'som' %}yozuv_grad {% endif %}" >Mln.so'mda</a>{% endif %} 
-
-                {% if '8' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'valut' %}" type="button" class="btn btn-outline-info 
-                {% if birl == 'valut' %}yozuv_grad {% endif %}">Ming.{{his.valyuta.name}}</a>{% endif %}
-                
-                {% if '9' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tshy' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'tshy' %}yozuv_grad {% endif %}">tshy</a>{% endif %} 
-
-                {% if '0' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'tne' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'tne' %}yozuv_grad {% endif %}">tne</a>{% endif %}
-
-                {% if 'b' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gj' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'gj' %}yozuv_grad {% endif %}">GJ</a>{% endif %}
-
-                {% if 'a' in his.cheks %}<a href="{% url 'result_his' his.id tur1 'gkal' %}" type="button" class="btn btn-outline-info
-                    {% if birl == 'gkal' %}yozuv_grad {% endif %}">GKal</a>{% endif %}   
-                
+    <div class="col-12 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Mahsulot ishlab chiqarish</h5>                
+                </h6>
             </div>
-        </div>
-
-        <div class="col-2">
-            <button width="100%"  class="btn btn-outline-warning float-end my-1" id="button" onclick="showhide()"> 
-                <i id="icon" class="align-middle me-2 fas fa-fw fa-eye-slash"></i>
-                <i id="icon2" style="display:none"  class="align-middle me-2 fas fa-fw fa-chart-line"></i>
-            </button>
+            <div class="card-body">
+                <div class="chart w-100">
+                    <div id="apexcharts-bar"></div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
-<div class="col-12 col-lg-12" id="graph" >
-    <div class="tab" >
-        <ul class="nav nav-tabs" role="tablist">
-            {% if '1' in his.cheks %}
-            <li class="nav-item">
-                <a class="nav-link active" href="#icon-tab-1" data-bs-toggle="tab" role="tab">
-                    Ch<i class="align-middle me-2 fas fa-fw fa-chart-line"></i>
-                </a>
-            </li>{% endif %}
-            {% if '2' in his.cheks %}
-            <li class="nav-item">
-                <a class="nav-link" href="#icon-tab-2" data-bs-toggle="tab" role="tab">
-                    V<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i>
-                </a>
-            </li>{% endif %}
-            {% if '3' in his.cheks %}
-            <li class="nav-item">
-                <a class="nav-link" href="#icon-tab-3" data-bs-toggle="tab" role="tab">
-                    G<i class="align-middle me-2 fas fa-fw fa-chart-bar"></i>
-                </a>
-            </li>{% endif %}
-            {% if '4' in his.cheks %}
-            <li class="nav-item">
-                <a class="nav-link" href="#icon-tab-4" data-bs-toggle="tab" role="tab">
-                    M<i class="align-middle me-2 fas fa-fw fa-chart-area"></i>
-                </a>
-            </li>{% endif %}
-            {% if '5' in his.cheks %}
-            <li class="nav-item">
-                <a class="nav-link" href="#icon-tab-5" data-bs-toggle="tab" role="tab">
-                    U<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
-                </a>
-            </li>{% endif %}
-            <!--{% if '6' in his.cheks %}
-            <li class="nav-item">
-                <a class="nav-link" href="#icon-tab-6" data-bs-toggle="tab" role="tab">
-                    A<i class="align-middle me-2 fas fa-fw fa-chart-pie"></i>
-                </a>
-            </li>{% endif %}-->
-            
-        </ul>
-        <div class="tab-content" style="background: rgb(63,94,251);
-        background: linear-gradient(62deg, rgba(63,94,251,0.3351540445279675) 0%, rgba(239,191,254,0.5704481621750263) 4%, rgba(255,255,255,0.7133053050321692) 6%, rgba(255,255,255,1) 18%, rgba(255,255,255,1) 51%, rgba(255,255,255,0.8757702910265669) 89%, rgba(192,192,252,0.7469187504103203) 95%, rgba(243,202,254,0.5928571257604605) 98%, rgba(71,70,252,0.3127450809425333) 100%);">
-            <div class="tab-pane active" id="icon-tab-1" role="tabpanel">
-                <div class="card-body">
-                    <div class="chart w-100">
-                        <div id="apexcharts-line"></div>
+    <div class="col-12 col-lg-12">
+        <div class="row">
+            <div class="col-12 col-lg-10"> 
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Elektr solishtirma sarf ko'rsatgichi</h5>               
                     </div>
-                </div>
-            </div>            
-            <div class="tab-pane" id="icon-tab-2" role="tabpanel">                
-                <div class="card-body">
-                    <div class="chart w-100">
-                        <div id="apexcharts-column"></div>
-                    </div>
-                </div> 
-            </div>
-
-            <div class="tab-pane" id="icon-tab-3" role="tabpanel">
-                <div class="card-body">
-                    <div class="chart w-100">
-                        <div id="apexcharts-bar"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="icon-tab-4" role="tabpanel">
-                <div class="card-body">
-                    <div class="chart w-100">
-                        <div id="apexcharts-area"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="icon-tab-5" role="tabpanel">
-                <div class="row">                    
-                    {% for k, v in obj.items %}    
-                    <div class="col-6 card-body text-center">
-                            <div class="chart w-100">
-                                <div id="pie-chart{{forloop.counter}}" style="max-width: 440px;margin:auto;"></div>
-                            </div>
-                    </div> 
-                    {% endfor %}
-                </div>
-
-            </div>
-            <div class="tab-pane" id="icon-tab-6" role="tabpanel">
-                <div class="row">
                     <div class="card-body">
                         <div class="chart w-100">
-                            <div id="apexcharts-mixed"></div>
+                            <div id="apexcharts-column"></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-12 col-lg-2"> 
+                <div class="col-sm-6 col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Eng katta solishtirma sarf</h5>
+                                </div>
+                                <div class="col-auto" style="color: rgb(0,100,250)">
+                                    {{sana_max}}			
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{eng_katta_meyor}}</B></h1>
+                            <!--<div class="mb-0">
+                                <span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+                                <span class="text-muted">Oldingi yilga nisbatan</span>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Eng kichik solishtirma sarf</h5>
+                                </div>
+                                <div class="col-auto" style="color: rgb(0,100,250)">
+                                    {{sana_min}}			
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{eng_kichik_meyor}}</B></h1>
+                            <!--<div class="mb-0">
+                                <span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+                                <span class="text-muted">Oldingi yilga nisbatan</span>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Hisobiy solishtirma sarf</h5>
+                                </div>
+                                <div class="col-auto" style="color: rgb(0,100,250)">
+                                    			
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{hisobiy_meyor}}</B></h1>
+                            <!--<div class="mb-0">
+                                <span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
+                                <span class="text-muted">Oldingi yilga nisbatan</span>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
                 
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">            
-            <div class="card-body">
-                <table id="datatables-buttons" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>T/r</th>
-                            <th>sana</th>
-                            {% for v in sana %}                          
-                            <th>{{v}}</th>
-                            {% endfor %}                              
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {% for k,v in obj.items %}                            
-                            <tr>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{k}}</td>
-                                {% for i in v %}                          
-                                <td>{{i}}</td>                                
-                                {% endfor %} 
-                            </tr>
-                            {% endfor %}                        
-                    </tbody>
-                   
-                </table>
-           
             </div>
         </div>
     </div>
-    
-    
-
 </div>
 
+<div class="row">  
+    <div class="row">
+        <figure class="highcharts-figure">
+            <div id="container2"></div>
+        </figure>
+    </div>    
+    <!--
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">         
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>T/r</th>                            
+                            <th>Davr</th>                            
+                            <th>XUQ (ССЗ)</th>                            
+                            <th>MT (СПП))</th> 
+                            <th style="background-color:rgba(0,255,0,0.2); border: 2px solid green">ES(ЭЭ)</th> 
+                            <th>UEE (ДЭЛ))</th> 
+                            <th>UIE (ДТ))</th> 
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        {% for k,v in list_vvp.items %}               
+                        <tr>
+                            <td>{{k}}</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>{{v}}</td>
+                            <td style="background-color:rgba(0,255,0,0.2); border: 2px solid green"> </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}  
+                    </tbody>                     
+                </table>
+            </div>
+        </div>
+    </div>-->
+</div>
+
+<!-- *****************************offcanvas boshlandi*******************************************************************-->
+<div class="offcanvas offcanvas-bottom" style="width: 20%; left: 40%; height: 80%" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+aria-labelledby="offcanvasBottomLabel" >
+<div class="offcanvas-header">
+    <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel" style="color: blue">Siz qaysi vaqt oralig'idagi holatni ko'rmoqchisiz?!</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<div class="offcanvas-body">
+    <form action="{% url 'addichresforhis' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">         
+                    <form action="{% url 'addhisobot' %}" method="post">
+                        {% csrf_token %}   
+                    <div class="card-body">
+                        
+                        <h4 style="color:blue"><B>Kerakli davrni tanlang</B></h4>             
+                        <div class="row"> 
+                            <div class="col-12 col-xl-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Davrni tanlang</label>
+                                    <input type="text" name="oraliq" class="form-control flatpickr-range" placeholder="Davrni tanlang..." />
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>                    
+                    </form>
+                </div>
+            </div>            
+            
+        </div>
+        <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                    
+    </form>
+</div>
+
+
+<!-- *****************************offcanvas tugadi*******************************************************************-->
 {% endblock content %}
 
 {% block scripts %}
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
 
-<script>  
-    function showhide()
-    {  
-         var div = document.getElementById("newpost");  
-         if (div.style.display !== "none") 
-         {  
-             div.style.display = "none";  
-         }  
-         else
-         {  
-             div.style.display = "block";  
-         }  
-    }  
-</script>  
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/analyse.js"></script>
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        
-        // Line chart
+        // Pie chart
         var options = {
             chart: {
-                height: 350,
-                type: "line",
-                zoom: {
-                    enabled: false
-                },
+                height: 500,
+                type: "donut",
             },
+            fill: {
+                type: 'gradient',
+              },            
             dataLabels: {
                 enabled: false
             },
-            stroke: {
-                width: [5, 7, 5],
-                curve: "straight",
-                dashArray: [0, 8, 5]
-            },
-            series: [                                
-                {% for key, value in obj.items %}
-                {   name: "{{key}}",
-                    data: {{value}}
-                },{% endfor %}               
-                
-            ],
-            markers: {
-                size: 5,
-                style: "hollow", // full, hollow, inverted
-            },
-            xaxis: {
-                categories: [{% for v in sana %}"{{v}}",{% endfor %}],
-            },
-            yaxis: {
-                title: {
-                    text: ""
-                }
-            },
-            tooltip: {
-                y: [{
-                    title: {
-                        formatter: function(val) {
-                            return val + " "
-                        }
-                    }
-                }, {
-                    title: {
-                        formatter: function(val) {
-                            return val + " "
-                        }
-                    }
-                }, {
-                    title: {
-                        formatter: function(val) {
-                            return val;
-                        }
-                    }
-                }]
-            },
-            grid: {
-                borderColor: "#f1f1f1",
-            }
+            series: [{% for k,v in fakt_nisbiy_meyor.items%}{{v}},{% endfor %}],
+            labels: [{% for k,v in fakt_nisbiy_meyor.items%}"{{k}} : {{v}}",{% endfor %}],      
         }
         var chart = new ApexCharts(
-            document.querySelector("#apexcharts-line"),
+            document.querySelector("#apexcharts-pie"),
             options
         );
         chart.render();
+        
     });
 </script>
 <script>
@@ -319,17 +293,19 @@
                 width: 2,
                 colors: ["transparent"]
             },
-            series: [{% for key, value in obj.items %}
-                        {   name: "{{key}}",
-                            data: {{value}}
-                        },{% endfor %} 
-            ],
+            series: [{
+                name: "Nisbiy me'yor reja",
+                data: [{% for k,v in plan_nisbiy_meyor.items%}{{v}},{% endfor %}]
+            }, {
+                name: "Nisbiy me'yor fakt",
+                data: [{% for k,v in fakt_nisbiy_meyor.items%}{{v}},{% endfor %}]
+            }],
             xaxis: {
-                categories: [{% for i in sana %}"{{i}}",{% endfor %}],
+                categories: [{% for k,v in fakt_nisbiy_meyor.items%}"{{k}}",{% endfor %}],
             },
             yaxis: {
                 title: {
-                    text: ""
+                    text: "{{birlik}}"
                 }
             },
             fill: {
@@ -338,7 +314,7 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return "" + val + " "
+                        return ">> " + val + "{{birlik}}"
                     }
                 }
             }
@@ -368,22 +344,32 @@
                 width: 1,
                 colors: ["#fff"]
             },
-            series: [
-                        {% for key, value in obj.items %}
-                        {   name: "{{key}}",
-                            data: {{value}}
-                        },{% endfor %} 
+            series: [            
+            {
+                name: "Ishlab chiqarilgan Mahsulot",
+                data: [{% for v in mahsulot%}"{{v}}",{% endfor %}]
+            }],
             
-            ],
             xaxis: {
-                categories: [{% for i in sana %}"{{i}}",{% endfor %}],      
+                categories: [{% for v in sana%}"{{k}}",{% endfor %}],
+                labels: {
+                    formatter: function(val) {
+                        return val + " Tonna"
+                    }
+                }
             },
             yaxis: {
                 title: {
                     text: undefined
                 },
             },
-            
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return val + "K"
+                    }
+                }
+            },
             fill: {
                 opacity: 1
             },
@@ -400,110 +386,82 @@
         chart.render();
     });
 </script>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Area chart
-        var options = {
-            chart: {
-                height: 350,
-                type: "area",
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: "smooth"
-            },
-            series: [ {% for key, value in obj.items %}
-                        {   name: "{{key}}",
-                            data: {{value}}
-                        },{% endfor %} 
-            ],
-            xaxis: {
-                type: "date",
-                categories: [{% for i in sana %}"{{i}}",{% endfor %}],     
-            },
-            tooltip: {
-                x: {
-                    format: "yyyy-MM"
-                },
-            }
-        }
-        var chart = new ApexCharts(
-            document.querySelector("#apexcharts-area"),
-            options
-        );
-        chart.render();
-    });
-</script>
-
-<script>
-    {% for k, v in obj.items %}
-    document.addEventListener("DOMContentLoaded", function() {
-        // Pie chart
-        var options = {
-            chart: {
-                height: 350,
-                type: "pie",
-            },
-            dataLabels: {
+    // Create the chart
+    Highcharts.chart('container2', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Energiya sig`imliligi grafigi (oylar kesimida)'
+        },
+        subtitle: {
+            text: ''
+        },
+        accessibility: {
+            announceNewData: {
                 enabled: true
-            },
+            }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
             title: {
-                display: true,
-                text: '{{k}}'
-            },           
-            series: [{% for i in v %}{{i}},{% endfor %}],
-            labels: [{% for j in sana %}"{{j}}",{% endfor %}],            
-        };
-        
-        var chart = new ApexCharts(
-            document.querySelector("#pie-chart{{forloop.counter}}"),
-            options
-        );
-        
-        chart.render();
+                text: 'Energiya sig`imliligi'
+            },
+            // 3 ta Chiziq 
+            plotLines: [{
+                color: 'red',
+                width: 6,
+                value: 0.75,
+                dashStyle: 'longdashdot'
+            }, {
+                color: 'yellow',
+                width: 6,
+                value: 0.5,
+                dashStyle: 'longdashdot'
+            }, {
+                color: 'green',
+                width: 6,
+                value: 0.25,
+                dashStyle: 'longdashdot'
+            }],
+            // 3 ta chiziq
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b><br/>'
+        },
+
+        series: [{
+            name: "Energiya sig'imliligi",
+            colorByPoint: true,
+            data: [
+            {% for k,v in sigimlilik.items %}
+            {
+                name: "{{k}}",
+                y: {{v}},
+                drilldown: ""
+            },
+            {% endfor %}
+        ]
+        }]                
     });
-    {% endfor %}
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Datatables with Buttons
-        var datatablesButtons = $("#datatables-buttons").DataTable({
-            responsive: true,
-            lengthChange: !1,
-            buttons: ["copy", "print"]
-        });
-        datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)");
-    });
-</script>
-<script>
-    const graph = document.getElementById("graph");
-    const icon = document.getElementById("icon");
-    const icon2 = document.getElementById("icon2");
-
-    const btn = document.getElementById("button");
-    btn.onclick = function () {
-
-    if (graph.style.display !== "none") {
-    graph.style.display = "none";
-    } else {
-    graph.style.display = "block";  
-    }
-    if (icon.style.display !== "none") {
-        icon.style.display = "none";
-    } else {
-        icon.style.display = "block";  
-    }
-    if (icon2.style.display !== "none") {
-        icon2.style.display = "none";
-    } else {
-        icon2.style.display = "block";  
-    }
-  
-};
-
-</script>
 {% endblock scripts %}

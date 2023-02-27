@@ -7,52 +7,87 @@
 {% block content %}
 {% csrf_token %}
 <div class="col-auto d-none d-sm-block">	
-	<div class="row mb-3">
-		{% for v in hammasi %}
+	<div class="row mb-3">		
 			<div class="col-sm-1">		
-				<img alt="EMBLEMA" src="{{v.emblem.url}}" class=" img-responsive mt-2" width="65" height="65" />
+				<img alt="EMBLEMA" src="{{korxona.emblem.url}}" class=" img-responsive mt-2" width="90" height="90" />
 			</div>		
-			<div class="col-sm-11">		
-				<div class="col-sm-12" style="color:blue">Assalomu aleykum! Bu minenergiya sahifasi</div>
-				<div class="col-sm-12"><h1><strong>{{v.nomi}}</strong></h1></div>				 
-				<div class="col-sm-12">{{v.about}}</div>
+			<div class="col-sm-5">						
+				<div class="col-sm-12"><h1><strong>{{korxona.nomi}} {{f1_fakt}}</strong></h1></div>				 
+				<div class="col-sm-12"> <audio controls autoplay>
+                    <source autoplay src="{{ttc_xabar}}" type="audio/ogg">                    
+                    Sizning brauzeringiz audioni ochmaydi! Boshqa brauzerda urinib ko'ring!
+                  </audio> </div>
 			</div>
-		{% endfor %}
+			<!--<div class="col-sm-6">						
+				<textarea rows="1" type="text"
+                                class="form-control" 
+                                autofocus required="true"                                                             
+                                name="manzil"
+                                value = {{values.dbibt}}></textarea>
+            
+			</div>-->
+	</div>
+</div>
+<div class="">		
+	<div class="card-body text-center">
+		<div class="row">
+			<div class="col-12 col-lg-6">				
+				<a class="btn btn-{{button1}}primary"  href="#">Taqdim etilgan ma'lumotlar</a>
+				<a class="btn btn-{{button2}}primary" href="#">Yillik hisobot</a>			
+				<a class="btn btn-{{button3}}primary"  href="#">Choraklik hisobot</a>
+				<a class="btn btn-{{button4}}primary"  href="#">Oylik hisobot</a>
+			</div>
+		</div>		
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6 col-xl-4" >
-		<div class="card" style="background: rgb(0,0,0);
-		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
-			<div class="card-body text-center">
-			<a class="" href="#"  width="100%" style="color:white"><i class="align-middle" data-feather="settings"></i>Sozlamalar</a>	
-			</div>
-		</div>
+	<div class="row">
+	<div class="col-12 col-lg-6">		
+	<h2>Umumiy ma'lumot</h2>
 	</div>
-	<div class="col-sm-6 col-xl-4" >
-		<div class="card" style=" background: rgb(0,0,0);
-		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
-			<div class="card-body text-center">
-			<a class="" href="{% url 'davr' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="edit"></i>Ma'lumotlarni kiritish</a>	
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-6 col-xl-4" >
-		<div class="card" style="background: rgb(0,0,0);
-		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
-			<div class="card-body text-center">
-			<a class="" href="{% url 'hisobot' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="sliders"></i>Hisobotlar</a>	
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row">
+	</div>	
 	<div class="col-sm-6 col-xl-4">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col mt-0">
-						<h5 class="card-title">Topshiriqlarning bajarilganligi</h5>
+						<h5 class="card-title">Ma'lumot taqdim etilgan davr (plan/)</h5>
+					</div>
+
+					<div class="col-auto">
+						<div class="stat text-primary">
+							<i class="align-middle" data-feather="activity"></i>
+						</div>
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3"><B>{{miqdor1}}</B></h1>				
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 col-xl-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">{{m2}}</h5>
+					</div>
+
+					<div class="col-auto">
+						<div class="stat text-primary">
+							<i class="align-middle" data-feather="activity"></i>
+						</div>
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3"><B>100</B> <sup style="color:green">%</sup></h1>				
+			</div>
+		</div>
+	</div>	
+	<div class="col-sm-6 col-xl-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">{{m3}}</h5>
 					</div>
 
 					<div class="col-auto">
@@ -65,74 +100,110 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-sm-6 col-xl-4">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Energiya iste'moli</h5>
-					</div>
-
-					<div class="col-auto">
-						<div class="stat text-primary">
-							<i class="align-middle" data-feather="arrow-down-right"></i>
-						</div>
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3"><B>{{full_ist}}</B> <sup style="color:green">mln.so'm</sup></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-6 col-xl-4">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Ishlab chiqarish/servis</h5>
-					</div>
-
-					<div class="col-auto">
-						<div class="stat text-primary">
-							<i class="align-middle" data-feather="arrow-up-right"></i>
-						</div>
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3"><B>{{full_ich}}</B><sup style="color:green">mln.so'm</sup></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-
-	<div class="col-sm-12 col-xl-12">
-		<div class="card">
-			<div class="card-body">
-				
-				<div class="row">
-                    <div class="card-body">
-                        <div class="chart w-100">
-                            <div id="apexcharts-mixed"></div>
-                        </div>
-                    </div>
-                </div> 
-				
-				
-			</div>
-		</div>
-	</div>
-	
 </div>
+{% for i in res_f1 %}
+<div class="row">
+	<div class="row">
+	<div class="col-12 col-lg-6">		
+	<h2>{{i.resurs.nomi}}({{i.resurs.hajm}}{{i.resurs.birlik}})</h2>
+	</div>
+	</div>	
+	<div class="col-sm-6 col-xl-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">{{m1}}</h5>
+					</div>
+
+					<div class="col-auto">
+						<div class="stat text-primary">
+							<i class="align-middle" data-feather="activity"></i>
+						</div>
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3"><B>{{miqdor1}}</B></h1>				
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 col-xl-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">{{m2}}</h5>
+					</div>
+
+					<div class="col-auto">
+						<div class="stat text-primary">
+							<i class="align-middle" data-feather="activity"></i>
+						</div>
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3"><B>100</B> <sup style="color:green">%</sup></h1>				
+			</div>
+		</div>
+	</div>	
+	<div class="col-sm-6 col-xl-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col mt-0">
+						<h5 class="card-title">{{m3}}</h5>
+					</div>
+
+					<div class="col-auto">
+						<div class="stat text-primary">
+							<i class="align-middle" data-feather="activity"></i>
+						</div>
+					</div>
+				</div>
+				<h1 class="mt-1 mb-3"><B>100</B> <sup style="color:green">%</sup></h1>				
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+
 
 {% endblock content %}
 
 {% block scripts %}
+<script>
+	$(function() {
+
+		var origTitle, animatedTitle, timer;
+		
+		function animateTitle(newTitle) {
+		  var currentState = false;
+		  origTitle = document.title;  // save original title
+		  animatedTitle = origTitle+"EIS sistemasi " ;
+		  timer = setInterval(startAnimation, 2000);
+		
+		  function startAnimation() {
+			// animate between the original and the new title
+			document.title = currentState ? origTitle : animatedTitle;
+			currentState = !currentState;
+		  }
+		}
+		
+		function restoreTitle() {
+		  clearInterval(timer);
+		  document.title = origTitle; // restore original title
+		}
+		
+		// Change page title on blur
+		$(window).blur(function() {
+			animateTitle();
+		});
+		
+		// Change page title back on focus
+		$(window).focus(function() {
+			restoreTitle();
+		});
+		
+		});
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Mixed chart

@@ -38,7 +38,7 @@
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="#">
 					<span class="sidebar-brand-text align-middle">
-						{{page_nomi}} sahifasi
+						{{title}}
 						<sup><small class="badge bg-primary text-uppercase">{{belgi}}</small></sup>
 					</span>
 					<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
@@ -68,6 +68,13 @@
 					<li class="sidebar-header">
 						Sahifalar
 					</li>
+					<li class="sidebar-item {% block barP %}{% endblock barP %}">
+						<a class="sidebar-link" href="{% url 'wbonehome' %}" >
+							<i class="align-middle" data-feather="arrow-right"></i> 
+                            <span class="align-middle">Global textile</span>
+						</a>
+					</li>
+					<!--
 					<li class="sidebar-item {% block bar %}{% endblock bar %}">
 						<a class="sidebar-link" href="{% url 'wbonehome' %}" >
 							<i class="align-middle" data-feather="home"></i> 
@@ -124,7 +131,7 @@
 							<i class="align-middle" style="color: green" data-feather="check-circle"></i> 
                             <span class="align-middle">Energiya samaradorlik ko'rsatgichlari</span>
 						</a>
-					</li>
+					</li>-->
 
 
 					<!--
@@ -243,6 +250,9 @@
 								<div class="dropdown-divider"></div>	
 								<a class="dropdown-item" href="{% url 'kirishP' %}"><i class="align-middle me-1" data-feather="user-check"></i> Admin</a>								
 								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'bosh_sahifa_tarjimon' %}"><i class="align-middle me-1" data-feather="user-check"></i> Tarjimon</a>								
+								<div class="dropdown-divider"></div>
+
 								<a class="dropdown-item" href="wbonehome"><i class="align-middle me-1" data-feather="user-plus"></i> Super admin</a>								
 								<div class="dropdown-divider"></div>	
 								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="settings"></i> Sozlamalar</a>								
