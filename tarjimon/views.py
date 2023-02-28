@@ -20,6 +20,8 @@ import six
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 
+from .models import Til, Tarjima, jumla, Tarjimon
+
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
         if isinstance(group, six.string_types):
@@ -36,4 +38,41 @@ def group_required(group, login_url=None, raise_exception=False):
 
 @group_required('Tarjimon')
 def bosh_sahifa(request):
-    return render(request, 'tarjimon/bosh_sahifa/00_bosh_sahifa_tarjimon.html')
+    tillar=Til.objects.filter(tarjimonlar=request.user)
+    context={
+        'tillar':tillar,
+    }
+    return render(request, 'tarjimon/bosh_sahifa/00_bosh_sahifa_tarjimon.html',context)
+
+@group_required('Tarjimon')
+def tarjima(request, til):    
+    tillar=Til.objects.filter(tarjimonlar=request.user)
+    
+    tilID=0
+    for i in tillar:
+        if i.nomi==til:
+            tilID=i.id
+
+    jumlalar=jumla.objects.all()
+    tarjima=Tarjima.objects.filter(til=tilID)
+    tarjimon=Tarjimon.objects.all()
+    
+    st={}
+    for i in jumlalar:    
+        st[i]=False
+        if tarjimon.filter(nomi=i.id).exists():
+            tarjimalari=tarjimon.get(nomi=i.id)
+            for k in tarjimalari.tarjimasi.all():
+                if k.til.id==tilID:
+                    st[i]=tarjima.get(pk=k.id)         
+                   
+                
+    context={
+        'tillar':tillar,
+        'til':til,
+        'jumlalar':jumlalar,
+        'tarjima':tarjima,      
+        'st'  :st,
+    }
+
+    return render(request, 'tarjimon/Tillar/tarjima.html',context)

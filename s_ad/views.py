@@ -22,6 +22,7 @@ from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birlikla
 from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, plan_umumiy
 from foydalanuvchi.models import TTT_umumiy_reja, VVP
 
+
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
         if isinstance(group, six.string_types):

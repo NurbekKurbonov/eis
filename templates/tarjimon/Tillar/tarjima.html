@@ -1,0 +1,67 @@
+{% extends 'tarjimon/00_base.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block active1 %}active{% endblock active1 %}
+{% block bar3 %}active{% endblock bar3 %}
+
+{% block content %}
+
+<a href="{% url 'addhisobot' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi jumla</a>
+
+
+{% csrf_token %} 
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">{{til}}</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">
+           
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>T/r {{lst}}</th>                            
+                            <th>Jumla</th>     
+                            <th>Tarjima</th>         
+                            <th>Holat</th>              
+                            <th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                    {% for k,v in st.items%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td>{{k.nomi}}</td>
+                        <td>{% if v is False %}<B style="color:red">TARJIMA QILINMAGAN</B>{% else %}{{v}}{% endif %}</td>
+                        <td>{% if v is False %}0{% else %}1{% endif %}</td>
+                        <td class="table-action text-center">  
+                        
+                        <a 
+                            class="btn btn-outline-info " id="notyf-show" style="width:100%">Tarjima qilish</a>
+                        </td>                         
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>T/r {{lst}}</th>                            
+                            <th>Jumla</th>     
+                            <th>Tarjima</th>         
+                            <th>Holat</th>              
+                            <th width="20%" class="table-action text-center"><i class="align-middle me-2 fas fa-fw fa-book-open"></i></th> 
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

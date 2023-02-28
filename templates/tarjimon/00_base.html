@@ -91,11 +91,13 @@
 
 					<li class="sidebar-item {% block bar2 %}{% endblock bar2 %}">
 						<a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Alfabet</span>
+							<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Til</span>
 						</a>	
+						{% for i in tillar %}
 						<ul id="dashboards" class="sidebar-dropdown list-unstyled collapse {{show}}" data-bs-parent="#sidebar">
-							<li class="sidebar-item {% block active0 %}{% endblock active0%}"><a class="sidebar-link" href="{% url 'reja' %}">A</a></li>							
+							<li class="sidebar-item {% block active0 %}{% endblock active0%}"><a class="sidebar-link" href="{% url 'tarjima' i.nomi %}">{{i.nomi}}</a></li>							
 						</ul>
+						{% endfor %}
 
 					</li>
 					
