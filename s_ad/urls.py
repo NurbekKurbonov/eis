@@ -122,5 +122,8 @@ urlpatterns = [
     path('reskorish/<int:id>/<int:elonid>/<int:fqid>', views.reskorish, name='reskorish'), 
     path('restasdiq/<int:id>/<int:elonid>/<int:fqid>', views.restasdiq, name='restasdiq'),
     path('bekorqilindi/<int:id>/<int:elonid>/<int:fqid>', views.bekorqilindi, name='bekorqilindi'),
+    
+    #***************TARJIMON**************************************
+    path('tarjimon', views.tarjimon, name='tarjimon_s_ad'),
 
 ]

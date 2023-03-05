@@ -1,0 +1,150 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+
+{% block title %} {{titleown}} {% endblock title %}
+
+{% block content %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Yangi til qo'shish</h1>
+    <a href="{% url 'tarjimon_s_ad' %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
+</div>
+
+<form action="{% url 'addtil' %}" id="addtil" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+<div class="row">
+    <div class="col-12 col-xl-12">
+        <div class="card">            
+            <div class="card-body">                
+                    
+                    <div class="row">   
+                        <div class="mb-3 col-3">
+                            <label class="form-label"> Til nomi</label>
+                            <input type="text"
+                                    class="form-control" 
+                                    autofocus required="true"
+                                    name="til"
+                                    placeholder="Masalan: O'zbek"
+                                    value = {{values.tuman_kodi}}>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="text-center">
+                                <img alt="Bayroq" src="{{v.bayroq.url}}" class="rounded-circle img-responsive mt-2"
+                                    width="50" height="50" />
+                                <div class="mt-2">
+                                    <label for="id_emblem" class="btn btn-primary"> <i class="fas fa-upload">Bayroqni yuklash</i></label>
+                                    <input type="file" name="bay" id="id_emblem" accept="image/*" hidden />
+                                </div>
+                                <small>50px x 50px .jpg formatdagi emblemani yuklang</small>
+                            </div>
+                        </div>                                                
+                        <div class="col-md-4">
+                            <div class="card">
+								<div class="card-header">
+									<h5 class="card-title">Tarjimonlar</h5>
+									<h6 class="card-subtitle text-muted">Tarjimonlarni biriktiring</h6>
+								</div>
+								<div class="card-body">
+									<div class="mb-3" hidden>
+										<select class="form-control choices-single">	
+										
+                                        </select>
+									</div>
+									<div>
+										<select class="form-control choices-multiple" multiple name="tarjimonlari">
+											<optgroup label="Foydalanuvchilar">                                                
+                                                {% for v in tarjimonlar %}
+												<option value="{{v.id}}">{{v.username}}: {{v.first_name}} {{v.last_name}}</option>
+                                                {% endfor %}											
+											</optgroup>											
+										</select>
+									</div>
+								</div>
+                        </div>
+                    </div>
+            </div>             
+        </div>         
+    </div>  
+    <button type="submit" class="btn btn-primary float-end" id="notyf-show">Qabul qilish</button>                               
+</div>
+</form>
+
+<script>
+    // Flatpickr
+    flatpickr(".flatpickr-minimum");
+    flatpickr(".flatpickr-datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
+    flatpickr(".flatpickr-human", {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
+    flatpickr(".flatpickr-multiple", {
+        mode: "multiple",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-range", {
+        mode: "range",
+        dateFormat: "Y-m-d"
+    });
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Choices.js
+        new Choices(document.querySelector(".choices-single"));
+        new Choices(document.querySelector(".choices-multiple"));
+        // Flatpickr
+        flatpickr(".flatpickr-minimum");
+        flatpickr(".flatpickr-datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+        flatpickr(".flatpickr-human", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
+        flatpickr(".flatpickr-multiple", {
+            mode: "multiple",
+            dateFormat: "Y-m-d"
+        });
+        flatpickr(".flatpickr-range", {
+            mode: "range",
+            dateFormat: "Y-m-d"
+        });
+        flatpickr(".flatpickr-time", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+        });
+    });
+</script>
+
+<script>    
+    const checkbox = document.getElementById('barcha');
+    const box = document.getElementById('box');
+    checkbox.addEventListener('click', function handleClick() {
+      if (checkbox.checked) {
+        box.style.display = 'none';
+      } else {
+        box.style.display = 'block';
+      }
+    });
+    
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        dragula([
+            document.querySelector("#tasks-backlog"),
+            document.querySelector("#tasks-progress"),
+            document.querySelector("#tasks-completed")
+        ]);
+    });
+</script>
+{% endblock content %}

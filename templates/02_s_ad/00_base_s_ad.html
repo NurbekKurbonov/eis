@@ -25,7 +25,6 @@
 
 </head>
 
-{% include 'partials/_messages.html'%}
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
 	<div class="wrapper">
 		
@@ -35,6 +34,7 @@
 					<span class="sidebar-brand-text align-middle">
 						Ikkinchi darajali admin						
 					</span>
+					{% include 'partials/_messages.html'%}
 					<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
 						stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
 						<defs>
@@ -66,12 +66,20 @@
 					</li>
 					<li class="sidebar-header">
 						Aktiv sahifalar
-					</li>		
-					
+					</li>	
 					<li class="sidebar-item {% block bar %}{% endblock bar %}">
 						<a class="sidebar-link" href="{% url 'kirishP' %}" >
 							<i class="align-middle" data-feather="log-in"></i> 
                             <span class="align-middle">Kirish bo'limi sahifalari</span>
+						</a>
+					</li>
+					<li class="sidebar-header">
+						Tarjimon
+					</li>	
+					<li class="sidebar-item {% block bart1 %}{% endblock bart1 %}">
+						<a class="sidebar-link" href="{% url 'tarjimon_s_ad' %}" >
+							<i class="align-middle" data-feather="shuffle"></i> 
+                            <span class="align-middle">Tarjimon</span>
 						</a>
 					</li>
 					<li class="sidebar-header">
@@ -282,8 +290,7 @@
 								<a class="dropdown-item" href="#">
 									<img src="{% static 'img/flags/uz.png'%}" alt="O'zbek" width="20" class="align-middle me-1" />
 									<span class="align-middle">O'zbek</span>
-								</a>
-								
+								</a>								
 							</div>
 						</li>
 
@@ -353,6 +360,28 @@
 	
 	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 	<script>		
+		// DataTables with Column Search by Text Inputs
+		document.addEventListener("DOMContentLoaded", function() {
+			// Setup - add a text input to each footer cell
+			$("#datatables-column-search-text-inputs tfoot th").each(function() {
+				var title = $(this).text();
+				$(this).html("<input type=\"text\" class=\"form-control\" placeholder=\"Search " + title + "\" />");
+			});
+			// DataTables
+			var table = $("#datatables-column-search-text-inputs").DataTable();
+			// Apply the search
+			table.columns().every(function() {
+				var that = this;
+				$("input", this.footer()).on("keyup change clear", function() {
+					if (that.search() !== this.value) {
+						that
+							.search(this.value)
+							.draw();
+					}
+				});
+			});
+		});
+
 		// DataTables with Column Search by Select Inputs
 		document.addEventListener("DOMContentLoaded", function() {
 			$("#datatables-column-search-select-inputs").DataTable({

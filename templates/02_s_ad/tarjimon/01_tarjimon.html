@@ -1,0 +1,74 @@
+{% extends '02_s_ad/00_base_s_ad.html' %}
+{% load static %}
+
+{% block title %} {{titleown}} {% endblock title %}
+<!--BAR ACTIVE-->
+{% block bart1 %}active{% endblock bart1 %}
+
+{% block content %}
+<a href="{% url 'bosh_sahifa_tarjimon' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-language"></i></a>
+{% csrf_token %}
+
+<div class="mb-3">
+    <h1 class="h3 d-inline align-middle">Tarjimon</h1>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">              
+                {% for i in tillar %}
+                <a href="{% url 'edittil' i.id %}" type="button" style="color:rgb({{forloop.counter}}00,{{forloop.counter}}0,{{forloop.counter}}00)" >
+                    <img src="{{i.bayroq.url}}" alt="O'zbek" width="20" class="align-middle me-1" />
+                        <span class="align-middle">{{i.nomi}} |</span>
+                </a>                
+                {% endfor %}
+                <a href="{% url 'addtil' %}" class="btn btn-primary float-end " type="button" >
+                    <img src="{% static 'img/flags/uz.png'%}" alt="O'zbek" width="20" class="align-middle me-1" />
+                        <span class="align-middle">+ Yangi til qo'shish</span>
+                </a>  
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">            
+            <div class="card-body">              
+                <table id="datatables-column-search-select-inputs" class="table table-striped " style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="5%">t/r</th>
+                            <th>Jumlalar</th>                            
+                            <th>Tarjimalar</th>
+                            <th width="2%">harakat</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in tarjimon_baza %}
+                        <tr>
+                            <td> {{forloop.counter}}</td>
+                            <td>{{v.nomi}}</td>
+                            <td>{% for i in v.tarjimasi.all %} <a href="{% url 'tarjimoni' v.nomi.id i.til.nomi %}" style="color:rgb({{forloop.counter}}00,10,{{forloop.counter}}00)" >{{i.til}}: {{i.nomi}}</a> |{% endfor %}</td>
+                            <td class="table-action text-center">
+									<a href="#" type="button" >
+										<i class="align-middle me-2 fas fa-fw fa-trash-alt"></i>
+                                    </a>								                                                          
+                            </td>                           
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>t/r</th>
+                            <th>kodi</th>
+                            <th>Nomi</th>                           
+                            
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

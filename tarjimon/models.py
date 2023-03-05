@@ -6,7 +6,7 @@ from django.urls import reverse
 class Til(models.Model):
     nomi=models.TextField("Jumla")  
     tarjimonlar=models.ManyToManyField(to=User, verbose_name=("Tarjimonlar"), blank=True)
-    bayroq=models.ImageField("Bayroq",upload_to='bayroq', blank=True, max_length=255)
+    bayroq=models.ImageField("Bayroq",upload_to='bayroq', blank=True, max_length=255, default='profile_emb/login_emb.jpg')
     vaqt=models.DateTimeField("Vaqti", auto_now_add=True, blank=True, null=True)
     
     class Meta:

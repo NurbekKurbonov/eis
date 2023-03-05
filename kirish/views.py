@@ -32,6 +32,24 @@ from django.core.exceptions import PermissionDenied
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from tarjimon.models import Til, jumla, Tarjimon
+from tarjimon.views import tr
+
+from django import template
+
+register = template.Library()
+
+@register.simple_tag
+def tr(uz, til):
+    for i in jumla.objects.all():
+        if i.nomi == uz:
+            tarjima=Tarjimon.objects.get(pk=i.id)
+
+    for i in tarjima.tarjimasi.all():
+        if i.til.nomi==til:
+            tarjima = i.nomi
+    
+    return tarjima
 
 import six
 
@@ -308,10 +326,24 @@ def kirish(request, pagename):
         'title': pg.title,
         'content': pg.bodytext,
         'last_updated': pg.update_date,
-        'page_list':sahifa.objects.all(),        
+        'page_list':sahifa.objects.all(),
+        'til':"O'zbek"
     }
         
-    return render(request, '00_kirish/01_index.html', context)
+    return render(request, '00_kirish/index.html', context)
+
+def kirish_til(request, pagename, til):
+    pagename = '/' + pagename
+    pg = get_object_or_404(sahifa, permalink=pagename)    
+    
+    context = {
+        'title': pg.title,
+        'content': pg.bodytext,
+        'last_updated': pg.update_date,
+        'page_list':sahifa.objects.all(),        
+        'til':til,        
+    }        
+    return render(request, '00_kirish/index.html', context)
 
 def index(request):
     typem="danger"

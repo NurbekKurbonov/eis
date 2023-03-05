@@ -29,6 +29,8 @@ urlpatterns = [
     
     #kirish url *****************************************
     path('', views.kirish, {'pagename':''}, name='kirish'),
+    path('<str:til>', views.kirish_til, {'pagename':''}, name='kirish_til'),
+    
     path('contact', views.contact, name='contact'),
     path('<str:pagename>', views.kirish, name='index'),   
     

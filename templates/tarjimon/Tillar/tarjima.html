@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<a href="{% url 'addhisobot' %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi jumla</a>
+<a href="{% url 'tarjimoni' 0 til %}" class="btn btn-primary float-end mt-n1"><i class="fas fa-plus"></i> Yangi jumla</a>
 
 
 {% csrf_token %} 
@@ -42,7 +42,7 @@
                         <td>{% if v is False %}0{% else %}1{% endif %}</td>
                         <td class="table-action text-center">  
                         
-                        <a 
+                        <a href="{% url 'tarjimoni' k.id til %}"
                             class="btn btn-outline-info " id="notyf-show" style="width:100%">Tarjima qilish</a>
                         </td>                         
                     </tr>

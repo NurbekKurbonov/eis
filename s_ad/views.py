@@ -21,6 +21,7 @@ from .models import davlatlar, viloyatlar, tumanlar, IFTUM, DBIBT,THST, birlikla
 
 from foydalanuvchi.models import allfaqir, ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, plan_umumiy
 from foydalanuvchi.models import TTT_umumiy_reja, VVP
+from tarjimon.models import jumla,Tarjimon, Til
 
 
 def group_required(group, login_url=None, raise_exception=False):
@@ -143,13 +144,6 @@ def delkir(request, id):
 
 @group_required('admin2')
 def davlat(request):
-    #perm tekshirish 
-    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
-    c='s_ad.change_resurslar'
-    if not (c in user_permission):
-        return redirect('view404')
-    #******************************
-    
     titleown='Davlatlar'
     dav = davlatlar.objects.all()
     
@@ -161,13 +155,7 @@ def davlat(request):
     return render(request, '02_s_ad/02_0_davlat.html', context)
 
 @group_required('admin2')
-def adddavlat(request):
-    #perm tekshirish 
-    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
-    c='s_ad.change_resurslar'
-    if not (c in user_permission):
-        return redirect('view404')
-    #******************************
+def adddavlat(request):    
     
     titleown='Davlatlar'
     context = { 'oqilmagan':oqilmagan, 'el':el,
@@ -186,13 +174,7 @@ def adddavlat(request):
     
 
 @group_required('admin2')
-def editdavlat(request, id):
-    #perm tekshirish 
-    user_permission=list(User.objects.get(pk=request.user.id).get_group_permissions())
-    c='s_ad.change_resurslar'
-    if not (c in user_permission):
-        return redirect('view404')
-    #******************************
+def editdavlat(request, id):  
        
     davlat = davlatlar.objects.get(pk=id)
     
@@ -1719,3 +1701,18 @@ def mqbekor(request, id, elonid, fqid):
     url='xabaropen/'+str(fqid)
     next = request.POST.get('next', '/s_ad/'+url)            
     return HttpResponseRedirect(next)
+
+def tarjimon(request):
+    titleown='Tarjimon'
+    jumlalar = jumla.objects.all()
+    tarjimon_baza=Tarjimon.objects.all()
+    tillar=Til.objects.all()
+
+    context = { 'oqilmagan':oqilmagan, 'el':el,
+        'tarjimon_baza':tarjimon_baza,
+        'jumlalar': jumlalar,
+        'titleown':titleown,
+        'tillar':tillar,
+        }
+    return render(request, '02_s_ad/tarjimon/01_tarjimon.html', context)
+

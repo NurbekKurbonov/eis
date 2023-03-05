@@ -263,7 +263,6 @@ def asosiyset(request):
                                             nomi="Bo'lim №"+str(i), 
                                             )
 
-
         if request.FILES.get('myfile', False):                       
             myfile = request.FILES['myfile']
             akkaunt.emblem=myfile
@@ -277,7 +276,6 @@ def asosiyset(request):
 @application_req()
 def mich(request):
     titleown = 'Energiya resurs/mahsulot ishlab chiqarish bo`yicha ma`lumotlar'
-    
     
     ich = allfaqir.objects.get(owner=request.user).ichres.all()
     

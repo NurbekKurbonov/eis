@@ -1,4 +1,5 @@
 {% load static %}
+{% load post_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,8 +31,8 @@
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="#">
 					<span class="sidebar-brand-text align-middle">
-						EIS sistemasi
-						<sup><small class="badge bg-primary text-uppercase">yangi</small></sup>
+						{%tarjimon 'EIS sistemasi' til %}
+						<sup><small class="badge bg-primary text-uppercase">{%tarjimon 'yangi' til %}</small></sup>
 					</span>
 					<svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
 						stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
@@ -77,65 +78,36 @@
 					<i class="hamburger align-self-center"></i>
 				</a>
 
-				<form class="d-none d-sm-inline-block">
-					<div class="input-group input-group-navbar">
-						<input type="text" class="form-control" 
-						placeholder="Qidirish…" 
-						aria-label="qidirish">
-						<button class="btn" type="button">
-							<i class="align-middle" 
-							data-feather="Search"></i>
-						</button>
-					</div>
-				</form>
-
-				<ul class="navbar-nav d-none d-lg-block">
-					<li class="nav-item px-2 dropdown">
-						<a class="nav-link dropdown-toggle" 
-						href="#" 
-						id="servicesDropdown" 
-						role="button" 
-						data-bs-toggle="dropdown" 
-						aria-haspopup="true"
-							aria-expanded="false">
-							Menyu
-						</a>
-						<div class="dropdown-menu dropdown-menu-start dropdown-mega" aria-labelledby="servicesDropdown">
-							<div class="d-md-flex align-items-start justify-content-start">
-								<div class="dropdown-mega-list">
-									<div class="dropdown-header">Menyu</div>
-									<a class="dropdown-item" href="#">1.</a>
-									
-								</div>
-								<div class="dropdown-mega-list">
-									<div class="dropdown-header">2-qator</div>
-									<a class="dropdown-item" href="#">1.</a>
-									
-								</div>
-								<div class="dropdown-mega-list">
-									<div class="dropdown-header">3-qator</div>
-									<a class="dropdown-item" href="#">3.</a>
-									
-								</div>
-							</div>
-						</div>
-					</li>
-				</ul>
-
 				<div class="navbar-collapse collapse">
-					<ul class="navbar-nav navbar-align">
-						<li class="nav-item dropdown">
+					<ul class="navbar-nav navbar-align">						
+						<li class="nav-item dropdown">							
+							{% if not til == "O'zbek" %}							
+							{%asosiytil til as atil%}
 							<a class="nav-flag dropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown">
+								<img src="{{atil.bayroq.url}}" alt="O'zbek" />
+							</a>
+							{% else %}							
+							<a class="nav-flag dropdown-toggle" href="{% url 'kirish' %}" id="languageDropdown" data-bs-toggle="dropdown">
 								<img src="{% static 'img/flags/uz.png'%}" alt="O'zbek" />
 							</a>
+							{% endif %}
+
 							<div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-								<a class="dropdown-item" href="#">
+								<a class="dropdown-item" href="{% url 'kirish'%}">
 									<img src="{% static 'img/flags/uz.png'%}" alt="O'zbek" width="20" class="align-middle me-1" />
 									<span class="align-middle">O'zbek</span>
 								</a>
+								{% tillar as til_list %}
+								{% for i in til_list %}
+								<a class="dropdown-item" href="{% url 'kirish_til' i.nomi %}">
+									<img src="{{i.bayroq.url}}" alt="O'zbek" width="20" class="align-middle me-1" />
+									<span class="align-middle">{{i.nomi}}</span>
+								</a>
+								{% endfor %}
 								
 							</div>
 						</li>
+
 						<li class="nav-item">
 							<a class="nav-icon js-fullscreen d-none d-lg-block" href="#">
 								<div class="position-relative">
@@ -143,9 +115,12 @@
 								</div>
 							</a>
 						</li>
-
-						<li class="nav-item dropdown">
-							<a href="{% url 'loginP' %}" class="nav-icon pe-md-0 dropdown-toggle"><i class="fas fa-door-closed"></i> login </a>													
+						<li class="nav-item">
+							<a href="#" class="nav-icon dropdown-toggle">
+							<img src="{% static 'img/icons/korxona_login.gif' %}" class="avatar img-fluid rounded me-1" alt="Korxona login" /></a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loginP' %}" class="nav-icon pe-md-1"><i class="align-middle" data-feather="user"></i></a>
 						</li>
 					</ul>
 				</div>
