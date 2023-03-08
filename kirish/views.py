@@ -227,11 +227,11 @@ class VerificationView(View):
 #login_____*********************************************/
 
 class loginP(View):
-    def get(self, request):
+    def get(self, request, til):
         
-        return render(request, '01_auth/01_login.html')
+        return render(request, '01_auth/01_login.html', {'til':til})
     
-    def post(self, request):
+    def post(self, request, til):
         username = request.POST['username']
         password = request.POST['password']
         
@@ -245,7 +245,9 @@ class loginP(View):
                     if user.groups.filter(name__in=['whitebone']).exists():
                         return redirect('wbonehome')  
                     if user.groups.filter(name__in=['admin2']).exists():
-                        return redirect('kirishP')                    
+                        return redirect('kirishP')  
+                    if user.groups.filter(name__in=['Tarjimon']).exists():
+                        return redirect('bosh_sahifa_tarjimon')                  
 
                     return redirect('home')
                 messages.error(request, 'Foydalanuvchi faollashtirilmagan! iltimos emailingizni tekshiring va faollashtiring')
@@ -253,13 +255,13 @@ class loginP(View):
             return render(request, '01_auth/01_login.html')
         
         messages.error(request, 'Iltimos so`ralgan ma`lumotlarni to`ldiring')
-        return render(request, '01_auth/01_login.html')
+        return render(request, '01_auth/01_login.html', {'til':til})
 
 class LogoutView(View):
     def post(self, request):
         auth.logout(request)
         messages.success(request, 'Siz sistemadan chiqdingiz! Salomat bo`ling')
-        return redirect('loginP')
+        return redirect('kirish')
     
 #**************************************************************   
 class resetpas(View):

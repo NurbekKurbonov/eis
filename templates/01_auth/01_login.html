@@ -1,6 +1,6 @@
 {% extends '01_base_auth.html' %}
 {% load static %}
-
+{% load post_tags %}
 {% block title %}
 	Kirish
 {% endblock title %}
@@ -8,9 +8,9 @@
 {% block asosiy_qism %}
 
 <div class="text-center mt-4">
-	<h1 class="h2">EIS sistemasiga xush kelibsiz!!! ({{usr.password}})</h1>
+	<h1 class="h2">{%tarjimon 'EIS tizimiga xush kelibsiz' til %}!</h1>
 	<p class="lead">
-		Akkauntingizga kirishingiz mumkin
+		{%tarjimon 'Tizimga kirish' til %}
 	</p>
 </div>
 
@@ -20,31 +20,31 @@
 			<div class="text-center">
 				<img src="{% static 'img/emblem/login_emb.jpg'%}" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
 			</div>
-			<form action="{% url 'loginP' %}" method="post">
+			<form action="{% url 'loginP' til %}" method="post">
 				{% csrf_token %}
 				<div class="mb-3">
-					<label class="form-label">Foydalanuvchi nomi</label>
+					<label class="form-label">{%tarjimon 'Foydalanuvchi nomi' til %}</label>
 					<input class="form-control 
 					form-control-lg" 
 					type="text" 
 					name="username" 
-					placeholder="Foydalanuvchi nomini kiriting" />
+					placeholder="{%tarjimon 'Foydalanuvchi nomini kiriting' til %}" />
 				</div>
 				<div class="col-12 mb-3">
-					<label class="form-label">Parol</label>
+					<label class="form-label">{%tarjimon 'Parol' til %}</label>
 					<input class="form-control form-control-lg"						
 							autofocus required="true"
 							type="password" 
 							id="passwordField"
 							name="password" 
-							placeholder="Parolingizni kiriting"/>
+							placeholder="{%tarjimon 'Parolni kiriting' til %}"/>
 					<i class="far fa-eye" id="togglePassword" style="cursor: pointer; position:absolute; top:60%; left:80%; color:blue;" ></i>
 					<small>
-						<a href="{% url 'reset' %}">Parolni unutdingizmi?</a>
+						<a href="{% url 'reset' %}">{%tarjimon 'Parolni unutdingizmi?' til %}</a>
 					</small>
 					<p>
 					<small>
-						<a href="{% url 'register' %}">Ro`yxatdan o`tish</a>
+						<a href="{% url 'register' %}">{%tarjimon "Ro'yxatdan o'tish" til %}</a>
 					</small> </p>			
 				</div>
 
@@ -55,12 +55,12 @@
 						value="remember-me" 
 						name="remember-me">
 						<span class="form-check-label">
-							Meni esda saqla
+							{%tarjimon "Meni esda saqla" til %}
 						</span>
 					</label>
 				</div>
 				<div class="text-center mt-3">					
-					<button type="submit" href="{% url 'savolnoma' %}" class="btn btn-lg btn-primary submit-btn">Kirish</button>
+					<button type="submit" href="{% url 'savolnoma' %}" class="btn btn-lg btn-primary submit-btn">{%tarjimon "Kirish" til %}</button>
 				</div>
 			</form>
 		</div>

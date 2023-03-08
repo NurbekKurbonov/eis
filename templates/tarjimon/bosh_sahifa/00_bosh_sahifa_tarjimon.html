@@ -11,282 +11,46 @@
 	<div class="row mb-3">
 		
 			<div class="col-sm-1">		
-				<img alt="EMBLEMA" src="{{hammasi.emblem.url}}" class=" img-responsive mt-2" width="65" height="65" />
+				<img alt="EMBLEMA" src="{% static 'img/emblem/login_emb.jpg' %}" class=" img-responsive mt-2" width="65" height="65" />
 			</div>
 			
-            <div class="col-sm-11">
-				<div class="col-sm-12" style="color:#{{rang}};"><strong>{% for i in hammasi.nomi %}--{% endfor %}</strong></div>
-				<div class="col-sm-12"><h1><strong>{{hammasi.nomi}}</strong></h1></div>				 
-				<!--
-                <div class="col-sm-12"> <audio controls autoplay>
+            <div class="col-sm-11">				
+				<div class="col-sm-12"><h1><strong>TARJIMON BOSH SAHIFASI</strong></h1></div>	
+                <div class="col-sm-12"> <audio controls>
                     <source autoplay src="{{ttc_xabar}}" type="audio/ogg">                    
                     Sizning brauzeringiz audioni ochmaydi! Boshqa brauzerda urinib ko'ring!
-                  </audio> </div>-->
-                <div class="col-sm-12">{{hammasi.about}}</div>
+                  </audio> </div>
 			</div>
 		
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-sm-6 col-xl-4" >
-		<div class="card" style="background: rgb(0,0,0);
-		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
-			<div class="card-body text-center">
-			<a class="" href="#"  width="100%" style="color:white"><i class="align-middle" data-feather="settings"></i>Sozlamalar</a>	
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-6 col-xl-4" >
-		<div class="card" style=" background: rgb(0,0,0);
-		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
-			<div class="card-body text-center">
-			<a class="" href="{% url 'davr' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="edit"></i>Ma'lumotlarni kiritish</a>	
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-6 col-xl-4" >
-		<div class="card" style="background: rgb(0,0,0);
-		background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,54,255,0.6264705711386117) 100%);">
-			<div class="card-body text-center">
-			<a class="" href="{% url 'hisobot' %}"  width="100%" style="color:white"><i class="align-middle" data-feather="sliders"></i>Hisobotlar</a>	
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="row justify-content-center" >
-    <!--
-	<div class="col-sm-6 col-xl-2">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Ma'lumotlarni taqdim etish holati</h5>
-					</div>
-					<div class="col-auto">
-						<div class="stat text-primary" style="background:{{rang}};">
-							<i class="align-middle" data-feather="activity"></i>
-						</div>
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3"><B>{{ish_holati}}</B> <sup style="color:green">%</sup></h1>				
-			</div>
-		</div>
-	</div>	-->
-	{% for i in oxirgi_malumot.ist.all %}
-	<div class="col-sm-6 col-xl-3">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">{{i.resurs}} iste'moli</h5>
-					</div>
-					<div class="col-auto" style="color: rgb(0,100,250)">
-                        {{i.vaqt|date:"m.Y"}}				
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{i.qiymat}}</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-	{% endfor %}	
     
-    {% for i in oxirgi_malumot.uzat.all %}
+	
+    {% for i in tillar %}
 	<div class="col-sm-6 col-xl-3">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col mt-0">
-						<h5 class="card-title">Ishlab chiqarilgan: {{i.resurs}}</h5>
+						<h5 class="card-title">{{i.nomi}}</h5>
 					</div>
 					<div class="col-auto" style="color: rgb(0,100,250)">
-                        {{i.vaqt|date:"m.Y"}}				
+                        {{i.vaqt|date:"d.m.Y"}}				
 					</div>
 				</div>
 				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>{{i.qiymat}}</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
+				<div class="mb-0">
+					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i><img src="{{i.bayroq.url}}" width="60" height="40" alt="logo"></span>
+					<span class="text-muted">{%for j in i.tarjimonlar.all %} {{j.first_name}} {{j.last_name}}, {% endfor %}</span>
+				</div>
 			</div>
 		</div>
 	</div>
 	{% endfor %}
-    <div class="col-sm-6 col-xl-3">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
-					</div>
-					<div class="col-auto" style="color: rgb(0,100,250)">
-                        I chorak (2022)			
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4295.5</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-
-    <div class="col-sm-6 col-xl-3">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
-					</div>
-					<div class="col-auto" style="color: rgb(0,100,250)">
-                        II chorak (2022)			
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4427.8</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-
-    <div class="col-sm-6 col-xl-3">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
-					</div>
-					<div class="col-auto" style="color: rgb(0,100,250)">
-                        III chorak (2022)			
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4354.1</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-    <div class="col-sm-6 col-xl-3">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
-					</div>
-					<div class="col-auto" style="color: rgb(0,100,250)">
-                        IV chorak (2022)			
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>4293.9</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-
-    <div class="col-sm-6 col-xl-3">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col mt-0">
-						<h5 class="card-title">Aktiv elektr energiya iste'moli (ming kW*soat)</h5>
-					</div>
-					<div class="col-auto" style="color: rgb(0,100,250)">
-                        Yillik (2022)			
-					</div>
-				</div>
-				<h1 class="mt-1 mb-3" style="color: rgb(100,50,250)"><B>17371.3</B></h1>
-				<!--<div class="mb-0">
-					<span class="badge badge-success-light"> <i class="mdi mdi-arrow-bottom-right"></i> 4.65% </span>
-					<span class="text-muted">Oldingi yilga nisbatan</span>
-				</div>-->
-			</div>
-		</div>
-	</div>
-<!--Amalga oshirilishi rejalashtirilayotgan TTT-->
-
-<div class="col-sm-6 col-xl-12" >
-	<div class="col-auto d-none d-sm-block">	
-		<div class="row mb-3">			
-				<div class="col-sm-12" style="text-align:center">							
-					<div class="col-sm-12" style="background: #002775;
-					background: linear-gradient(to top right, #002775 0%, #96A4FF 27%, #000D63 100%);
-					-webkit-background-clip: text;
-					-webkit-text-fill-color: transparent;"><h3><B>Taklif etilayotgan tashkiliy texnik tadbirlar</B></h3></div>				 					
-				</div>
-		</div>
-	</div>
-</div>
-{% for v in page_obj %}   
-    <div class="col-12 col-md-6 col-lg-3">
-        <div class="card" style="background: rgb(245,255,0);
-		background: linear-gradient(41deg, rgba(245,255,0,0.4318102240896359) 0%, rgba(255,0,0,0.2637429971988795) 100%);">            
-            <div class="card-header px-4 pt-4"> 
-                <h5 class="card-title mb-0" style="background: #002775;
-				background: linear-gradient(to top right, #002775 0%, #96A4FF 27%, #000D63 100%);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;">{{v.resurs.nomi}}ni tejash</h5>
-                <div class="badge bg-success my-2">Moslik: {{v.izoh}} %</div>                
-            </div>
-            <div class="card-body px-4 pt-2">
-				<div style="background: #00128A;
-				background: linear-gradient(to top left, #00128A 0%, #147C80 100%);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;"></div>
-				<p><I><B>Yechim:</B></I> {{v.ish}} orqali {{v.resurs.nomi}}ni <B><U>{{v.tejalgan}} {{v.resurs.birlik}}/yil</U></B> gacha tejashingiz mumkin</p>
-				<p>Ushbu tadbirni bajarish orqali foydalanuvchilarning <B>100 %</B>i muvafaqqiyatga erishdi</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item px-4 pb-4">
-                    <div class="text-center">
-                        <a href="{% url 'ftadbir' %}" class="btn btn-outline-success float-center" id="notyf-show">Rejaga qo'shish</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>    
-    {% endfor %}   
-    <div class=""> Sahifalar {{page_obj.number}}/{{page_obj.paginator.num_pages}} 
-        <ul class="pagination align-right float-right mr-auto">
-            {% if page_obj.has_previous %}
-            <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
-            <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}">oldinga</a></li>
-            {% endif %}
-      
-            {% if page_obj.has_next %}
-            <li class="page-item"> <a class="page-link" href="?page={{ page_obj.next_page_number }}">keyingi</a></li>
-            <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages}} &raquo;</a></li>
-            {% endif %}
-        </ul>      
-    </div>
-    <!--
-	<div class="col-sm-12 col-xl-12">
-		<div class="card">
-			<div class="card-body">
-				
-				<div class="row">
-                    <div class="card-body">
-                        <div class="chart w-100">
-                            <div id="apexcharts-mixed"></div>
-                        </div>
-                    </div>
-                </div>			
-			</div>
-		</div>
-	</div>-->
-	<!--TTT tamom-->				
+			
 </div>
 
 

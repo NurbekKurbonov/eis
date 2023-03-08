@@ -10,4 +10,5 @@ urlpatterns = [
     path('addtil', views.addtil, name='addtil'),
     path('edittil/<int:id>', views.edittil, name='edittil'),
     path('deltil/<int:id>', views.deltil, name='deltil'),
+    path('deltarjima/<int:id>', views.deltarjima, name='deltarjima'),
 ]

@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="mb-3" id="dvtitle">
-    <h2 class="h2 d-inline align-middle" style="color:blue">{{til}} </h2>
+    <h2 class="h2 d-inline align-middle" style="color:blue">{{til}}</h2>
     <a href="{% url 'tarjima' til %}" class="btn btn-outline-warning float-end">Bekor qilish</a>
 </div>
 
@@ -19,11 +19,17 @@
             <div class="card-body">
                 <div class="mb-12 col-md-12">
                     <label class="form-label text_ray" for="" >Jumla:</label>
-                    <textarea rows="3" type="text"
+                    <textarea hidden rows="3" type="text"
                         class="form-control" 
                         autofocus required="true"                                                             
                         name="jumla"
-                        value = {{jumlalar.nomi}}>{{jumlalar.nomi}}</textarea>
+                        value = "{{jumlalar.nomi}}">{{jumlalar.nomi}}</textarea>
+                    
+                    <textarea rows="3" type="text"
+                        class="form-control" 
+                        autofocus required="true"                                                             
+                        name="jumla_dublicate"
+                        value = "{{jumlalar.nomi}}">{{jumlalar.nomi}}</textarea>
                 </div>
             </div>
             <div class="card-body">
@@ -33,7 +39,7 @@
                         class="form-control" 
                         autofocus required="true"                                                             
                         name="tarjimasi"
-                        value = {{tarjimasi.nomi}}>{{tarjimasi.nomi}}</textarea>
+                        value = "{{tarjimasi.nomi}}">{{tarjimasi.nomi}}</textarea>
                 </div>
             </div>
 

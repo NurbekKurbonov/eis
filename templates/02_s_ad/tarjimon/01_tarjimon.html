@@ -50,7 +50,7 @@
                             <td>{{v.nomi}}</td>
                             <td>{% for i in v.tarjimasi.all %} <a href="{% url 'tarjimoni' v.nomi.id i.til.nomi %}" style="color:rgb({{forloop.counter}}00,10,{{forloop.counter}}00)" >{{i.til}}: {{i.nomi}}</a> |{% endfor %}</td>
                             <td class="table-action text-center">
-									<a href="#" type="button" >
+									<a href="{% url 'deltarjima' v.id %}" type="button" >
 										<i class="align-middle me-2 fas fa-fw fa-trash-alt"></i>
                                     </a>								                                                          
                             </td>                           

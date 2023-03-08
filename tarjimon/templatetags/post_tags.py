@@ -1,5 +1,5 @@
 from django import template
-
+from django.contrib.auth.models import User
 from ..models import Tarjimon, jumla, Til
 
 register=template.Library()
@@ -13,8 +13,8 @@ def tilID(til):
     return tilID
 
 @register.simple_tag
-def tarjimon(soz, til):
-    if til=="O'zbek":
+def tarjimon(soz, til):    
+    if til=="":
         tarjimasi=soz
     else:
         x=0
@@ -24,8 +24,13 @@ def tarjimon(soz, til):
                     if j.til.id==tilID(til):
                         tarjimasi=j.nomi
                         x+=1
-        if x==0:
+        if x==0:            
             tarjimasi=str(soz)+" "+str(til)+" ga tarjima qilinmagan"
+            if not jumla.objects.filter(nomi=soz).exists():
+                jumla.objects.create(
+                    nomi=soz, owner=User.objects.get(pk=1)
+                )
+
 
 
     return tarjimasi

@@ -57,25 +57,15 @@
                         <div class="collapse navbar-collapse main-menu-wrap" id="navbarSupportedContent">
                             
                             <ul class="navbar-nav ms-auto">						
-                                <li class="nav-item">							
-                                    {% if not til == "O'zbek" %}							
+                                <li class="nav-item">								
                                     {%asosiytil til as atil%}
                                     <a class="nav-flag dropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown">
                                         <img src="{{atil.bayroq.url}}" alt="O'zbek" />
-                                    </a>
-                                    {% else %}							
-                                    <a class="nav-flag dropdown-toggle" href="{% url 'kirish' %}" id="languageDropdown" data-bs-toggle="dropdown">
-                                        <img src="{% static 'img/flags/uz.png'%}" alt="O'zbek" />
-                                    </a>
-                                    {% endif %}
+                                    </a>                                   
         
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                                        <a class="dropdown-item" href="{% url 'kirish'%}">
-                                            <img src="{% static 'img/flags/uz.png'%}" alt="O'zbek" width="20" class="align-middle me-1" />
-                                            <span class="align-middle">O'zbek</span>
-                                        </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">                                        
                                         {% tillar as til_list %}
-                                        {% for i in til_list %}
+                                        {% for i in til_list reversed %}
                                         <a class="dropdown-item" href="{% url 'kirish_til' i.nomi %}">
                                             <img src="{{i.bayroq.url}}" alt="O'zbek" width="20" class="align-middle me-1" />
                                             <span class="align-middle">{{i.nomi}}</span>
@@ -88,7 +78,7 @@
                                     <img src="{% static 'img/icons/korxona_login.gif' %}" class="avatar img-fluid rounded me-1" alt="Korxona login" /></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{% url 'loginP' %}" class="nav-icon pe-md-1" style="color:white"><i class="align-middle" data-feather="user"></i>login</a>
+                                    <a href="{% url 'loginP' til %}" class="nav-icon pe-md-1" ><i class="align-middle" data-feather="user-check"></i>{%tarjimon 'kirish' til %}</a>
                                 </li>
                             </ul>  
                         </div>
@@ -123,7 +113,7 @@
                         <div class="col-lg-6">
                             <div class="hero-content">
                                 <span data-aos="fade-up" data-aos-duration="1200" data-aos-delay="200">EIS</span>
-                                <h1 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="300">{%tarjimon 'EIS sistemasi' til %}</h1>
+                                <h1 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="300">{%tarjimon 'EIS tizimi' til %}</h1>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -158,12 +148,12 @@
                    
                     <div class="section-title style1 text-center mb-40">
                         <span>EIS</span>
-                        <h2>{%tarjimon 'EIS sistemasi haqida' til %}</h2>
+                        <h2>{%tarjimon 'EIS tizimi haqida' til %}</h2>
                     </div>
                     <div class="row">
                         <div class="col-xl-10 offset-xl-1">
                             <div class="promo-video bg-f">
-                                <span class="promo-video-text"><img src="{% static 'img/emblem/login_emb.jpg' %}" alt="logo">{%tarjimon 'EIS sistemasi' til %}</span>
+                                <span class="promo-video-text"><img src="{% static 'img/emblem/login_emb.jpg' %}" alt="logo">{%tarjimon 'EIS tizimi' til %}</span>
                                 <a class="play-video" data-fancybox="" href="https://youtube.com/watch?v=z6cf83XJQHE&feature=shares">
                                     <span class="play-now icon"> <i class="flaticon-play-1"></i>
                                     <span class="ripple"></span></span>

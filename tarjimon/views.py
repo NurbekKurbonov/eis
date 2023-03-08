@@ -124,13 +124,12 @@ def tarjimon(request,id, til):
 
 
 def deltarjima(request,id):
-    jumlalar=jumla.objects.get(pk=id)
-    tarjimon=Tarjimon.objects.filter(nomi=jumlalar)
-    for i in tarjimon.all():
+    tarjimon=Tarjimon.objects.get(pk=id)
+    tarjimon.nomi.delete()
+    for i in tarjimon.tarjimasi.all():
         i.delete()
+        
     tarjimon.delete()
-    jumlalar.delete()
-
     messages.success(request, 'Amaliyot muvofaqqiyatli bajarildi')                
     return redirect('tarjimon_s_ad')
 
