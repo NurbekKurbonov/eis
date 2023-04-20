@@ -8,7 +8,7 @@ from django.utils import timezone
 
 urlpatterns = [
     path('register', registerP.as_view(), name='register'),
-    path('login/<str:til>', loginP.as_view(), name='loginP'),
+    path('loginP', loginP.as_view(), name='loginP'),
     path('validate-username', csrf_exempt(UsernameValidationView.as_view()),
          name="validate-username"),
     path('validate-email', csrf_exempt(EmailValidationView.as_view()),

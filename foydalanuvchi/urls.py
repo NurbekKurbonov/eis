@@ -67,7 +67,7 @@ urlpatterns = [
     path('resultbalans', views.resultbalans, name='resultbalans'),
 
     #_____________Samaradorlik______________________
-    path('samaradorlik', views.ensam, name='samaradorlik'),
+    path('ensam', views.ensam, name='ensam'),
     path('result_ensam/<int:id>', views.result_ensam, name='result_ensam'),
     path('changesam', views.changesam, name='changesam'),
     #path('resultbalans', views.resultbalans, name='resultbalans'),
@@ -103,4 +103,6 @@ urlpatterns = [
      #filtr uchun
      path('h_tur', views.h_tur, name='h_tur'),     
      path('h_tur_del/<int:id>', views.h_tur_del, name='h_tur_del'),
+
+     path('samaradorlik/<str:nomi>', views.samaradorlik, name='samaradorlik'),     
 ]

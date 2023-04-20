@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import user_passes_test
 #modelsdan chaqirish******************
 from s_ad.models import resurslar, Valyuta, Tadbir, birliklar,yaxlitlash, IFTUM, THST, DBIBT, davlatlar, viloyatlar, tumanlar, res_maqsad, elon, birliklar
 from .models import ichres, istres, sotres, hisobot_item, hisobot_ich, hisobot_ist, hisobot_uzat, allfaqir, hisobot_full, his_ich, TexnikTadbir,VVP, oraliq
-from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja, qtemholat, taklif, sex
+from .models import plan_umumiy, plan_uzat, plan_ist, plan_ich, TTT_reja, TTT_umumiy_reja, qtemholat, taklif, sex, bolim
 from .models import hisobot_turi, hisobot_samaradorlik
 from kirish.models import savolnoma
 import six
@@ -165,7 +165,8 @@ def home(request):
     dm=[]
     for i in davriy_malumot.all():
         dm.append(i)    
-
+    if len(dm)==0:
+        dm=[0,0]
     context ={'oqilmagan':oqilmagan, 'el':el,
         'hammasi':hammasi,
         'h_item':h_item,
@@ -226,6 +227,7 @@ def asosiyset(request):
 
     sexlar=sex.objects.filter(owner=request.user)
     bolimlar_soni=len(sexlar)
+    
 
     context ={'oqilmagan':oqilmagan, 'el':el,
         'active0':'active',
@@ -2977,3 +2979,18 @@ def result_his2(request, id, tur, birl):
        
     }   
     return render(request, '03_foydalanuvchi/03_1_result.html', context)
+
+def samaradorlik(request, nomi):
+    sg={1:0.8,2:0.25}
+    korxona=allfaqir.objects.get(owner=request.user)
+    sexlar=sex.objects.filter(zavod=korxona.id)
+
+    context ={
+       "sg":sg,
+       "titleown": "ENERGIYA SAMARADORLIK KO'RSATKICHLARI",
+       "korxona":korxona,
+       "sexlar":sexlar,
+       "nomi":nomi
+    }   
+    return render(request, '03_foydalanuvchi/samaradorlik/3_samaradorlik.html', context)
+   

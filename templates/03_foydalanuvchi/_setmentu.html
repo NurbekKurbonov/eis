@@ -24,11 +24,7 @@
     <h5 class="card-title mb-0">Bo'limlar</h5>
 </div>
 {% for i in sexlar %}
-<a style="background: #FF0000;
-background: linear-gradient(to left, #FF0000 0%, #ffff00 50%, #FF0000 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;"
-    class="list-group-item list-group-item-action {{active4}}" href="{% url 'sexlar' i.id 1%}" >
-    {{i.nomi}}
+<a class="list-group-item list-group-item-action {{active4}}" href="{% url 'sexlar' i.id 1%}" >
+    {{forloop.counter}}. {{i.nomi}}
 </a>
 {% endfor %}

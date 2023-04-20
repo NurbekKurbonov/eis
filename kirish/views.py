@@ -227,11 +227,11 @@ class VerificationView(View):
 #login_____*********************************************/
 
 class loginP(View):
-    def get(self, request, til):
+    def get(self, request):
         
-        return render(request, '01_auth/01_login.html', {'til':til})
+        return render(request, '01_auth/01_login.html')
     
-    def post(self, request, til):
+    def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
         
