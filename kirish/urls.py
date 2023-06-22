@@ -7,8 +7,8 @@ from django.contrib import auth
 from django.utils import timezone
 
 urlpatterns = [
-    path('register', registerP.as_view(), name='register'),
-    path('loginP', loginP.as_view(), name='loginP'),
+    path('register/<str:til>', registerP.as_view(), name='register'),
+    path('loginP/<str:til>', loginP.as_view(), name='loginP'),
     path('validate-username', csrf_exempt(UsernameValidationView.as_view()),
          name="validate-username"),
     path('validate-email', csrf_exempt(EmailValidationView.as_view()),
@@ -17,7 +17,7 @@ urlpatterns = [
          name='validate-stir'),
     path('validate-password', csrf_exempt(passwordValidationView.as_view()),
          name='validate-password'), 
-    path('activate/<uidb64>/<token>', VerificationView.as_view(), name="activate"),    
+    path('activate/<uidb64>/<token>/<str:til>', VerificationView.as_view(), name="activate"),    
      
      path('davlatadd', views.davlatadd, name='davlatadd'),
      path('viladd', views.viladd, name='viladd'),

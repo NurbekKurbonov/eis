@@ -160,8 +160,8 @@ MESSAGE_TAGS = {
 # email stuff *************************************************************
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'essystem.uz@gmail.com'
-EMAIL_HOST_PASSWORD = 'ptoqkgpfnakrsmhp' 
+EMAIL_HOST_USER = 'nurbek.kurbonov.96@gmail.com'
+EMAIL_HOST_PASSWORD = 'izjbmymuqbosluik' 
 EMAIL_PORT = 587
 
 #additional -***************************************************************

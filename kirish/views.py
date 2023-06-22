@@ -139,11 +139,13 @@ class passwordValidationView(View):
         return JsonResponse({'password_valid': True})    
     
 class registerP(View):
-    def get(self, request):       
-        
-        return render(request, '01_auth/02_register.html')
+    def get(self, request, til):       
+        context={
+            'til':til
+        }
+        return render(request, '01_auth/02_register.html', context)
     
-    def post(self, request):
+    def post(self, request, til):
         stir=request.POST['stir']
         
         username=request.POST['username']
@@ -163,7 +165,7 @@ class registerP(View):
                 if not User.objects.filter(password=password).exists():
                     user=User.objects.create_user(username=username, email=email)
                     user.set_password(password)
-                    faqir = Group.objects.get(name='Faqirlar') 
+                    faqir = Group.objects.get(name='Admin') 
                     faqir.user_set.add(user)
                     
                     user.is_active = False                    
@@ -184,7 +186,7 @@ class registerP(View):
                                'uidb64': email_body['uid'], 'token': email_body['token']})
                     
                     email_subject = 'Sistemaga kirish uchun faol qilish'
-                    activate_url = 'http://'+current_site.domain+link                   
+                    activate_url = 'http://'+current_site.domain+link+'/'+til                   
                     
                     email=EmailMessage(
                                 email_subject,
@@ -197,41 +199,43 @@ class registerP(View):
                     email.send(fail_silently=False)
                     
                     messages.success(request, 'Foydalanuvchi muvafaqqiyatli sistemaga qo`shildi! Iltimos, pochtangiz orqali faollashtiring')
-                    return redirect('loginP')
-        return render(request, '01_auth/02_register.html', {'captchaform': captchaform})
+                    return redirect('loginP', til)
+        return render(request, '01_auth/02_register.html', {'captchaform': captchaform, 'til':til})
 
 class VerificationView(View):
-    def get(self, request, uidb64, token):
+    def get(self, request, uidb64, token, til):
         try:
             id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=id)
 
             if not account_activation_token.check_token(user, token):
                 messages.success(request, 'Assalomu aleykum '+user.username+'! Sizning sahifangiz allaqachon faollashtirilgan, marhamat sistemaga kirishingiz mumkin')
-                return redirect('loginP')
+                return redirect('loginP', til)
 
             if user.is_active:                
-                return redirect('loginP')
+                return redirect('loginP', til)
             
             user.is_active = True
             user.save()
             
             messages.success(request, 'Assalomu aleykum!'+user.username+' sahifangiz muvafaqqiyatli faollashtirildi')
-            return redirect('loginP')
+            return redirect('loginP', til)
 
         except Exception as ex:
             pass
         messages.success(request, 'Xatolik, Ushbu noto`g`ri token bilan kirdingiz')
-        return redirect('loginP')
+        return redirect('loginP', til)
     
 #login_____*********************************************/
 
 class loginP(View):
-    def get(self, request):
-        
-        return render(request, '01_auth/01_login.html')
+    def get(self, request, til):
+        context={
+            'til':til,
+        }
+        return render(request, '01_auth/01_login.html', context)
     
-    def post(self, request):
+    def post(self, request, til):
         username = request.POST['username']
         password = request.POST['password']
         
@@ -477,4 +481,3 @@ def viladd(request):
     return JsonResponse(list(tuman.values("id", "tuman_nomi")), safe=False)
     
         
-

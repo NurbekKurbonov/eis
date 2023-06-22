@@ -1,36 +1,37 @@
 {% extends '01_base_auth.html' %}
 {% load static %}
+{% load post_tags %}
 
 {% block title %}Registratsya{% endblock title %}
 
 {% block asosiy_qism %}
 <div class="text-center mt-4">
-	<h1 class="h2">Ro'yxatdan o'tish</h1>
+	<h1 class="h2">{%tarjimon "Ro'yxatdan o'tish" til %}</h1>
 	<p class="lead">
-		Quyidagi ma'lumotlarni to'ldiring
+		{%tarjimon "Quyidagi ma'lumotlarni to'ldiring" til %}
 	</p>
 </div>
 
 <div class="card">
 	<div class="card-body">
 		<div class="m-sm-4">
-			<form action="{% url 'register' %}" method="post">
+			<form action="{% url 'register' til %}" method="post">
 				{% csrf_token %}
 				<div class="mb-3">
-					<label class="form-label">Foydalanish nomi</label>
+					<label class="form-label">{%tarjimon 'Foydalanish nomi' til %}</label>
 					<input class="form-control form-control-lg" 
 					type="text" 
 					name="username"
 					id="usernameField"
 					required
-					placeholder="Ismingizni kiriting" 
+					placeholder="{%tarjimon 'Ismingizni kiriting' til %}" 
 					value="{{fieldValues.username}}"/>
 				</div>
 				<div class="invalid_feedback invalid-feedback" style="display:none">
 				</div>
 				<p class="text-sm text-success usernameSuccessOutput"></p>
 				<div class="mb-3">
-					<label class="form-label">STIR</label>
+					<label class="form-label">{%tarjimon 'STIR' til %}</label>
 					<input class="form-control form-control-lg" 
 					required
 					type="number" 
@@ -38,40 +39,40 @@
 					min="0"
 					max="999999999"
 					id="stirField"
-					placeholder="INN ni kiriting"
+					placeholder="{%tarjimon 'INN ni kiriting' til %}"
 					value="{{fieldValues.stir}}"/>
 				</div>
 				<div class="stirFeedBackArea invalid-feedback" style="display:none">
 				</div>
 
 				<div class="mb-3">
-					<label class="form-label">E-mail</label>
+					<label class="form-label">{%tarjimon 'E-mail' til %}</label>
 					<input class="form-control form-control-lg" 
 					type="email" 
 					name="email" 
 					autofocus required="true"
 					id="emailField"
-					placeholder="Emailingizni kiriting"
+					placeholder="{%tarjimon 'Emailingizni kiriting' til %}"
 					value="{{fieldValues.email}}" />
 				</div>
 				<div class="emailFeedBackArea invalid-feedback" style="display:none">
 				</div>
 
 				<div class="col-12 mb-3">
-						<label class="form-label">Parol</label>
+						<label class="form-label">{%tarjimon 'Parol' til %}</label>
 						<input class="form-control form-control-lg"						
 								autofocus required="true"
 								type="password" 
 								id="passwordField"
 								name="password" 
-								placeholder="Parolingizni kiriting"/>
+								placeholder="{%tarjimon 'Parolingizni kiriting' til %}"/>
 					<i class="far fa-eye" id="togglePassword" style="cursor: pointer; position:absolute; top:73.5%; left:80%; color:blue;" ></i>
 					<div class="passwordFeedBackArea invalid-feedback" style="display:none">
 					</div>					
 				</div>
 				<div class="text-center mt-3">
 					<!-- <a type="submit" href="https://id.gov.uz/cmn/LoginPage.do" class="btn btn-lg btn-primary">Ro'yxatdan o'tish/One ID orqali</a>-->
-					<button type="submit" value="Register" class="btn btn-lg btn-primary submit-btn">Ro'yxatdan o'tish</button> 
+					<button type="submit" value="Register" class="btn btn-lg btn-primary submit-btn">{%tarjimon "Ro'yxatdan o'tish" til %}</button> 
 				</div>
 			</form>
 		</div>
