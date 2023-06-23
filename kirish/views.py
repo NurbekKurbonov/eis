@@ -165,7 +165,7 @@ class registerP(View):
                 if not User.objects.filter(password=password).exists():
                     user=User.objects.create_user(username=username, email=email)
                     user.set_password(password)
-                    faqir = Group.objects.get(name='Admin') 
+                    faqir = Group.objects.get(name='Boshqaruvchi') 
                     faqir.user_set.add(user)
                     
                     user.is_active = False                    

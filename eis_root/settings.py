@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'captcha',
     'crispy_forms',
     'phonenumber_field',
-    'tarjimon'
+    'tarjimon',
+    'boshqaruvchi',
     
 ]
 
